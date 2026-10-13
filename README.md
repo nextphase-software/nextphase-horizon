@@ -4,7 +4,9 @@ Open-source, web-first financial planning software for individuals planning thei
 
 **Status (2026-10-13):** pre-implementation. No application, calculation engine, framework, database or deployment exists yet.
 
-**License:** not yet chosen. Until a `LICENSE` file is present, nothing in this repository is licensed for reuse.
+**License:** GNU Affero General Public License, version 3 only (`AGPL-3.0-only`). See [LICENSE](LICENSE). If you run a modified version as a network service, the license requires you to offer its source to the people who use it.
+
+Copyright © 2026 NextPhase LLC.
 
 ## What is in this repository
 

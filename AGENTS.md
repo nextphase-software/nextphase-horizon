@@ -10,6 +10,7 @@ Open-source financial planning for individuals, web first. These rules apply to 
 - Never use `git stash`, never touch another worktree, and never bypass Git hooks with `--no-verify`. If a hook blocks a commit, fix the cause or report it.
 - Do the brief and nothing beyond it. Preserve unrelated work.
 - Name every added dependency with its exact version. Stack and provider choices come only from accepted records in `docs/decisions/`.
+- The project is licensed `AGPL-3.0-only`. Start each new source file with an `SPDX-License-Identifier: AGPL-3.0-only` comment where the format allows one, and add no dependency whose license is incompatible with it; name each new dependency's license.
 - Before handing off, append an **Implementation record** to the brief: branch, the source/test revision the validation ran against, each validation command with its exit status and counts, new dependencies, and every exclusion with its reason. The record is committed after that revision, so it cannot name its own commit; report the final branch tip separately in your handoff message.
 
 ## Code discovery

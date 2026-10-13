@@ -1,13 +1,15 @@
 # Contributing to NextPhase Horizon
 
 - Date: 2026-10-13
-- Status: pre-implementation; the license and the public contribution process are not yet in place
+- Status: pre-implementation; licensed under `AGPL-3.0-only`; the public contribution process is not yet open
 
 Read `README.md` and `DESIGN.md` first. There are no install, test or build commands yet.
 
-## Before the license exists
+## License and contributor terms
 
-No license has been chosen, so outside contributions cannot be accepted yet. The contribution process (issues, pull requests, contributor terms, support channels) will be documented here before the repository opens to contributions.
+The project is licensed under the GNU Affero General Public License, version 3 only. New source files carry `SPDX-License-Identifier: AGPL-3.0-only`.
+
+Outside contributions will be accepted under a contributor license agreement. Its text will be published here before the repository opens to contributions; until then, pull requests cannot be merged. The rest of the contribution process (issues, pull requests, support channels) will be documented here at the same time.
 
 ## How work is organized
 
