@@ -1,0 +1,22 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.local.json
+
+# Local agent and tool state
+.claude/
+.agents/
+.codex/
+.worktrees/
+.codebase-memory/
+large_tool_results/
+
+# OS, dependencies, generated output
+.DS_Store
+node_modules/
+dist/
+build/
+.next/
+out/
+coverage/
