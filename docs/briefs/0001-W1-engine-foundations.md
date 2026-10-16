@@ -246,3 +246,226 @@ Install once: the toolchain from `rust-toolchain.toml` (rustup does this automat
 ## Implementation record
 
 Appended by the implementer before handoff: branch, the source/test revision the validation ran against, each validation command with its exit status and counts, new dependencies with exact versions and licenses, and every exclusion with its reason. The record is committed after that revision and does not name its own commit; the final branch tip is reported in the handoff message.
+
+### 2026-10-16 — implementation complete; independent review pending
+
+- Brief: **0001-W1 v5**, with the exact MIT-0 exception approved by the maintainer
+  on 2026-10-16 as recorded below.
+- Branch: `codex/0001-W1-engine-foundations`.
+- Worktree: `.worktrees/codex-0001-W1`, created from `main` at
+  `a5f6c620ec7d6c81af38993071f9a4ebe03bbc92`.
+- **Source/test revision:** `4feb459f1cfd7cb6bbd7f440c0fe670587f62a5c`.
+  All commands below ran against that committed revision with a clean worktree.
+  This later record changes only this brief; the final branch tip is reported
+  separately in the handoff. No push, merge or independent review is claimed.
+
+The workspace adds the pure Rust engine, application `run` operation and
+`horizon dev-run` adapter. Exact checked cents and arbitrary-precision rational
+indexing preserve every published reference vector. Validated input and the
+sorted used-assumption register have independent SHA-256 hashes over restricted
+RFC 8785 JSON. Three synthetic households and fourteen invalid/unsupported
+fixtures exercise the contract. Monetary output carries units, currency, basis,
+base year and year; run output explicitly says `partial` and lists omissions.
+[Model and contract notes](../model/engine-foundations.md),
+[stable errors](../model/error-codes.md) and the
+[generated 2020-12 schema](../model/schemas/household-input.v1.schema.json)
+are committed with the source.
+
+The schema has an explicit `x-horizon-validation: "v1"` extension for cross-field
+conditions and stable error codes; its registered implementation calls
+`parse_household`. Generic schema validators that ignore this extension must
+also call `parse_household` for full validation. The test validator registers
+it, checks invalid household codes, and compares regenerated schema bytes.
+Assumption-register validation is separate from the household schema.
+
+#### Approved license exception
+
+The maintainer approved **MIT-0 for `borrow-or-share 0.2.4` only** on 2026-10-16.
+This is the only exception to deliverable 13's general license allow-list.
+`deny.toml` uses the exact package specification `borrow-or-share@0.2.4`;
+it does not allow MIT-0 globally or for other versions. The dependency chain is
+`jsonschema 0.58.6 → referencing 0.58.6 → fluent-uri 0.4.1 → borrow-or-share 0.2.4`,
+and it is test-only. The license checker explicitly includes development and
+build dependencies. Its initial development-license exclusion was corrected;
+the unapproved configuration then failed with exit 4, and the final approved
+configuration passes with exit 0. Two warnings are unused existing allowances
+(BSD-3-Clause and ISC); no rejected dependency remains.
+
+#### Validation
+
+Toolchain: Rust 1.99.1, edition 2024, cargo-deny 0.20.2. Commands ran in the
+following order against the source/test revision above. No gate was skipped.
+
+| Command | Exit | Observed result |
+| --- | --- | --- |
+| `cargo test -p horizon-engine money` | 0 | 2 money tests passed; rounding, summed lines, overflow and JSON output range |
+| `cargo test -p horizon-app validation` | 0 | 4 tests passed; validation/schema, deterministic runs, hash independence and units |
+| `cargo test -p horizon-app --test reference_values` | 0 | 7 tests passed; all supplied numerical vectors unchanged |
+| `cargo test --workspace` | 0 | 20 tests passed; 0 failed, 0 ignored |
+| `cargo clippy --workspace --all-targets -- -D warnings` | 0 | No warnings or errors; core arithmetic/float lints active |
+| `cargo fmt --all --check` | 0 | Formatting matches |
+| `cargo test --workspace --release` | 0 | 20 tests passed; 0 failed, 0 ignored |
+| `cargo build --workspace --release` | 0 | All three crates built |
+| `cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown` | 0 | Engine and application compiled for WebAssembly |
+| `cargo deny check licenses` | 0 | Licenses pass, including development/build dependencies and the approved exact exception |
+
+The CLI integration suite additionally proves byte-identical canonical output
+against serialized `run` results for each valid fixture by both name and file
+path, including from a different working directory, in debug and release.
+Error envelopes are canonical JSON with a trailing newline. The source-boundary
+check scans every engine source and tests rejection of forbidden host facilities;
+the test host alone is allowed file access to inspect those sources.
+
+Each required development invocation was also run separately after those gates:
+
+| Command | Exit | Result / error code |
+| --- | --- | --- |
+| `cargo run -p horizon-cli -- dev-run synthetic-working` | 0 | Partial indexing result |
+| `cargo run -p horizon-cli -- dev-run synthetic-retired` | 0 | Partial indexing result |
+| `cargo run -p horizon-cli -- dev-run synthetic-leap` | 0 | Partial indexing result |
+| `cargo run -p horizon-cli -- dev-run invalid-missing-field` | 1 | `MISSING_FIELD` |
+| `cargo run -p horizon-cli -- dev-run invalid-negative-balance` | 1 | `NEGATIVE_BALANCE` |
+| `cargo run -p horizon-cli -- dev-run invalid-end-before-start` | 1 | `END_BEFORE_START` |
+| `cargo run -p horizon-cli -- dev-run invalid-account-type` | 1 | `UNKNOWN_ACCOUNT_TYPE` |
+| `cargo run -p horizon-cli -- dev-run invalid-plan-end-age` | 1 | `PLAN_END_AGE_REACHED` |
+| `cargo run -p horizon-cli -- dev-run two-person` | 2 | `MULTIPLE_PERSONS_UNSUPPORTED` |
+| `cargo run -p horizon-cli -- dev-run invalid-date` | 1 | `INVALID_DATE` |
+| `cargo run -p horizon-cli -- dev-run invalid-owner` | 1 | `INVALID_OWNER` |
+| `cargo run -p horizon-cli -- dev-run invalid-cost-basis` | 1 | `ACCOUNT_FIELDS` |
+| `cargo run -p horizon-cli -- dev-run invalid-rate` | 1 | `INVALID_RATE` |
+| `cargo run -p horizon-cli -- dev-run invalid-missing-assumption` | 1 | `MISSING_ASSUMPTION` |
+| `cargo run -p horizon-cli -- dev-run unsupported-state-tax` | 2 | `FEATURE_UNSUPPORTED` |
+| `cargo run -p horizon-cli -- dev-run unsupported-healthcare` | 2 | `FEATURE_UNSUPPORTED` |
+| `cargo run -p horizon-cli -- dev-run invalid-output-range` | 1 | `MONEY_OUTPUT_RANGE` |
+
+Additional observations: the commit hooks passed for the source commit; the
+branch's full raw ancestry check and installed-hook verification passed.
+These are automated checks, not the independent review gate. `git diff --check`
+passed. `AGENTS.md` and `README.md` change only their former no-commands text
+and list the brief's exact validation commands.
+
+#### Dependencies
+
+No new direct external dependency beyond deliverable 12 was added. The three
+workspace crates are AGPL-3.0-only and unpublished. The seven direct external
+crates are pinned exactly in the workspace manifest; transitive versions are
+locked in `Cargo.lock`. The following 92-package inventory includes test, build
+and target-specific resolutions, with exact versions and declared registry
+license expressions. Alternative-license expressions are resolved under the
+allowed licenses by cargo-deny; MIT-0 uses only the approved exact exception.
+The separate installed checker is cargo-deny 0.20.2 (MIT OR Apache-2.0).
+A standalone copy is in [the dependency inventory](../model/dependencies.md).
+
+| Package | Version | License expression |
+| --- | --- | --- |
+| `ahash` | 0.8.12 | MIT OR Apache-2.0 |
+| `aho-corasick` | 1.1.5 | Unlicense OR MIT |
+| `allocator-api2` | 0.2.21 | MIT OR Apache-2.0 |
+| `autocfg` | 1.5.1 | Apache-2.0 OR MIT |
+| `bit-set` | 0.8.0 | Apache-2.0 OR MIT |
+| `bit-vec` | 0.8.0 | Apache-2.0 OR MIT |
+| `bitflags` | 2.13.2 | MIT OR Apache-2.0 |
+| `block-buffer` | 0.12.1 | MIT OR Apache-2.0 |
+| `borrow-or-share` | 0.2.4 | MIT-0 |
+| `bumpalo` | 3.20.3 | MIT OR Apache-2.0 |
+| `bytecount` | 0.6.9 | Apache-2.0/MIT |
+| `cfg-if` | 1.0.5 | MIT OR Apache-2.0 |
+| `const-oid` | 0.10.2 | Apache-2.0 OR MIT |
+| `cpufeatures` | 0.3.1 | MIT OR Apache-2.0 |
+| `crypto-common` | 0.2.2 | MIT OR Apache-2.0 |
+| `data-encoding` | 2.11.1 | MIT |
+| `digest` | 0.11.3 | MIT OR Apache-2.0 |
+| `dyn-clone` | 1.0.20 | MIT OR Apache-2.0 |
+| `email_address` | 0.2.9 | MIT |
+| `equivalent` | 1.0.3 | Apache-2.0 OR MIT |
+| `fancy-regex` | 0.19.2 | MIT |
+| `fluent-uri` | 0.4.1 | MIT |
+| `foldhash` | 0.2.0 | Zlib |
+| `fraction` | 0.17.0 | MIT OR Apache-2.0 |
+| `getrandom` | 0.3.4 | MIT OR Apache-2.0 |
+| `hashbrown` | 0.17.1 | MIT OR Apache-2.0 |
+| `heck` | 0.5.0 | MIT OR Apache-2.0 |
+| `hybrid-array` | 0.4.15 | MIT OR Apache-2.0 |
+| `itoa` | 1.0.18 | MIT OR Apache-2.0 |
+| `js-sys` | 0.3.106 | MIT OR Apache-2.0 |
+| `jsonschema` | 0.58.6 | MIT |
+| `jsonschema-regex` | 0.58.6 | MIT |
+| `jsonschema-value` | 0.58.6 | MIT |
+| `libc` | 0.2.190 | MIT OR Apache-2.0 |
+| `lock_api` | 0.4.14 | MIT OR Apache-2.0 |
+| `memchr` | 2.8.3 | Unlicense OR MIT |
+| `micromap` | 0.3.0 | MIT |
+| `num` | 0.4.3 | MIT OR Apache-2.0 |
+| `num-bigint` | 0.4.8 | MIT OR Apache-2.0 |
+| `num-bigint` | 0.5.1 | MIT OR Apache-2.0 |
+| `num-cmp` | 0.1.0 | MIT/Apache-2.0 |
+| `num-complex` | 0.4.6 | MIT OR Apache-2.0 |
+| `num-integer` | 0.1.47 | MIT OR Apache-2.0 |
+| `num-iter` | 0.1.46 | MIT OR Apache-2.0 |
+| `num-rational` | 0.4.2 | MIT OR Apache-2.0 |
+| `num-traits` | 0.2.19 | MIT OR Apache-2.0 |
+| `once_cell` | 1.21.4 | MIT OR Apache-2.0 |
+| `outref` | 0.5.2 | MIT |
+| `parking_lot` | 0.12.5 | MIT OR Apache-2.0 |
+| `parking_lot_core` | 0.9.12 | MIT OR Apache-2.0 |
+| `percent-encoding` | 2.3.2 | MIT OR Apache-2.0 |
+| `proc-macro2` | 1.0.107 | MIT OR Apache-2.0 |
+| `quote` | 1.0.47 | MIT OR Apache-2.0 |
+| `r-efi` | 5.3.0 | MIT OR Apache-2.0 OR LGPL-2.1-or-later |
+| `redox_syscall` | 0.5.18 | MIT |
+| `ref-cast` | 1.0.27 | MIT OR Apache-2.0 |
+| `ref-cast-impl` | 1.0.27 | MIT OR Apache-2.0 |
+| `referencing` | 0.58.6 | MIT |
+| `regex` | 1.13.1 | MIT OR Apache-2.0 |
+| `regex-automata` | 0.4.18 | MIT OR Apache-2.0 |
+| `regex-syntax` | 0.8.11 | MIT OR Apache-2.0 |
+| `rustversion` | 1.0.23 | MIT OR Apache-2.0 |
+| `schemars` | 1.2.3 | MIT |
+| `schemars_derive` | 1.2.3 | MIT |
+| `scopeguard` | 1.2.0 | MIT OR Apache-2.0 |
+| `serde` | 1.0.229 | MIT OR Apache-2.0 |
+| `serde_core` | 1.0.229 | MIT OR Apache-2.0 |
+| `serde_derive` | 1.0.229 | MIT OR Apache-2.0 |
+| `serde_derive_internals` | 0.30.0 | MIT OR Apache-2.0 |
+| `serde_json` | 1.0.154 | MIT OR Apache-2.0 |
+| `sha2` | 0.11.1 | MIT OR Apache-2.0 |
+| `smallvec` | 1.16.3 | MIT OR Apache-2.0 |
+| `strum` | 0.28.0 | MIT |
+| `strum_macros` | 0.28.0 | MIT |
+| `syn` | 2.0.119 | MIT OR Apache-2.0 |
+| `syn` | 3.0.9 | MIT OR Apache-2.0 |
+| `typenum` | 1.20.1 | MIT OR Apache-2.0 |
+| `unicode-general-category` | 1.1.0 | Apache-2.0 |
+| `unicode-ident` | 1.0.27 | (MIT OR Apache-2.0) AND Unicode-3.0 |
+| `uuid-simd` | 0.8.0 | MIT |
+| `version_check` | 0.9.5 | MIT/Apache-2.0 |
+| `vsimd` | 0.8.0 | MIT |
+| `wasip2` | 1.0.4+wasi-0.2.12 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
+| `wasm-bindgen` | 0.2.129 | MIT OR Apache-2.0 |
+| `wasm-bindgen-macro` | 0.2.129 | MIT OR Apache-2.0 |
+| `wasm-bindgen-macro-support` | 0.2.129 | MIT OR Apache-2.0 |
+| `wasm-bindgen-shared` | 0.2.129 | MIT OR Apache-2.0 |
+| `windows-link` | 0.2.1 | MIT OR Apache-2.0 |
+| `wit-bindgen` | 0.57.1 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
+| `zerocopy` | 0.8.63 | BSD-2-Clause OR Apache-2.0 OR MIT |
+| `zerocopy-derive` | 0.8.63 | BSD-2-Clause OR Apache-2.0 OR MIT |
+| `zmij` | 1.0.23 | MIT |
+
+#### Exclusions and handoff limits
+
+- Taxes: deferred to 0001-W3; no tax result is computed.
+- Withdrawals, surplus handling, required distributions, shortfalls and
+  within-year flow timing: deferred to 0001-W2. Year rows are indexed inputs,
+  not activated flows or a funded account ledger; investment growth is omitted.
+- Comparison, export and the supported CLI: deferred to 0001-W4. `dev-run` is
+  only the development command.
+- Reference-vector execution on WebAssembly: deferred to 0001-W4; this milestone
+  proves compilation only.
+- TypeScript and its WebAssembly bindings: deferred to the first adapter milestone.
+- UI and persistence: deferred to later features; no interface or storage exists.
+- Couples, state tax and healthcare: explicitly unsupported, with tested status
+  and error codes; not approximated.
+- No hosted route, document-access or export surface is added, so hosted
+  tenant/role authorization is not exercised in this milestone. Synthetic data only.
+- Independent review, operator merge, merged-result validation and publication
+  are pending; this implementation handoff does not mark the milestone Done.
