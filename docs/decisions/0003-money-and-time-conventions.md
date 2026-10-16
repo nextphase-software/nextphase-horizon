@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-10-15
-- Related: [0002](0002-engine-stack-typescript-headless-first.md) — the stack that implements these rules.
+- Related: [0007](0007-rust-core-typescript-shell.md) — the stack that implements these rules.
 
 ## Context
 
@@ -29,3 +29,15 @@ The IRS instructions for Form 1040 ([2025 edition](https://www.irs.gov/instructi
 - Reference values exercise every rounding point and age boundary, including birthdays on 1 January and 31 December.
 - For taxable income under $100,000, projected tax can differ by a few dollars from a filed return, which must use the Tax Table. Tax outputs state the method used.
 - **Security:** none.
+
+## Amendment — 2026-10-16: Rounding to the cent follows the IRS rule, including negative amounts
+
+The IRS instructions for Form 1040 ([2025 edition](https://www.irs.gov/instructions/i1040gi), "Rounding Off to Whole Dollars", retrieved 2026-10-16) round whole dollars this way: drop amounts under 50 cents, and raise amounts from 50 to 99 cents to the next dollar. When several amounts are added to figure a line, the instructions include the cents while adding and round only the total. They do not state a rule for negative amounts. IRS forms show a negative amount as a positive figure in parentheses, so the rule is applied to the figure's size.
+
+Item 2 is clarified to apply the same rule at cent precision:
+
+1. **Round by size, to the nearest cent.** Drop less than half a cent; raise half a cent or more to the next cent. For example, $10.004 becomes $10.00 and $10.005 becomes $10.01.
+2. **A negative amount is rounded by its size and keeps its sign.** For example, −$10.005 becomes −$10.01. This is rounding half away from zero, so equal and opposite amounts always round to equal and opposite cents.
+3. **When a line adds several amounts, add them unrounded and round only the total,** as item 2 already requires.
+
+Positive amounts round as before. Reference values include positive and negative half-cent cases and a line that sums several unrounded amounts.

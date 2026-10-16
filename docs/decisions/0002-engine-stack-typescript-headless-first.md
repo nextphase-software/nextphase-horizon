@@ -1,6 +1,6 @@
 # 0002 — Engine stack and architecture (TypeScript on Node.js LTS, pnpm, Vitest; headless-first layering with published JSON Schemas)
 
-- Status: Accepted
+- Status: Superseded by [0007](0007-rust-core-typescript-shell.md)
 - Date: 2026-10-15
 - Related: [0003](0003-money-and-time-conventions.md) — the money and time rules this stack implements.
 

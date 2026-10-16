@@ -25,4 +25,4 @@ What this requires, enables or rules out, including security and operating-cost 
 
 Amendments are appended in place under `## Amendment — YYYY-MM-DD: <headline>`.
 
-Records: [0002](0002-engine-stack-typescript-headless-first.md) engine stack and architecture; [0003](0003-money-and-time-conventions.md) money and time conventions.
+Records: [0002](0002-engine-stack-typescript-headless-first.md) engine stack and architecture (superseded by 0007); [0003](0003-money-and-time-conventions.md) money and time conventions; [0007](0007-rust-core-typescript-shell.md) language split and architecture.
