@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+disallowed-methods = ["std::io::stdin", "std::io::stdout", "std::io::stderr", "std::fs::read", "std::fs::read_to_string", "std::fs::write", "std::fs::read_dir", "std::env::var", "std::env::vars", "std::env::args", "std::env::current_dir", "std::env::temp_dir", "std::process::exit", "std::process::abort", "std::thread::spawn", "std::thread::sleep", "std::time::SystemTime::now", "std::time::Instant::now"]
+disallowed-types = ["std::fs::File", "std::fs::OpenOptions", "std::net::TcpStream", "std::net::TcpListener", "std::net::UdpSocket", "std::process::Command", "std::process::Child", "std::thread::Thread", "std::thread::JoinHandle", "std::time::SystemTime", "std::time::Instant"]

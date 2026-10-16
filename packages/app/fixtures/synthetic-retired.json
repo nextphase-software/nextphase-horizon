@@ -1,0 +1,84 @@
+{
+  "household": {
+    "valuation_date": "2026-01-01",
+    "persons": [
+      {
+        "id": "synthetic-person",
+        "birth_date": "1956-12-31",
+        "retirement_date": "2021-12-31",
+        "plan_end_age": 95
+      }
+    ],
+    "accounts": [
+      {
+        "id": "cash",
+        "owner": "synthetic-person",
+        "account_type": "cash",
+        "opening_balance_cents": 2500000,
+        "cost_basis_cents": null,
+        "tax_deferred_kind": null
+      },
+      {
+        "id": "taxable",
+        "owner": "synthetic-person",
+        "account_type": "taxable",
+        "opening_balance_cents": 18000000,
+        "cost_basis_cents": 12000000,
+        "tax_deferred_kind": null
+      },
+      {
+        "id": "employer",
+        "owner": "synthetic-person",
+        "account_type": "tax_deferred",
+        "opening_balance_cents": 45000000,
+        "cost_basis_cents": null,
+        "tax_deferred_kind": "traditional_ira"
+      },
+      {
+        "id": "roth",
+        "owner": "synthetic-person",
+        "account_type": "roth",
+        "opening_balance_cents": 8000000,
+        "cost_basis_cents": null,
+        "tax_deferred_kind": null
+      }
+    ],
+    "income": {
+      "wages": [],
+      "social_security": {
+        "amount": {
+          "cents": 3000000,
+          "dollar_basis": "today"
+        },
+        "start_age": 67
+      },
+      "pension": {
+        "amount": {
+          "cents": 1200000,
+          "dollar_basis": "nominal"
+        },
+        "start_age": 65
+      }
+    },
+    "spending": {
+      "before_retirement": {
+        "cents": 6000000,
+        "dollar_basis": "today"
+      },
+      "after_retirement": {
+        "cents": 5000000,
+        "dollar_basis": "today"
+      }
+    }
+  },
+  "assumptions": [
+    {
+      "identifier": "inflation",
+      "value": "0",
+      "unit": "decimal_fraction_per_year",
+      "source": "user",
+      "effective_year": 2026,
+      "user_overrode_default": true
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+[graph]
+exclude-dev = false
+exclude-unpublished = false
+
+[licenses]
+include-dev = true
+include-build = true
+allow = ["MIT", "Apache-2.0", "Apache-2.0 WITH LLVM-exception", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "Unicode-3.0"]
+# Maintainer-approved exception, 2026-10-16; exact package and version only.
+exceptions = [{ crate = "borrow-or-share@0.2.4", allow = ["MIT-0"] }]
+private = { ignore = true }

@@ -27,7 +27,33 @@ This repository is intended to be sufficient on its own for anyone building, aud
 
 ## Setup
 
-There are no install, build or test commands yet. They will be recorded here and in [AGENTS.md](AGENTS.md) when a stack is chosen through a decision record. `.env.example` contains documentation only.
+Install the pinned toolchain through rustup (`rust-toolchain.toml`), then install the license checker once:
+
+```sh
+cargo install cargo-deny --version 0.20.2 --locked
+```
+
+Run these validation commands in order from the workspace root:
+
+```sh
+cargo test -p horizon-engine money
+cargo test -p horizon-app validation
+cargo test -p horizon-app --test reference_values
+cargo test --workspace
+cargo clippy --workspace --all-targets -- -D warnings
+cargo fmt --all --check
+cargo test --workspace --release
+cargo build --workspace --release
+cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown
+cargo deny check licenses
+cargo run -p horizon-cli -- dev-run <name>
+```
+
+For the last command, replace `<name>` with each fixture name in
+[the fixture and command reference](docs/model/engine-foundations.md#fixtures).
+Valid fixtures exit 0; invalid inputs exit 1; unsupported inputs exit 2.
+Every response is canonical JSON followed by one newline. The workspace test
+suite also checks command output against the application operation byte for byte.
 
 ## Contributing and security
 

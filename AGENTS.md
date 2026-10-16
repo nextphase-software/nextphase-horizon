@@ -28,7 +28,33 @@ Follow the Do's and Don'ts in `DESIGN.md`. In particular:
 
 ## Validation
 
-There is no framework, package manager, application or test suite yet, so there are no commands to run. Once a stack exists, the exact focused test, typecheck, lint, format, build, security and numerical validation commands are documented here and in `README.md`. Do not advertise commands that do not exist.
+Install the pinned toolchain through rustup (`rust-toolchain.toml`), then install the license checker once:
+
+```sh
+cargo install cargo-deny --version 0.20.2 --locked
+```
+
+Run these validation commands in order from the workspace root:
+
+```sh
+cargo test -p horizon-engine money
+cargo test -p horizon-app validation
+cargo test -p horizon-app --test reference_values
+cargo test --workspace
+cargo clippy --workspace --all-targets -- -D warnings
+cargo fmt --all --check
+cargo test --workspace --release
+cargo build --workspace --release
+cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown
+cargo deny check licenses
+cargo run -p horizon-cli -- dev-run <name>
+```
+
+For the last command, replace `<name>` with each fixture name in
+[the fixture and command reference](docs/model/engine-foundations.md#fixtures).
+Valid fixtures exit 0; invalid inputs exit 1; unsupported inputs exit 2.
+Every response is canonical JSON followed by one newline. The workspace test
+suite also checks command output against the application operation byte for byte.
 
 Prove behavior with current source and tests. Interface work also checks the brief's design reference, responsive layouts, light and dark themes, keyboard access and accessible status labels. Report exactly what you ran and observed; cached output is not a new pass. A different reviewer evaluates each change; do not review your own work.
 
