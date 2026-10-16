@@ -50,4 +50,4 @@ that revision and does not name its own commit; the final branch tip is
 reported in the handoff message.
 ```
 
-No briefs have been written yet.
+Briefs: [0001-W1](0001-W1-engine-foundations.md) engine foundations.

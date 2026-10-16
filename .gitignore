@@ -20,3 +20,6 @@ build/
 .next/
 out/
 coverage/
+
+# Rust build output
+target/
