@@ -4,7 +4,7 @@ mod common;
 use std::process::Command;
 #[test]
 fn fixture_names_and_paths_match_application_bytes() {
-    for name in common::VALID {
+    for name in common::VALID.iter().chain(common::W2_VALID) {
         let f = common::fixture(name);
         let expected = format!(
             "{}\n",
@@ -30,7 +30,7 @@ fn fixture_names_and_paths_match_application_bytes() {
 }
 #[test]
 fn invalid_and_unsupported_have_exact_exit_status_and_json() {
-    for &(name, code, exit) in common::INVALID {
+    for &(name, code, exit) in common::INVALID.iter().chain(common::W2_INVALID) {
         let result = Command::new(env!("CARGO_BIN_EXE_horizon"))
             .args(["dev-run", name])
             .output()

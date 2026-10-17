@@ -1,5 +1,9 @@
 # Engine foundations — model 0.1.0
 
+Historical W1 contract. The current model extends this foundation with the
+[yearly ledger](yearly-ledger.md), required return assumptions and schema v2.
+The v1 schema and W1 numerical reference values remain unchanged.
+
 This model is a synthetic, single-person US indexing skeleton. It does not
 compute a funded retirement plan. Every successful run reports `partial`,
 explains its estimated status and lists omitted calculations. Opening account

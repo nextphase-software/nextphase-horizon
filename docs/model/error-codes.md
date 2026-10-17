@@ -1,8 +1,8 @@
-# Stable error codes — household input v1 / engine 0.1.0
+# Stable error codes — household input v1/v2 / engine models 0.1.0–0.2.0
 
 Errors serialize as `{ "status": "invalid" | "unsupported", "code": "...", "message": "..." }`.
 The command exits 1 for invalid input and 2 for unsupported input. Codes are
-permanent identifiers and must never be reassigned. A successful skeleton run
+permanent identifiers and must never be reassigned. A successful partial run
 has status `partial` and exits 0, with its omissions explicitly listed.
 
 | Code | Status | Meaning |
@@ -22,9 +22,9 @@ has status `partial` and exits 0, with its omissions explicitly listed.
 | `INVALID_OWNER` | invalid | Account owner differs from the single person's ID. |
 | `ACCOUNT_FIELDS` | invalid | Taxable cost basis or tax-deferred plan kind is missing or inappropriate. |
 | `INVALID_START_AGE` | invalid | An income start age exceeds 130. |
-| `MISSING_ASSUMPTION` | invalid | Required inflation assumption is absent; no implicit default exists. |
+| `MISSING_ASSUMPTION` | invalid | A required rate assumption is absent; no implicit default exists. |
 | `DUPLICATE_ASSUMPTION` | invalid | Two assumptions share an identifier. |
-| `INVALID_ASSUMPTION` | invalid | Inflation has wrong units, effective year or source. |
+| `INVALID_ASSUMPTION` | invalid | A rate assumption has wrong units, effective year or source. |
 | `INVALID_RATE` | invalid | Invalid plain decimal, nonpositive fraction denominator, or inflation at or below −1. |
 | `MONEY_OVERFLOW` | invalid | Checked cent arithmetic or rounded result exceeds i64. |
 | `MONEY_OUTPUT_RANGE` | invalid | A monetary value exceeds ±(2^53 − 1) cents. |
@@ -33,4 +33,8 @@ has status `partial` and exits 0, with its omissions explicitly listed.
 | `CLI_USAGE` | invalid | Command is not exactly dev-run plus one fixture name or path. |
 | `MULTIPLE_PERSONS_UNSUPPORTED` | unsupported | More than one person was provided. |
 | `FEATURE_UNSUPPORTED` | unsupported | State-tax or healthcare input was provided. |
-| `ASSUMPTION_UNSUPPORTED` | unsupported | An assumption other than inflation was provided. |
+| `ASSUMPTION_UNSUPPORTED` | unsupported | An assumption outside inflation, investment_return and cash_return was provided. |
+| `NEGATIVE_RETURN_UNSUPPORTED` | unsupported | Cash or investment return is negative. |
+| `RMD_TABLE_AGE_UNSUPPORTED` | unsupported | An owner distribution is due at an age below the committed table's first row (72). |
+| `SURPLUS_ACCOUNT_ID_CONFLICT` | invalid | The generated surplus account ID is already held by a non-taxable account. |
+| `LEDGER_INVARIANT` | invalid | A nonnegative balance/basis or exact conservation condition failed. |

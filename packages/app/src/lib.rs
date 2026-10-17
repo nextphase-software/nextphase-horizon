@@ -70,16 +70,37 @@ fn parse_error(error: serde_json::Error) -> Error {
     }
     Error::invalid(
         "MALFORMED_INPUT",
-        "Input must match the published v1 schema; unknown fields and fractional JSON numbers are rejected.",
+        "Input must match the published household schema; unknown fields and fractional JSON numbers are rejected.",
     )
 }
 
 /// 2020-12 structural schema, generated from the Rust types. The extension
 /// delegates cross-field date/ownership checks and stable codes to parse_household.
 pub fn household_schema() -> Value {
-    let mut schema = serde_json::to_value(schemars::schema_for!(Household))
+    let mut schema = serde_json::to_value(schemars::schema_for!(HouseholdV1))
         .expect("schema serialization is infallible");
     schema["$id"] = Value::String("urn:nextphase:horizon:household-input:v1".into());
     schema["x-horizon-validation"] = Value::String("v1".into());
+    schema
+}
+
+// Retain the v1 generator and schema byte for byte; the current operation uses v2.
+#[derive(JsonSchema, Serialize, Deserialize)]
+#[schemars(rename = "Household")]
+#[serde(deny_unknown_fields)]
+struct HouseholdV1 {
+    valuation_date: horizon_engine::input::Date,
+    #[schemars(length(min = 1, max = 1))]
+    persons: Vec<horizon_engine::input::Person>,
+    accounts: Vec<horizon_engine::input::Account>,
+    income: horizon_engine::input::Income,
+    spending: horizon_engine::input::Spending,
+}
+
+pub fn household_schema_v2() -> Value {
+    let mut schema = serde_json::to_value(schemars::schema_for!(Household))
+        .expect("schema serialization is infallible");
+    schema["$id"] = Value::String("urn:nextphase:horizon:household-input:v2".into());
+    schema["x-horizon-validation"] = Value::String("v2".into());
     schema
 }

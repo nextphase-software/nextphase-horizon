@@ -37,8 +37,8 @@ cargo install cargo-deny --version 0.20.2 --locked
 Run these validation commands in order from the workspace root:
 
 ```sh
-cargo test -p horizon-engine money
-cargo test -p horizon-app validation
+cargo test -p horizon-engine ledger
+cargo test -p horizon-app --test reference_values_w2
 cargo test -p horizon-app --test reference_values
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
@@ -51,7 +51,7 @@ cargo run -p horizon-cli -- dev-run <name>
 ```
 
 For the last command, replace `<name>` with each fixture name in
-[the fixture and command reference](docs/model/engine-foundations.md#fixtures).
+[the ledger fixture reference](docs/model/yearly-ledger.md#fixtures).
 Valid fixtures exit 0; invalid inputs exit 1; unsupported inputs exit 2.
 Every response is canonical JSON followed by one newline. The workspace test
 suite also checks command output against the application operation byte for byte.

@@ -3,6 +3,29 @@
 use horizon_app::{Fixture, parse_fixture};
 use std::path::PathBuf;
 pub const VALID: &[&str] = &["synthetic-working", "synthetic-retired", "synthetic-leap"];
+pub const W2_VALID: &[&str] = &[
+    "A-drawdown",
+    "A-drawdown-proportional_taxable_tax_deferred",
+    "A-drawdown-roth_before_tax_deferred",
+    "A-drawdown-tax_deferred_first",
+    "B-early-retiree",
+    "C-partial-base-year-no-taxable",
+    "D-still-working-rmd-surplus",
+];
+pub const W2_INVALID: &[(&str, &str, u8)] = &[
+    (
+        "unsupported-negative-cash-return",
+        "NEGATIVE_RETURN_UNSUPPORTED",
+        2,
+    ),
+    (
+        "unsupported-negative-investment-return",
+        "NEGATIVE_RETURN_UNSUPPORTED",
+        2,
+    ),
+    ("invalid-missing-cash-return", "MISSING_ASSUMPTION", 1),
+    ("invalid-missing-investment-return", "MISSING_ASSUMPTION", 1),
+];
 pub const INVALID: &[(&str, &str, u8)] = &[
     ("invalid-missing-field", "MISSING_FIELD", 1),
     ("invalid-negative-balance", "NEGATIVE_BALANCE", 1),

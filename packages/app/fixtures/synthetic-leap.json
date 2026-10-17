@@ -82,12 +82,28 @@
   },
   "assumptions": [
     {
+      "identifier": "cash_return",
+      "value": "0.02",
+      "unit": "decimal_fraction_per_year",
+      "source": "user",
+      "effective_year": 2026,
+      "user_overrode_default": false
+    },
+    {
       "identifier": "inflation",
       "value": "0.0275",
       "unit": "decimal_fraction_per_year",
       "source": "user",
       "effective_year": 2026,
       "user_overrode_default": true
+    },
+    {
+      "identifier": "investment_return",
+      "value": "0.05",
+      "unit": "decimal_fraction_per_year",
+      "source": "user",
+      "effective_year": 2026,
+      "user_overrode_default": false
     }
   ]
 }

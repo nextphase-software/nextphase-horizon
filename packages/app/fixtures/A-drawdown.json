@@ -1,0 +1,100 @@
+{
+  "assumptions": [
+    {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+    },
+    {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+    },
+    {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+    }
+  ],
+  "household": {
+    "accounts": [
+      {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash",
+        "opening_balance_cents": 1000000,
+        "owner": "synthetic-person",
+        "tax_deferred_kind": null
+      },
+      {
+        "account_type": "taxable",
+        "cost_basis_cents": 2000000,
+        "id": "taxable",
+        "opening_balance_cents": 3000000,
+        "owner": "synthetic-person",
+        "tax_deferred_kind": null
+      },
+      {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "ira",
+        "opening_balance_cents": 5000000,
+        "owner": "synthetic-person",
+        "tax_deferred_kind": "traditional_ira"
+      },
+      {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth",
+        "opening_balance_cents": 2000000,
+        "owner": "synthetic-person",
+        "tax_deferred_kind": null
+      }
+    ],
+    "income": {
+      "pension": {
+        "amount": {
+          "cents": 0,
+          "dollar_basis": "nominal"
+        },
+        "start_age": 65
+      },
+      "social_security": {
+        "amount": {
+          "cents": 2400000,
+          "dollar_basis": "today"
+        },
+        "start_age": 70
+      },
+      "wages": []
+    },
+    "persons": [
+      {
+        "birth_date": "1953-03-10",
+        "id": "synthetic-person",
+        "plan_end_age": 78,
+        "retirement_date": "2018-01-01"
+      }
+    ],
+    "spending": {
+      "after_retirement": {
+        "cents": 6000000,
+        "dollar_basis": "today"
+      },
+      "before_retirement": {
+        "cents": 6000000,
+        "dollar_basis": "today"
+      }
+    },
+    "valuation_date": "2026-01-01"
+  }
+}

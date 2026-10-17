@@ -2,7 +2,7 @@
 
 Open-source, web-first financial planning software for individuals planning their own retirement. The first supported jurisdiction is the United States.
 
-**Status (2026-10-13):** pre-implementation. No application, calculation engine, framework, database or deployment exists yet.
+**Status (2026-10-16):** a Rust calculation engine and development command produce synthetic yearly ledgers. Results are partial: federal income tax and contributions are not modeled. No graphical interface, database or deployment exists yet.
 
 **License:** GNU Affero General Public License, version 3 only (`AGPL-3.0-only`). See [LICENSE](LICENSE). If you run a modified version as a network service, the license requires you to offer its source to the people who use it.
 
@@ -14,7 +14,7 @@ Everything needed to build, run, verify and modify the software:
 
 | Path | Holds |
 | --- | --- |
-| `apps/`, `packages/` | Application and calculation-engine source (empty for now) |
+| `apps/`, `packages/` | Application and calculation-engine source |
 | `infra/`, `scripts/` | Infrastructure templates, migrations and build scripts (empty for now) |
 | `docs/briefs/` | One implementation brief per unit of work, with its acceptance criteria and implementation record |
 | `docs/decisions/` | Technical decision records |
@@ -36,8 +36,8 @@ cargo install cargo-deny --version 0.20.2 --locked
 Run these validation commands in order from the workspace root:
 
 ```sh
-cargo test -p horizon-engine money
-cargo test -p horizon-app validation
+cargo test -p horizon-engine ledger
+cargo test -p horizon-app --test reference_values_w2
 cargo test -p horizon-app --test reference_values
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
@@ -50,7 +50,7 @@ cargo run -p horizon-cli -- dev-run <name>
 ```
 
 For the last command, replace `<name>` with each fixture name in
-[the fixture and command reference](docs/model/engine-foundations.md#fixtures).
+[the ledger fixture reference](docs/model/yearly-ledger.md#fixtures).
 Valid fixtures exit 0; invalid inputs exit 1; unsupported inputs exit 2.
 Every response is canonical JSON followed by one newline. The workspace test
 suite also checks command output against the application operation byte for byte.

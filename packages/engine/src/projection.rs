@@ -49,8 +49,9 @@ pub struct OpeningAccount {
 pub struct ProjectionYear {
     pub year: u16,
     pub age_on_december_31: u16,
-    /// Indexed input amounts, NOT realized flows or an account ledger.
+    /// Annual indexed input amounts; activated financial flows are in `ledger`.
     pub indexed_inputs: Vec<IndexedAmount>,
+    pub ledger: crate::ledger::YearLedger,
 }
 #[derive(Debug, Clone, Serialize)]
 pub struct Metadata {
@@ -75,14 +76,23 @@ pub struct Run {
     pub assumptions_used: Vec<Assumption>,
     pub opening_accounts: Vec<OpeningAccount>,
     pub years: Vec<ProjectionYear>,
+    pub withdrawal_order_used: &'static str,
 }
 
 /// Deterministic calculation only: no clock, environment, storage or implicit assumptions.
 pub fn project(household: &Household, assumptions: &[Assumption]) -> Result<Run> {
     validate_household(household)?;
     let base = household.valuation_date.year()?;
-    let assumptions = validate_assumptions(assumptions, base)?;
-    let inflation = &assumptions[0].value;
+    let mut assumptions = validate_assumptions(assumptions, base)?;
+    if household.persons[0].birth_date.year()? == 1959 {
+        assumptions.push(Assumption {
+            identifier: "rmd_applicable_age_1959".into(), value: "73".into(), unit: "year_of_age".into(),
+            source: "https://www.federalregister.gov/documents/2024/07/19/2024-14543/required-minimum-distributions".into(),
+            effective_year: 2024, user_overrode_default: false,
+        });
+        assumptions.sort_by(|a, b| a.identifier.cmp(&b.identifier));
+    }
+    let inflation = crate::ledger::rate(&assumptions, "inflation")?;
     let mut opening_accounts = Vec::new();
     for a in &household.accounts {
         opening_accounts.push(OpeningAccount {
@@ -103,6 +113,13 @@ pub fn project(household: &Household, assumptions: &[Assumption]) -> Result<Run>
     }
     let person = &household.persons[0];
     let mut years = Vec::new();
+    let mut ledger = crate::ledger::Ledger::new(household)?;
+    let mut omissions = vec![
+        "federal income tax not modeled",
+        "contributions not modeled",
+        "state tax not modeled",
+        "healthcare not modeled",
+    ];
     for year in projection_years(household)? {
         let mut inputs = vec![
             indexed(
@@ -143,32 +160,41 @@ pub fn project(household: &Household, assumptions: &[Assumption]) -> Result<Run>
                 year,
             )?);
         }
+        let annual = ledger.year(household, &assumptions, year)?;
+        for (flag, omission) in [
+            (
+                "partial:still_working_rmd_exception_not_modeled",
+                "still-working distribution exception not modeled",
+            ),
+            (
+                "partial:early_distribution_exceptions_not_modeled",
+                "early-distribution exceptions not modeled",
+            ),
+            (
+                "partial:roth_early_withdrawal_ordering_not_modeled",
+                "Roth early-withdrawal ordering not modeled",
+            ),
+        ] {
+            if annual.flags.iter().any(|f| f == flag) && !omissions.contains(&omission) {
+                omissions.push(omission);
+            }
+        }
         years.push(ProjectionYear {
             year,
             age_on_december_31: age_at_year_end(&person.birth_date, year)?,
             indexed_inputs: inputs,
+            ledger: annual,
         });
     }
     Ok(Run {
         status: "partial",
-        description: "Estimated annual indexing skeleton; indexed inputs are not realized flows or a funded plan.",
-        omissions: vec![
-            "taxes",
-            "withdrawals",
-            "surplus",
-            "required_minimum_distributions",
-            "shortfalls",
-            "within_year_flow_timing",
-            "investment_growth",
-            "income_and_spending_activation",
-            "state_tax",
-            "healthcare",
-        ],
+        description: "Estimated annual ledger; federal income tax not modeled.",
+        omissions,
         valuation_date: household.valuation_date.clone(),
         metadata: Metadata {
-            model_version: "horizon-engine-0.1.0",
-            rule_set_identifier: "us-single-indexing-skeleton-v1",
-            rule_set_year: base,
+            model_version: "horizon-engine-0.2.0",
+            rule_set_identifier: "us-single-ledger-v2",
+            rule_set_year: crate::rmd_table::TABLE_YEAR,
             input_hash: hash(household)?,
             assumption_set_hash: hash(&assumptions)?,
             hash_method: "sha-256",
@@ -180,6 +206,7 @@ pub fn project(household: &Household, assumptions: &[Assumption]) -> Result<Run>
         assumptions_used: assumptions,
         opening_accounts,
         years,
+        withdrawal_order_used: household.withdrawal_order.unwrap_or_default().identifier(),
     })
 }
 fn indexed(

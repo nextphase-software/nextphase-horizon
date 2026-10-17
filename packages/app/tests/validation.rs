@@ -171,7 +171,7 @@ mod validation {
             "DUPLICATE_ASSUMPTION"
         );
         a = f.assumptions.clone();
-        a[0].identifier = "investment_return".into();
+        a[0].identifier = "unsupported_return".into();
         assert_eq!(
             run(&f.household, &a).unwrap_err().code,
             "ASSUMPTION_UNSUPPORTED"

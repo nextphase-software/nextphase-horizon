@@ -14,7 +14,7 @@ impl Date {
     pub fn year(&self) -> Result<u16> {
         Ok(self.parts()?.0)
     }
-    fn parts(&self) -> Result<(u16, u16, u16)> {
+    pub(crate) fn parts(&self) -> Result<(u16, u16, u16)> {
         let invalid = || {
             Error::invalid(
                 "INVALID_DATE",
@@ -154,6 +154,28 @@ pub struct Household {
     pub accounts: Vec<Account>,
     pub income: Income,
     pub spending: Spending,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub withdrawal_order: Option<WithdrawalOrder>,
+}
+
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum WithdrawalOrder {
+    #[default]
+    TaxableFirst,
+    TaxDeferredFirst,
+    RothBeforeTaxDeferred,
+    ProportionalTaxableTaxDeferred,
+}
+impl WithdrawalOrder {
+    pub fn identifier(self) -> &'static str {
+        match self {
+            Self::TaxableFirst => "taxable_first",
+            Self::TaxDeferredFirst => "tax_deferred_first",
+            Self::RothBeforeTaxDeferred => "roth_before_tax_deferred",
+            Self::ProportionalTaxableTaxDeferred => "proportional_taxable_tax_deferred",
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
@@ -295,11 +317,11 @@ pub fn validate_assumptions(assumptions: &[Assumption], base: u16) -> Result<Vec
                 "Assumption identifiers must be unique.",
             ));
         }
-        // Only inflation is used by this skeleton. Never silently accept unused model knobs.
-        if a.identifier != "inflation" {
+        // Reject unused or unrecognized model knobs.
+        if !["inflation", "investment_return", "cash_return"].contains(&a.identifier.as_str()) {
             return Err(Error::unsupported(
                 "ASSUMPTION_UNSUPPORTED",
-                "This model only supports the inflation assumption.",
+                "This model supports inflation, investment_return and cash_return assumptions.",
             ));
         }
         if a.unit != "decimal_fraction_per_year"
@@ -308,16 +330,31 @@ pub fn validate_assumptions(assumptions: &[Assumption], base: u16) -> Result<Vec
         {
             return Err(Error::invalid(
                 "INVALID_ASSUMPTION",
-                "Inflation needs annual decimal-fraction units, the base effective year, and a public HTTPS reference or user source.",
+                "Rates need annual decimal-fraction units, the base effective year, and a public HTTPS reference or user source.",
             ));
         }
-        index_factor(&a.value, base, base)?;
+        if a.identifier == "inflation" {
+            index_factor(&a.value, base, base)?;
+        } else if crate::money::Fraction::decimal(&a.value)?.is_negative() {
+            return Err(Error::unsupported(
+                "NEGATIVE_RETURN_UNSUPPORTED",
+                "Negative investment and cash returns are unsupported.",
+            ));
+        }
     }
     if sorted.is_empty() {
         return Err(Error::invalid(
             "MISSING_ASSUMPTION",
             "The inflation assumption is required; there is no implicit default.",
         ));
+    }
+    for identifier in ["inflation", "cash_return", "investment_return"] {
+        if !sorted.iter().any(|a| a.identifier == identifier) {
+            return Err(Error::invalid(
+                "MISSING_ASSUMPTION",
+                format!("The {identifier} assumption is required; there is no implicit default."),
+            ));
+        }
     }
     Ok(sorted)
 }

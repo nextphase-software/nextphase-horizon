@@ -1,0 +1,261 @@
+{
+  "$defs": {
+    "Account": {
+      "additionalProperties": false,
+      "properties": {
+        "account_type": {
+          "$ref": "#/$defs/AccountType"
+        },
+        "cost_basis_cents": {
+          "format": "int64",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "opening_balance_cents": {
+          "format": "int64",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "owner": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "tax_deferred_kind": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TaxDeferredKind"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "owner",
+        "account_type",
+        "opening_balance_cents"
+      ],
+      "type": "object"
+    },
+    "AccountType": {
+      "enum": [
+        "cash",
+        "taxable",
+        "tax_deferred",
+        "roth"
+      ],
+      "type": "string"
+    },
+    "AgeIncome": {
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "$ref": "#/$defs/Amount"
+        },
+        "start_age": {
+          "format": "uint16",
+          "maximum": 130,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "amount",
+        "start_age"
+      ],
+      "type": "object"
+    },
+    "Amount": {
+      "additionalProperties": false,
+      "properties": {
+        "cents": {
+          "format": "int64",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "dollar_basis": {
+          "$ref": "#/$defs/DollarBasis"
+        }
+      },
+      "required": [
+        "cents",
+        "dollar_basis"
+      ],
+      "type": "object"
+    },
+    "Date": {
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "type": "string"
+    },
+    "DollarBasis": {
+      "enum": [
+        "nominal",
+        "today"
+      ],
+      "type": "string"
+    },
+    "Income": {
+      "additionalProperties": false,
+      "properties": {
+        "pension": {
+          "$ref": "#/$defs/AgeIncome"
+        },
+        "social_security": {
+          "$ref": "#/$defs/AgeIncome"
+        },
+        "wages": {
+          "items": {
+            "$ref": "#/$defs/Wages"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "wages",
+        "social_security",
+        "pension"
+      ],
+      "type": "object"
+    },
+    "Person": {
+      "additionalProperties": false,
+      "properties": {
+        "birth_date": {
+          "$ref": "#/$defs/Date"
+        },
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "plan_end_age": {
+          "format": "uint16",
+          "maximum": 130,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "retirement_date": {
+          "$ref": "#/$defs/Date"
+        }
+      },
+      "required": [
+        "id",
+        "birth_date",
+        "retirement_date",
+        "plan_end_age"
+      ],
+      "type": "object"
+    },
+    "Spending": {
+      "additionalProperties": false,
+      "properties": {
+        "after_retirement": {
+          "$ref": "#/$defs/Amount"
+        },
+        "before_retirement": {
+          "$ref": "#/$defs/Amount"
+        }
+      },
+      "required": [
+        "before_retirement",
+        "after_retirement"
+      ],
+      "type": "object"
+    },
+    "TaxDeferredKind": {
+      "enum": [
+        "employer_plan",
+        "traditional_ira"
+      ],
+      "type": "string"
+    },
+    "Wages": {
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "$ref": "#/$defs/Amount"
+        },
+        "end_date": {
+          "$ref": "#/$defs/Date"
+        },
+        "start_date": {
+          "$ref": "#/$defs/Date"
+        }
+      },
+      "required": [
+        "amount",
+        "start_date",
+        "end_date"
+      ],
+      "type": "object"
+    },
+    "WithdrawalOrder": {
+      "enum": [
+        "taxable_first",
+        "tax_deferred_first",
+        "roth_before_tax_deferred",
+        "proportional_taxable_tax_deferred"
+      ],
+      "type": "string"
+    }
+  },
+  "$id": "urn:nextphase:horizon:household-input:v2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "accounts": {
+      "items": {
+        "$ref": "#/$defs/Account"
+      },
+      "type": "array"
+    },
+    "income": {
+      "$ref": "#/$defs/Income"
+    },
+    "persons": {
+      "items": {
+        "$ref": "#/$defs/Person"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    },
+    "spending": {
+      "$ref": "#/$defs/Spending"
+    },
+    "valuation_date": {
+      "$ref": "#/$defs/Date"
+    },
+    "withdrawal_order": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/WithdrawalOrder"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "valuation_date",
+    "persons",
+    "accounts",
+    "income",
+    "spending"
+  ],
+  "title": "Household",
+  "type": "object",
+  "x-horizon-validation": "v2"
+}

@@ -91,6 +91,9 @@ impl Fraction {
         let power = u32::try_from(fractional.len()).map_err(|_| invalid())?;
         Self::new(numerator, BigInt::from(10).pow(power))
     }
+    pub fn is_negative(&self) -> bool {
+        self.numerator.is_negative()
+    }
     pub fn plus(&self, other: &Self) -> Self {
         Self {
             numerator: self
