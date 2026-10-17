@@ -147,3 +147,182 @@ Same toolchain and license checker as 0001-W1, with no new dependency. Any new c
 ## Implementation record
 
 Appended by the implementer before handoff: branch, the source/test revision the validation ran against, each validation command with its exit status and counts, new dependencies with exact versions and licenses, and every exclusion with its reason. The record is committed after that revision and does not name its own commit; the final branch tip is reported in the handoff message.
+
+
+### 2026-10-16 — implementation complete; independent review pending
+
+- Brief: **0001-W2 v2**. Implemented in the public workspace only.
+- Branch: `codex/0001-W2-yearly-ledger`.
+- Worktree: `.worktrees/codex-0001-W2`, created from `main` at
+  `f893ebb9c84593cdd7e9e7730cb1b3a84e697a1d`.
+- **Source/test revision:** `f678301e2fd56e3970a28cbc786a7cfa2439adef`.
+  The full final command sequence below ran against that committed revision
+  with a clean worktree. This later record changes only this brief. The final
+  branch tip is reported separately; no independent review, merge or push is
+  claimed by this implementation record.
+
+#### Delivered behavior and contracts
+
+The engine now returns day-activated yearly ledgers at `years[].ledger` through
+the existing application `run` operation and `horizon dev-run`. Each ledger
+contains its period/event date, exact early-withdrawal date test, income and
+spending, account opening/distribution/withdrawal/deposit/growth/closing lines,
+taxable basis and realized gains, household totals, surplus, shortfall, flags
+and the order actually applied. Every monetary line has unit/currency/basis,
+base year/year and a rule identifier. Distributions carry the table source,
+2025 table year, divisor and base-year estimate marker.
+
+W1 annual indexed amounts remain separate reference values, not additional
+cash flows. Ledger accounts are an array in input order with `identifier`
+values, preserving Unicode IDs without making them canonical JSON member names.
+The seven committed scenarios match every expected line and flag exactly after
+extracting finalized cents from the labeled output. The reference JSON was not
+edited to fit the implementation.
+
+All four requested withdrawal orders draw cash first and observe the exact
+pre-59½ override. A surplus goes to the first taxable account or to the labeled,
+persistent `surplus-taxable` account. Rounding small proportional shares respects
+hard balance caps and preserves the remaining accounts' capacity. A zero-balance
+account in a due distribution year retains the applicable rule/table source;
+the still-working flag requires an actual positive employer-plan distribution.
+No account supplies growth or deposits to fund the same year's need, and no
+negative balance, negative basis or borrowing is invented.
+
+The current model identifies itself as `horizon-engine-0.2.0`, rule set
+`us-single-ledger-v2`, table/rule-set year 2025. Every run remains `partial` with
+`federal income tax not modeled` and `contributions not modeled`, plus applicable
+early/still-working flags and existing state-tax/healthcare omissions. The
+1959 cohort records the sourced proposed-rule assumption
+`rmd_applicable_age_1959` in its sorted used register and assumption hash.
+
+Schema v2 is generated from the Rust types and adds optional
+`withdrawal_order`; the retained v1 generator still produces the unchanged v1
+schema. The v2 extension uses `x-horizon-validation: "v2"` with
+`parse_household` for full cross-field validation, as documented in
+[the model/contract notes](../model/yearly-ledger.md).
+W1's numerical reference test file remains byte-identical. Its existing
+unsupported-assumption test uses an actually unsupported identifier now that
+investment returns are supported. Existing household fixtures gain both
+explicit return assumptions. Seven scenario fixtures and four return-error
+fixtures are added. The public README and agent instructions document the
+current W2 commands; [stable error codes](../model/error-codes.md) cover the
+new unsupported/error cases.
+
+The sourced Uniform Lifetime Table is committed as exact decimal-string data in
+[the Rust data module](../../packages/engine/src/rmd_table.rs). Its values were
+checked against [IRS Publication 590-B (2025), Appendix B, Table III](https://www.irs.gov/publications/p590b),
+retrieved 2026-10-16. The 1959 assumption cites the accepted decision's
+[2024 proposed regulation](https://www.federalregister.gov/documents/2024/07/19/2024-14543/required-minimum-distributions);
+it is not represented as a finalized rule.
+
+#### Final validation
+
+Rust 1.99.1, edition 2024 and cargo-deny 0.20.2 are unchanged from W1.
+All commands below ran in the brief's order against the source/test revision
+above. No required gate was skipped. The final workspace count is 33 tests
+in each profile, with zero failures and zero ignored tests.
+
+| Command | Exit | Observed result |
+| --- | --- | --- |
+| `cargo test -p horizon-engine ledger` | 0 | 2 tests passed |
+| `cargo test -p horizon-app --test reference_values_w2` | 0 | 11 tests passed |
+| `cargo test -p horizon-app --test reference_values` | 0 | 7 tests passed |
+| `cargo test --workspace` | 0 | 33 tests passed |
+| `cargo clippy --workspace --all-targets -- -D warnings` | 0 | No warnings or errors; core float/unchecked-arithmetic and engine host-facility checks active |
+| `cargo fmt --all --check` | 0 | Formatting matches |
+| `cargo test --workspace --release` | 0 | 33 tests passed |
+| `cargo build --workspace --release` | 0 | All three crates built |
+| `cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown` | 0 | Engine and application compiled for WebAssembly |
+| `cargo deny check licenses` | 0 | All dependency licenses accepted with existing exact exception; two unused-allowance warnings (BSD-3-Clause and ISC) |
+
+The 11 W2 reference tests cover every supplied unit/scenario, exact household
+and account conservation, nonnegative balances/basis, unchanged income/spending
+across orders, source/rule labels, schema drift and fixture validation, missing
+and negative returns, month-end/leap dates, late valuation events, zero-balance
+due years, the 1959 source assumption, early overrides/flags, tiny proportional
+shares, input order, ID collisions, output range and Unicode identifiers.
+All seven W1 reference tests and the existing validation/canonicalization/purity
+tests pass. The CLI tests compare all ten valid fixtures' canonical bytes with
+serialized `run` results by both name and path, including from another working
+directory, and test all eighteen invalid/unsupported fixtures and usage errors.
+
+Individual development commands were run for every fixture after the other
+validation gates; each result is canonical JSON followed by one newline:
+
+| Command | Exit | Result / error code |
+| --- | --- | --- |
+| `cargo run -p horizon-cli -- dev-run A-drawdown` | 0 | Partial yearly ledger |
+| `cargo run -p horizon-cli -- dev-run A-drawdown-proportional_taxable_tax_deferred` | 0 | Partial yearly ledger |
+| `cargo run -p horizon-cli -- dev-run A-drawdown-roth_before_tax_deferred` | 0 | Partial yearly ledger |
+| `cargo run -p horizon-cli -- dev-run A-drawdown-tax_deferred_first` | 0 | Partial yearly ledger |
+| `cargo run -p horizon-cli -- dev-run B-early-retiree` | 0 | Partial yearly ledger |
+| `cargo run -p horizon-cli -- dev-run C-partial-base-year-no-taxable` | 0 | Partial yearly ledger |
+| `cargo run -p horizon-cli -- dev-run D-still-working-rmd-surplus` | 0 | Partial yearly ledger |
+| `cargo run -p horizon-cli -- dev-run invalid-account-type` | 1 | `UNKNOWN_ACCOUNT_TYPE` |
+| `cargo run -p horizon-cli -- dev-run invalid-cost-basis` | 1 | `ACCOUNT_FIELDS` |
+| `cargo run -p horizon-cli -- dev-run invalid-date` | 1 | `INVALID_DATE` |
+| `cargo run -p horizon-cli -- dev-run invalid-end-before-start` | 1 | `END_BEFORE_START` |
+| `cargo run -p horizon-cli -- dev-run invalid-missing-assumption` | 1 | `MISSING_ASSUMPTION` |
+| `cargo run -p horizon-cli -- dev-run invalid-missing-cash-return` | 1 | `MISSING_ASSUMPTION` |
+| `cargo run -p horizon-cli -- dev-run invalid-missing-field` | 1 | `MISSING_FIELD` |
+| `cargo run -p horizon-cli -- dev-run invalid-missing-investment-return` | 1 | `MISSING_ASSUMPTION` |
+| `cargo run -p horizon-cli -- dev-run invalid-negative-balance` | 1 | `NEGATIVE_BALANCE` |
+| `cargo run -p horizon-cli -- dev-run invalid-output-range` | 1 | `MONEY_OUTPUT_RANGE` |
+| `cargo run -p horizon-cli -- dev-run invalid-owner` | 1 | `INVALID_OWNER` |
+| `cargo run -p horizon-cli -- dev-run invalid-plan-end-age` | 1 | `PLAN_END_AGE_REACHED` |
+| `cargo run -p horizon-cli -- dev-run invalid-rate` | 1 | `INVALID_RATE` |
+| `cargo run -p horizon-cli -- dev-run synthetic-leap` | 0 | Partial yearly ledger |
+| `cargo run -p horizon-cli -- dev-run synthetic-retired` | 0 | Partial yearly ledger |
+| `cargo run -p horizon-cli -- dev-run synthetic-working` | 0 | Partial yearly ledger |
+| `cargo run -p horizon-cli -- dev-run two-person` | 2 | `MULTIPLE_PERSONS_UNSUPPORTED` |
+| `cargo run -p horizon-cli -- dev-run unsupported-healthcare` | 2 | `FEATURE_UNSUPPORTED` |
+| `cargo run -p horizon-cli -- dev-run unsupported-negative-cash-return` | 2 | `NEGATIVE_RETURN_UNSUPPORTED` |
+| `cargo run -p horizon-cli -- dev-run unsupported-negative-investment-return` | 2 | `NEGATIVE_RETURN_UNSUPPORTED` |
+| `cargo run -p horizon-cli -- dev-run unsupported-state-tax` | 2 | `FEATURE_UNSUPPORTED` |
+
+Additional observations: `git diff --check` and local documentation-link checks
+passed. Both implementation commits passed the installed hooks. An automated
+raw-ancestry check passed for the initial source commit, and installed-hook
+verification passed; the final handoff also undergoes the automated boundary
+check. These are implemented checks only, not an independent review verdict.
+A separate Unicode-ID CLI reproduction now exits 0 and retains the original ID.
+
+#### Dependency and preservation evidence
+
+**No dependency was added or changed.** `Cargo.lock`, workspace/crate manifests,
+`rust-toolchain.toml` and `deny.toml` are unchanged. The seven existing external
+direct dependencies remain serde 1.0.229 (MIT OR Apache-2.0), serde_json 1.0.154
+(MIT OR Apache-2.0), schemars 1.2.3 (MIT), num-bigint 0.5.1 (MIT OR Apache-2.0),
+num-traits 0.2.19 (MIT OR Apache-2.0), sha2 0.11.1 (MIT OR Apache-2.0) and test-only
+jsonschema 0.58.6 (MIT, default features off). The existing MIT-0 exception
+remains restricted to borrow-or-share 0.2.4. All 92 resolved external package
+versions/licenses remain those in [the W1 inventory](../model/dependencies.md).
+
+The following SHA-256 values were checked against the merge-base files:
+
+| Preserved file | SHA-256 |
+| --- | --- |
+| `docs/briefs/0001-W2-reference-values.json` | `251014c80b1e26e428ee8e622cc6fb9795b7340cd4a6dab057dacd620d59292c` |
+| `docs/model/schemas/household-input.v1.schema.json` | `22aa89ccc48931962a712a958742de62812241aaa150746066c5d0e30212d9e6` |
+| `packages/app/tests/reference_values.rs` | `36b073a3a27292892c77144b8d11b8b2cc783110fe3df465a4595c7c4f533953` |
+| `Cargo.lock` | `d5eda111069a1ea3ba63a57330b2c514d598d2248b37d7d14c2a16544dd13f3c` |
+
+#### Exclusions and remaining gates
+
+- Income tax, early-distribution additional tax and tax funding: deferred to
+  0001-W3. The current ledger is explicitly partial.
+- Contributions: deferred and listed as an omission; working savings appear as surplus.
+- First-year 1 April deferral, inherited accounts and distribution exceptions:
+  deferred. Base-year prior-balance estimates and still-working omissions are labeled.
+- Roth conversions: deferred; no conversion operation or tax is approximated.
+- Market variability and negative returns: deferred; negative returns return
+  unsupported with their own code.
+- Comparison, export and the supported CLI: deferred to 0001-W4; the command
+  remains the development adapter.
+- WebAssembly execution parity remains W4; compilation passes here. No TypeScript
+  binding, persistence, graphical UI or hosted route/document/export surface is
+  added. There is no new tenant/role authorization surface to exercise.
+- Historical inputs requiring a distribution below age 72 return unsupported
+  because the committed table has no such divisor; no missing rule is invented.
+- Independent review, operator merge, merged-result validation and publication
+  remain pending. This handoff does not mark the milestone Done.
