@@ -2,7 +2,9 @@
 
 The application operation `run(household, assumptions)` now returns a yearly
 ledger at `years[].ledger`, together with W1's annual `indexed_inputs`. Those
-indexed inputs are reference amounts, not additional cash flows. Successful
+indexed inputs are reference amounts, not additional cash flows. Ledger accounts
+are an array in input order, each with an `identifier` value; user identifiers
+never become JSON property names, so Unicode identifiers remain supported. Successful
 runs are estimates with status `partial`: **federal income tax not modeled**
 and **contributions not modeled**, plus the applicable omissions below.
 

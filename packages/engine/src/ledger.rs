@@ -158,6 +158,7 @@ pub struct DistributionSource {
 }
 #[derive(Debug, Clone, Serialize)]
 pub struct AccountLedger {
+    pub identifier: String,
     pub account_type: AccountType,
     pub created: bool,
     pub opening: Line,
@@ -182,7 +183,7 @@ pub struct YearLedger {
     pub income: BTreeMap<String, Line>,
     pub income_total: Line,
     pub spending: Line,
-    pub accounts: BTreeMap<String, AccountLedger>,
+    pub accounts: Vec<AccountLedger>,
     pub rmd_total: Line,
     pub withdrawals_total: Line,
     pub surplus_deposit: Line,
@@ -457,7 +458,7 @@ impl Ledger {
             deposits[target] = surplus;
         }
         let withdrawals_total = total(withdrawals.iter().copied())?;
-        let mut accounts = BTreeMap::new();
+        let mut accounts = Vec::new();
         for (i, state) in self.states.iter_mut().enumerate() {
             let a = &mut state.account;
             let opening = a.opening_balance_cents;
@@ -506,6 +507,7 @@ impl Ledger {
                 a.cost_basis_cents = Some(next);
             }
             let record = AccountLedger {
+                identifier: a.id.clone(),
                 account_type: a.account_type,
                 created: state.created,
                 opening: Line::new(opening, "prior_year_closing_or_valuation", self.base, year)?,
@@ -556,7 +558,7 @@ impl Ledger {
                 realized_gain,
                 closing_basis,
             };
-            accounts.insert(a.id.clone(), record);
+            accounts.push(record);
             a.opening_balance_cents = closing;
         }
         // Enforce the household identity on the same finalized cents written out.

@@ -164,7 +164,8 @@ fn normalized(run: &Value) -> Value {
     for projection in run["years"].as_array().unwrap() {
         let y = &projection["ledger"];
         let mut accounts = serde_json::Map::new();
-        for (id, account) in y["accounts"].as_object().unwrap() {
+        for account in y["accounts"].as_array().unwrap() {
+            let id = account["identifier"].as_str().unwrap();
             let mut result = serde_json::Map::new();
             for key in [
                 "opening",
@@ -181,7 +182,7 @@ fn normalized(run: &Value) -> Value {
                     result.insert(key.into(), json!(cents(line)));
                 }
             }
-            accounts.insert(id.clone(), Value::Object(result));
+            accounts.insert(id.into(), Value::Object(result));
         }
         let income: serde_json::Map<_, _> = y["income"]
             .as_object()
@@ -208,7 +209,7 @@ fn conservation(run: &Value) {
             c("income_total") + c("rmd_total") + c("withdrawals_total") + c("shortfall"),
             c("spending") + c("surplus_deposit")
         );
-        for account in y["accounts"].as_object().unwrap().values() {
+        for account in y["accounts"].as_array().unwrap() {
             let a = |key: &str| i128::from(cents(&account[key]));
             assert_eq!(
                 a("opening") + a("deposit") - a("withdrawal") - a("rmd") + a("growth"),
@@ -439,8 +440,8 @@ fn early_override_and_both_early_flags_apply_to_every_requested_order() {
         let value = serde_json::to_value(run(&f.household, &f.assumptions).unwrap()).unwrap();
         conservation(&value);
         let first = &value["years"][0]["ledger"];
-        assert_eq!(cents(&first["accounts"]["k401"]["withdrawal"]), 1);
-        assert_eq!(cents(&first["accounts"]["roth"]["withdrawal"]), 99);
+        assert_eq!(cents(&account(first, "k401")["withdrawal"]), 1);
+        assert_eq!(cents(&account(first, "roth")["withdrawal"]), 99);
         assert_eq!(
             first["withdrawal_order_used"],
             "before_59_half_cash_taxable_tax_deferred_roth"
@@ -509,11 +510,11 @@ fn input_order_cash_first_created_account_conflict_and_output_range() {
     let value = serde_json::to_value(run(&f.household, &f.assumptions).unwrap()).unwrap();
     conservation(&value);
     assert_eq!(
-        cents(&value["years"][0]["ledger"]["accounts"]["cash"]["withdrawal"]),
+        cents(&account(&value["years"][0]["ledger"], "cash")["withdrawal"]),
         60
     );
     assert_eq!(
-        cents(&value["years"][0]["ledger"]["accounts"]["second-cash"]["withdrawal"]),
+        cents(&account(&value["years"][0]["ledger"], "second-cash")["withdrawal"]),
         40
     );
     let mut f = common::fixture("C-partial-base-year-no-taxable");
@@ -543,7 +544,12 @@ fn zero_balance_due_year_keeps_its_rule_source_and_1959_first_due_year() {
     f.household.accounts[2].opening_balance_cents = 0;
     let result = run(&f.household, &f.assumptions).unwrap();
     for y in &result.years {
-        let account = &y.ledger.accounts["ira"];
+        let account = y
+            .ledger
+            .accounts
+            .iter()
+            .find(|a| a.identifier == "ira")
+            .unwrap();
         assert_eq!(account.distribution_source.is_some(), y.year >= 2032);
         if y.year >= 2032 {
             assert_eq!(account.rmd.rule_id, "rmd_uniform_lifetime");
@@ -553,7 +559,12 @@ fn zero_balance_due_year_keeps_its_rule_source_and_1959_first_due_year() {
     f.household.accounts[2].opening_balance_cents = 0;
     let result = run(&f.household, &f.assumptions).unwrap();
     assert!(
-        result.years[0].ledger.accounts["k401"]
+        result.years[0]
+            .ledger
+            .accounts
+            .iter()
+            .find(|a| a.identifier == "k401")
+            .unwrap()
             .distribution_source
             .is_some()
     );
@@ -562,4 +573,30 @@ fn zero_balance_due_year_keeps_its_rule_source_and_1959_first_due_year() {
             .omissions
             .contains(&"still-working distribution exception not modeled")
     );
+}
+
+fn account<'a>(ledger: &'a Value, id: &str) -> &'a Value {
+    ledger["accounts"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|a| a["identifier"] == id)
+        .unwrap()
+}
+#[test]
+fn unicode_account_ids_remain_values_in_canonical_json() {
+    let mut f = common::fixture("A-drawdown");
+    f.household.accounts[1].id = "taxé-税".into();
+    let result = run(&f.household, &f.assumptions).unwrap();
+    let bytes = horizon_engine::canonical::canonical_json(&result).unwrap();
+    let value: Value = serde_json::from_str(&bytes).unwrap();
+    assert_eq!(
+        account(&value["years"][0]["ledger"], "taxé-税")["identifier"],
+        "taxé-税"
+    );
+    conservation(&value);
+    let second =
+        horizon_engine::canonical::canonical_json(&run(&f.household, &f.assumptions).unwrap())
+            .unwrap();
+    assert_eq!(bytes, second);
 }
