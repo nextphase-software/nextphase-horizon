@@ -127,3 +127,163 @@ Same toolchain and license checker, with no new dependency; any new crate requir
 ## Implementation record
 
 Appended by the implementer before handoff: branch, the source/test revision the validation ran against, each validation command with its exit status and counts, new dependencies with exact versions and licenses, and every exclusion with its reason. The record is committed after that revision and does not name its own commit; the final branch tip is reported in the handoff message.
+
+
+### 2026-10-17 — implementation complete; independent review pending
+
+- Brief: **0001-W3 v3**.
+- Branch: `codex/0001-W3-federal-tax`.
+- Worktree: `.worktrees/codex-0001-W3`, created from committed `main` at
+  `dc8d3137f155bc7b2ae5eed58e6b6f9aaebfad3c`.
+- **Source/test revision:** `cc904263f651ba6b8dde903a601ec031b79e40dc`.
+  The following final validation sequence ran against that committed revision
+  with a clean worktree before and after. This later record changes only this
+  brief. The final branch tip is reported separately at handoff; no independent
+  review, merge or push is claimed here.
+
+#### Delivered behavior and contracts
+
+The pure Rust engine computes single-filer ordinary and capital-gains tax,
+taxable Social Security, loss carry, the standard/additional/senior deductions,
+and the early-distribution tax. Published 2026 law and its sources are committed
+in `packages/engine/src/tax.rs`. Later indexed amounts use the required sourced
+`tax_indexing` assumption and exact $50 flooring. Enacted senior expiration
+applies in 2029. Tax lines identify their rule, units, dollar basis, tax year
+and kind; rule values include source and retrieval date.
+
+Each year funds tax through the withdrawal order using fresh trial copies of
+its opening ledger. Exact settlement, the highest amount in a cent-rounding
+cycle, and the pass-limit partial path are explicit. The final settlement
+calculation counts as a pass. The application exposes the limit (1–50, default
+50), and the development fixture envelope accepts optional `pass_limit`.
+The CLI delegates to the application fixture operation. The retained pre-tax
+operation reproduces W2 without any tax outflow.
+
+All 40 committed tax unit cases and published rule data match. All nine
+scenarios match every expected line, flag, status and pass count across 47
+years. Scenario E's first year settles after seven passes with a one-cent
+rounding line; the senior deduction disappears in 2029. Scenario A with limit
+1 remains partial where tax funding is unresolved. Household and account
+conservation and nonnegative balances/basis pass; settled years also reconcile
+paid = computed + rounding settlement. Unsettled years retain the last payment
+and a zero rounding line, as required by that reference scenario; their computed
+liability can differ and is explicitly marked unresolved.
+
+Supported retired cases report complete. Active wages, applicable W2 partial
+flags, unconverged funding and modified AGI above $200,000 make runs partial.
+After-1-January base periods carry the projected-period tax estimate flag.
+The always-listed omissions do not themselves change status.
+
+The W1 reference test source, W2 and W3 reference JSON, both household schemas,
+Cargo.lock and dependency/license policy are unchanged. W2 test edits only
+select the historical call and remove tax indexing from their fixture view;
+no expected value changed. All 28 earlier fixtures gained tax indexing; six
+fixtures were added, including deliberate invalid/missing-input cases.
+Full cumulative commands are in README and AGENTS; model details and the full
+fixture catalog are in `docs/model/federal-tax.md`.
+
+#### Final validation
+
+Pinned Rust **1.99.1**, cargo-deny **0.20.2**. All commands below exited 0.
+Workspace tests: **39 passed** in debug and **39 passed** in release.
+
+| Command | Exit | Observed result |
+| --- | --- | --- |
+| `cargo test -p horizon-engine tax` | 0 | 2 tests passed |
+| `cargo test -p horizon-app --test reference_values_w3` | 0 | 4 tests passed |
+| `cargo test -p horizon-app --test reference_values_w2` | 0 | 11 tests passed |
+| `cargo test -p horizon-app --test reference_values` | 0 | 7 tests passed |
+| `cargo test --workspace` | 0 | 39 tests passed |
+| `cargo clippy --workspace --all-targets -- -D warnings` | 0 | passed |
+| `cargo fmt --all --check` | 0 | passed |
+| `cargo test --workspace --release` | 0 | 39 tests passed |
+| `cargo build --workspace --release` | 0 | passed |
+| `cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown` | 0 | engine and app compiled for wasm32-unknown-unknown; execution parity remains W4 |
+| `cargo deny check licenses` | 0 | licenses ok; existing unused BSD-3-Clause and ISC allowances warned |
+| `cargo test -p horizon-engine ledger` | 0 | 2 tests passed |
+
+The first eleven commands ran in the prescribed order, followed by every fixture
+command below, then the retained W2 focused ledger command. For every row,
+`cargo run -p horizon-cli -- dev-run <name>` used the exact fixture name shown.
+All 34 observed exit statuses and result/error envelopes matched their contracts.
+The CLI test also compares all 12 valid fixture names and paths to application
+canonical JSON byte for byte from a different working directory.
+
+| Fixture name | Exit | Result or error code |
+| --- | --- | --- |
+| `A-drawdown-pass-limit-1` | 0 | `partial` |
+| `A-drawdown-proportional_taxable_tax_deferred` | 0 | `complete` |
+| `A-drawdown-roth_before_tax_deferred` | 0 | `complete` |
+| `A-drawdown-tax_deferred_first` | 0 | `complete` |
+| `A-drawdown` | 0 | `complete` |
+| `B-early-retiree` | 0 | `partial` |
+| `C-partial-base-year-no-taxable` | 0 | `partial` |
+| `D-still-working-rmd-surplus` | 0 | `partial` |
+| `E-senior-2028-loss-carry` | 0 | `complete` |
+| `invalid-account-type` | 1 | `UNKNOWN_ACCOUNT_TYPE` |
+| `invalid-cost-basis` | 1 | `ACCOUNT_FIELDS` |
+| `invalid-date` | 1 | `INVALID_DATE` |
+| `invalid-end-before-start` | 1 | `END_BEFORE_START` |
+| `invalid-missing-assumption` | 1 | `MISSING_ASSUMPTION` |
+| `invalid-missing-cash-return` | 1 | `MISSING_ASSUMPTION` |
+| `invalid-missing-field` | 1 | `MISSING_FIELD` |
+| `invalid-missing-investment-return` | 1 | `MISSING_ASSUMPTION` |
+| `invalid-missing-tax-indexing` | 1 | `MISSING_ASSUMPTION` |
+| `invalid-negative-balance` | 1 | `NEGATIVE_BALANCE` |
+| `invalid-negative-tax-indexing` | 1 | `INVALID_TAX_INDEXING` |
+| `invalid-output-range` | 1 | `MONEY_OUTPUT_RANGE` |
+| `invalid-owner` | 1 | `INVALID_OWNER` |
+| `invalid-plan-end-age` | 1 | `PLAN_END_AGE_REACHED` |
+| `invalid-rate` | 1 | `INVALID_RATE` |
+| `invalid-tax-pass-limit` | 1 | `INVALID_TAX_PASS_LIMIT` |
+| `synthetic-leap` | 0 | `partial` |
+| `synthetic-retired` | 0 | `complete` |
+| `synthetic-working` | 0 | `partial` |
+| `two-person` | 2 | `MULTIPLE_PERSONS_UNSUPPORTED` |
+| `unsupported-healthcare` | 2 | `FEATURE_UNSUPPORTED` |
+| `unsupported-negative-cash-return` | 2 | `NEGATIVE_RETURN_UNSUPPORTED` |
+| `unsupported-negative-investment-return` | 2 | `NEGATIVE_RETURN_UNSUPPORTED` |
+| `unsupported-state-tax` | 2 | `FEATURE_UNSUPPORTED` |
+| `unsupported-tax-year` | 2 | `TAX_YEAR_UNSUPPORTED` |
+
+Additional checks: `git diff --check` passed; the installed repository commit
+hooks passed on the source commit; working-tree and explicit branch ancestry
+boundary checks passed. These checks establish only their implemented checks,
+not an independent milestone review.
+
+Unchanged SHA-256 receipts:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| W1 reference test source | `36b073a3a27292892c77144b8d11b8b2cc783110fe3df465a4595c7c4f533953` |
+| W2 reference JSON | `251014c80b1e26e428ee8e622cc6fb9795b7340cd4a6dab057dacd620d59292c` |
+| W3 reference JSON | `207a99e66411b82daf6e6a5bc9304970f3d91b2ccdf41c1bc97228342a85a1c5` |
+| Cargo.lock | `d5eda111069a1ea3ba63a57330b2c514d598d2248b37d7d14c2a16544dd13f3c` |
+
+#### Dependencies and exclusions
+
+- **New dependencies: none.** Exact versions and licenses remain in
+  `docs/model/dependencies.md`; the lockfile is byte-identical. The existing
+  MIT-0 exception remains limited to `borrow-or-share@0.2.4`.
+- State/local income tax, alternative minimum tax, itemized deductions,
+  credits and taxable-account dividends/interest: excluded by this brief;
+  always named in omissions without changing status.
+- Net investment income tax: excluded computation; modified AGI above
+  $200,000 explicitly marks the run partial.
+- Contributions and the still-working required-distribution exception:
+  later features; active wages and applicable required distributions retain
+  their specified partial coverage labels.
+- Exceptions to the additional early-distribution tax, and Roth early
+  contribution/five-year ordering: later features; affected draws remain partial.
+- Nondeductible IRA basis, Roth conversions, Medicare income-related surcharges
+  and premium credits: later features outside the specified federal-tax model.
+- Following-April tax payment timing: excluded because this model pays tax
+  within the year it arises. A partial base year's tax covers only that period
+  and is labeled an estimate.
+- Negative investment/cash returns, couples, state-tax and healthcare inputs:
+  earlier unsupported boundaries retained; no approximation was added.
+- Comparison, export, the supported command line and WebAssembly execution
+  parity: 0001-W4. This milestone verifies compilation for WebAssembly only.
+- Graphical UI, TypeScript adapters, persistence, authentication, hosting and
+  deployment: no such surface is introduced by this headless milestone.
+- Independent milestone review: reserved for a different session after handoff.
