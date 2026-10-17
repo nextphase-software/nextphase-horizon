@@ -80,5 +80,14 @@
       }
     }
   },
-  "assumptions": []
+  "assumptions": [
+    {
+      "identifier": "tax_indexing",
+      "value": "0.025",
+      "unit": "decimal_fraction_per_year",
+      "source": "user",
+      "effective_year": 2026,
+      "user_overrode_default": false
+    }
+  ]
 }

@@ -31,7 +31,7 @@ fn main() -> ExitCode {
             )
         })
         .and_then(|text| horizon_app::parse_fixture(&text))
-        .and_then(|fixture| horizon_app::run(&fixture.household, &fixture.assumptions))
+        .and_then(|fixture| horizon_app::run_fixture(&fixture))
         .and_then(|run| canonical_json(&run));
     match result {
         Ok(json) => {

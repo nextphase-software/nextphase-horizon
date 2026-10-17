@@ -318,10 +318,17 @@ pub fn validate_assumptions(assumptions: &[Assumption], base: u16) -> Result<Vec
             ));
         }
         // Reject unused or unrecognized model knobs.
-        if !["inflation", "investment_return", "cash_return"].contains(&a.identifier.as_str()) {
+        if ![
+            "inflation",
+            "investment_return",
+            "cash_return",
+            "tax_indexing",
+        ]
+        .contains(&a.identifier.as_str())
+        {
             return Err(Error::unsupported(
                 "ASSUMPTION_UNSUPPORTED",
-                "This model supports inflation, investment_return and cash_return assumptions.",
+                "This model supports inflation, investment_return, cash_return and tax_indexing assumptions.",
             ));
         }
         if a.unit != "decimal_fraction_per_year"
@@ -335,6 +342,13 @@ pub fn validate_assumptions(assumptions: &[Assumption], base: u16) -> Result<Vec
         }
         if a.identifier == "inflation" {
             index_factor(&a.value, base, base)?;
+        } else if a.identifier == "tax_indexing" {
+            if crate::money::Fraction::decimal(&a.value)?.is_negative() {
+                return Err(Error::invalid(
+                    "INVALID_TAX_INDEXING",
+                    "Tax indexing must be zero or greater.",
+                ));
+            }
         } else if crate::money::Fraction::decimal(&a.value)?.is_negative() {
             return Err(Error::unsupported(
                 "NEGATIVE_RETURN_UNSUPPORTED",

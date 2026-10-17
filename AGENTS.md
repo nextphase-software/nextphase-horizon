@@ -37,7 +37,8 @@ cargo install cargo-deny --version 0.20.2 --locked
 Run these validation commands in order from the workspace root:
 
 ```sh
-cargo test -p horizon-engine ledger
+cargo test -p horizon-engine tax
+cargo test -p horizon-app --test reference_values_w3
 cargo test -p horizon-app --test reference_values_w2
 cargo test -p horizon-app --test reference_values
 cargo test --workspace
@@ -48,10 +49,11 @@ cargo build --workspace --release
 cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown
 cargo deny check licenses
 cargo run -p horizon-cli -- dev-run <name>
+cargo test -p horizon-engine ledger
 ```
 
 For the last command, replace `<name>` with each fixture name in
-[the ledger fixture reference](docs/model/yearly-ledger.md#fixtures).
+[the federal-tax fixture reference](docs/model/federal-tax.md#fixtures).
 Valid fixtures exit 0; invalid inputs exit 1; unsupported inputs exit 2.
 Every response is canonical JSON followed by one newline. The workspace test
 suite also checks command output against the application operation byte for byte.

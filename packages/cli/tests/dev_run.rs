@@ -4,14 +4,16 @@ mod common;
 use std::process::Command;
 #[test]
 fn fixture_names_and_paths_match_application_bytes() {
-    for name in common::VALID.iter().chain(common::W2_VALID) {
+    for name in common::VALID
+        .iter()
+        .chain(common::W2_VALID)
+        .chain(common::W3_VALID)
+    {
         let f = common::fixture(name);
         let expected = format!(
             "{}\n",
-            horizon_engine::canonical::canonical_json(
-                &horizon_app::run(&f.household, &f.assumptions).unwrap()
-            )
-            .unwrap()
+            horizon_engine::canonical::canonical_json(&horizon_app::run_fixture(&f).unwrap())
+                .unwrap()
         );
         let path = common::root()
             .join("packages/app/fixtures")
@@ -30,7 +32,11 @@ fn fixture_names_and_paths_match_application_bytes() {
 }
 #[test]
 fn invalid_and_unsupported_have_exact_exit_status_and_json() {
-    for &(name, code, exit) in common::INVALID.iter().chain(common::W2_INVALID) {
+    for &(name, code, exit) in common::INVALID
+        .iter()
+        .chain(common::W2_INVALID)
+        .chain(common::W3_INVALID)
+    {
         let result = Command::new(env!("CARGO_BIN_EXE_horizon"))
             .args(["dev-run", name])
             .output()

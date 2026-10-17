@@ -12,6 +12,13 @@ pub const W2_VALID: &[&str] = &[
     "C-partial-base-year-no-taxable",
     "D-still-working-rmd-surplus",
 ];
+pub const W3_VALID: &[&str] = &["A-drawdown-pass-limit-1", "E-senior-2028-loss-carry"];
+pub const W3_INVALID: &[(&str, &str, u8)] = &[
+    ("invalid-missing-tax-indexing", "MISSING_ASSUMPTION", 1),
+    ("invalid-negative-tax-indexing", "INVALID_TAX_INDEXING", 1),
+    ("unsupported-tax-year", "TAX_YEAR_UNSUPPORTED", 2),
+    ("invalid-tax-pass-limit", "INVALID_TAX_PASS_LIMIT", 1),
+];
 pub const W2_INVALID: &[(&str, &str, u8)] = &[
     (
         "unsupported-negative-cash-return",

@@ -23,6 +23,14 @@
       "unit": "decimal_fraction_per_year",
       "user_overrode_default": false,
       "value": "0.04"
+    },
+    {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
     }
   ],
   "household": {

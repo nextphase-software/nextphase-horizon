@@ -91,6 +91,41 @@ impl Fraction {
         let power = u32::try_from(fractional.len()).map_err(|_| invalid())?;
         Self::new(numerator, BigInt::from(10).pow(power))
     }
+    pub fn compare(&self, other: &Self) -> std::cmp::Ordering {
+        self.numerator
+            .clone()
+            .mul(&other.denominator)
+            .cmp(&other.numerator.clone().mul(&self.denominator))
+    }
+    pub fn minimum(self, other: Self) -> Self {
+        if self.compare(&other).is_gt() {
+            other
+        } else {
+            self
+        }
+    }
+    pub fn maximum(self, other: Self) -> Self {
+        if self.compare(&other).is_lt() {
+            other
+        } else {
+            self
+        }
+    }
+    /// Floor a nonnegative exact amount without rounding an intermediate cent.
+    pub fn floor_multiple(&self, multiple: i64) -> Result<Money> {
+        if self.is_negative() || multiple <= 0 {
+            return Err(Error::invalid(
+                "INVALID_RATE",
+                "Floor requires nonnegative amounts and a positive multiple.",
+            ));
+        }
+        let value = self
+            .numerator
+            .clone()
+            .div(self.denominator.clone().mul(multiple))
+            .mul(multiple);
+        value.to_i64().map(Money).ok_or_else(overflow)
+    }
     pub fn is_negative(&self) -> bool {
         self.numerator.is_negative()
     }

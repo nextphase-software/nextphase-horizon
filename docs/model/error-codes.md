@@ -1,4 +1,4 @@
-# Stable error codes — household input v1/v2 / engine models 0.1.0–0.2.0
+# Stable error codes — household input v1/v2 / engine models 0.1.0–0.3.0
 
 Errors serialize as `{ "status": "invalid" | "unsupported", "code": "...", "message": "..." }`.
 The command exits 1 for invalid input and 2 for unsupported input. Codes are
@@ -33,8 +33,13 @@ has status `partial` and exits 0, with its omissions explicitly listed.
 | `CLI_USAGE` | invalid | Command is not exactly dev-run plus one fixture name or path. |
 | `MULTIPLE_PERSONS_UNSUPPORTED` | unsupported | More than one person was provided. |
 | `FEATURE_UNSUPPORTED` | unsupported | State-tax or healthcare input was provided. |
-| `ASSUMPTION_UNSUPPORTED` | unsupported | An assumption outside inflation, investment_return and cash_return was provided. |
+| `ASSUMPTION_UNSUPPORTED` | unsupported | An assumption outside inflation, investment_return, cash_return and tax_indexing was provided. |
 | `NEGATIVE_RETURN_UNSUPPORTED` | unsupported | Cash or investment return is negative. |
 | `RMD_TABLE_AGE_UNSUPPORTED` | unsupported | An owner distribution is due at an age below the committed table's first row (72). |
 | `SURPLUS_ACCOUNT_ID_CONFLICT` | invalid | The generated surplus account ID is already held by a non-taxable account. |
 | `LEDGER_INVARIANT` | invalid | A nonnegative balance/basis or exact conservation condition failed. |
+| `TAX_YEAR_UNSUPPORTED` | unsupported | Federal tax year precedes 2026. |
+| `INVALID_TAX_INDEXING` | invalid | Tax indexing is negative; zero is allowed. |
+| `INVALID_TAX_PASS_LIMIT` | invalid | Requested tax funding pass limit is outside 1–50. |
+| `INVALID_TAX_INPUT` | invalid | Direct tax computation received negative ordinary income, benefits, carry or early distributions. |
+| `TAX_INVARIANT` | invalid | Tax funding could not execute a pass or locate its rounding cycle. |

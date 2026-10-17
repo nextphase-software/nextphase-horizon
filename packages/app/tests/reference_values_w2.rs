@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 mod common;
-use horizon_app::{household_schema_v2, parse_household, run};
+use horizon_app::{household_schema_v2, parse_household, run_pre_tax as run};
 use horizon_engine::{
     calendar::{Period, benefit_start_date, date_59_half},
     input::{Amount, Date, DollarBasis},
@@ -9,6 +9,17 @@ use horizon_engine::{
     rmd_table,
 };
 use serde_json::{Value, json};
+fn w2_text(name: &str) -> String {
+    let mut v: Value = serde_json::from_str(&common::text(name)).unwrap();
+    v["assumptions"]
+        .as_array_mut()
+        .unwrap()
+        .retain(|a| a["identifier"] != "tax_indexing");
+    serde_json::to_string(&v).unwrap()
+}
+fn w2_fixture(name: &str) -> horizon_app::Fixture {
+    horizon_app::parse_fixture(&w2_text(name)).unwrap()
+}
 fn reference() -> Value {
     serde_json::from_str(include_str!(
         "../../../docs/briefs/0001-W2-reference-values.json"
@@ -243,9 +254,9 @@ fn conservation(run: &Value) {
 fn every_scenario_matches_every_line_and_flag_and_conserves_cash() {
     let root = reference();
     for (name, scenario) in root["scenarios"].as_object().unwrap() {
-        let fixture = common::fixture(name);
+        let fixture = w2_fixture(name);
         assert_eq!(
-            serde_json::from_str::<Value>(&common::text(name)).unwrap(),
+            serde_json::from_str::<Value>(&w2_text(name)).unwrap(),
             scenario["input"],
             "{name}: fixture input"
         );
@@ -255,14 +266,14 @@ fn every_scenario_matches_every_line_and_flag_and_conserves_cash() {
         conservation(&value);
     }
     for name in common::VALID {
-        let f = common::fixture(name);
+        let f = w2_fixture(name);
         conservation(&serde_json::to_value(run(&f.household, &f.assumptions).unwrap()).unwrap());
     }
 }
 #[test]
 fn orders_preserve_income_and_spending() {
     let root = reference();
-    let base = common::fixture("A-drawdown");
+    let base = w2_fixture("A-drawdown");
     let base = serde_json::to_value(run(&base.household, &base.assumptions).unwrap()).unwrap();
     for name in root["scenarios"]
         .as_object()
@@ -270,7 +281,7 @@ fn orders_preserve_income_and_spending() {
         .keys()
         .filter(|s| s.starts_with("A-drawdown-"))
     {
-        let f = common::fixture(name);
+        let f = w2_fixture(name);
         let value = serde_json::to_value(run(&f.household, &f.assumptions).unwrap()).unwrap();
         for (a, b) in base["years"]
             .as_array()
@@ -329,7 +340,7 @@ fn schema_v2_generated_and_all_valid_fixtures_validate() {
             .map(String::as_str),
     );
     for name in names {
-        let f = common::fixture(name);
+        let f = w2_fixture(name);
         let value = serde_json::to_value(&f.household).unwrap();
         assert!(validator.is_valid(&value), "{name}");
     }
@@ -339,7 +350,7 @@ fn schema_v2_generated_and_all_valid_fixtures_validate() {
 }
 #[test]
 fn returns_are_explicit_and_negative_returns_are_unsupported() {
-    let f = common::fixture("A-drawdown");
+    let f = w2_fixture("A-drawdown");
     for identifier in ["cash_return", "investment_return"] {
         let mut a = f.assumptions.clone();
         a.retain(|v| v.identifier != identifier);
@@ -382,7 +393,7 @@ fn exact_boundaries_created_accounts_and_1959_provenance() {
         rmd_table::divisor(130).unwrap()
     );
     assert!(rmd_table::due(&Date("1950-12-31".into()), 2026).unwrap());
-    let mut f = common::fixture("A-drawdown");
+    let mut f = w2_fixture("A-drawdown");
     f.household.persons[0].birth_date = Date("1959-06-30".into());
     let result = run(&f.household, &f.assumptions).unwrap();
     let assumption = result
@@ -402,7 +413,7 @@ fn exact_boundaries_created_accounts_and_1959_provenance() {
 }
 
 fn unfunded_fixture() -> horizon_app::Fixture {
-    let mut f = common::fixture("B-early-retiree");
+    let mut f = w2_fixture("B-early-retiree");
     f.household.income.wages.clear();
     f.household.income.social_security.amount.cents = 0;
     f.household.income.pension.amount.cents = 0;
@@ -517,7 +528,7 @@ fn input_order_cash_first_created_account_conflict_and_output_range() {
         cents(&account(&value["years"][0]["ledger"], "second-cash")["withdrawal"]),
         40
     );
-    let mut f = common::fixture("C-partial-base-year-no-taxable");
+    let mut f = w2_fixture("C-partial-base-year-no-taxable");
     f.household.accounts[0].id = "surplus-taxable".into();
     assert_eq!(
         run(&f.household, &f.assumptions).unwrap_err().code,
@@ -539,7 +550,7 @@ fn input_order_cash_first_created_account_conflict_and_output_range() {
 
 #[test]
 fn zero_balance_due_year_keeps_its_rule_source_and_1959_first_due_year() {
-    let mut f = common::fixture("A-drawdown");
+    let mut f = w2_fixture("A-drawdown");
     f.household.persons[0].birth_date = Date("1959-06-30".into());
     f.household.accounts[2].opening_balance_cents = 0;
     let result = run(&f.household, &f.assumptions).unwrap();
@@ -555,7 +566,7 @@ fn zero_balance_due_year_keeps_its_rule_source_and_1959_first_due_year() {
             assert_eq!(account.rmd.rule_id, "rmd_uniform_lifetime");
         }
     }
-    let mut f = common::fixture("D-still-working-rmd-surplus");
+    let mut f = w2_fixture("D-still-working-rmd-surplus");
     f.household.accounts[2].opening_balance_cents = 0;
     let result = run(&f.household, &f.assumptions).unwrap();
     assert!(
@@ -585,7 +596,7 @@ fn account<'a>(ledger: &'a Value, id: &str) -> &'a Value {
 }
 #[test]
 fn unicode_account_ids_remain_values_in_canonical_json() {
-    let mut f = common::fixture("A-drawdown");
+    let mut f = w2_fixture("A-drawdown");
     f.household.accounts[1].id = "taxé-税".into();
     let result = run(&f.household, &f.assumptions).unwrap();
     let bytes = horizon_engine::canonical::canonical_json(&result).unwrap();

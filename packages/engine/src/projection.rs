@@ -81,9 +81,37 @@ pub struct Run {
 
 /// Deterministic calculation only: no clock, environment, storage or implicit assumptions.
 pub fn project(household: &Household, assumptions: &[Assumption]) -> Result<Run> {
+    project_with_tax_limit(household, assumptions, crate::tax::DEFAULT_PASS_LIMIT)
+}
+/// Historical W2 operation: no federal tax outflow, with W2 status and omissions.
+pub fn project_pre_tax(household: &Household, assumptions: &[Assumption]) -> Result<Run> {
+    project_mode(household, assumptions, None)
+}
+pub fn project_with_tax_limit(
+    household: &Household,
+    assumptions: &[Assumption],
+    pass_limit: u16,
+) -> Result<Run> {
+    if !(1..=crate::tax::DEFAULT_PASS_LIMIT).contains(&pass_limit) {
+        return Err(crate::error::Error::invalid(
+            "INVALID_TAX_PASS_LIMIT",
+            "Tax pass limit must be from 1 through 50.",
+        ));
+    }
+    project_mode(household, assumptions, Some(pass_limit))
+}
+fn project_mode(
+    household: &Household,
+    assumptions: &[Assumption],
+    tax_limit: Option<u16>,
+) -> Result<Run> {
     validate_household(household)?;
     let base = household.valuation_date.year()?;
     let mut assumptions = validate_assumptions(assumptions, base)?;
+    if tax_limit.is_some() {
+        let indexing = crate::ledger::rate(&assumptions, "tax_indexing")?;
+        crate::tax::law(base, indexing)?;
+    }
     if household.persons[0].birth_date.year()? == 1959 {
         assumptions.push(Assumption {
             identifier: "rmd_applicable_age_1959".into(), value: "73".into(), unit: "year_of_age".into(),
@@ -114,12 +142,23 @@ pub fn project(household: &Household, assumptions: &[Assumption]) -> Result<Run>
     let person = &household.persons[0];
     let mut years = Vec::new();
     let mut ledger = crate::ledger::Ledger::new(household)?;
-    let mut omissions = vec![
-        "federal income tax not modeled",
-        "contributions not modeled",
-        "state tax not modeled",
-        "healthcare not modeled",
-    ];
+    let mut omissions = if tax_limit.is_some() {
+        vec![
+            "state tax not modeled",
+            "alternative minimum tax not modeled",
+            "taxable-account dividends and interest not modeled",
+            "itemized deductions and credits not modeled",
+        ]
+    } else {
+        vec![
+            "federal income tax not modeled",
+            "contributions not modeled",
+            "state tax not modeled",
+            "healthcare not modeled",
+        ]
+    };
+    let mut loss_carry = 0;
+    let mut partial = tax_limit.is_none();
     for year in projection_years(household)? {
         let mut inputs = vec![
             indexed(
@@ -160,8 +199,44 @@ pub fn project(household: &Household, assumptions: &[Assumption]) -> Result<Run>
                 year,
             )?);
         }
-        let annual = ledger.year(household, &assumptions, year)?;
+        let annual = if let Some(limit) = tax_limit {
+            crate::tax::funded_year(
+                &mut ledger,
+                household,
+                &assumptions,
+                year,
+                loss_carry,
+                limit,
+            )?
+        } else {
+            ledger.year(household, &assumptions, year)?
+        };
+        if let Some(tax) = &annual.federal_tax {
+            loss_carry = tax.breakdown.cents("loss_carry_out");
+        }
+        if tax_limit.is_some()
+            && household.income.wages.iter().any(|w| {
+                annual
+                    .period
+                    .active_days(Some(&w.start_date), Some(&w.end_date))
+                    .is_ok_and(|days| days > 0)
+            })
+        {
+            partial = true;
+            if !omissions.contains(&"contributions not modeled") {
+                omissions.push("contributions not modeled");
+            }
+        }
+        partial |= annual.flags.iter().any(|f| f.starts_with("partial:"));
         for (flag, omission) in [
+            (
+                "partial:tax_funding_did_not_converge",
+                "tax funding did not converge",
+            ),
+            (
+                "partial:net_investment_income_tax_not_modeled",
+                "net investment income tax not modeled",
+            ),
             (
                 "partial:still_working_rmd_exception_not_modeled",
                 "still-working distribution exception not modeled",
@@ -187,14 +262,30 @@ pub fn project(household: &Household, assumptions: &[Assumption]) -> Result<Run>
         });
     }
     Ok(Run {
-        status: "partial",
-        description: "Estimated annual ledger; federal income tax not modeled.",
+        status: if partial { "partial" } else { "complete" },
+        description: if tax_limit.is_some() {
+            "Estimated annual ledger with single-filer federal income tax; see flags and omissions."
+        } else {
+            "Estimated annual ledger; federal income tax not modeled."
+        },
         omissions,
         valuation_date: household.valuation_date.clone(),
         metadata: Metadata {
-            model_version: "horizon-engine-0.2.0",
-            rule_set_identifier: "us-single-ledger-v2",
-            rule_set_year: crate::rmd_table::TABLE_YEAR,
+            model_version: if tax_limit.is_some() {
+                "horizon-engine-0.3.0"
+            } else {
+                "horizon-engine-0.2.0"
+            },
+            rule_set_identifier: if tax_limit.is_some() {
+                "us-single-federal-tax-v3"
+            } else {
+                "us-single-ledger-v2"
+            },
+            rule_set_year: if tax_limit.is_some() {
+                2026
+            } else {
+                crate::rmd_table::TABLE_YEAR
+            },
             input_hash: hash(household)?,
             assumption_set_hash: hash(&assumptions)?,
             hash_method: "sha-256",

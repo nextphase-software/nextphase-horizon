@@ -16,10 +16,32 @@ use serde_json::Value;
 pub struct Fixture {
     pub household: Household,
     pub assumptions: Vec<Assumption>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pass_limit: Option<u16>,
 }
 
 pub fn run(household: &Household, assumptions: &[Assumption]) -> Result<Run> {
     project(household, assumptions)
+}
+
+pub fn run_fixture(fixture: &Fixture) -> Result<Run> {
+    run_with_tax_limit(
+        &fixture.household,
+        &fixture.assumptions,
+        fixture
+            .pass_limit
+            .unwrap_or(horizon_engine::tax::DEFAULT_PASS_LIMIT),
+    )
+}
+pub fn run_pre_tax(household: &Household, assumptions: &[Assumption]) -> Result<Run> {
+    horizon_engine::projection::project_pre_tax(household, assumptions)
+}
+pub fn run_with_tax_limit(
+    household: &Household,
+    assumptions: &[Assumption],
+    limit: u16,
+) -> Result<Run> {
+    horizon_engine::projection::project_with_tax_limit(household, assumptions, limit)
 }
 
 pub fn parse_household(value: &Value) -> Result<Household> {

@@ -190,12 +190,15 @@ pub struct YearLedger {
     pub shortfall: Line,
     pub created_account: Option<String>,
     pub flags: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub federal_tax: Option<crate::tax::FundedTax>,
 }
 #[derive(Clone)]
 struct State {
     account: Account,
     created: bool,
 }
+#[derive(Clone)]
 pub struct Ledger {
     states: Vec<State>,
     base: u16,
@@ -225,6 +228,15 @@ impl Ledger {
         h: &Household,
         assumptions: &[Assumption],
         year: u16,
+    ) -> Result<YearLedger> {
+        self.year_with_outflow(h, assumptions, year, 0)
+    }
+    pub(crate) fn year_with_outflow(
+        &mut self,
+        h: &Household,
+        assumptions: &[Assumption],
+        year: u16,
+        tax_paid: i64,
     ) -> Result<YearLedger> {
         let person = &h.persons[0];
         let period = Period::new(&h.valuation_date, year)?;
@@ -331,7 +343,7 @@ impl Ledger {
             }
         }
         let rmd_total = total(distributions.iter().copied())?;
-        let need = sub(sub(spending, income_total)?, rmd_total)?;
+        let need = sub(sub(add(spending, tax_paid)?, income_total)?, rmd_total)?;
         let mut withdrawals = vec![0; self.states.len()];
         let mut deposits = vec![0; self.states.len()];
         let mut available: Vec<i64> = self
@@ -565,7 +577,7 @@ impl Ledger {
         if add(
             add(add(income_total, rmd_total)?, withdrawals_total)?,
             remaining,
-        )? != add(spending, surplus)?
+        )? != add(add(spending, tax_paid)?, surplus)?
         {
             return Err(Error::invalid(
                 "LEDGER_INVARIANT",
@@ -596,6 +608,7 @@ impl Ledger {
             shortfall: Line::new(remaining, "unfunded_need_no_borrowing", self.base, year)?,
             created_account,
             flags,
+            federal_tax: None,
         })
     }
 }

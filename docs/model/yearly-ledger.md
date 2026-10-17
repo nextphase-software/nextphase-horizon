@@ -1,5 +1,8 @@
 # Yearly ledger — model 0.2.0
 
+Historical W2 contract, retained by `horizon_app::run_pre_tax`. The current
+`run` operation includes [federal tax and in-year tax funding](federal-tax.md).
+
 The application operation `run(household, assumptions)` now returns a yearly
 ledger at `years[].ledger`, together with W1's annual `indexed_inputs`. Those
 indexed inputs are reference amounts, not additional cash flows. Ledger accounts
