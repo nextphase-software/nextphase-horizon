@@ -25,4 +25,4 @@ What this requires, enables or rules out, including security and operating-cost 
 
 Amendments are appended in place under `## Amendment — YYYY-MM-DD: <headline>`.
 
-Records: [0002](0002-engine-stack-typescript-headless-first.md) engine stack and architecture (superseded by 0007); [0003](0003-money-and-time-conventions.md) money and time conventions; [0007](0007-rust-core-typescript-shell.md) language split and architecture.
+Records: [0002](0002-engine-stack-typescript-headless-first.md) engine stack and architecture (superseded by 0007); [0003](0003-money-and-time-conventions.md) money and time conventions; [0004](0004-withdrawals-before-59-half.md) withdrawals before age 59½; [0006](0006-surplus-and-withdrawal-order.md) surplus and withdrawal order; [0007](0007-rust-core-typescript-shell.md) language split and architecture; [0008](0008-ledger-and-required-distribution-conventions.md) ledger and required-distribution conventions.

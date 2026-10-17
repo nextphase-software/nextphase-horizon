@@ -1,0 +1,2968 @@
+{
+ "derived": "2026-10-16. Exact rational arithmetic, derived independently of any implementation, under decisions 0003, 0004, 0006 and 0008. Commit unchanged; escalate if a value seems wrong.",
+ "scenarios": {
+  "A-drawdown": {
+   "expected": {
+    "withdrawal_order_used": "taxable_first",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 10000,
+        "deposit": 0,
+        "growth": 10000,
+        "opening": 1000000,
+        "rmd": 0,
+        "withdrawal": 1000000
+       },
+       "ira": {
+        "closing": 5056604,
+        "deposit": 0,
+        "growth": 245283,
+        "opening": 5000000,
+        "rmd": 188679,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 2100000,
+        "deposit": 0,
+        "growth": 100000,
+        "opening": 2000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 1607547,
+        "closing": 678396,
+        "closing_basis": 392453,
+        "deposit": 0,
+        "growth": 89717,
+        "opening": 3000000,
+        "realized_gain": 803774,
+        "rmd": 0,
+        "withdrawal": 2411321
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2026-07-01",
+      "flags": [
+       "estimate:rmd_prior_year_end_balance_not_provided:ira"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 2400000
+      },
+      "period_days": 365,
+      "rmd_total": 188679,
+      "shortfall": 0,
+      "spending": 6000000,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3411321,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 100,
+        "deposit": 0,
+        "growth": 100,
+        "opening": 10000,
+        "rmd": 0,
+        "withdrawal": 10000
+       },
+       "ira": {
+        "closing": 2232790,
+        "deposit": 0,
+        "growth": 177790,
+        "opening": 5056604,
+        "rmd": 198298,
+        "withdrawal": 2803306
+       },
+       "roth": {
+        "closing": 2205000,
+        "deposit": 0,
+        "growth": 105000,
+        "opening": 2100000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 392453,
+        "closing": 16960,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 16960,
+        "opening": 678396,
+        "realized_gain": 285943,
+        "rmd": 0,
+        "withdrawal": 678396
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2027-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2460000
+      },
+      "period_days": 365,
+      "rmd_total": 198298,
+      "shortfall": 0,
+      "spending": 6150000,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3491702,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 100,
+        "rmd": 0,
+        "withdrawal": 100
+       },
+       "ira": {
+        "closing": 55820,
+        "deposit": 0,
+        "growth": 55820,
+        "opening": 2232790,
+        "rmd": 90764,
+        "withdrawal": 2142026
+       },
+       "roth": {
+        "closing": 744540,
+        "deposit": 0,
+        "growth": 71940,
+        "opening": 2205000,
+        "rmd": 0,
+        "withdrawal": 1532400
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 424,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 424,
+        "opening": 16960,
+        "realized_gain": 16960,
+        "rmd": 0,
+        "withdrawal": 16960
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2028-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2521500
+      },
+      "period_days": 366,
+      "rmd_total": 90764,
+      "shortfall": 0,
+      "spending": 6303750,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3691486,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "ira": {
+        "closing": 1396,
+        "deposit": 0,
+        "growth": 1396,
+        "opening": 55820,
+        "rmd": 2355,
+        "withdrawal": 53465
+       },
+       "roth": {
+        "closing": 18614,
+        "deposit": 0,
+        "growth": 18614,
+        "opening": 744540,
+        "rmd": 0,
+        "withdrawal": 744540
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 11,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 11,
+        "opening": 424,
+        "realized_gain": 424,
+        "rmd": 0,
+        "withdrawal": 424
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2029-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2584538
+      },
+      "period_days": 365,
+      "rmd_total": 2355,
+      "shortfall": 3076021,
+      "spending": 6461344,
+      "surplus_deposit": 0,
+      "withdrawals_total": 798430,
+      "year": 2029
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 35,
+        "deposit": 0,
+        "growth": 35,
+        "opening": 1396,
+        "rmd": 61,
+        "withdrawal": 1335
+       },
+       "roth": {
+        "closing": 465,
+        "deposit": 0,
+        "growth": 465,
+        "opening": 18614,
+        "rmd": 0,
+        "withdrawal": 18614
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 0,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 11,
+        "realized_gain": 11,
+        "rmd": 0,
+        "withdrawal": 11
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2030-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2649151
+      },
+      "period_days": 365,
+      "rmd_total": 61,
+      "shortfall": 3953705,
+      "spending": 6622877,
+      "surplus_deposit": 0,
+      "withdrawals_total": 19960,
+      "year": 2030
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 35,
+        "rmd": 2,
+        "withdrawal": 33
+       },
+       "roth": {
+        "closing": 12,
+        "deposit": 0,
+        "growth": 12,
+        "opening": 465,
+        "rmd": 0,
+        "withdrawal": 465
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 0,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2031-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2715380
+      },
+      "period_days": 365,
+      "rmd_total": 2,
+      "shortfall": 4072569,
+      "spending": 6788449,
+      "surplus_deposit": 0,
+      "withdrawals_total": 498,
+      "year": 2031
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   }
+  },
+  "A-drawdown-proportional_taxable_tax_deferred": {
+   "expected": {
+    "withdrawal_order_used": "proportional_taxable_tax_deferred",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 10000,
+        "deposit": 0,
+        "growth": 10000,
+        "opening": 1000000,
+        "rmd": 0,
+        "withdrawal": 1000000
+       },
+       "ira": {
+        "closing": 3534239,
+        "deposit": 0,
+        "growth": 208152,
+        "opening": 5000000,
+        "rmd": 188679,
+        "withdrawal": 1485234
+       },
+       "roth": {
+        "closing": 2100000,
+        "deposit": 0,
+        "growth": 100000,
+        "opening": 2000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 617391,
+        "closing": 2200761,
+        "closing_basis": 1382609,
+        "deposit": 0,
+        "growth": 126848,
+        "opening": 3000000,
+        "realized_gain": 308696,
+        "rmd": 0,
+        "withdrawal": 926087
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2026-07-01",
+      "flags": [
+       "estimate:rmd_prior_year_end_balance_not_provided:ira"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 2400000
+      },
+      "period_days": 365,
+      "rmd_total": 188679,
+      "shortfall": 0,
+      "spending": 6000000,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3411321,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 100,
+        "deposit": 0,
+        "growth": 100,
+        "opening": 10000,
+        "rmd": 0,
+        "withdrawal": 10000
+       },
+       "ira": {
+        "closing": 1366408,
+        "deposit": 0,
+        "growth": 119528,
+        "opening": 3534239,
+        "rmd": 138598,
+        "withdrawal": 2148761
+       },
+       "roth": {
+        "closing": 2205000,
+        "deposit": 0,
+        "growth": 105000,
+        "opening": 2100000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 874915,
+        "closing": 883342,
+        "closing_basis": 507694,
+        "deposit": 0,
+        "growth": 75222,
+        "opening": 2200761,
+        "realized_gain": 517726,
+        "rmd": 0,
+        "withdrawal": 1392641
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2027-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2460000
+      },
+      "period_days": 365,
+      "rmd_total": 138598,
+      "shortfall": 0,
+      "spending": 6150000,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3551402,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 100,
+        "rmd": 0,
+        "withdrawal": 100
+       },
+       "ira": {
+        "closing": 34160,
+        "deposit": 0,
+        "growth": 34160,
+        "opening": 1366408,
+        "rmd": 55545,
+        "withdrawal": 1310863
+       },
+       "roth": {
+        "closing": 744540,
+        "deposit": 0,
+        "growth": 71940,
+        "opening": 2205000,
+        "rmd": 0,
+        "withdrawal": 1532400
+       },
+       "taxable": {
+        "basis_removed": 507694,
+        "closing": 22084,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 22084,
+        "opening": 883342,
+        "realized_gain": 375648,
+        "rmd": 0,
+        "withdrawal": 883342
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2028-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2521500
+      },
+      "period_days": 366,
+      "rmd_total": 55545,
+      "shortfall": 0,
+      "spending": 6303750,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3726705,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "ira": {
+        "closing": 854,
+        "deposit": 0,
+        "growth": 854,
+        "opening": 34160,
+        "rmd": 1441,
+        "withdrawal": 32719
+       },
+       "roth": {
+        "closing": 18614,
+        "deposit": 0,
+        "growth": 18614,
+        "opening": 744540,
+        "rmd": 0,
+        "withdrawal": 744540
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 552,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 552,
+        "opening": 22084,
+        "realized_gain": 22084,
+        "rmd": 0,
+        "withdrawal": 22084
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2029-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2584538
+      },
+      "period_days": 365,
+      "rmd_total": 1441,
+      "shortfall": 3076021,
+      "spending": 6461344,
+      "surplus_deposit": 0,
+      "withdrawals_total": 799344,
+      "year": 2029
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 21,
+        "deposit": 0,
+        "growth": 21,
+        "opening": 854,
+        "rmd": 37,
+        "withdrawal": 817
+       },
+       "roth": {
+        "closing": 465,
+        "deposit": 0,
+        "growth": 465,
+        "opening": 18614,
+        "rmd": 0,
+        "withdrawal": 18614
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 14,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 14,
+        "opening": 552,
+        "realized_gain": 552,
+        "rmd": 0,
+        "withdrawal": 552
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2030-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2649151
+      },
+      "period_days": 365,
+      "rmd_total": 37,
+      "shortfall": 3953706,
+      "spending": 6622877,
+      "surplus_deposit": 0,
+      "withdrawals_total": 19983,
+      "year": 2030
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 21,
+        "rmd": 1,
+        "withdrawal": 20
+       },
+       "roth": {
+        "closing": 12,
+        "deposit": 0,
+        "growth": 12,
+        "opening": 465,
+        "rmd": 0,
+        "withdrawal": 465
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 0,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 14,
+        "realized_gain": 14,
+        "rmd": 0,
+        "withdrawal": 14
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2031-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2715380
+      },
+      "period_days": 365,
+      "rmd_total": 1,
+      "shortfall": 4072569,
+      "spending": 6788449,
+      "surplus_deposit": 0,
+      "withdrawals_total": 499,
+      "year": 2031
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01",
+     "withdrawal_order": "proportional_taxable_tax_deferred"
+    }
+   }
+  },
+  "A-drawdown-roth_before_tax_deferred": {
+   "expected": {
+    "withdrawal_order_used": "roth_before_tax_deferred",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 10000,
+        "deposit": 0,
+        "growth": 10000,
+        "opening": 1000000,
+        "rmd": 0,
+        "withdrawal": 1000000
+       },
+       "ira": {
+        "closing": 5056604,
+        "deposit": 0,
+        "growth": 245283,
+        "opening": 5000000,
+        "rmd": 188679,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 2100000,
+        "deposit": 0,
+        "growth": 100000,
+        "opening": 2000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 1607547,
+        "closing": 678396,
+        "closing_basis": 392453,
+        "deposit": 0,
+        "growth": 89717,
+        "opening": 3000000,
+        "realized_gain": 803774,
+        "rmd": 0,
+        "withdrawal": 2411321
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2026-07-01",
+      "flags": [
+       "estimate:rmd_prior_year_end_balance_not_provided:ira"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 2400000
+      },
+      "period_days": 365,
+      "rmd_total": 188679,
+      "shortfall": 0,
+      "spending": 6000000,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3411321,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 100,
+        "deposit": 0,
+        "growth": 100,
+        "opening": 10000,
+        "rmd": 0,
+        "withdrawal": 10000
+       },
+       "ira": {
+        "closing": 4385290,
+        "deposit": 0,
+        "growth": 230290,
+        "opening": 5056604,
+        "rmd": 198298,
+        "withdrawal": 703306
+       },
+       "roth": {
+        "closing": 52500,
+        "deposit": 0,
+        "growth": 52500,
+        "opening": 2100000,
+        "rmd": 0,
+        "withdrawal": 2100000
+       },
+       "taxable": {
+        "basis_removed": 392453,
+        "closing": 16960,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 16960,
+        "opening": 678396,
+        "realized_gain": 285943,
+        "rmd": 0,
+        "withdrawal": 678396
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2027-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2460000
+      },
+      "period_days": 365,
+      "rmd_total": 198298,
+      "shortfall": 0,
+      "spending": 6150000,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3491702,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 100,
+        "rmd": 0,
+        "withdrawal": 100
+       },
+       "ira": {
+        "closing": 799047,
+        "deposit": 0,
+        "growth": 126447,
+        "opening": 4385290,
+        "rmd": 178264,
+        "withdrawal": 3534426
+       },
+       "roth": {
+        "closing": 1313,
+        "deposit": 0,
+        "growth": 1313,
+        "opening": 52500,
+        "rmd": 0,
+        "withdrawal": 52500
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 424,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 424,
+        "opening": 16960,
+        "realized_gain": 16960,
+        "rmd": 0,
+        "withdrawal": 16960
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2028-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2521500
+      },
+      "period_days": 366,
+      "rmd_total": 178264,
+      "shortfall": 0,
+      "spending": 6303750,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3603986,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "ira": {
+        "closing": 19976,
+        "deposit": 0,
+        "growth": 19976,
+        "opening": 799047,
+        "rmd": 33715,
+        "withdrawal": 765332
+       },
+       "roth": {
+        "closing": 33,
+        "deposit": 0,
+        "growth": 33,
+        "opening": 1313,
+        "rmd": 0,
+        "withdrawal": 1313
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 11,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 11,
+        "opening": 424,
+        "realized_gain": 424,
+        "rmd": 0,
+        "withdrawal": 424
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2029-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2584538
+      },
+      "period_days": 365,
+      "rmd_total": 33715,
+      "shortfall": 3076021,
+      "spending": 6461344,
+      "surplus_deposit": 0,
+      "withdrawals_total": 767070,
+      "year": 2029
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 499,
+        "deposit": 0,
+        "growth": 499,
+        "opening": 19976,
+        "rmd": 872,
+        "withdrawal": 19104
+       },
+       "roth": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 33,
+        "rmd": 0,
+        "withdrawal": 33
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 0,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 11,
+        "realized_gain": 11,
+        "rmd": 0,
+        "withdrawal": 11
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2030-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2649151
+      },
+      "period_days": 365,
+      "rmd_total": 872,
+      "shortfall": 3953706,
+      "spending": 6622877,
+      "surplus_deposit": 0,
+      "withdrawals_total": 19148,
+      "year": 2030
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 12,
+        "deposit": 0,
+        "growth": 12,
+        "opening": 499,
+        "rmd": 23,
+        "withdrawal": 476
+       },
+       "roth": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 0,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2031-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2715380
+      },
+      "period_days": 365,
+      "rmd_total": 23,
+      "shortfall": 4072569,
+      "spending": 6788449,
+      "surplus_deposit": 0,
+      "withdrawals_total": 477,
+      "year": 2031
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01",
+     "withdrawal_order": "roth_before_tax_deferred"
+    }
+   }
+  },
+  "A-drawdown-tax_deferred_first": {
+   "expected": {
+    "withdrawal_order_used": "tax_deferred_first",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 10000,
+        "deposit": 0,
+        "growth": 10000,
+        "opening": 1000000,
+        "rmd": 0,
+        "withdrawal": 1000000
+       },
+       "ira": {
+        "closing": 2585000,
+        "deposit": 0,
+        "growth": 185000,
+        "opening": 5000000,
+        "rmd": 188679,
+        "withdrawal": 2411321
+       },
+       "roth": {
+        "closing": 2100000,
+        "deposit": 0,
+        "growth": 100000,
+        "opening": 2000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 3150000,
+        "closing_basis": 2000000,
+        "deposit": 0,
+        "growth": 150000,
+        "opening": 3000000,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2026-07-01",
+      "flags": [
+       "estimate:rmd_prior_year_end_balance_not_provided:ira"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 2400000
+      },
+      "period_days": 365,
+      "rmd_total": 188679,
+      "shortfall": 0,
+      "spending": 6000000,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3411321,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 100,
+        "deposit": 0,
+        "growth": 100,
+        "opening": 10000,
+        "rmd": 0,
+        "withdrawal": 10000
+       },
+       "ira": {
+        "closing": 64625,
+        "deposit": 0,
+        "growth": 64625,
+        "opening": 2585000,
+        "rmd": 101373,
+        "withdrawal": 2483627
+       },
+       "roth": {
+        "closing": 2205000,
+        "deposit": 0,
+        "growth": 105000,
+        "opening": 2100000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 695238,
+        "closing": 2185125,
+        "closing_basis": 1304762,
+        "deposit": 0,
+        "growth": 130125,
+        "opening": 3150000,
+        "realized_gain": 399762,
+        "rmd": 0,
+        "withdrawal": 1095000
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2027-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2460000
+      },
+      "period_days": 365,
+      "rmd_total": 101373,
+      "shortfall": 0,
+      "spending": 6150000,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3588627,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 100,
+        "rmd": 0,
+        "withdrawal": 100
+       },
+       "ira": {
+        "closing": 1616,
+        "deposit": 0,
+        "growth": 1616,
+        "opening": 64625,
+        "rmd": 2627,
+        "withdrawal": 61998
+       },
+       "roth": {
+        "closing": 744540,
+        "deposit": 0,
+        "growth": 71940,
+        "opening": 2205000,
+        "rmd": 0,
+        "withdrawal": 1532400
+       },
+       "taxable": {
+        "basis_removed": 1304762,
+        "closing": 54628,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 54628,
+        "opening": 2185125,
+        "realized_gain": 880363,
+        "rmd": 0,
+        "withdrawal": 2185125
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2028-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2521500
+      },
+      "period_days": 366,
+      "rmd_total": 2627,
+      "shortfall": 0,
+      "spending": 6303750,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3779623,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "ira": {
+        "closing": 40,
+        "deposit": 0,
+        "growth": 40,
+        "opening": 1616,
+        "rmd": 68,
+        "withdrawal": 1548
+       },
+       "roth": {
+        "closing": 18614,
+        "deposit": 0,
+        "growth": 18614,
+        "opening": 744540,
+        "rmd": 0,
+        "withdrawal": 744540
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 1366,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 1366,
+        "opening": 54628,
+        "realized_gain": 54628,
+        "rmd": 0,
+        "withdrawal": 54628
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2029-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2584538
+      },
+      "period_days": 365,
+      "rmd_total": 68,
+      "shortfall": 3076021,
+      "spending": 6461344,
+      "surplus_deposit": 0,
+      "withdrawals_total": 800717,
+      "year": 2029
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 40,
+        "rmd": 2,
+        "withdrawal": 38
+       },
+       "roth": {
+        "closing": 465,
+        "deposit": 0,
+        "growth": 465,
+        "opening": 18614,
+        "rmd": 0,
+        "withdrawal": 18614
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 34,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 34,
+        "opening": 1366,
+        "realized_gain": 1366,
+        "rmd": 0,
+        "withdrawal": 1366
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2030-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2649151
+      },
+      "period_days": 365,
+      "rmd_total": 2,
+      "shortfall": 3953706,
+      "spending": 6622877,
+      "surplus_deposit": 0,
+      "withdrawals_total": 20018,
+      "year": 2030
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "roth": {
+        "closing": 12,
+        "deposit": 0,
+        "growth": 12,
+        "opening": 465,
+        "rmd": 0,
+        "withdrawal": 465
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 1,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 34,
+        "realized_gain": 34,
+        "rmd": 0,
+        "withdrawal": 34
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2031-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2715380
+      },
+      "period_days": 365,
+      "rmd_total": 0,
+      "shortfall": 4072569,
+      "spending": 6788449,
+      "surplus_deposit": 0,
+      "withdrawals_total": 500,
+      "year": 2031
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01",
+     "withdrawal_order": "tax_deferred_first"
+    }
+   }
+  },
+  "B-early-retiree": {
+   "expected": {
+    "withdrawal_order_used": "taxable_first",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 510000,
+        "deposit": 0,
+        "growth": 10000,
+        "opening": 500000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "k401": {
+        "closing": 31500000,
+        "deposit": 0,
+        "growth": 1500000,
+        "opening": 30000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 5250000,
+        "deposit": 0,
+        "growth": 250000,
+        "opening": 5000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 13475000,
+        "closing_basis": 12000000,
+        "deposit": 7000000,
+        "growth": 475000,
+        "opening": 6000000,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "before_59_half": true,
+      "created_account": null,
+      "event_date": "2026-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 0,
+       "wages.0": 15000000
+      },
+      "period_days": 365,
+      "rmd_total": 0,
+      "shortfall": 0,
+      "spending": 8000000,
+      "surplus_deposit": 7000000,
+      "withdrawals_total": 0,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 5100,
+        "deposit": 0,
+        "growth": 5100,
+        "opening": 510000,
+        "rmd": 0,
+        "withdrawal": 510000
+       },
+       "k401": {
+        "closing": 33075000,
+        "deposit": 0,
+        "growth": 1575000,
+        "opening": 31500000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 5512500,
+        "deposit": 0,
+        "growth": 262500,
+        "opening": 5250000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 5935436,
+        "closing": 7317125,
+        "closing_basis": 6064564,
+        "deposit": 0,
+        "growth": 507125,
+        "opening": 13475000,
+        "realized_gain": 729564,
+        "rmd": 0,
+        "withdrawal": 6665000
+       }
+      },
+      "before_59_half": true,
+      "created_account": null,
+      "event_date": "2027-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 0,
+       "wages.0": 0
+      },
+      "period_days": 365,
+      "rmd_total": 0,
+      "shortfall": 0,
+      "spending": 7175000,
+      "surplus_deposit": 0,
+      "withdrawals_total": 7175000,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 51,
+        "deposit": 0,
+        "growth": 51,
+        "opening": 5100,
+        "rmd": 0,
+        "withdrawal": 5100
+       },
+       "k401": {
+        "closing": 34695796,
+        "deposit": 0,
+        "growth": 1652946,
+        "opening": 33075000,
+        "rmd": 0,
+        "withdrawal": 32150
+       },
+       "roth": {
+        "closing": 5788125,
+        "deposit": 0,
+        "growth": 275625,
+        "opening": 5512500,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 6064564,
+        "closing": 182928,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 182928,
+        "opening": 7317125,
+        "realized_gain": 1252561,
+        "rmd": 0,
+        "withdrawal": 7317125
+       }
+      },
+      "before_59_half": true,
+      "created_account": null,
+      "event_date": "2028-07-01",
+      "flags": [
+       "partial:early_distribution_exceptions_not_modeled"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 0,
+       "wages.0": 0
+      },
+      "period_days": 366,
+      "rmd_total": 0,
+      "shortfall": 0,
+      "spending": 7354375,
+      "surplus_deposit": 0,
+      "withdrawals_total": 7354375,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 51,
+        "rmd": 0,
+        "withdrawal": 51
+       },
+       "k401": {
+        "closing": 28891449,
+        "deposit": 0,
+        "growth": 1550908,
+        "opening": 34695796,
+        "rmd": 0,
+        "withdrawal": 7355255
+       },
+       "roth": {
+        "closing": 6077531,
+        "deposit": 0,
+        "growth": 289406,
+        "opening": 5788125,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 4573,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 4573,
+        "opening": 182928,
+        "realized_gain": 182928,
+        "rmd": 0,
+        "withdrawal": 182928
+       }
+      },
+      "before_59_half": true,
+      "created_account": null,
+      "event_date": "2029-07-01",
+      "flags": [
+       "partial:early_distribution_exceptions_not_modeled"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 0,
+       "wages.0": 0
+      },
+      "period_days": 365,
+      "rmd_total": 0,
+      "shortfall": 0,
+      "spending": 7538234,
+      "surplus_deposit": 0,
+      "withdrawals_total": 7538234,
+      "year": 2029
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "k401": {
+        "closing": 22420853,
+        "deposit": 0,
+        "growth": 1251520,
+        "opening": 28891449,
+        "rmd": 0,
+        "withdrawal": 7722116
+       },
+       "roth": {
+        "closing": 6381408,
+        "deposit": 0,
+        "growth": 303877,
+        "opening": 6077531,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 114,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 114,
+        "opening": 4573,
+        "realized_gain": 4573,
+        "rmd": 0,
+        "withdrawal": 4573
+       }
+      },
+      "before_59_half": true,
+      "created_account": null,
+      "event_date": "2030-07-01",
+      "flags": [
+       "partial:early_distribution_exceptions_not_modeled"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 0,
+       "wages.0": 0
+      },
+      "period_days": 365,
+      "rmd_total": 0,
+      "shortfall": 0,
+      "spending": 7726690,
+      "surplus_deposit": 0,
+      "withdrawals_total": 7726690,
+      "year": 2030
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 500000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 5000000,
+       "id": "taxable",
+       "opening_balance_cents": 6000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "k401",
+       "opening_balance_cents": 30000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "employer_plan"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2800000,
+        "dollar_basis": "today"
+       },
+       "start_age": 67
+      },
+      "wages": [
+       {
+        "amount": {
+         "cents": 15000000,
+         "dollar_basis": "today"
+        },
+        "end_date": "2027-01-01",
+        "start_date": "2010-01-01"
+       }
+      ]
+     },
+     "persons": [
+      {
+       "birth_date": "1975-05-20",
+       "id": "synthetic-person",
+       "plan_end_age": 55,
+       "retirement_date": "2027-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 7000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 8000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   }
+  },
+  "C-partial-base-year-no-taxable": {
+   "expected": {
+    "withdrawal_order_used": "taxable_first",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 804384,
+        "deposit": 0,
+        "growth": 4384,
+        "opening": 800000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 12263014,
+        "deposit": 0,
+        "growth": 263014,
+        "opening": 12000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 3065753,
+        "deposit": 0,
+        "growth": 65753,
+        "opening": 3000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "surplus-taxable": {
+        "basis_removed": 0,
+        "closing": 1938826,
+        "closing_basis": 1917809,
+        "deposit": 1917809,
+        "growth": 21017,
+        "opening": 0,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "before_59_half": false,
+      "created_account": "surplus-taxable",
+      "event_date": "2026-07-01",
+      "flags": [],
+      "income": {
+       "pension": 821918,
+       "social_security": 0,
+       "wages.0": 4931507
+      },
+      "period_days": 200,
+      "rmd_total": 0,
+      "shortfall": 0,
+      "spending": 3835616,
+      "surplus_deposit": 1917809,
+      "withdrawals_total": 0,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 812428,
+        "deposit": 0,
+        "growth": 8044,
+        "opening": 804384,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 12753535,
+        "deposit": 0,
+        "growth": 490521,
+        "opening": 12263014,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 3188383,
+        "deposit": 0,
+        "growth": 122630,
+        "opening": 3065753,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "surplus-taxable": {
+        "basis_removed": 0,
+        "closing": 5642479,
+        "closing_basis": 5472809,
+        "deposit": 3555000,
+        "growth": 148653,
+        "opening": 1938826,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2027-07-01",
+      "flags": [],
+      "income": {
+       "pension": 1500000,
+       "social_security": 0,
+       "wages.0": 9247500
+      },
+      "period_days": 365,
+      "rmd_total": 0,
+      "shortfall": 0,
+      "spending": 7192500,
+      "surplus_deposit": 3555000,
+      "withdrawals_total": 0,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 4062,
+        "deposit": 0,
+        "growth": 4062,
+        "opening": 812428,
+        "rmd": 0,
+        "withdrawal": 812428
+       },
+       "ira": {
+        "closing": 13263676,
+        "deposit": 0,
+        "growth": 510141,
+        "opening": 12753535,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 3315918,
+        "deposit": 0,
+        "growth": 127535,
+        "opening": 3188383,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "surplus-taxable": {
+        "basis_removed": 2986271,
+        "closing": 2727749,
+        "closing_basis": 2486538,
+        "deposit": 0,
+        "growth": 164122,
+        "opening": 5642479,
+        "realized_gain": 92581,
+        "rmd": 0,
+        "withdrawal": 3078852
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2028-07-01",
+      "flags": [],
+      "income": {
+       "pension": 1500000,
+       "social_security": 0,
+       "wages.0": 1557673
+      },
+      "period_days": 366,
+      "rmd_total": 0,
+      "shortfall": 0,
+      "spending": 6948953,
+      "surplus_deposit": 0,
+      "withdrawals_total": 3891280,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 20,
+        "deposit": 0,
+        "growth": 20,
+        "opening": 4062,
+        "rmd": 0,
+        "withdrawal": 4062
+       },
+       "ira": {
+        "closing": 10918516,
+        "deposit": 0,
+        "growth": 474161,
+        "opening": 13263676,
+        "rmd": 0,
+        "withdrawal": 2819321
+       },
+       "roth": {
+        "closing": 3448555,
+        "deposit": 0,
+        "growth": 132637,
+        "opening": 3315918,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "surplus-taxable": {
+        "basis_removed": 2486538,
+        "closing": 54555,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 54555,
+        "opening": 2727749,
+        "realized_gain": 241211,
+        "rmd": 0,
+        "withdrawal": 2727749
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2029-07-01",
+      "flags": [],
+      "income": {
+       "pension": 1500000,
+       "social_security": 0,
+       "wages.0": 0
+      },
+      "period_days": 365,
+      "rmd_total": 0,
+      "shortfall": 0,
+      "spending": 7051132,
+      "surplus_deposit": 0,
+      "withdrawals_total": 5551132,
+      "year": 2029
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.01"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.0275"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.04"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 800000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 12000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 1500000,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 62
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2600000,
+        "dollar_basis": "today"
+       },
+       "start_age": 67
+      },
+      "wages": [
+       {
+        "amount": {
+         "cents": 9000000,
+         "dollar_basis": "today"
+        },
+        "end_date": "2028-03-01",
+        "start_date": "2015-01-01"
+       }
+      ]
+     },
+     "persons": [
+      {
+       "birth_date": "1964-02-29",
+       "id": "synthetic-person",
+       "plan_end_age": 65,
+       "retirement_date": "2028-03-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6500000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 7000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-06-15"
+    }
+   }
+  },
+  "D-still-working-rmd-surplus": {
+   "expected": {
+    "withdrawal_order_used": "taxable_first",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 306000,
+        "deposit": 0,
+        "growth": 6000,
+        "opening": 300000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "k401": {
+        "closing": 20196078,
+        "deposit": 0,
+        "growth": 980392,
+        "opening": 20000000,
+        "rmd": 784314,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 1050000,
+        "deposit": 0,
+        "growth": 50000,
+        "opening": 1000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 5568922,
+        "closing_basis": 4884314,
+        "deposit": 3384314,
+        "growth": 184608,
+        "opening": 2000000,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2026-07-01",
+      "flags": [
+       "estimate:rmd_prior_year_end_balance_not_provided:k401",
+       "partial:still_working_rmd_exception_not_modeled"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 3600000,
+       "wages.0": 6000000
+      },
+      "period_days": 365,
+      "rmd_total": 784314,
+      "shortfall": 0,
+      "spending": 7000000,
+      "surplus_deposit": 3384314,
+      "withdrawals_total": 0,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 312120,
+        "deposit": 0,
+        "growth": 6120,
+        "opening": 306000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "k401": {
+        "closing": 20364378,
+        "deposit": 0,
+        "growth": 989279,
+        "opening": 20196078,
+        "rmd": 820979,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 1102500,
+        "deposit": 0,
+        "growth": 52500,
+        "opening": 1050000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 6772346,
+        "closing_basis": 5786731,
+        "deposit": 902417,
+        "growth": 301007,
+        "opening": 5568922,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2027-07-01",
+      "flags": [
+       "partial:still_working_rmd_exception_not_modeled"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 3690000,
+       "wages.0": 3049726
+      },
+      "period_days": 365,
+      "rmd_total": 820979,
+      "shortfall": 0,
+      "spending": 6658288,
+      "surplus_deposit": 902417,
+      "withdrawals_total": 0,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 3121,
+        "deposit": 0,
+        "growth": 3121,
+        "opening": 312120,
+        "rmd": 0,
+        "withdrawal": 312120
+       },
+       "k401": {
+        "closing": 20501860,
+        "deposit": 0,
+        "growth": 996738,
+        "opening": 20364378,
+        "rmd": 859256,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 1157625,
+        "deposit": 0,
+        "growth": 55125,
+        "opening": 1102500,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 1153633,
+        "closing": 5727086,
+        "closing_basis": 4633098,
+        "deposit": 0,
+        "growth": 304864,
+        "opening": 6772346,
+        "realized_gain": 196491,
+        "rmd": 0,
+        "withdrawal": 1350124
+       }
+      },
+      "before_59_half": false,
+      "created_account": null,
+      "event_date": "2028-07-01",
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 3782250,
+       "wages.0": 0
+      },
+      "period_days": 366,
+      "rmd_total": 859256,
+      "shortfall": 0,
+      "spending": 6303750,
+      "surplus_deposit": 0,
+      "withdrawals_total": 1662244,
+      "year": 2028
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 300000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 1500000,
+       "id": "taxable",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "k401",
+       "opening_balance_cents": 20000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "employer_plan"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 3600000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": [
+       {
+        "amount": {
+         "cents": 6000000,
+         "dollar_basis": "today"
+        },
+        "end_date": "2027-07-01",
+        "start_date": "2000-01-01"
+       }
+      ]
+     },
+     "persons": [
+      {
+       "birth_date": "1952-04-01",
+       "id": "synthetic-person",
+       "plan_end_age": 76,
+       "retirement_date": "2027-07-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 7000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   }
+  }
+ },
+ "unit": {
+  "applicable_age": [
+   {
+    "applicable_age": 73,
+    "birth_date": "1951-01-01"
+   },
+   {
+    "applicable_age": 73,
+    "birth_date": "1958-12-31"
+   },
+   {
+    "applicable_age": 73,
+    "birth_date": "1959-06-30"
+   },
+   {
+    "applicable_age": 73,
+    "birth_date": "1959-12-31"
+   },
+   {
+    "applicable_age": 75,
+    "birth_date": "1960-01-01"
+   }
+  ],
+  "average_cost_basis": [
+   {
+    "basis": 12000000,
+    "basis_removed": 2000000,
+    "opening_value": 18000000,
+    "realized_gain": 1000000,
+    "withdrawal": 3000000
+   },
+   {
+    "basis": 12000000,
+    "basis_removed": 1200000,
+    "opening_value": 10000000,
+    "realized_gain": -200000,
+    "withdrawal": 1000000
+   },
+   {
+    "basis": 3000000,
+    "basis_removed": 1071428,
+    "opening_value": 7000001,
+    "realized_gain": 1428572,
+    "withdrawal": 2500000
+   }
+  ],
+  "benefit_start": [
+   {
+    "birth_date": "1966-07-15",
+    "first_day": "2033-08-01",
+    "start_age": 67
+   },
+   {
+    "birth_date": "1964-02-29",
+    "first_day": "2026-03-01",
+    "start_age": 62
+   },
+   {
+    "birth_date": "1960-12-05",
+    "first_day": "2028-01-01",
+    "start_age": 67
+   }
+  ],
+  "date_59_half": [
+   {
+    "birth_date": "1966-07-15",
+    "date": "2026-01-15"
+   },
+   {
+    "birth_date": "1967-08-31",
+    "date": "2027-02-28"
+   },
+   {
+    "birth_date": "1964-02-29",
+    "date": "2023-08-29"
+   },
+   {
+    "birth_date": "1967-01-01",
+    "date": "2026-07-01"
+   }
+  ],
+  "day_activation": [
+   {
+    "active_days": 195,
+    "annual_today_cents": 9000000,
+    "base_year": 2026,
+    "cents": 5440059,
+    "days_in_year": 365,
+    "inflation": "0.025",
+    "year": 2031
+   },
+   {
+    "active_days": 153,
+    "annual_today_cents": 3000000,
+    "base_year": 2026,
+    "cents": 1494813,
+    "days_in_year": 365,
+    "inflation": "0.025",
+    "year": 2033
+   },
+   {
+    "active_days": 200,
+    "annual_nominal_cents": 1500000,
+    "cents": 821918,
+    "days_in_year": 365,
+    "year": 2026
+   }
+  ],
+  "early_test_event_2026_07_01": [
+   {
+    "before_59_half": false,
+    "birth_date": "1967-01-01"
+   },
+   {
+    "before_59_half": true,
+    "birth_date": "1967-01-02"
+   },
+   {
+    "before_59_half": false,
+    "birth_date": "1966-12-31"
+   }
+  ],
+  "first_rmd_year": [
+   {
+    "birth_date": "1953-01-01",
+    "first_year": 2026
+   },
+   {
+    "birth_date": "1953-12-31",
+    "first_year": 2026
+   },
+   {
+    "birth_date": "1960-01-01",
+    "first_year": 2035
+   },
+   {
+    "birth_date": "1960-12-31",
+    "first_year": 2035
+   }
+  ],
+  "growth": [
+   {
+    "days_in_year": 365,
+    "growth": 450000,
+    "net_flow": -2000000,
+    "opening": 10000000,
+    "period_days": 365,
+    "rate": "0.05"
+   },
+   {
+    "days_in_year": 365,
+    "growth": 315068,
+    "net_flow": 3000000,
+    "opening": 10000000,
+    "period_days": 200,
+    "rate": "0.05"
+   },
+   {
+    "days_in_year": 365,
+    "growth": 15000,
+    "net_flow": -1000001,
+    "opening": 1000001,
+    "period_days": 365,
+    "rate": "0.03"
+   }
+  ],
+  "proportional_split": [
+   {
+    "amount": 1000001,
+    "available_in_input_order": [
+     3000000,
+     7000000
+    ],
+    "shares": [
+     300000,
+     700001
+    ]
+   },
+   {
+    "amount": 999,
+    "available_in_input_order": [
+     1,
+     2
+    ],
+    "shares": [
+     333,
+     666
+    ]
+   }
+  ],
+  "rmd_amount": [
+   {
+    "age": 73,
+    "divisor": "53/2",
+    "prior_year_end_cents": 50000000,
+    "rmd_cents": 1886792
+   },
+   {
+    "age": 75,
+    "divisor": "123/5",
+    "prior_year_end_cents": 50000000,
+    "rmd_cents": 2032520
+   },
+   {
+    "age": 90,
+    "divisor": "61/5",
+    "prior_year_end_cents": 12345678,
+    "rmd_cents": 1011941
+   },
+   {
+    "age": 121,
+    "divisor": "2",
+    "prior_year_end_cents": 1000000,
+    "rmd_cents": 500000
+   }
+  ]
+ }
+}

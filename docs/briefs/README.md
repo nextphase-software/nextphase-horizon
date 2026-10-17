@@ -50,4 +50,4 @@ that revision and does not name its own commit; the final branch tip is
 reported in the handoff message.
 ```
 
-Briefs: [0001-W1](0001-W1-engine-foundations.md) engine foundations.
+Briefs: [0001-W1](0001-W1-engine-foundations.md) engine foundations; [0001-W2](0001-W2-yearly-ledger.md) yearly ledger and funding order, with [reference values](0001-W2-reference-values.json).
