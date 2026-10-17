@@ -1,0 +1,5161 @@
+{
+ "derived": "2026-10-16. Exact rational arithmetic, derived independently of any implementation, under decisions 0003, 0004, 0005, 0006, 0008 and 0009. Commit unchanged; escalate if a value seems wrong.",
+ "law_2026_single": {
+  "additional_65_unmarried": 205000,
+  "brackets_cents": [
+   [
+    1240000,
+    "0.10"
+   ],
+   [
+    5040000,
+    "0.12"
+   ],
+   [
+    10570000,
+    "0.22"
+   ],
+   [
+    20177500,
+    "0.24"
+   ],
+   [
+    25622500,
+    "0.32"
+   ],
+   [
+    64060000,
+    "0.35"
+   ],
+   [
+    null,
+    "0.37"
+   ]
+  ],
+  "capital_gains_15_max": 54550000,
+  "capital_gains_zero_max": 4945000,
+  "capital_loss_limit": 300000,
+  "niit_magi_threshold": 20000000,
+  "senior_deduction": 600000,
+  "senior_last_year": 2028,
+  "senior_phaseout_start": 7500000,
+  "ss_adjusted_base": 3400000,
+  "ss_base": 2500000,
+  "standard_deduction": 1610000
+ },
+ "scenarios": {
+  "A-drawdown": {
+   "expected": {
+    "contributions_partial": false,
+    "status": "complete",
+    "withdrawal_order_used": "taxable_first",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 10000,
+        "deposit": 0,
+        "growth": 10000,
+        "opening": 1000000,
+        "rmd": 0,
+        "withdrawal": 1000000
+       },
+       "ira": {
+        "closing": 5056604,
+        "deposit": 0,
+        "growth": 245283,
+        "opening": 5000000,
+        "rmd": 188679,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 2100000,
+        "deposit": 0,
+        "growth": 100000,
+        "opening": 2000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 1607547,
+        "closing": 678396,
+        "closing_basis": 392453,
+        "deposit": 0,
+        "growth": 89717,
+        "opening": 3000000,
+        "realized_gain": 803774,
+        "rmd": 0,
+        "withdrawal": 2411321
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [
+       "estimate:rmd_prior_year_end_balance_not_provided:ira"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 2400000
+      },
+      "passes": 1,
+      "rmd_total": 188679,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6000000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 1002453,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "a",
+       "loss_carry_out": 0,
+       "net_capital": 803774,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 198679,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 2400000,
+       "standard_deduction": 1815000,
+       "tax_year": 2026,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 3411321,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 100,
+        "deposit": 0,
+        "growth": 100,
+        "opening": 10000,
+        "rmd": 0,
+        "withdrawal": 10000
+       },
+       "ira": {
+        "closing": 1959275,
+        "deposit": 0,
+        "growth": 171119,
+        "opening": 5056604,
+        "rmd": 198298,
+        "withdrawal": 3070150
+       },
+       "roth": {
+        "closing": 2205000,
+        "deposit": 0,
+        "growth": 105000,
+        "opening": 2100000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 392453,
+        "closing": 16960,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 16960,
+        "opening": 678396,
+        "realized_gain": 285943,
+        "rmd": 0,
+        "withdrawal": 678396
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 266844,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2460000
+      },
+      "passes": 11,
+      "rmd_total": 198298,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6150000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 5181308,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 285943,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 3268548,
+       "ordinary_tax": 266844,
+       "ordinary_taxable": 2435365,
+       "preferential": 285943,
+       "senior_deduction": 600000,
+       "social_security": 2460000,
+       "standard_deduction": 1860000,
+       "tax_year": 2027,
+       "taxable_income": 2721308,
+       "taxable_social_security": 1626817,
+       "total_tax": 266844
+      },
+      "withdrawals_total": 3758546,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 100,
+        "rmd": 0,
+        "withdrawal": 100
+       },
+       "ira": {
+        "closing": 48982,
+        "deposit": 0,
+        "growth": 48982,
+        "opening": 1959275,
+        "rmd": 79645,
+        "withdrawal": 1879630
+       },
+       "roth": {
+        "closing": 464187,
+        "deposit": 0,
+        "growth": 65102,
+        "opening": 2205000,
+        "rmd": 0,
+        "withdrawal": 1805915
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 424,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 424,
+        "opening": 16960,
+        "realized_gain": 16960,
+        "rmd": 0,
+        "withdrawal": 16960
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2521500
+      },
+      "passes": 1,
+      "rmd_total": 79645,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6303750,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 2344729,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 16960,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 1959276,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 2521500,
+       "standard_deduction": 1905000,
+       "tax_year": 2028,
+       "taxable_income": 0,
+       "taxable_social_security": 368493,
+       "total_tax": 0
+      },
+      "withdrawals_total": 3702605,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "ira": {
+        "closing": 1225,
+        "deposit": 0,
+        "growth": 1225,
+        "opening": 48982,
+        "rmd": 2067,
+        "withdrawal": 46915
+       },
+       "roth": {
+        "closing": 11605,
+        "deposit": 0,
+        "growth": 11605,
+        "opening": 464187,
+        "rmd": 0,
+        "withdrawal": 464187
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 11,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 11,
+        "opening": 424,
+        "realized_gain": 424,
+        "rmd": 0,
+        "withdrawal": 424
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2584538
+      },
+      "passes": 1,
+      "rmd_total": 2067,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 3363212,
+      "spending": 6461344,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 49406,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 424,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 48982,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2584538,
+       "standard_deduction": 1950000,
+       "tax_year": 2029,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 511527,
+      "year": 2029
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 31,
+        "deposit": 0,
+        "growth": 31,
+        "opening": 1225,
+        "rmd": 53,
+        "withdrawal": 1172
+       },
+       "roth": {
+        "closing": 290,
+        "deposit": 0,
+        "growth": 290,
+        "opening": 11605,
+        "rmd": 0,
+        "withdrawal": 11605
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 0,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 11,
+        "realized_gain": 11,
+        "rmd": 0,
+        "withdrawal": 11
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2649151
+      },
+      "passes": 1,
+      "rmd_total": 53,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 3960885,
+      "spending": 6622877,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 1236,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 11,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 1225,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2649151,
+       "standard_deduction": 2000000,
+       "tax_year": 2030,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 12788,
+      "year": 2030
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 31,
+        "rmd": 1,
+        "withdrawal": 30
+       },
+       "roth": {
+        "closing": 7,
+        "deposit": 0,
+        "growth": 7,
+        "opening": 290,
+        "rmd": 0,
+        "withdrawal": 290
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 0,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2715380
+      },
+      "passes": 1,
+      "rmd_total": 1,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 4072748,
+      "spending": 6788449,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 31,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 0,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 31,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2715380,
+       "standard_deduction": 2050000,
+       "tax_year": 2031,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 320,
+      "year": 2031
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   }
+  },
+  "A-drawdown-pass-limit-1": {
+   "expected": {
+    "contributions_partial": false,
+    "status": "partial",
+    "withdrawal_order_used": "taxable_first",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 10000,
+        "deposit": 0,
+        "growth": 10000,
+        "opening": 1000000,
+        "rmd": 0,
+        "withdrawal": 1000000
+       },
+       "ira": {
+        "closing": 5056604,
+        "deposit": 0,
+        "growth": 245283,
+        "opening": 5000000,
+        "rmd": 188679,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 2100000,
+        "deposit": 0,
+        "growth": 100000,
+        "opening": 2000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 1607547,
+        "closing": 678396,
+        "closing_basis": 392453,
+        "deposit": 0,
+        "growth": 89717,
+        "opening": 3000000,
+        "realized_gain": 803774,
+        "rmd": 0,
+        "withdrawal": 2411321
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [
+       "estimate:rmd_prior_year_end_balance_not_provided:ira"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 2400000
+      },
+      "passes": 1,
+      "rmd_total": 188679,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6000000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 1002453,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "a",
+       "loss_carry_out": 0,
+       "net_capital": 803774,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 198679,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 2400000,
+       "standard_deduction": 1815000,
+       "tax_year": 2026,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 3411321,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 100,
+        "deposit": 0,
+        "growth": 100,
+        "opening": 10000,
+        "rmd": 0,
+        "withdrawal": 10000
+       },
+       "ira": {
+        "closing": 2232790,
+        "deposit": 0,
+        "growth": 177790,
+        "opening": 5056604,
+        "rmd": 198298,
+        "withdrawal": 2803306
+       },
+       "roth": {
+        "closing": 2205000,
+        "deposit": 0,
+        "growth": 105000,
+        "opening": 2100000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 392453,
+        "closing": 16960,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 16960,
+        "opening": 678396,
+        "realized_gain": 285943,
+        "rmd": 0,
+        "withdrawal": 678396
+       }
+      },
+      "converged": false,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [
+       "partial:tax_funding_did_not_converge"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 2460000
+      },
+      "passes": 1,
+      "rmd_total": 198298,
+      "rounding_settlement": 0,
+      "settled_by": null,
+      "shortfall": 0,
+      "spending": 6150000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 4687647,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 285943,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 3001704,
+       "ordinary_tax": 207604,
+       "ordinary_taxable": 1941704,
+       "preferential": 285943,
+       "senior_deduction": 600000,
+       "social_security": 2460000,
+       "standard_deduction": 1860000,
+       "tax_year": 2027,
+       "taxable_income": 2227647,
+       "taxable_social_security": 1400000,
+       "total_tax": 207604
+      },
+      "withdrawals_total": 3491702,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 100,
+        "rmd": 0,
+        "withdrawal": 100
+       },
+       "ira": {
+        "closing": 55820,
+        "deposit": 0,
+        "growth": 55820,
+        "opening": 2232790,
+        "rmd": 90764,
+        "withdrawal": 2142026
+       },
+       "roth": {
+        "closing": 744540,
+        "deposit": 0,
+        "growth": 71940,
+        "opening": 2205000,
+        "rmd": 0,
+        "withdrawal": 1532400
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 424,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 424,
+        "opening": 16960,
+        "realized_gain": 16960,
+        "rmd": 0,
+        "withdrawal": 16960
+       }
+      },
+      "converged": false,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [
+       "partial:tax_funding_did_not_converge"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 2521500
+      },
+      "passes": 1,
+      "rmd_total": 90764,
+      "rounding_settlement": 0,
+      "settled_by": null,
+      "shortfall": 0,
+      "spending": 6303750,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 2793677,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 16960,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 2232791,
+       "ordinary_tax": 27172,
+       "ordinary_taxable": 271717,
+       "preferential": 16960,
+       "senior_deduction": 600000,
+       "social_security": 2521500,
+       "standard_deduction": 1905000,
+       "tax_year": 2028,
+       "taxable_income": 288677,
+       "taxable_social_security": 543926,
+       "total_tax": 27172
+      },
+      "withdrawals_total": 3691486,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "ira": {
+        "closing": 1396,
+        "deposit": 0,
+        "growth": 1396,
+        "opening": 55820,
+        "rmd": 2355,
+        "withdrawal": 53465
+       },
+       "roth": {
+        "closing": 18614,
+        "deposit": 0,
+        "growth": 18614,
+        "opening": 744540,
+        "rmd": 0,
+        "withdrawal": 744540
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 11,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 11,
+        "opening": 424,
+        "realized_gain": 424,
+        "rmd": 0,
+        "withdrawal": 424
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2584538
+      },
+      "passes": 1,
+      "rmd_total": 2355,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 3076021,
+      "spending": 6461344,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 56244,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 424,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 55820,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2584538,
+       "standard_deduction": 1950000,
+       "tax_year": 2029,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 798430,
+      "year": 2029
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 35,
+        "deposit": 0,
+        "growth": 35,
+        "opening": 1396,
+        "rmd": 61,
+        "withdrawal": 1335
+       },
+       "roth": {
+        "closing": 465,
+        "deposit": 0,
+        "growth": 465,
+        "opening": 18614,
+        "rmd": 0,
+        "withdrawal": 18614
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 0,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 11,
+        "realized_gain": 11,
+        "rmd": 0,
+        "withdrawal": 11
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2649151
+      },
+      "passes": 1,
+      "rmd_total": 61,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 3953705,
+      "spending": 6622877,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 1407,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 11,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 1396,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2649151,
+       "standard_deduction": 2000000,
+       "tax_year": 2030,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 19960,
+      "year": 2030
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 35,
+        "rmd": 2,
+        "withdrawal": 33
+       },
+       "roth": {
+        "closing": 12,
+        "deposit": 0,
+        "growth": 12,
+        "opening": 465,
+        "rmd": 0,
+        "withdrawal": 465
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 0,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2715380
+      },
+      "passes": 1,
+      "rmd_total": 2,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 4072569,
+      "spending": 6788449,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 35,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 0,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 35,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2715380,
+       "standard_deduction": 2050000,
+       "tax_year": 2031,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 498,
+      "year": 2031
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   },
+   "pass_limit": 1
+  },
+  "A-drawdown-proportional_taxable_tax_deferred": {
+   "expected": {
+    "contributions_partial": false,
+    "status": "complete",
+    "withdrawal_order_used": "proportional_taxable_tax_deferred",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 10000,
+        "deposit": 0,
+        "growth": 10000,
+        "opening": 1000000,
+        "rmd": 0,
+        "withdrawal": 1000000
+       },
+       "ira": {
+        "closing": 3534239,
+        "deposit": 0,
+        "growth": 208152,
+        "opening": 5000000,
+        "rmd": 188679,
+        "withdrawal": 1485234
+       },
+       "roth": {
+        "closing": 2100000,
+        "deposit": 0,
+        "growth": 100000,
+        "opening": 2000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 617391,
+        "closing": 2200761,
+        "closing_basis": 1382609,
+        "deposit": 0,
+        "growth": 126848,
+        "opening": 3000000,
+        "realized_gain": 308696,
+        "rmd": 0,
+        "withdrawal": 926087
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [
+       "estimate:rmd_prior_year_end_balance_not_provided:ira"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 2400000
+      },
+      "passes": 1,
+      "rmd_total": 188679,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6000000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 2338914,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "a",
+       "loss_carry_out": 0,
+       "net_capital": 308696,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 1683913,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 2400000,
+       "standard_deduction": 1815000,
+       "tax_year": 2026,
+       "taxable_income": 0,
+       "taxable_social_security": 346305,
+       "total_tax": 0
+      },
+      "withdrawals_total": 3411321,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 100,
+        "deposit": 0,
+        "growth": 100,
+        "opening": 10000,
+        "rmd": 0,
+        "withdrawal": 10000
+       },
+       "ira": {
+        "closing": 1308334,
+        "deposit": 0,
+        "growth": 118112,
+        "opening": 3534239,
+        "rmd": 138598,
+        "withdrawal": 2205419
+       },
+       "roth": {
+        "closing": 2205000,
+        "deposit": 0,
+        "growth": 105000,
+        "opening": 2100000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 897984,
+        "closing": 845703,
+        "closing_basis": 484625,
+        "deposit": 0,
+        "growth": 74304,
+        "opening": 2200761,
+        "realized_gain": 531378,
+        "rmd": 0,
+        "withdrawal": 1429362
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 93379,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2460000
+      },
+      "passes": 8,
+      "rmd_total": 138598,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6150000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 3925166,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 531378,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 2344117,
+       "ordinary_tax": 93379,
+       "ordinary_taxable": 933788,
+       "preferential": 531378,
+       "senior_deduction": 600000,
+       "social_security": 2460000,
+       "standard_deduction": 1860000,
+       "tax_year": 2027,
+       "taxable_income": 1465166,
+       "taxable_social_security": 1049671,
+       "total_tax": 93379
+      },
+      "withdrawals_total": 3644781,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 100,
+        "rmd": 0,
+        "withdrawal": 100
+       },
+       "ira": {
+        "closing": 32708,
+        "deposit": 0,
+        "growth": 32708,
+        "opening": 1308334,
+        "rmd": 53184,
+        "withdrawal": 1255150
+       },
+       "roth": {
+        "closing": 646434,
+        "deposit": 0,
+        "growth": 69547,
+        "opening": 2205000,
+        "rmd": 0,
+        "withdrawal": 1628113
+       },
+       "taxable": {
+        "basis_removed": 484625,
+        "closing": 21143,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 21143,
+        "opening": 845703,
+        "realized_gain": 361078,
+        "rmd": 0,
+        "withdrawal": 845703
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2521500
+      },
+      "passes": 1,
+      "rmd_total": 53184,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6303750,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 1884495,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 361078,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 1308335,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 2521500,
+       "standard_deduction": 1905000,
+       "tax_year": 2028,
+       "taxable_income": 0,
+       "taxable_social_security": 215082,
+       "total_tax": 0
+      },
+      "withdrawals_total": 3729066,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "ira": {
+        "closing": 818,
+        "deposit": 0,
+        "growth": 818,
+        "opening": 32708,
+        "rmd": 1380,
+        "withdrawal": 31328
+       },
+       "roth": {
+        "closing": 16161,
+        "deposit": 0,
+        "growth": 16161,
+        "opening": 646434,
+        "rmd": 0,
+        "withdrawal": 646434
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 529,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 529,
+        "opening": 21143,
+        "realized_gain": 21143,
+        "rmd": 0,
+        "withdrawal": 21143
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2584538
+      },
+      "passes": 1,
+      "rmd_total": 1380,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 3176520,
+      "spending": 6461344,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 53851,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 21143,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 32708,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2584538,
+       "standard_deduction": 1950000,
+       "tax_year": 2029,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 698906,
+      "year": 2029
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 20,
+        "deposit": 0,
+        "growth": 20,
+        "opening": 818,
+        "rmd": 36,
+        "withdrawal": 782
+       },
+       "roth": {
+        "closing": 404,
+        "deposit": 0,
+        "growth": 404,
+        "opening": 16161,
+        "rmd": 0,
+        "withdrawal": 16161
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 13,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 13,
+        "opening": 529,
+        "realized_gain": 529,
+        "rmd": 0,
+        "withdrawal": 529
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2649151
+      },
+      "passes": 1,
+      "rmd_total": 36,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 3956218,
+      "spending": 6622877,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 1347,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 529,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 818,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2649151,
+       "standard_deduction": 2000000,
+       "tax_year": 2030,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 17472,
+      "year": 2030
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 20,
+        "rmd": 1,
+        "withdrawal": 19
+       },
+       "roth": {
+        "closing": 10,
+        "deposit": 0,
+        "growth": 10,
+        "opening": 404,
+        "rmd": 0,
+        "withdrawal": 404
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 0,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 13,
+        "realized_gain": 13,
+        "rmd": 0,
+        "withdrawal": 13
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2715380
+      },
+      "passes": 1,
+      "rmd_total": 1,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 4072632,
+      "spending": 6788449,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 33,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 13,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 20,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2715380,
+       "standard_deduction": 2050000,
+       "tax_year": 2031,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 436,
+      "year": 2031
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01",
+     "withdrawal_order": "proportional_taxable_tax_deferred"
+    }
+   }
+  },
+  "A-drawdown-roth_before_tax_deferred": {
+   "expected": {
+    "contributions_partial": false,
+    "status": "complete",
+    "withdrawal_order_used": "roth_before_tax_deferred",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 10000,
+        "deposit": 0,
+        "growth": 10000,
+        "opening": 1000000,
+        "rmd": 0,
+        "withdrawal": 1000000
+       },
+       "ira": {
+        "closing": 5056604,
+        "deposit": 0,
+        "growth": 245283,
+        "opening": 5000000,
+        "rmd": 188679,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 2100000,
+        "deposit": 0,
+        "growth": 100000,
+        "opening": 2000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 1607547,
+        "closing": 678396,
+        "closing_basis": 392453,
+        "deposit": 0,
+        "growth": 89717,
+        "opening": 3000000,
+        "realized_gain": 803774,
+        "rmd": 0,
+        "withdrawal": 2411321
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [
+       "estimate:rmd_prior_year_end_balance_not_provided:ira"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 2400000
+      },
+      "passes": 1,
+      "rmd_total": 188679,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6000000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 1002453,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "a",
+       "loss_carry_out": 0,
+       "net_capital": 803774,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 198679,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 2400000,
+       "standard_deduction": 1815000,
+       "tax_year": 2026,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 3411321,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 100,
+        "deposit": 0,
+        "growth": 100,
+        "opening": 10000,
+        "rmd": 0,
+        "withdrawal": 10000
+       },
+       "ira": {
+        "closing": 4385290,
+        "deposit": 0,
+        "growth": 230290,
+        "opening": 5056604,
+        "rmd": 198298,
+        "withdrawal": 703306
+       },
+       "roth": {
+        "closing": 52500,
+        "deposit": 0,
+        "growth": 52500,
+        "opening": 2100000,
+        "rmd": 0,
+        "withdrawal": 2100000
+       },
+       "taxable": {
+        "basis_removed": 392453,
+        "closing": 16960,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 16960,
+        "opening": 678396,
+        "realized_gain": 285943,
+        "rmd": 0,
+        "withdrawal": 678396
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2460000
+      },
+      "passes": 1,
+      "rmd_total": 198298,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6150000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 1187647,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 285943,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 901704,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 2460000,
+       "standard_deduction": 1860000,
+       "tax_year": 2027,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 3491702,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 100,
+        "rmd": 0,
+        "withdrawal": 100
+       },
+       "ira": {
+        "closing": 360958,
+        "deposit": 0,
+        "growth": 115762,
+        "opening": 4385290,
+        "rmd": 178264,
+        "withdrawal": 3961830
+       },
+       "roth": {
+        "closing": 1313,
+        "deposit": 0,
+        "growth": 1313,
+        "opening": 52500,
+        "rmd": 0,
+        "withdrawal": 52500
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 424,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 424,
+        "opening": 16960,
+        "realized_gain": 16960,
+        "rmd": 0,
+        "withdrawal": 16960
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 427404,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2521500
+      },
+      "passes": 8,
+      "rmd_total": 178264,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6303750,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 6300330,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 16960,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 4140095,
+       "ordinary_tax": 427404,
+       "ordinary_taxable": 3778370,
+       "preferential": 16960,
+       "senior_deduction": 600000,
+       "social_security": 2521500,
+       "standard_deduction": 1905000,
+       "tax_year": 2028,
+       "taxable_income": 3795330,
+       "taxable_social_security": 2143275,
+       "total_tax": 427404
+      },
+      "withdrawals_total": 4031390,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "ira": {
+        "closing": 9024,
+        "deposit": 0,
+        "growth": 9024,
+        "opening": 360958,
+        "rmd": 15230,
+        "withdrawal": 345728
+       },
+       "roth": {
+        "closing": 33,
+        "deposit": 0,
+        "growth": 33,
+        "opening": 1313,
+        "rmd": 0,
+        "withdrawal": 1313
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 11,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 11,
+        "opening": 424,
+        "realized_gain": 424,
+        "rmd": 0,
+        "withdrawal": 424
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2584538
+      },
+      "passes": 1,
+      "rmd_total": 15230,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 3514110,
+      "spending": 6461344,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 361382,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 424,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 360958,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2584538,
+       "standard_deduction": 1950000,
+       "tax_year": 2029,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 347466,
+      "year": 2029
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 226,
+        "deposit": 0,
+        "growth": 226,
+        "opening": 9024,
+        "rmd": 394,
+        "withdrawal": 8630
+       },
+       "roth": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 33,
+        "rmd": 0,
+        "withdrawal": 33
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 0,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 11,
+        "realized_gain": 11,
+        "rmd": 0,
+        "withdrawal": 11
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2649151
+      },
+      "passes": 1,
+      "rmd_total": 394,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 3964658,
+      "spending": 6622877,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 9035,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 11,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 9024,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2649151,
+       "standard_deduction": 2000000,
+       "tax_year": 2030,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 8674,
+      "year": 2030
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 6,
+        "deposit": 0,
+        "growth": 6,
+        "opening": 226,
+        "rmd": 10,
+        "withdrawal": 216
+       },
+       "roth": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 0,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2715380
+      },
+      "passes": 1,
+      "rmd_total": 10,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 4072842,
+      "spending": 6788449,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 226,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 0,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 226,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2715380,
+       "standard_deduction": 2050000,
+       "tax_year": 2031,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 217,
+      "year": 2031
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01",
+     "withdrawal_order": "roth_before_tax_deferred"
+    }
+   }
+  },
+  "A-drawdown-tax_deferred_first": {
+   "expected": {
+    "contributions_partial": false,
+    "status": "complete",
+    "withdrawal_order_used": "tax_deferred_first",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 10000,
+        "deposit": 0,
+        "growth": 10000,
+        "opening": 1000000,
+        "rmd": 0,
+        "withdrawal": 1000000
+       },
+       "ira": {
+        "closing": 2460050,
+        "deposit": 0,
+        "growth": 181952,
+        "opening": 5000000,
+        "rmd": 188679,
+        "withdrawal": 2533223
+       },
+       "roth": {
+        "closing": 2100000,
+        "deposit": 0,
+        "growth": 100000,
+        "opening": 2000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 3150000,
+        "closing_basis": 2000000,
+        "deposit": 0,
+        "growth": 150000,
+        "opening": 3000000,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 121902,
+      "flags": [
+       "estimate:rmd_prior_year_end_balance_not_provided:ira"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 2400000
+      },
+      "passes": 9,
+      "rmd_total": 188679,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6000000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 3634019,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "a",
+       "loss_carry_out": 0,
+       "net_capital": 0,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 2731902,
+       "ordinary_tax": 121902,
+       "ordinary_taxable": 1219019,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 2400000,
+       "standard_deduction": 1815000,
+       "tax_year": 2026,
+       "taxable_income": 1219019,
+       "taxable_social_security": 902117,
+       "total_tax": 121902
+      },
+      "withdrawals_total": 3533223,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 100,
+        "deposit": 0,
+        "growth": 100,
+        "opening": 10000,
+        "rmd": 0,
+        "withdrawal": 10000
+       },
+       "ira": {
+        "closing": 61501,
+        "deposit": 0,
+        "growth": 61501,
+        "opening": 2460050,
+        "rmd": 96473,
+        "withdrawal": 2363577
+       },
+       "roth": {
+        "closing": 2205000,
+        "deposit": 0,
+        "growth": 105000,
+        "opening": 2100000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 845034,
+        "closing": 1943298,
+        "closing_basis": 1154966,
+        "deposit": 0,
+        "growth": 124227,
+        "opening": 3150000,
+        "realized_gain": 485895,
+        "rmd": 0,
+        "withdrawal": 1330929
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 110979,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2460000
+      },
+      "passes": 5,
+      "rmd_total": 96473,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6150000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 4055683,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 485895,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 2460150,
+       "ordinary_tax": 110979,
+       "ordinary_taxable": 1109788,
+       "preferential": 485895,
+       "senior_deduction": 600000,
+       "social_security": 2460000,
+       "standard_deduction": 1860000,
+       "tax_year": 2027,
+       "taxable_income": 1595683,
+       "taxable_social_security": 1109638,
+       "total_tax": 110979
+      },
+      "withdrawals_total": 3704506,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 100,
+        "rmd": 0,
+        "withdrawal": 100
+       },
+       "ira": {
+        "closing": 1538,
+        "deposit": 0,
+        "growth": 1538,
+        "opening": 61501,
+        "rmd": 2500,
+        "withdrawal": 59001
+       },
+       "roth": {
+        "closing": 493465,
+        "deposit": 0,
+        "growth": 65816,
+        "opening": 2205000,
+        "rmd": 0,
+        "withdrawal": 1777351
+       },
+       "taxable": {
+        "basis_removed": 1154966,
+        "closing": 48582,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 48582,
+        "opening": 1943298,
+        "realized_gain": 788332,
+        "rmd": 0,
+        "withdrawal": 1943298
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2521500
+      },
+      "passes": 1,
+      "rmd_total": 2500,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6303750,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 849834,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 788332,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 61502,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 2521500,
+       "standard_deduction": 1905000,
+       "tax_year": 2028,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 3779750,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "ira": {
+        "closing": 38,
+        "deposit": 0,
+        "growth": 38,
+        "opening": 1538,
+        "rmd": 65,
+        "withdrawal": 1473
+       },
+       "roth": {
+        "closing": 12337,
+        "deposit": 0,
+        "growth": 12337,
+        "opening": 493465,
+        "rmd": 0,
+        "withdrawal": 493465
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 1215,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 1215,
+        "opening": 48582,
+        "realized_gain": 48582,
+        "rmd": 0,
+        "withdrawal": 48582
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2584538
+      },
+      "passes": 1,
+      "rmd_total": 65,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 3333220,
+      "spending": 6461344,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 50120,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 48582,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 1538,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2584538,
+       "standard_deduction": 1950000,
+       "tax_year": 2029,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 543521,
+      "year": 2029
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 38,
+        "rmd": 2,
+        "withdrawal": 36
+       },
+       "roth": {
+        "closing": 308,
+        "deposit": 0,
+        "growth": 308,
+        "opening": 12337,
+        "rmd": 0,
+        "withdrawal": 12337
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 30,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 30,
+        "opening": 1215,
+        "realized_gain": 1215,
+        "rmd": 0,
+        "withdrawal": 1215
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2649151
+      },
+      "passes": 1,
+      "rmd_total": 2,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 3960136,
+      "spending": 6622877,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 1253,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 1215,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 38,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2649151,
+       "standard_deduction": 2000000,
+       "tax_year": 2030,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 13588,
+      "year": 2030
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "roth": {
+        "closing": 8,
+        "deposit": 0,
+        "growth": 8,
+        "opening": 308,
+        "rmd": 0,
+        "withdrawal": 308
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 1,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 30,
+        "realized_gain": 30,
+        "rmd": 0,
+        "withdrawal": 30
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 2715380
+      },
+      "passes": 1,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 4072730,
+      "spending": 6788449,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 31,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 30,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 1,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 2715380,
+       "standard_deduction": 2050000,
+       "tax_year": 2031,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 339,
+      "year": 2031
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01",
+     "withdrawal_order": "tax_deferred_first"
+    }
+   }
+  },
+  "B-early-retiree": {
+   "expected": {
+    "contributions_partial": true,
+    "status": "partial",
+    "withdrawal_order_used": "taxable_first",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 510000,
+        "deposit": 0,
+        "growth": 10000,
+        "opening": 500000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "k401": {
+        "closing": 31500000,
+        "deposit": 0,
+        "growth": 1500000,
+        "opening": 30000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 5250000,
+        "deposit": 0,
+        "growth": 250000,
+        "opening": 5000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 10937305,
+        "closing_basis": 9524200,
+        "deposit": 4524200,
+        "growth": 413105,
+        "opening": 6000000,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 2475800,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 0,
+       "wages.0": 15000000
+      },
+      "passes": 2,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 8000000,
+      "surplus_deposit": 4524200,
+      "tax": {
+       "agi": 15010000,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "a",
+       "loss_carry_out": 0,
+       "net_capital": 0,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 15010000,
+       "ordinary_tax": 2475800,
+       "ordinary_taxable": 13400000,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 0,
+       "standard_deduction": 1610000,
+       "tax_year": 2026,
+       "taxable_income": 13400000,
+       "taxable_social_security": 0,
+       "total_tax": 2475800
+      },
+      "withdrawals_total": 0,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 5100,
+        "deposit": 0,
+        "growth": 5100,
+        "opening": 510000,
+        "rmd": 0,
+        "withdrawal": 510000
+       },
+       "k401": {
+        "closing": 33075000,
+        "deposit": 0,
+        "growth": 1575000,
+        "opening": 31500000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 5512500,
+        "deposit": 0,
+        "growth": 262500,
+        "opening": 5250000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 5803879,
+        "closing": 4652545,
+        "closing_basis": 3720321,
+        "deposit": 0,
+        "growth": 380240,
+        "opening": 10937305,
+        "realized_gain": 861121,
+        "rmd": 0,
+        "withdrawal": 6665000
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 0,
+       "wages.0": 0
+      },
+      "passes": 1,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 7175000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 866221,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 861121,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 5100,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 0,
+       "standard_deduction": 1650000,
+       "tax_year": 2027,
+       "taxable_income": 0,
+       "taxable_social_security": 0,
+       "total_tax": 0
+      },
+      "withdrawals_total": 7175000,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 51,
+        "deposit": 0,
+        "growth": 51,
+        "opening": 5100,
+        "rmd": 0,
+        "withdrawal": 5100
+       },
+       "k401": {
+        "closing": 31485628,
+        "deposit": 0,
+        "growth": 1574649,
+        "opening": 33075000,
+        "rmd": 0,
+        "withdrawal": 3164021
+       },
+       "roth": {
+        "closing": 5788125,
+        "deposit": 0,
+        "growth": 275625,
+        "opening": 5512500,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 3720321,
+        "closing": 116314,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 116314,
+        "opening": 4652545,
+        "realized_gain": 932224,
+        "rmd": 0,
+        "withdrawal": 4652545
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 467291,
+      "flags": [
+       "partial:early_distribution_exceptions_not_modeled"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 0,
+       "wages.0": 0
+      },
+      "passes": 11,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 7354375,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 4096296,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 316402,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 932224,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 3164072,
+       "ordinary_tax": 150889,
+       "ordinary_taxable": 1474072,
+       "preferential": 932224,
+       "senior_deduction": 0,
+       "social_security": 0,
+       "standard_deduction": 1690000,
+       "tax_year": 2028,
+       "taxable_income": 2406296,
+       "taxable_social_security": 0,
+       "total_tax": 467291
+      },
+      "withdrawals_total": 7821666,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 1,
+        "deposit": 0,
+        "growth": 1,
+        "opening": 51,
+        "rmd": 0,
+        "withdrawal": 51
+       },
+       "k401": {
+        "closing": 23277917,
+        "deposit": 0,
+        "growth": 1335696,
+        "opening": 31485628,
+        "rmd": 0,
+        "withdrawal": 9543407
+       },
+       "roth": {
+        "closing": 6077531,
+        "deposit": 0,
+        "growth": 289406,
+        "opening": 5788125,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 2908,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 2908,
+        "opening": 116314,
+        "realized_gain": 116314,
+        "rmd": 0,
+        "withdrawal": 116314
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 2121538,
+      "flags": [
+       "partial:early_distribution_exceptions_not_modeled"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 0,
+       "wages.0": 0
+      },
+      "passes": 16,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 7538234,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 9659722,
+       "capital_gains_tax": 17447,
+       "early_distribution_tax": 954341,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 116314,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 9543408,
+       "ordinary_tax": 1149750,
+       "ordinary_taxable": 7813408,
+       "preferential": 116314,
+       "senior_deduction": 0,
+       "social_security": 0,
+       "standard_deduction": 1730000,
+       "tax_year": 2029,
+       "taxable_income": 7929722,
+       "taxable_social_security": 0,
+       "total_tax": 2121538
+      },
+      "withdrawals_total": 9659772,
+      "year": 2029
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 1,
+        "rmd": 0,
+        "withdrawal": 1
+       },
+       "k401": {
+        "closing": 14266553,
+        "deposit": 0,
+        "growth": 915719,
+        "opening": 23277917,
+        "rmd": 0,
+        "withdrawal": 9927083
+       },
+       "roth": {
+        "closing": 6381408,
+        "deposit": 0,
+        "growth": 303877,
+        "opening": 6077531,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 73,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 73,
+        "opening": 2908,
+        "realized_gain": 2908,
+        "rmd": 0,
+        "withdrawal": 2908
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 2203302,
+      "flags": [
+       "partial:early_distribution_exceptions_not_modeled"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 0,
+       "wages.0": 0
+      },
+      "passes": 14,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 7726690,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 9929991,
+       "capital_gains_tax": 436,
+       "early_distribution_tax": 992708,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 2908,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 9927083,
+       "ordinary_tax": 1210158,
+       "ordinary_taxable": 8152083,
+       "preferential": 2908,
+       "senior_deduction": 0,
+       "social_security": 0,
+       "standard_deduction": 1775000,
+       "tax_year": 2030,
+       "taxable_income": 8154991,
+       "taxable_social_security": 0,
+       "total_tax": 2203302
+      },
+      "withdrawals_total": 9929992,
+      "year": 2030
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 500000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 5000000,
+       "id": "taxable",
+       "opening_balance_cents": 6000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "k401",
+       "opening_balance_cents": 30000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "employer_plan"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2800000,
+        "dollar_basis": "today"
+       },
+       "start_age": 67
+      },
+      "wages": [
+       {
+        "amount": {
+         "cents": 15000000,
+         "dollar_basis": "today"
+        },
+        "end_date": "2027-01-01",
+        "start_date": "2010-01-01"
+       }
+      ]
+     },
+     "persons": [
+      {
+       "birth_date": "1975-05-20",
+       "id": "synthetic-person",
+       "plan_end_age": 55,
+       "retirement_date": "2027-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 7000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 8000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   }
+  },
+  "C-partial-base-year-no-taxable": {
+   "expected": {
+    "contributions_partial": true,
+    "status": "partial",
+    "withdrawal_order_used": "taxable_first",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 804384,
+        "deposit": 0,
+        "growth": 4384,
+        "opening": 800000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 12263014,
+        "deposit": 0,
+        "growth": 263014,
+        "opening": 12000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 3065753,
+        "deposit": 0,
+        "growth": 65753,
+        "opening": 3000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "surplus-taxable": {
+        "basis_removed": 0,
+        "closing": 1460706,
+        "closing_basis": 1444872,
+        "deposit": 1444872,
+        "growth": 15834,
+        "opening": 0,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "converged": true,
+      "created_account": "surplus-taxable",
+      "federal_tax_paid": 472937,
+      "flags": [
+       "estimate:base_year_tax_covers_projected_period_only"
+      ],
+      "income": {
+       "pension": 821918,
+       "social_security": 0,
+       "wages.0": 4931507
+      },
+      "passes": 2,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 3835616,
+      "surplus_deposit": 1444872,
+      "tax": {
+       "agi": 5757809,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "a",
+       "loss_carry_out": 0,
+       "net_capital": 0,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 5757809,
+       "ordinary_tax": 472937,
+       "ordinary_taxable": 4147809,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 0,
+       "standard_deduction": 1610000,
+       "tax_year": 2026,
+       "taxable_income": 4147809,
+       "taxable_social_security": 0,
+       "total_tax": 472937
+      },
+      "withdrawals_total": 0,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 812428,
+        "deposit": 0,
+        "growth": 8044,
+        "opening": 804384,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 12753535,
+        "deposit": 0,
+        "growth": 490521,
+        "opening": 12263014,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 3188383,
+        "deposit": 0,
+        "growth": 122630,
+        "opening": 3065753,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "surplus-taxable": {
+        "basis_removed": 0,
+        "closing": 3654688,
+        "closing_basis": 3538552,
+        "deposit": 2093680,
+        "growth": 100302,
+        "opening": 1460706,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 1461320,
+      "flags": [],
+      "income": {
+       "pension": 1500000,
+       "social_security": 0,
+       "wages.0": 9247500
+      },
+      "passes": 2,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 7192500,
+      "surplus_deposit": 2093680,
+      "tax": {
+       "agi": 10755544,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 0,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 10755544,
+       "ordinary_tax": 1461320,
+       "ordinary_taxable": 9105544,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 0,
+       "standard_deduction": 1650000,
+       "tax_year": 2027,
+       "taxable_income": 9105544,
+       "taxable_social_security": 0,
+       "total_tax": 1461320
+      },
+      "withdrawals_total": 0,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 4062,
+        "deposit": 0,
+        "growth": 4062,
+        "opening": 812428,
+        "rmd": 0,
+        "withdrawal": 812428
+       },
+       "ira": {
+        "closing": 13263676,
+        "deposit": 0,
+        "growth": 510141,
+        "opening": 12753535,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 3315918,
+        "deposit": 0,
+        "growth": 127535,
+        "opening": 3188383,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "surplus-taxable": {
+        "basis_removed": 3115218,
+        "closing": 519066,
+        "closing_basis": 423334,
+        "deposit": 0,
+        "growth": 81838,
+        "opening": 3654688,
+        "realized_gain": 102242,
+        "rmd": 0,
+        "withdrawal": 3217460
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 138608,
+      "flags": [],
+      "income": {
+       "pension": 1500000,
+       "social_security": 0,
+       "wages.0": 1557673
+      },
+      "passes": 2,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6948953,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 3163977,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 102242,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 3061735,
+       "ordinary_tax": 138608,
+       "ordinary_taxable": 1371735,
+       "preferential": 102242,
+       "senior_deduction": 0,
+       "social_security": 0,
+       "standard_deduction": 1690000,
+       "tax_year": 2028,
+       "taxable_income": 1473977,
+       "taxable_social_security": 0,
+       "total_tax": 138608
+      },
+      "withdrawals_total": 4029888,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 20,
+        "deposit": 0,
+        "growth": 20,
+        "opening": 4062,
+        "rmd": 0,
+        "withdrawal": 4062
+       },
+       "ira": {
+        "closing": 8059845,
+        "deposit": 0,
+        "growth": 418108,
+        "opening": 13263676,
+        "rmd": 0,
+        "withdrawal": 5621939
+       },
+       "roth": {
+        "closing": 3448555,
+        "deposit": 0,
+        "growth": 132637,
+        "opening": 3315918,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "surplus-taxable": {
+        "basis_removed": 423334,
+        "closing": 10381,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 10381,
+        "opening": 519066,
+        "realized_gain": 95732,
+        "rmd": 0,
+        "withdrawal": 519066
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 593935,
+      "flags": [],
+      "income": {
+       "pension": 1500000,
+       "social_security": 0,
+       "wages.0": 0
+      },
+      "passes": 8,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 7051132,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 7217691,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 95732,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 7121959,
+       "ordinary_tax": 593935,
+       "ordinary_taxable": 5171959,
+       "preferential": 95732,
+       "senior_deduction": 0,
+       "social_security": 0,
+       "standard_deduction": 1950000,
+       "tax_year": 2029,
+       "taxable_income": 5267691,
+       "taxable_social_security": 0,
+       "total_tax": 593935
+      },
+      "withdrawals_total": 6145067,
+      "year": 2029
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.01"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.0275"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.04"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 800000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 12000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 1500000,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 62
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2600000,
+        "dollar_basis": "today"
+       },
+       "start_age": 67
+      },
+      "wages": [
+       {
+        "amount": {
+         "cents": 9000000,
+         "dollar_basis": "today"
+        },
+        "end_date": "2028-03-01",
+        "start_date": "2015-01-01"
+       }
+      ]
+     },
+     "persons": [
+      {
+       "birth_date": "1964-02-29",
+       "id": "synthetic-person",
+       "plan_end_age": 65,
+       "retirement_date": "2028-03-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6500000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 7000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-06-15"
+    }
+   }
+  },
+  "D-still-working-rmd-surplus": {
+   "expected": {
+    "contributions_partial": true,
+    "status": "partial",
+    "withdrawal_order_used": "taxable_first",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 306000,
+        "deposit": 0,
+        "growth": 6000,
+        "opening": 300000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "k401": {
+        "closing": 20196078,
+        "deposit": 0,
+        "growth": 980392,
+        "opening": 20000000,
+        "rmd": 784314,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 1050000,
+        "deposit": 0,
+        "growth": 50000,
+        "opening": 1000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 4402479,
+        "closing_basis": 3746321,
+        "deposit": 2246321,
+        "growth": 156158,
+        "opening": 2000000,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 1137993,
+      "flags": [
+       "estimate:rmd_prior_year_end_balance_not_provided:k401",
+       "partial:still_working_rmd_exception_not_modeled"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 3600000,
+       "wages.0": 6000000
+      },
+      "passes": 2,
+      "rmd_total": 784314,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 7000000,
+      "surplus_deposit": 2246321,
+      "tax": {
+       "agi": 9850314,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "a",
+       "loss_carry_out": 0,
+       "net_capital": 0,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 6790314,
+       "ordinary_tax": 1137993,
+       "ordinary_taxable": 7576333,
+       "preferential": 0,
+       "senior_deduction": 458981,
+       "social_security": 3600000,
+       "standard_deduction": 1815000,
+       "tax_year": 2026,
+       "taxable_income": 7576333,
+       "taxable_social_security": 3060000,
+       "total_tax": 1137993
+      },
+      "withdrawals_total": 0,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 312120,
+        "deposit": 0,
+        "growth": 6120,
+        "opening": 306000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "k401": {
+        "closing": 20364378,
+        "deposit": 0,
+        "growth": 989279,
+        "opening": 20196078,
+        "rmd": 820979,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 1102500,
+        "deposit": 0,
+        "growth": 52500,
+        "opening": 1050000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 0,
+        "closing": 5101249,
+        "closing_basis": 4213293,
+        "deposit": 466972,
+        "growth": 231798,
+        "opening": 4402479,
+        "realized_gain": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 435445,
+      "flags": [
+       "partial:still_working_rmd_exception_not_modeled"
+      ],
+      "income": {
+       "pension": 0,
+       "social_security": 3690000,
+       "wages.0": 3049726
+      },
+      "passes": 2,
+      "rmd_total": 820979,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6658288,
+      "surplus_deposit": 466972,
+      "tax": {
+       "agi": 6300376,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 0,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 3876825,
+       "ordinary_tax": 435445,
+       "ordinary_taxable": 3840376,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 3690000,
+       "standard_deduction": 1860000,
+       "tax_year": 2027,
+       "taxable_income": 3840376,
+       "taxable_social_security": 2423551,
+       "total_tax": 435445
+      },
+      "withdrawals_total": 0,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 3121,
+        "deposit": 0,
+        "growth": 3121,
+        "opening": 312120,
+        "rmd": 0,
+        "withdrawal": 312120
+       },
+       "k401": {
+        "closing": 20501860,
+        "deposit": 0,
+        "growth": 996738,
+        "opening": 20364378,
+        "rmd": 859256,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 1157625,
+        "deposit": 0,
+        "growth": 55125,
+        "opening": 1102500,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 1115113,
+        "closing": 3972434,
+        "closing_basis": 3098180,
+        "deposit": 0,
+        "growth": 221309,
+        "opening": 5101249,
+        "realized_gain": 235011,
+        "rmd": 0,
+        "withdrawal": 1350124
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 0,
+       "social_security": 3782250,
+       "wages.0": 0
+      },
+      "passes": 1,
+      "rmd_total": 859256,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 6303750,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 1341645,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 0,
+       "net_capital": 235011,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 862377,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 3782250,
+       "standard_deduction": 1905000,
+       "tax_year": 2028,
+       "taxable_income": 0,
+       "taxable_social_security": 244257,
+       "total_tax": 0
+      },
+      "withdrawals_total": 1662244,
+      "year": 2028
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 300000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 1500000,
+       "id": "taxable",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "k401",
+       "opening_balance_cents": 20000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "employer_plan"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 3600000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": [
+       {
+        "amount": {
+         "cents": 6000000,
+         "dollar_basis": "today"
+        },
+        "end_date": "2027-07-01",
+        "start_date": "2000-01-01"
+       }
+      ]
+     },
+     "persons": [
+      {
+       "birth_date": "1952-04-01",
+       "id": "synthetic-person",
+       "plan_end_age": 76,
+       "retirement_date": "2027-07-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 7000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   }
+  },
+  "E-senior-2028-loss-carry": {
+   "expected": {
+    "contributions_partial": false,
+    "status": "complete",
+    "withdrawal_order_used": "taxable_first",
+    "years": [
+     {
+      "accounts": {
+       "cash": {
+        "closing": 20000,
+        "deposit": 0,
+        "growth": 20000,
+        "opening": 2000000,
+        "rmd": 0,
+        "withdrawal": 2000000
+       },
+       "ira": {
+        "closing": 41600000,
+        "deposit": 0,
+        "growth": 1600000,
+        "opening": 40000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 6240000,
+        "deposit": 0,
+        "growth": 240000,
+        "opening": 6000000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 20188,
+        "closing": 8305024,
+        "closing_basis": 10979812,
+        "deposit": 0,
+        "growth": 319706,
+        "opening": 8000000,
+        "realized_gain": -5506,
+        "rmd": 0,
+        "withdrawal": 14682
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 14682,
+      "flags": [],
+      "income": {
+       "pension": 2000000,
+       "social_security": 3000000
+      },
+      "passes": 7,
+      "rmd_total": 0,
+      "rounding_settlement": 1,
+      "settled_by": "rounding_cycle",
+      "shortfall": 0,
+      "spending": 7000000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 2561814,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "a",
+       "loss_carry_out": 0,
+       "net_capital": -5506,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 2020000,
+       "ordinary_tax": 14681,
+       "ordinary_taxable": 146814,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 3000000,
+       "standard_deduction": 1815000,
+       "tax_year": 2026,
+       "taxable_income": 146814,
+       "taxable_social_security": 547320,
+       "total_tax": 14681
+      },
+      "withdrawals_total": 2014682,
+      "year": 2026
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 200,
+        "deposit": 0,
+        "growth": 200,
+        "opening": 20000,
+        "rmd": 0,
+        "withdrawal": 20000
+       },
+       "ira": {
+        "closing": 43264000,
+        "deposit": 0,
+        "growth": 1664000,
+        "opening": 41600000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 6489600,
+        "deposit": 0,
+        "growth": 249600,
+        "opening": 6240000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 2749903,
+        "closing": 6515625,
+        "closing_basis": 8229909,
+        "deposit": 0,
+        "growth": 290601,
+        "opening": 8305024,
+        "realized_gain": -669903,
+        "rmd": 0,
+        "withdrawal": 2080000
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 2000000,
+       "social_security": 3075000
+      },
+      "passes": 1,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 7175000,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 2069050,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 369903,
+       "net_capital": -300000,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 2000200,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 3075000,
+       "standard_deduction": 1860000,
+       "tax_year": 2027,
+       "taxable_income": 0,
+       "taxable_social_security": 368850,
+       "total_tax": 0
+      },
+      "withdrawals_total": 2100000,
+      "year": 2027
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 2,
+        "deposit": 0,
+        "growth": 2,
+        "opening": 200,
+        "rmd": 0,
+        "withdrawal": 200
+       },
+       "ira": {
+        "closing": 44994560,
+        "deposit": 0,
+        "growth": 1730560,
+        "opening": 43264000,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 6749184,
+        "deposit": 0,
+        "growth": 259584,
+        "opening": 6489600,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 2781733,
+        "closing": 4529904,
+        "closing_basis": 5448176,
+        "deposit": 0,
+        "growth": 216579,
+        "opening": 6515625,
+        "realized_gain": -579433,
+        "rmd": 0,
+        "withdrawal": 2202300
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 0,
+      "flags": [],
+      "income": {
+       "pension": 2000000,
+       "social_security": 3151875
+      },
+      "passes": 1,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 7354375,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 2087972,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 649336,
+       "net_capital": -300000,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 2000002,
+       "ordinary_tax": 0,
+       "ordinary_taxable": 0,
+       "preferential": 0,
+       "senior_deduction": 600000,
+       "social_security": 3151875,
+       "standard_deduction": 1905000,
+       "tax_year": 2028,
+       "taxable_income": 0,
+       "taxable_social_security": 387970,
+       "total_tax": 0
+      },
+      "withdrawals_total": 2202500,
+      "year": 2028
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 2,
+        "rmd": 0,
+        "withdrawal": 2
+       },
+       "ira": {
+        "closing": 46794342,
+        "deposit": 0,
+        "growth": 1799782,
+        "opening": 44994560,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "roth": {
+        "closing": 7019151,
+        "deposit": 0,
+        "growth": 269967,
+        "opening": 6749184,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 2794296,
+        "closing": 2341307,
+        "closing_basis": 2653880,
+        "deposit": 0,
+        "growth": 134730,
+        "opening": 4529904,
+        "realized_gain": -470969,
+        "rmd": 0,
+        "withdrawal": 2323327
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 15767,
+      "flags": [],
+      "income": {
+       "pension": 2000000,
+       "social_security": 3230672
+      },
+      "passes": 2,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 7538234,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 2107668,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 820305,
+       "net_capital": -300000,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 2000000,
+       "ordinary_tax": 15767,
+       "ordinary_taxable": 157668,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 3230672,
+       "standard_deduction": 1950000,
+       "tax_year": 2029,
+       "taxable_income": 157668,
+       "taxable_social_security": 407668,
+       "total_tax": 15767
+      },
+      "withdrawals_total": 2323329,
+      "year": 2029
+     },
+     {
+      "accounts": {
+       "cash": {
+        "closing": 0,
+        "deposit": 0,
+        "growth": 0,
+        "opening": 0,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "ira": {
+        "closing": 48559510,
+        "deposit": 0,
+        "growth": 1869683,
+        "opening": 46794342,
+        "rmd": 0,
+        "withdrawal": 104515
+       },
+       "roth": {
+        "closing": 7299917,
+        "deposit": 0,
+        "growth": 280766,
+        "opening": 7019151,
+        "rmd": 0,
+        "withdrawal": 0
+       },
+       "taxable": {
+        "basis_removed": 2653880,
+        "closing": 46826,
+        "closing_basis": 0,
+        "deposit": 0,
+        "growth": 46826,
+        "opening": 2341307,
+        "realized_gain": -312573,
+        "rmd": 0,
+        "withdrawal": 2341307
+       }
+      },
+      "converged": true,
+      "created_account": null,
+      "federal_tax_paid": 30571,
+      "flags": [],
+      "income": {
+       "pension": 2000000,
+       "social_security": 3311439
+      },
+      "passes": 8,
+      "rmd_total": 0,
+      "rounding_settlement": 0,
+      "settled_by": "exact",
+      "shortfall": 0,
+      "spending": 7726690,
+      "surplus_deposit": 0,
+      "tax": {
+       "agi": 2305714,
+       "capital_gains_tax": 0,
+       "early_distribution_tax": 0,
+       "law_kind": "b",
+       "loss_carry_out": 832878,
+       "net_capital": -300000,
+       "niit_threshold_exceeded": false,
+       "ordinary_income": 2104515,
+       "ordinary_tax": 30571,
+       "ordinary_taxable": 305714,
+       "preferential": 0,
+       "senior_deduction": 0,
+       "social_security": 3311439,
+       "standard_deduction": 2000000,
+       "tax_year": 2030,
+       "taxable_income": 305714,
+       "taxable_social_security": 501199,
+       "total_tax": 30571
+      },
+      "withdrawals_total": 2445822,
+      "year": 2030
+     }
+    ]
+   },
+   "input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.04"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 11000000,
+       "id": "taxable",
+       "opening_balance_cents": 8000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 40000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 6000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 2000000,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 3000000,
+        "dollar_basis": "today"
+       },
+       "start_age": 67
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1958-03-01",
+       "id": "synthetic-person",
+       "plan_end_age": 72,
+       "retirement_date": "2023-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 7000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 7000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   }
+  }
+ },
+ "unit": {
+  "age_65_by_year_end": [
+   {
+    "birth_date": "1961-01-01",
+    "is_65": true,
+    "year": 2025
+   },
+   {
+    "birth_date": "1961-01-02",
+    "is_65": false,
+    "year": 2025
+   },
+   {
+    "birth_date": "1962-01-01",
+    "is_65": true,
+    "year": 2026
+   },
+   {
+    "birth_date": "1962-01-02",
+    "is_65": false,
+    "year": 2026
+   },
+   {
+    "birth_date": "1961-12-31",
+    "is_65": true,
+    "year": 2026
+   }
+  ],
+  "ordinary_tax_2026": [
+   {
+    "tax": 0,
+    "taxable_income": 0
+   },
+   {
+    "tax": 124000,
+    "taxable_income": 1240000
+   },
+   {
+    "tax": 124000,
+    "taxable_income": 1240001
+   },
+   {
+    "tax": 580000,
+    "taxable_income": 5040000
+   },
+   {
+    "tax": 580000,
+    "taxable_income": 5040001
+   },
+   {
+    "tax": 1796600,
+    "taxable_income": 10570000
+   },
+   {
+    "tax": 1796600,
+    "taxable_income": 10570001
+   },
+   {
+    "tax": 4102400,
+    "taxable_income": 20177500
+   },
+   {
+    "tax": 4102400,
+    "taxable_income": 20177501
+   },
+   {
+    "tax": 5844800,
+    "taxable_income": 25622500
+   },
+   {
+    "tax": 5844800,
+    "taxable_income": 25622501
+   },
+   {
+    "tax": 19297925,
+    "taxable_income": 64060000
+   },
+   {
+    "tax": 19297925,
+    "taxable_income": 64060001
+   },
+   {
+    "tax": 32595725,
+    "taxable_income": 100000000
+   }
+  ],
+  "projected_law": [
+   {
+    "additional_65": 210000,
+    "bracket_thresholds": [
+     1270000,
+     5165000,
+     10830000,
+     20680000,
+     26260000,
+     65660000
+    ],
+    "capital_gains_15_max": 55910000,
+    "capital_gains_zero_max": 5065000,
+    "kind": "b",
+    "standard_deduction": 1650000,
+    "tax_indexing": "0.025",
+    "year": 2027
+   },
+   {
+    "additional_65": 225000,
+    "bracket_thresholds": [
+     1365000,
+     5560000,
+     11665000,
+     22270000,
+     28280000,
+     70710000
+    ],
+    "capital_gains_15_max": 60210000,
+    "capital_gains_zero_max": 5455000,
+    "kind": "b",
+    "standard_deduction": 1775000,
+    "tax_indexing": "0.025",
+    "year": 2030
+   },
+   {
+    "additional_65": 285000,
+    "bracket_thresholds": [
+     1750000,
+     7120000,
+     14935000,
+     28510000,
+     36200000,
+     90515000
+    ],
+    "capital_gains_15_max": 77075000,
+    "capital_gains_zero_max": 6985000,
+    "kind": "b",
+    "standard_deduction": 2270000,
+    "tax_indexing": "0.025",
+    "year": 2040
+   }
+  ],
+  "tax_year_cases": [
+   {
+    "agi": 6000000,
+    "capital_gains_tax": 0,
+    "case": "2026 under 65 wages 60k",
+    "early_distribution_tax": 0,
+    "law_kind": "a",
+    "loss_carry_out": 0,
+    "net_capital": 0,
+    "niit_threshold_exceeded": false,
+    "ordinary_income": 6000000,
+    "ordinary_tax": 502000,
+    "ordinary_taxable": 4390000,
+    "preferential": 0,
+    "senior_deduction": 0,
+    "social_security": 0,
+    "standard_deduction": 1610000,
+    "tax_year": 2026,
+    "taxable_income": 4390000,
+    "taxable_social_security": 0,
+    "total_tax": 502000
+   },
+   {
+    "agi": 6000000,
+    "capital_gains_tax": 0,
+    "case": "2026 age 65 wages 60k (standard + additional + senior)",
+    "early_distribution_tax": 0,
+    "law_kind": "a",
+    "loss_carry_out": 0,
+    "net_capital": 0,
+    "niit_threshold_exceeded": false,
+    "ordinary_income": 6000000,
+    "ordinary_tax": 405400,
+    "ordinary_taxable": 3585000,
+    "preferential": 0,
+    "senior_deduction": 600000,
+    "social_security": 0,
+    "standard_deduction": 1815000,
+    "tax_year": 2026,
+    "taxable_income": 3585000,
+    "taxable_social_security": 0,
+    "total_tax": 405400
+   },
+   {
+    "agi": 9000000,
+    "capital_gains_tax": 0,
+    "case": "2028 age 70 pension 90k (senior partly phased out)",
+    "early_distribution_tax": 0,
+    "law_kind": "b",
+    "loss_carry_out": 0,
+    "net_capital": 0,
+    "niit_threshold_exceeded": false,
+    "ordinary_income": 9000000,
+    "ordinary_tax": 893200,
+    "ordinary_taxable": 6585000,
+    "preferential": 0,
+    "senior_deduction": 510000,
+    "social_security": 0,
+    "standard_deduction": 1905000,
+    "tax_year": 2028,
+    "taxable_income": 6585000,
+    "taxable_social_security": 0,
+    "total_tax": 893200
+   },
+   {
+    "agi": 9000000,
+    "capital_gains_tax": 0,
+    "case": "2029 age 71 pension 90k (senior deduction expired)",
+    "early_distribution_tax": 0,
+    "law_kind": "b",
+    "loss_carry_out": 0,
+    "net_capital": 0,
+    "niit_threshold_exceeded": false,
+    "ordinary_income": 9000000,
+    "ordinary_tax": 981800,
+    "ordinary_taxable": 7050000,
+    "preferential": 0,
+    "senior_deduction": 0,
+    "social_security": 0,
+    "standard_deduction": 1950000,
+    "tax_year": 2029,
+    "taxable_income": 7050000,
+    "taxable_social_security": 0,
+    "total_tax": 981800
+   },
+   {
+    "agi": 17500000,
+    "capital_gains_tax": 0,
+    "case": "2026 age 70 AGI 175k (senior fully phased out)",
+    "early_distribution_tax": 0,
+    "law_kind": "a",
+    "loss_carry_out": 0,
+    "net_capital": 0,
+    "niit_threshold_exceeded": false,
+    "ordinary_income": 17500000,
+    "ordinary_tax": 3024200,
+    "ordinary_taxable": 15685000,
+    "preferential": 0,
+    "senior_deduction": 0,
+    "social_security": 0,
+    "standard_deduction": 1815000,
+    "tax_year": 2026,
+    "taxable_income": 15685000,
+    "taxable_social_security": 0,
+    "total_tax": 3024200
+   },
+   {
+    "agi": 7000000,
+    "capital_gains_tax": 66750,
+    "case": "2026 gain 30k on wages 40k (0% and 15% stacking)",
+    "early_distribution_tax": 0,
+    "law_kind": "a",
+    "loss_carry_out": 0,
+    "net_capital": 3000000,
+    "niit_threshold_exceeded": false,
+    "ordinary_income": 4000000,
+    "ordinary_tax": 262000,
+    "ordinary_taxable": 2390000,
+    "preferential": 3000000,
+    "senior_deduction": 0,
+    "social_security": 0,
+    "standard_deduction": 1610000,
+    "tax_year": 2026,
+    "taxable_income": 5390000,
+    "taxable_social_security": 0,
+    "total_tax": 328750
+   },
+   {
+    "agi": 80000000,
+    "capital_gains_tax": 11692000,
+    "case": "2026 gain 700k on wages 100k (20% band)",
+    "early_distribution_tax": 0,
+    "law_kind": "a",
+    "loss_carry_out": 0,
+    "net_capital": 70000000,
+    "niit_threshold_exceeded": true,
+    "ordinary_income": 10000000,
+    "ordinary_tax": 1317000,
+    "ordinary_taxable": 8390000,
+    "preferential": 70000000,
+    "senior_deduction": 0,
+    "social_security": 0,
+    "standard_deduction": 1610000,
+    "tax_year": 2026,
+    "taxable_income": 78390000,
+    "taxable_social_security": 0,
+    "total_tax": 13009000
+   },
+   {
+    "agi": 4700000,
+    "capital_gains_tax": 0,
+    "case": "2026 loss 10k with wages 50k (3k limit, 7k carry)",
+    "early_distribution_tax": 0,
+    "law_kind": "a",
+    "loss_carry_out": 700000,
+    "net_capital": -300000,
+    "niit_threshold_exceeded": false,
+    "ordinary_income": 5000000,
+    "ordinary_tax": 346000,
+    "ordinary_taxable": 3090000,
+    "preferential": 0,
+    "senior_deduction": 0,
+    "social_security": 0,
+    "standard_deduction": 1610000,
+    "tax_year": 2026,
+    "taxable_income": 3090000,
+    "taxable_social_security": 0,
+    "total_tax": 346000
+   },
+   {
+    "agi": 4700000,
+    "capital_gains_tax": 0,
+    "case": "2027 gain 4k against 7k carry",
+    "early_distribution_tax": 0,
+    "law_kind": "b",
+    "loss_carry_out": 0,
+    "net_capital": -300000,
+    "niit_threshold_exceeded": false,
+    "ordinary_income": 5000000,
+    "ordinary_tax": 340600,
+    "ordinary_taxable": 3050000,
+    "preferential": 0,
+    "senior_deduction": 0,
+    "social_security": 0,
+    "standard_deduction": 1650000,
+    "tax_year": 2027,
+    "taxable_income": 3050000,
+    "taxable_social_security": 0,
+    "total_tax": 340600
+   },
+   {
+    "agi": 2000000,
+    "capital_gains_tax": 0,
+    "case": "2026 early distribution 20k, wages 0",
+    "early_distribution_tax": 200000,
+    "law_kind": "a",
+    "loss_carry_out": 0,
+    "net_capital": 0,
+    "niit_threshold_exceeded": false,
+    "ordinary_income": 2000000,
+    "ordinary_tax": 39000,
+    "ordinary_taxable": 390000,
+    "preferential": 0,
+    "senior_deduction": 0,
+    "social_security": 0,
+    "standard_deduction": 1610000,
+    "tax_year": 2026,
+    "taxable_income": 390000,
+    "taxable_social_security": 0,
+    "total_tax": 239000
+   },
+   {
+    "agi": 4130000,
+    "capital_gains_tax": 0,
+    "case": "2026 SS 24k pension 30k age 74",
+    "early_distribution_tax": 0,
+    "law_kind": "a",
+    "loss_carry_out": 0,
+    "net_capital": 0,
+    "niit_threshold_exceeded": false,
+    "ordinary_income": 3000000,
+    "ordinary_tax": 181000,
+    "ordinary_taxable": 1715000,
+    "preferential": 0,
+    "senior_deduction": 600000,
+    "social_security": 2400000,
+    "standard_deduction": 1815000,
+    "tax_year": 2026,
+    "taxable_income": 1715000,
+    "taxable_social_security": 1130000,
+    "total_tax": 181000
+   },
+   {
+    "agi": 8000000,
+    "capital_gains_tax": 0,
+    "case": "2035 projected law, pension 80k age 70",
+    "early_distribution_tax": 0,
+    "law_kind": "b",
+    "loss_carry_out": 0,
+    "net_capital": 0,
+    "niit_threshold_exceeded": false,
+    "ordinary_income": 8000000,
+    "ordinary_tax": 657300,
+    "ordinary_taxable": 5735000,
+    "preferential": 0,
+    "senior_deduction": 0,
+    "social_security": 0,
+    "standard_deduction": 2265000,
+    "tax_year": 2035,
+    "taxable_income": 5735000,
+    "taxable_social_security": 0,
+    "total_tax": 657300
+   }
+  ],
+  "taxable_social_security": [
+   {
+    "benefits": 2400000,
+    "other_income": 0,
+    "taxable": 0
+   },
+   {
+    "benefits": 2400000,
+    "other_income": 1300000,
+    "taxable": 0
+   },
+   {
+    "benefits": 2400000,
+    "other_income": 2000000,
+    "taxable": 350000
+   },
+   {
+    "benefits": 2400000,
+    "other_income": 3000000,
+    "taxable": 1130000
+   },
+   {
+    "benefits": 2400000,
+    "other_income": 6000000,
+    "taxable": 2040000
+   },
+   {
+    "benefits": 4000000,
+    "other_income": 10000000,
+    "taxable": 3400000
+   }
+  ]
+ }
+}

@@ -91,3 +91,8 @@ Sources, all retrieved 2026-10-16:
 - The tax calculation receives realized gains, basis and early-distribution flags.
 - The 1959 rule is rechecked when the regulation is finalized.
 - **Security:** none.
+
+## Amendment — 2026-10-16: Proportional draws are capped; distributions below age 72 are unsupported
+
+1. **Proportional order: draws never exceed an account's available balance.** Item 12's rule says each share is rounded once and the last account takes the remainder. With three or more accounts, that remainder can exceed the last account's balance. The draw for each account in input order is therefore its rounded share, but never more than the account's available balance, and at least the amount the later accounts cannot cover. Wherever the original rule is valid, the results are identical. Example: drawing 5 cents from balances of 2, 2, 2 and 1 cents gives 1, 1, 2 and 1.
+2. **A distribution due below age 72 is unsupported,** with its own code. The Uniform Lifetime Table begins at 72; this arises only with historical valuation dates.
