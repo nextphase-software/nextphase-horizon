@@ -23,13 +23,16 @@ export const test = base.extend({
           },
         });
       } finally {
-        // Retry late Firefox writes after the dependent browser fixture shuts down.
-        rmSync(firefoxHome, {
-          recursive: true,
-          force: true,
-          maxRetries: 10,
-          retryDelay: 200,
-        });
+        try {
+          rmSync(firefoxHome, {
+            recursive: true,
+            force: true,
+            maxRetries: 10,
+            retryDelay: 200,
+          });
+        } catch {
+          // Firefox can keep writing after close; OS-temp cleanup is best effort.
+        }
       }
     },
     { scope: "worker" },
