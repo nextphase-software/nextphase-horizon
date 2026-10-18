@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "./fixtures";
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { SustainableSpending } from "../src/generated/types/sustainable-spending.v1";
@@ -19,6 +20,7 @@ test("sample households: keyboard, parity, accessibility and privacy", async ({
   page,
   context,
   browser,
+  browserName,
 }, testInfo) => {
   testInfo.annotations.push({
     type: "browser-version",
@@ -65,13 +67,17 @@ test("sample households: keyboard, parity, accessibility and privacy", async ({
     "content",
     "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self'; worker-src 'self'; connect-src 'self'",
   );
+  const focusTraversal =
+    process.platform === "darwin" && browserName === "webkit"
+      ? "Alt+Tab"
+      : "Tab";
   const initialDark = testInfo.project.use.colorScheme === "dark";
   expect(
     await page.evaluate(
       () => getComputedStyle(document.documentElement).colorScheme,
     ),
   ).toBe(initialDark ? "dark" : "light");
-  await page.keyboard.press("Tab");
+  await page.keyboard.press(focusTraversal);
   await expect(
     page.getByRole("button", { name: "Toggle theme" }),
   ).toBeFocused();
@@ -93,14 +99,17 @@ test("sample households: keyboard, parity, accessibility and privacy", async ({
     ),
   ).toBe(initialDark ? "light" : "dark");
   await page.keyboard.press("Enter");
-  await page.keyboard.press("Tab");
+  await page.keyboard.press(focusTraversal);
   await expect(
     page.getByLabel("Sample household", { exact: true }),
   ).toBeFocused();
   for (const [index, name] of names.entries()) {
-    // The native select stays focused; advance once from the previous choice.
-    await page.keyboard.press(index === 0 ? "Home" : "ArrowDown");
-    await page.keyboard.press("Enter");
+    // Native popup arrow navigation is outside the page on macOS. Type-ahead
+    // changes the focused select using keyboard input in all three browsers.
+    const label = await page
+      .locator(`#household option[value="${name}"]`)
+      .textContent();
+    await page.keyboard.type(label!);
     await expect(
       page.getByLabel("Sample household", { exact: true }),
     ).toHaveValue(name);

@@ -98,10 +98,28 @@ the module/types, typechecks and emits the static site to ignored `dist/`.
   rejected in production and that other packages, versions and licenses fail.
   See [the exact inventory](../model/dependencies.md#web-shell--0002-w1-v2).
 
-End-to-end validation is **not run by the implementer; run by the reviewer**
-outside the sandbox. The reviewer installs the matched browsers and records their
-runtime versions. The implementation record states actual observations; harness
-code is not evidence that browser assertions passed. The harness checks the exact
-CSP meta tag; it does not treat axe's own injected audit styles as application
-CSP failures. Designed screens, charts, deployment, hosting, persistence and
-HTTP/agent access stay excluded by the brief.
+The full browser sequence is documented in README and AGENTS. The implementation
+record states actual validation; harness code does not establish a browser pass.
+The harness checks the exact CSP meta tag; it does not treat axe's own injected
+audit styles as application CSP failures. Designed screens, charts, deployment,
+hosting, persistence and HTTP/agent access stay excluded by the brief.
+
+### macOS 27 browser harness
+
+The native select is operated by keyboard label type-ahead (`keyboard.type`),
+without mouse input or `selectOption`. Arrow navigation can leave the value
+unchanged when the native popup is outside the page. Focus traversal uses Alt+Tab
+for WebKit on macOS and Tab for Chromium, Firefox and other platforms. All
+existing focus, golden/reference, axe, privacy, overflow and theme assertions
+remain in place.
+
+On macOS 27, Firefox 155 can fail with "Could not find profile folder" while
+resolving its shared app-data directory. See
+[Playwright issue 42768](https://github.com/microsoft/playwright/issues/42768),
+retrieved 2026-10-18. The worker-scoped launch-options fixture in `e2e/fixtures.ts`
+sets `launchOptions.env.CFFIXED_USER_HOME` only for Firefox projects when
+`process.platform === "darwin"`. It creates a fresh empty temporary directory
+for each worker's browser launch, including replacement/retry workers, preserves
+the other environment variables and deletes that directory after the browser
+fixture shuts down. The setting is never applied to Chromium, WebKit or other
+platforms and never changes the host process's environment.

@@ -2,7 +2,7 @@
 
 Open-source, web-first financial planning software for individuals planning their own retirement. The first supported jurisdiction is the United States.
 
-**Status (2026-10-18):** the supported Rust command line runs synthetic yearly ledgers with single-filer federal tax, compares scenarios, and exports/imports versioned results. It also computes sustainable spending, ranked levers and rough-input impact, with balances and shortfalls in today's dollars. Native and WebAssembly outputs are proven identical. Supported retired scenarios report complete; omissions and partial flags remain explicit. The 0002-W1 static sample-household web shell is implemented; its browser acceptance gate remains open. No database or deployment exists.
+**Status (2026-10-18):** the supported Rust command line runs synthetic yearly ledgers with single-filer federal tax, compares scenarios, and exports/imports versioned results. It also computes sustainable spending, ranked levers and rough-input impact, with balances and shortfalls in today's dollars. Native and WebAssembly outputs are proven identical. Supported retired scenarios report complete; omissions and partial flags remain explicit. The static web shell loads the engine in a Web Worker and displays results for five synthetic sample households. No database or deployment exists.
 
 **License:** GNU Affero General Public License, version 3 only (`AGPL-3.0-only`). See [LICENSE](LICENSE). If you run a modified version as a network service, the license requires you to offer its source to the people who use it.
 
@@ -152,11 +152,6 @@ Production keeps the strict allow-list and named font exception. Only exact
 build/test package-version-license exceptions in decision 0011's 2026-10-18
 amendment apply to the full closure. Any other license fails with its package,
 version and license. See [the inventory](docs/model/dependencies.md#web-shell--0002-w1-v2).
-
-For the 0002-W1 v2 implementer run, skip Playwright installation and e2e under
-the sandbox constraint. End-to-end validation is **not run by the implementer;
-run by the reviewer** outside the sandbox, using the documented commands above.
-Record the reviewer's actual browser versions with that run.
 
 For local use after installation, run `corepack pnpm run dev` from `apps/web/`
 and open http://127.0.0.1:5173. It watches static builds; reload after a rebuild.

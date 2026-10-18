@@ -21,6 +21,10 @@ export function App() {
   useEffect(() => {
     let active = true;
     const sample = samples.find((sample) => sample.name === selected)!;
+    // A new worker request must clear its previous result, including errors.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Loading starts with this external request.
+    setAnswer(null);
+    setFailure(null);
     engine
       .call("sustainable_spending", sample.json)
       .then((json) => {
@@ -55,8 +59,6 @@ export function App() {
           id="household"
           value={selected}
           onChange={(event) => {
-            setAnswer(null);
-            setFailure(null);
             setSelected(event.target.value);
           }}
         >

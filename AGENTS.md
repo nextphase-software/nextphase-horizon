@@ -160,11 +160,6 @@ build/test package-version-license exceptions in decision 0011's 2026-10-18
 amendment apply to the full closure. Any other license fails with its package,
 version and license. See [the inventory](docs/model/dependencies.md#web-shell--0002-w1-v2).
 
-For the 0002-W1 v2 implementer run, skip Playwright installation and e2e under
-the sandbox constraint. End-to-end validation is **not run by the implementer;
-run by the reviewer** outside the sandbox, using the documented commands above.
-Record the reviewer's actual browser versions with that run.
-
 For local use after installation, run `corepack pnpm run dev` from `apps/web/`
 and open http://127.0.0.1:5173. It watches static builds; reload after a rebuild.
 This preserves the exact CSP without inline development HMR scripts/styles.
