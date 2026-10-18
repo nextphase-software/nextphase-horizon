@@ -23,8 +23,13 @@ export const test = base.extend({
           },
         });
       } finally {
-        // The dependent browser fixture shuts down before launchOptions teardown.
-        rmSync(firefoxHome, { recursive: true, force: true });
+        // Retry late Firefox writes after the dependent browser fixture shuts down.
+        rmSync(firefoxHome, {
+          recursive: true,
+          force: true,
+          maxRetries: 10,
+          retryDelay: 200,
+        });
       }
     },
     { scope: "worker" },

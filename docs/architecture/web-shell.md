@@ -33,8 +33,8 @@ previous answer, announce loading and ignore late replies from older selections.
 
 ## Page and tokens
 
-The foundation page has a product header, a theme button and a labeled native
-sample-household select. Supported/Partial/Unsupported status labels include
+The foundation page has a product header, a theme button and a native
+sample-household radio group with a fieldset and legend. Supported/Partial/Unsupported status labels include
 icons and words. Partial includes the returned omission count. Three figures
 come directly from sustainable_spending, entered and headroom, formatted as
 whole dollars; each says "today's dollars, per year". Flags are written in words,
@@ -106,12 +106,13 @@ hosting, persistence and HTTP/agent access stay excluded by the brief.
 
 ### macOS 27 browser harness
 
-The native select is operated by keyboard label type-ahead (`keyboard.type`),
-without mouse input or `selectOption`. Arrow navigation can leave the value
-unchanged when the native popup is outside the page. Focus traversal uses Alt+Tab
+The native household radio group starts with its first option checked. Focus
+traversal reaches the theme button, then the checked radio; ArrowDown selects and
+focuses each next household without mouse input. Focus traversal uses Alt+Tab
 for WebKit on macOS and Tab for Chromium, Firefox and other platforms. All
 existing focus, golden/reference, axe, privacy, overflow and theme assertions
-remain in place.
+remain in place. Labels wrap within a fieldset whose minimum inline size is zero,
+and radios retain the visible accent focus ring.
 
 On macOS 27, Firefox 155 can fail with "Could not find profile folder" while
 resolving its shared app-data directory. See
@@ -121,5 +122,6 @@ sets `launchOptions.env.CFFIXED_USER_HOME` only for Firefox projects when
 `process.platform === "darwin"`. It creates a fresh empty temporary directory
 for each worker's browser launch, including replacement/retry workers, preserves
 the other environment variables and deletes that directory after the browser
-fixture shuts down. The setting is never applied to Chromium, WebKit or other
+fixture shuts down. Cleanup retries transient directory-removal failures up to
+10 times with a 200 ms retry delay to allow late Firefox writes to finish. The setting is never applied to Chromium, WebKit or other
 platforms and never changes the host process's environment.

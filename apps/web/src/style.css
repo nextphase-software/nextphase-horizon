@@ -41,8 +41,7 @@ h3,
 strong {
   font-weight: var(--weight-heading);
 }
-button,
-select {
+button {
   font: inherit;
   color: var(--color-ink);
   background: var(--color-surface);
@@ -53,14 +52,29 @@ select {
 button {
   cursor: pointer;
 }
-select {
-  display: block;
+.households {
+  min-inline-size: 0;
   width: 100%;
-  max-width: 100%;
   margin: var(--space-2) 0 var(--space-5);
+  padding: var(--space-3);
+  border: 1px solid var(--color-muted);
+  border-radius: var(--radius-md);
 }
-label {
+.households legend {
   font-weight: var(--weight-heading);
+}
+.households label {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.households input {
+  margin: 0;
+  accent-color: var(--color-accent);
 }
 :focus-visible {
   outline: 3px solid var(--color-accent);

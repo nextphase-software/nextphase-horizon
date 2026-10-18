@@ -100,19 +100,19 @@ test("sample households: keyboard, parity, accessibility and privacy", async ({
   ).toBe(initialDark ? "light" : "dark");
   await page.keyboard.press("Enter");
   await page.keyboard.press(focusTraversal);
-  await expect(
-    page.getByLabel("Sample household", { exact: true }),
-  ).toBeFocused();
+  const households = page.getByRole("group", { name: "Sample household" });
+  await expect(households.getByRole("radio").first()).toBeFocused();
   for (const [index, name] of names.entries()) {
-    // Native popup arrow navigation is outside the page on macOS. Type-ahead
-    // changes the focused select using keyboard input in all three browsers.
-    const label = await page
-      .locator(`#household option[value="${name}"]`)
-      .textContent();
-    await page.keyboard.type(label!);
-    await expect(
-      page.getByLabel("Sample household", { exact: true }),
-    ).toHaveValue(name);
+    if (index > 0) await page.keyboard.press("ArrowDown");
+    const radio = households.locator(
+      `input[name="household"][value="${name}"]`,
+    );
+    await expect(radio).toBeChecked();
+    await expect(radio).toHaveValue(name);
+    await expect(radio).toBeFocused();
+    expect(
+      await radio.evaluate((el) => getComputedStyle(el).outlineWidth),
+    ).toBe("3px");
     if (index === 0)
       await page.screenshot({
         path: testInfo.outputPath("working-household.png"),
@@ -201,9 +201,7 @@ test("sample households: keyboard, parity, accessibility and privacy", async ({
         () => document.documentElement.scrollWidth <= window.innerWidth,
       ),
     ).toBe(true);
-    await expect(
-      page.getByLabel("Sample household", { exact: true }),
-    ).toBeFocused();
+    await expect(radio).toBeFocused();
   }
   // Check the final stored state too, including databases a worker could have opened.
   expect(

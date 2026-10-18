@@ -54,20 +54,21 @@ export function App() {
         <p className="sample">
           <span aria-hidden="true">◇</span> Sample household — invented data
         </p>
-        <label htmlFor="household">Sample household</label>
-        <select
-          id="household"
-          value={selected}
-          onChange={(event) => {
-            setSelected(event.target.value);
-          }}
-        >
+        <fieldset className="households">
+          <legend>Sample household</legend>
           {samples.map((sample) => (
-            <option key={sample.name} value={sample.name}>
-              {sample.label}
-            </option>
+            <label key={sample.name}>
+              <input
+                type="radio"
+                name="household"
+                value={sample.name}
+                checked={selected === sample.name}
+                onChange={(event) => setSelected(event.target.value)}
+              />
+              <span>{sample.label}</span>
+            </label>
           ))}
-        </select>
+        </fieldset>
         <div aria-live="polite" aria-atomic="true">
           {failure ? (
             <section>
