@@ -2,7 +2,7 @@
 
 A brief is the complete, self-sufficient specification for one unit of work. Whoever implements it needs nothing outside this repository.
 
-File name: `<ID>-<slug>.md`. Design references for the brief, when it implements a screen, live in `assets/<ID>/`. An amended brief keeps its ID and increments its version; the newest version in this folder is the only one to implement.
+File name: `<ID>-<slug>.md`. Design references for the brief, when it implements a screen, live in `assets/<ID>/`, or in a shared versioned folder such as `assets/design-v1/` when several briefs use the same references. An amended brief keeps its ID and increments its version; the newest version in this folder is the only one to implement.
 
 All requirements are in the brief. Every decision record a brief depends on is accepted and committed in `docs/decisions/` before the brief is.
 
@@ -50,4 +50,4 @@ that revision and does not name its own commit; the final branch tip is
 reported in the handoff message.
 ```
 
-Briefs: [0001-W1](0001-W1-engine-foundations.md) engine foundations; [0001-W2](0001-W2-yearly-ledger.md) yearly ledger and funding order, with [reference values](0001-W2-reference-values.json); [0001-W3](0001-W3-federal-tax.md) federal income tax, with [reference values](0001-W3-reference-values.json); [0001-W4](0001-W4-scenario-diff-and-export.md) scenario comparison, versioned export and WebAssembly parity, with [reference values](0001-W4-reference-values.json); [0003-W1](0003-W1-answer-operations.md) answer operations, with [reference values](0003-W1-reference-values.json); [0002-W1](0002-W1-web-shell.md) web shell: the engine in the browser.
+Briefs: [0001-W1](0001-W1-engine-foundations.md) engine foundations; [0001-W2](0001-W2-yearly-ledger.md) yearly ledger and funding order, with [reference values](0001-W2-reference-values.json); [0001-W3](0001-W3-federal-tax.md) federal income tax, with [reference values](0001-W3-reference-values.json); [0001-W4](0001-W4-scenario-diff-and-export.md) scenario comparison, versioned export and WebAssembly parity, with [reference values](0001-W4-reference-values.json); [0003-W1](0003-W1-answer-operations.md) answer operations, with [reference values](0003-W1-reference-values.json); [0002-W1](0002-W1-web-shell.md) web shell: the engine in the browser; [0002-W2](0002-W2-start-and-guided-setup.md) start screen and guided household setup, with the [design references](assets/design-v1/README.md).

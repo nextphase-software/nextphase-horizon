@@ -88,3 +88,10 @@ Light and dark are designed separately; dark is not light inverted. Text pairs m
   - the baseline is a solid `color-series-baseline` line and a scenario a dashed `color-series-scenario` line, so the difference never relies on color;
   - every chart is labeled directly and offers the same data as a table.
 - **Input completeness:** shown apart from results, and never as a probability or score.
+
+### Principles for screens
+
+- **Simple by default, detail on demand:** each screen opens with one plain sentence generated from the result, and a picture where one helps. Everything else sits in clearly labeled sections that open on request and work with the keyboard.
+- **Factual headlines:** a headline states the result ("Savings run short at 93, two years before the plan ends"; "Savings last to 95"). It never judges the result or relies on an invented threshold.
+- **Chart view for data tables:** a table whose rows share one unit also offers a chart. The chart is shown first and the table is one click away; every chart keeps its table alternative. Tables that mix units have no chart.
+- **Better and worse in words:** differences are marked with an arrow and a word ("▲ Better", "▼ Worse", "▲ Higher"). Status colors are used only for status.

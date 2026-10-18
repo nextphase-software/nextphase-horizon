@@ -1,0 +1,166 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Horizon design reference 02: Guided setup: accounts</title><style>
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#dcdfe5;color:#1b2433;font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:dark){body{background:#07090c;color:#e8edf4}}
+.page{max-width:1260px;margin:0 auto;padding:24px 16px 64px}
+.page>h1{font-size:24px;margin:0 0 4px}.page>p{margin:4px 0;color:inherit;opacity:.8;max-width:820px}
+.flabel{font:600 12px system-ui;letter-spacing:.08em;text-transform:uppercase;margin:28px 0 8px;opacity:.75}
+.frame{container-type:inline-size;border-radius:14px;overflow:hidden;border:1px solid rgba(127,127,127,.35);margin:0 auto;box-shadow:0 20px 40px -30px rgba(0,0,0,.5)}
+.frame.desktop{max-width:1180px}.frame.phone{width:375px;max-width:100%}
+.app{background:var(--color-canvas);color:var(--color-ink);font-family:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;font-size:16px;line-height:1.55;overflow-wrap:break-word}
+.top{display:flex;align-items:center;gap:16px;padding:12px 20px;background:var(--color-surface);border-bottom:1px solid var(--color-line)}
+.brand{display:flex;align-items:center;gap:8px}.brand b{display:block;font-size:17px;line-height:1.1}.brand small{display:block;font-size:11px;color:var(--color-muted);letter-spacing:.06em;text-transform:uppercase}
+.mark{width:26px;height:26px;border-radius:7px;background:var(--color-accent);position:relative;flex:0 0 26px}.mark:after{content:"";position:absolute;left:6px;right:6px;bottom:7px;height:2px;background:var(--color-on-accent);box-shadow:0 -5px 0 var(--color-on-accent)}
+nav{flex:1;min-width:0}.steps{display:flex;gap:4px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.steps li{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--color-muted);padding:4px 10px;border-radius:999px}
+.steps .n{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--color-line);font-size:12px;font-weight:600}
+.steps li.done{color:var(--color-ink)}.steps li.done .n{background:var(--color-sunken)}
+.steps li[aria-current]{background:var(--color-sunken);color:var(--color-ink);font-weight:600}.steps li[aria-current] .n{background:var(--color-accent);border-color:var(--color-accent);color:var(--color-on-accent)}
+.steps-compact{display:none;margin:0;font-size:14px;color:var(--color-muted)}
+.tools{display:flex;align-items:center;gap:8px}
+.iconbtn{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--color-muted);border-radius:8px;background:var(--color-surface);color:var(--color-ink)}
+main{max-width:1060px;margin:0 auto;padding:24px 20px 8px}
+.foot{max-width:1060px;margin:0 auto;padding:12px 20px 22px;font-size:12.5px;color:var(--color-muted)}
+.hero h1,main h1{font-size:1.625rem;line-height:1.2;margin:2px 0 8px;font-weight:600}.lede{color:var(--color-muted);max-width:68ch;margin:0 0 14px}
+.lede.story{color:var(--color-ink);font-size:1.0625rem;margin-bottom:10px}
+.eyebrow{font-size:.75rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--color-muted);margin:0}
+h2,.h2{font-size:1.25rem;line-height:1.35;margin:0 0 10px;font-weight:600}h3{font-size:1rem;margin:14px 0 4px}
+.card{background:var(--color-surface);border:1px solid var(--color-line);border-radius:12px;padding:16px 18px;margin:0 0 14px;min-width:0}
+fieldset.card{margin:0}fieldset.card legend{float:left;width:100%;padding:0}fieldset.card legend+*{clear:both}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.grid2>.card{margin-bottom:0}
+.grid2>*,.layout-side>*,.choice>span{min-width:0}
+.layout-side{display:grid;grid-template-columns:250px 1fr;gap:18px;align-items:start}
+.muted{color:var(--color-muted)}.small{font-size:.875rem}.num,td.n,.fig{font-variant-numeric:tabular-nums lining-nums}
+.n{text-align:right!important;white-space:nowrap}
+.ic{width:15px;height:15px;flex:0 0 15px;vertical-align:-2px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:.8125rem;font-weight:600;padding:3px 10px 3px 8px;border-radius:9999px;border:1px solid transparent;white-space:nowrap;max-width:100%}
+.chip.supported{color:var(--color-supported-text);background:var(--color-supported-bg)}.chip.partial{color:var(--color-partial-text);background:var(--color-partial-bg)}
+.chip.unsupported{color:var(--color-unsupported-text);background:var(--color-unsupported-bg)}.chip.estimate{color:var(--color-estimate-text);background:var(--color-estimate-bg)}
+.chip.rough{color:var(--color-estimate-text);background:transparent;border:1px dashed var(--color-estimate-text)}.chip.neutral{color:var(--color-ink);background:var(--color-sunken);border-color:var(--color-line)}
+.btn{font:600 15px 'Plus Jakarta Sans',system-ui,sans-serif;padding:10px 16px;border-radius:8px;border:1px solid var(--color-muted);background:var(--color-surface);color:var(--color-ink);display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.btn.primary{background:var(--color-accent);border-color:var(--color-accent);color:var(--color-on-accent)}.btn.small{padding:6px 10px;font-size:14px}
+.btn:focus-visible,.link:focus-visible,input:focus-visible,summary:focus-visible,.tab:focus-visible,.iconbtn:focus-visible,.q:focus-visible{outline:3px solid var(--color-accent);outline-offset:2px}
+.link{color:var(--color-accent-text);background:none;border:0;padding:0;font:inherit;font-weight:600;cursor:pointer;text-decoration:none}
+.actions{display:flex;gap:10px 14px;flex-wrap:wrap;align-items:center;margin:16px 0}.actions .help{margin:0}.actions-inline{display:flex;gap:12px;align-items:center}
+.help{font-size:.875rem;color:var(--color-muted);margin:8px 0}.help .ic{margin-right:6px}
+.choices{display:grid;gap:8px}
+.choice{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:11px 14px;border:1px solid var(--color-line);border-radius:10px;background:var(--color-surface);cursor:pointer}
+.choice:has(input:checked){border-color:var(--color-accent);box-shadow:inset 0 0 0 1px var(--color-accent)}.choice.off{opacity:.72;cursor:not-allowed}
+.choice b{display:block;font-weight:600}.choice small{display:block;color:var(--color-muted);font-size:.875rem}
+.choice input{accent-color:var(--color-accent);width:18px;height:18px;margin:0}
+.sub .hh{font-weight:600;margin:4px 0 0}
+.sub .substeps{list-style:none;margin:8px 0 12px;padding:0}.substeps li{padding:7px 10px;border-radius:8px;color:var(--color-muted);font-weight:500}
+.substeps li.done{color:var(--color-ink)}.substeps li.done:before{content:"✓ ";color:var(--color-supported-text)}.substeps li.cur{background:var(--color-sunken);color:var(--color-ink);font-weight:600;box-shadow:inset 3px 0 0 var(--color-accent)}
+.acct{padding:12px 0;border-bottom:1px solid var(--color-line)}.acct:first-child{padding-top:0}.acct:last-of-type{margin-bottom:14px}.acct-h{display:flex;gap:10px;align-items:baseline;margin-bottom:8px}.acct-h .link{margin-left:auto;font-size:.875rem}
+.field-row{margin:8px 0}.field-row label{display:flex;align-items:center;gap:6px;font-weight:600;font-size:.9rem;margin-bottom:4px}
+.q{width:22px;height:22px;border-radius:50%;border:1px solid var(--color-muted);background:var(--color-surface);color:var(--color-muted);font:600 12px system-ui}
+.field{display:flex;align-items:center;gap:8px;border:1px solid var(--color-muted);background:var(--color-sunken);border-radius:8px;padding:8px 10px;max-width:360px}
+.field .pre{color:var(--color-muted)}.field input{flex:1;min-width:0;border:0;background:transparent;color:var(--color-ink);font:600 16px 'Plus Jakarta Sans',system-ui;font-variant-numeric:tabular-nums}
+.checklist{list-style:none;margin:0;padding:0}
+.check-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;align-items:start;padding:16px 0;border-bottom:1px solid var(--color-line)}
+.check-item:first-child{padding-top:0}.check-item:last-child{border-bottom:0;padding-bottom:0}.ci-t b{display:block}.ci-t span{font-size:.875rem}
+.ci-i{grid-column:1/-1}.ci-i p{margin:0}
+.mword{font-weight:700}.mword:not(.on){color:var(--color-muted)}
+.ibar{position:relative;width:100%;max-width:520px;height:12px;margin:24px 0 6px;background:var(--color-sunken);border-radius:3px}
+.ibar .ib{position:absolute;left:0;top:0;bottom:0;border-radius:3px;min-width:2px}.ibar .bar-up{background:var(--color-series-scenario)}.ibar .bar-down{background:var(--color-series-baseline)}
+.ibar .thr{position:absolute;top:-6px;bottom:-6px;width:2px;margin-left:-1px;background:var(--color-ink)}
+.ibar .thr span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-size:.75rem;font-weight:600;white-space:nowrap;color:var(--color-ink);padding-bottom:1px}
+.check-item .actions-inline{grid-column:1/-1}
+.ticks{list-style:none;padding:0;margin:0}.ticks li{display:flex;gap:8px;align-items:center;padding:4px 0}.ticks .ic{color:var(--color-supported-text)}
+.statusbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;background:var(--color-surface);border:1px solid var(--color-line);border-left:4px solid var(--color-partial-text);border-radius:10px;padding:10px 14px;margin:0 0 14px;font-size:.9rem}
+.omit{width:100%}.omit summary{cursor:pointer;color:var(--color-accent-text);font-weight:600;font-size:.875rem}.omit ul{margin:6px 0 0;padding-left:20px;font-size:.875rem}
+.answers ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.answers li{border-top:3px solid var(--color-accent);padding-top:10px}.answers .aq{display:block;font-weight:700;margin-bottom:4px}.answers .a{display:block}
+.answers .fig{font-size:1.25rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+table.data{border-collapse:collapse;width:100%;font-size:.875rem}table.data th,table.data td{padding:8px;border-bottom:1px solid var(--color-line);text-align:left;vertical-align:top}
+table.data thead th{font-size:.75rem;font-weight:600;color:var(--color-muted);text-transform:uppercase;letter-spacing:.05em}
+table.data th small,table.data td small{display:block;font-weight:400;color:var(--color-muted);font-size:.75rem;text-transform:none;letter-spacing:0}
+table.data th[scope=row]{font-weight:500}table.data.small{font-size:.8rem}
+table.data tr.shortrow td{background:var(--color-sunken);font-weight:600}
+.ledger-t{min-width:900px}
+.chart{margin:0}.chart svg{width:100%;height:auto;display:block}.chart svg.narrow{display:none}
+.chart .grid{stroke:var(--color-line)}.chart .ax{fill:var(--color-muted);font:12px 'Plus Jakarta Sans',system-ui;font-variant-numeric:tabular-nums}
+.chart .line{fill:none;stroke-width:2.75;stroke-linejoin:round}.chart .base{stroke:var(--color-series-baseline)}.chart .scen{stroke:var(--color-series-scenario);stroke-dasharray:8 6}
+.chart .lab{font:600 12.5px 'Plus Jakarta Sans',system-ui;font-variant-numeric:tabular-nums}.chart .base-t{fill:var(--color-muted)}.chart .scen-t{fill:var(--color-accent-text)}.chart .ink{fill:var(--color-ink)}
+.chart .mark-line{stroke:var(--color-ink);stroke-width:1.5;stroke-dasharray:3 4}
+.chart .zero{stroke:var(--color-ink);stroke-width:1.5}
+.bar-up{fill:var(--color-series-scenario)}.bar-down{fill:var(--color-series-baseline)}
+.chart .hl{fill:var(--color-sunken);stroke:var(--color-ink);stroke-width:1;stroke-dasharray:3 3}
+.f-inc{fill:var(--color-series-scenario)}.f-sav{fill:var(--color-accent-text);fill-opacity:.55}.f-short{fill:none;stroke:var(--color-ink);stroke-width:1.3;stroke-dasharray:2 2}
+.f-spend{fill:var(--color-series-baseline)}.f-tax{fill:var(--color-ink)}.chart .ev{stroke:var(--color-muted);stroke-width:1}
+.key{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-wrap:wrap;gap:4px 16px;font-size:.8125rem;color:var(--color-muted)}.key li{display:flex;align-items:center;gap:6px}
+.key .sw{display:inline-block;width:14px;height:12px;border-radius:2px;flex:0 0 14px}
+.key .sw.f-inc{background:var(--color-series-scenario)}.key .sw.f-sav{background:var(--color-accent-text);opacity:.55}.key .sw.f-short{border:1.5px dashed var(--color-ink)}
+.key .sw.f-spend{background:var(--color-series-baseline)}.key .sw.f-tax{background:var(--color-ink)}.key .sw.line-k{height:3px;background:var(--color-series-baseline)}
+figcaption{font-size:.8rem;color:var(--color-muted);margin-top:8px}figcaption summary{cursor:pointer;color:var(--color-accent-text);font-weight:600}
+details.more{padding:0}details.more>summary{display:flex;justify-content:space-between;align-items:center;gap:12px;list-style:none;cursor:pointer;padding:14px 18px;border-radius:12px}
+details.more>summary::-webkit-details-marker{display:none}
+.sum-t{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;min-width:0}.sum-t .h2{margin:0}
+.sum-a{flex:0 0 auto;font-size:.875rem;font-weight:600;color:var(--color-accent-text);display:inline-flex;align-items:center;gap:6px}
+.sum-a:after{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px)}
+details.more[open]>summary .sum-a{font-size:0}details.more[open]>summary .sum-a:before{content:"Hide";font-size:.875rem}
+details.more[open]>summary .sum-a:after{transform:rotate(-135deg) translateY(-2px)}
+.more-b{padding:0 18px 16px}.more-b>p:first-child{margin-top:0}
+.why .more-b p{max-width:75ch}
+.views{margin-top:8px}.v-table{display:none}.views:has(.opt-table:checked) .v-table{display:block}.views:has(.opt-table:checked) .v-chart{display:none}
+.viewswitch{display:inline-flex;border:1px solid var(--color-muted);border-radius:8px;overflow:hidden;margin:0 0 10px}
+.viewswitch label{position:relative;padding:6px 14px;font-weight:600;font-size:.875rem;cursor:pointer;color:var(--color-muted)}
+.viewswitch label+label{border-left:1px solid var(--color-muted)}
+.viewswitch input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.viewswitch label:has(input:checked){background:var(--color-accent);color:var(--color-on-accent)}
+.viewswitch label:has(input:focus-visible){outline:3px solid var(--color-accent);outline-offset:2px;z-index:1}
+.eff{font-weight:600;white-space:nowrap;color:var(--color-ink)}
+.tabs{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}.tab{font:600 14px 'Plus Jakarta Sans',system-ui;padding:8px 14px;border-radius:8px 8px 0 0;border:1px solid var(--color-line);border-bottom:3px solid transparent;background:var(--color-surface);color:var(--color-muted);display:inline-flex;gap:6px;align-items:center}
+.tab.sel{color:var(--color-ink);border-bottom-color:var(--color-accent)}.tab.add{background:transparent;border-style:dashed;border-color:var(--color-muted)}
+.changed{margin:0 0 14px;font-size:.9375rem}
+.cards2 .act{display:flex;flex-direction:column;align-items:flex-start;gap:4px}.cards2 .act h2{margin:0}.cards2 .act p{margin:0 0 10px}
+.openline{margin:0 0 16px}.hero>.chip{margin-bottom:14px}
+.roughlist{list-style:none;padding:0;margin:6px 0 10px}.roughlist li{display:flex;gap:8px;align-items:flex-start;margin:6px 0;font-size:.875rem;flex-wrap:wrap}
+.more-b ul{padding-left:20px}.more-b ul.roughlist,.more-b ul.ticks{padding-left:0}
+.facts{display:grid;grid-template-columns:110px minmax(0,1fr);gap:8px 12px;margin:10px 0 14px;font-size:.9rem}.facts dt{color:var(--color-muted)}.facts dd{margin:0;min-width:0}
+.facts.wide{grid-template-columns:auto minmax(0,1fr);align-items:center}
+code{font-size:.85em}code.hash{word-break:break-all}
+.steps-list{padding-left:20px;margin:0}
+@container (max-width: 900px){.grid2{grid-template-columns:1fr}.answers ol{grid-template-columns:1fr}.layout-side{grid-template-columns:1fr}.steps li{padding:4px 6px}}
+@container (max-width: 560px){.chart svg.wide{display:none}.chart svg.narrow{display:block}.steps{display:none}.steps-compact{display:block}.tools .chip{display:none}.top{padding:10px 14px}main{padding:18px 14px 4px}
+.hero h1,main h1{font-size:1.4rem}.card{padding:14px}details.more{padding:0}details.more>summary{padding:12px 14px}.more-b{padding:0 14px 14px}
+.choice{grid-template-columns:auto minmax(0,1fr)}.choice .chip{grid-column:2;justify-self:start;white-space:normal}.foot{padding:10px 14px 18px}
+.facts{grid-template-columns:1fr}.facts dt{margin-top:4px}.check-item{grid-template-columns:minmax(0,1fr)}.check-item>.chip{justify-self:start}.key{gap:2px 12px}}
+</style></head><body><div class="page"><h1>Guided setup: accounts <small style="font-weight:400;opacity:.7">· design reference, version 1</small></h1><p>Design reference, version 1 (2026-10-18). Colours and type follow DESIGN.md (visual language, version 1). Figures are engine output (horizon-engine-0.4.0) for the sample household "Single, 61, still working, plans to retire at 66". Text uses Plus Jakarta Sans when installed and the system font otherwise; the PNG shows the intended rendering.</p><section class="fr" id="desktop-light"><p class="flabel">Desktop · light</p><div class="frame desktop" style="--color-canvas:#f4f6f9;--color-surface:#ffffff;--color-sunken:#eef1f5;--color-ink:#1b2433;--color-muted:#525d6c;--color-line:#d9dfe7;--color-accent:#306ce2;--color-accent-text:#1853c6;--color-on-accent:#f8fafd;--color-supported-text:#1c6a49;--color-supported-bg:#e2f2e9;--color-partial-text:#8a5600;--color-partial-bg:#fbeed2;--color-unsupported-text:#a3302a;--color-unsupported-bg:#fbe3e0;--color-estimate-text:#5a3ea8;--color-estimate-bg:#ece6fb;--color-series-baseline:#7b8798;--color-series-scenario:#306ce2"><div class="app">
+<header class="top"><div class="brand"><span class="mark" aria-hidden="true"></span><span><b>Horizon</b><small>NextPhase</small></span></div>
+<nav aria-label="Plan steps"><ol class="steps"><li class="done"><span class="n">1</span>Question</li><li aria-current="step" class=""><span class="n">2</span>Household</li><li class=""><span class="n">3</span>Check</li><li class=""><span class="n">4</span>Plan</li><li class=""><span class="n">5</span>Compare</li><li class=""><span class="n">6</span>Export</li></ol><p class="steps-compact">Step 2 of 6 · <b>Household</b></p></nav>
+<div class="tools"><span class="chip neutral"><svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><rect x="2.5" y="2.5" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Sample household</span></span><button class="iconbtn" type="button" aria-label="Switch theme"><svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 2.5a5.5 5.5 0 0 0 0 11z" fill="currentColor"/></svg></button></div></header>
+<main>
+<div class="layout-side"><aside class="card sub"><p class="eyebrow">Sample household</p><p class="hh">Single, 61, still working, plans to retire at 66</p><ol class="substeps"><li class="done">About you</li><li class="done">Income</li><li class="cur">Accounts</li><li class="">Spending</li><li class="">Assumptions</li><li class="">Review your answers</li></ol>
+<p class="help"><svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 7.2v4M8 4.8v.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Your answers stay in this page only. Reload or close it and they're gone.</p></aside>
+<section><h1>Accounts</h1><p class="lede">Four accounts, $750,000 in total today; one entry is marked rough. Round numbers are fine.</p>
+<div class="card"><div class="acct"><div class="acct-h"><b>Cash savings</b><span class="muted small">cash</span><button class="link" type="button">Edit type</button></div><div class="field-row"><label for="dl-bal0">Balance today</label><div class="field"><span class="pre">$</span><input id="dl-bal0" value="20,000" inputmode="numeric"></div></div></div><div class="acct"><div class="acct-h"><b>Brokerage account</b><span class="muted small">taxable</span><button class="link" type="button">Edit type</button></div><div class="field-row"><label for="dl-bal1">Balance today</label><div class="field"><span class="pre">$</span><input id="dl-bal1" value="150,000" inputmode="numeric"></div></div><div class="field-row"><label for="dl-cb1">Cost basis <button class="q" type="button" aria-label="What is cost basis?">?</button></label><div class="field"><span class="pre">$</span><input id="dl-cb1" value="110,000" inputmode="numeric" aria-describedby="dl-cb-help"><span class="chip rough"><svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><path d="M2 6.5c2-2 4 2 6 0s4 2 6 0M2 10.5c2-2 4 2 6 0s4 2 6 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Rough value</span></span></div><p class="help" id="dl-cb-help">What you paid for the investments. It only affects tax when you sell. A rough value is fine.</p></div></div><div class="acct"><div class="acct-h"><b>401(k)</b><span class="muted small">tax-deferred</span><button class="link" type="button">Edit type</button></div><div class="field-row"><label for="dl-bal2">Balance today</label><div class="field"><span class="pre">$</span><input id="dl-bal2" value="520,000" inputmode="numeric"></div></div></div><div class="acct"><div class="acct-h"><b>Roth IRA</b><span class="muted small">Roth</span><button class="link" type="button">Edit type</button></div><div class="field-row"><label for="dl-bal3">Balance today</label><div class="field"><span class="pre">$</span><input id="dl-bal3" value="60,000" inputmode="numeric"></div></div></div><button class="btn" type="button">+ Add an account</button></div>
+<div class="actions"><button class="btn primary" type="button">Continue</button><button class="btn" type="button">Back</button></div></section></div></main>
+<footer class="foot">Open source (AGPL-3.0-only) · Sample data only; nothing you enter is stored · Model horizon-engine-0.4.0 · Federal tax law 2026, projected after</footer>
+</div></div></section><section class="fr" id="desktop-dark"><p class="flabel">Desktop · dark</p><div class="frame desktop" style="--color-canvas:#0f131a;--color-surface:#171c25;--color-sunken:#11161e;--color-ink:#e8edf4;--color-muted:#a3aebd;--color-line:#2b3341;--color-accent:#75a9ff;--color-accent-text:#75a9ff;--color-on-accent:#0a111f;--color-supported-text:#74d3a4;--color-supported-bg:#12301f;--color-partial-text:#f2c467;--color-partial-bg:#382906;--color-unsupported-text:#ff958b;--color-unsupported-bg:#3d1714;--color-estimate-text:#c6b2ff;--color-estimate-bg:#2a2144;--color-series-baseline:#7f8a9c;--color-series-scenario:#75a9ff"><div class="app">
+<header class="top"><div class="brand"><span class="mark" aria-hidden="true"></span><span><b>Horizon</b><small>NextPhase</small></span></div>
+<nav aria-label="Plan steps"><ol class="steps"><li class="done"><span class="n">1</span>Question</li><li aria-current="step" class=""><span class="n">2</span>Household</li><li class=""><span class="n">3</span>Check</li><li class=""><span class="n">4</span>Plan</li><li class=""><span class="n">5</span>Compare</li><li class=""><span class="n">6</span>Export</li></ol><p class="steps-compact">Step 2 of 6 · <b>Household</b></p></nav>
+<div class="tools"><span class="chip neutral"><svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><rect x="2.5" y="2.5" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Sample household</span></span><button class="iconbtn" type="button" aria-label="Switch theme"><svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 2.5a5.5 5.5 0 0 0 0 11z" fill="currentColor"/></svg></button></div></header>
+<main>
+<div class="layout-side"><aside class="card sub"><p class="eyebrow">Sample household</p><p class="hh">Single, 61, still working, plans to retire at 66</p><ol class="substeps"><li class="done">About you</li><li class="done">Income</li><li class="cur">Accounts</li><li class="">Spending</li><li class="">Assumptions</li><li class="">Review your answers</li></ol>
+<p class="help"><svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 7.2v4M8 4.8v.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Your answers stay in this page only. Reload or close it and they're gone.</p></aside>
+<section><h1>Accounts</h1><p class="lede">Four accounts, $750,000 in total today; one entry is marked rough. Round numbers are fine.</p>
+<div class="card"><div class="acct"><div class="acct-h"><b>Cash savings</b><span class="muted small">cash</span><button class="link" type="button">Edit type</button></div><div class="field-row"><label for="dd-bal0">Balance today</label><div class="field"><span class="pre">$</span><input id="dd-bal0" value="20,000" inputmode="numeric"></div></div></div><div class="acct"><div class="acct-h"><b>Brokerage account</b><span class="muted small">taxable</span><button class="link" type="button">Edit type</button></div><div class="field-row"><label for="dd-bal1">Balance today</label><div class="field"><span class="pre">$</span><input id="dd-bal1" value="150,000" inputmode="numeric"></div></div><div class="field-row"><label for="dd-cb1">Cost basis <button class="q" type="button" aria-label="What is cost basis?">?</button></label><div class="field"><span class="pre">$</span><input id="dd-cb1" value="110,000" inputmode="numeric" aria-describedby="dd-cb-help"><span class="chip rough"><svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><path d="M2 6.5c2-2 4 2 6 0s4 2 6 0M2 10.5c2-2 4 2 6 0s4 2 6 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Rough value</span></span></div><p class="help" id="dd-cb-help">What you paid for the investments. It only affects tax when you sell. A rough value is fine.</p></div></div><div class="acct"><div class="acct-h"><b>401(k)</b><span class="muted small">tax-deferred</span><button class="link" type="button">Edit type</button></div><div class="field-row"><label for="dd-bal2">Balance today</label><div class="field"><span class="pre">$</span><input id="dd-bal2" value="520,000" inputmode="numeric"></div></div></div><div class="acct"><div class="acct-h"><b>Roth IRA</b><span class="muted small">Roth</span><button class="link" type="button">Edit type</button></div><div class="field-row"><label for="dd-bal3">Balance today</label><div class="field"><span class="pre">$</span><input id="dd-bal3" value="60,000" inputmode="numeric"></div></div></div><button class="btn" type="button">+ Add an account</button></div>
+<div class="actions"><button class="btn primary" type="button">Continue</button><button class="btn" type="button">Back</button></div></section></div></main>
+<footer class="foot">Open source (AGPL-3.0-only) · Sample data only; nothing you enter is stored · Model horizon-engine-0.4.0 · Federal tax law 2026, projected after</footer>
+</div></div></section><section class="fr" id="phone-light"><p class="flabel">Phone (375 px) · light</p><div class="frame phone" style="--color-canvas:#f4f6f9;--color-surface:#ffffff;--color-sunken:#eef1f5;--color-ink:#1b2433;--color-muted:#525d6c;--color-line:#d9dfe7;--color-accent:#306ce2;--color-accent-text:#1853c6;--color-on-accent:#f8fafd;--color-supported-text:#1c6a49;--color-supported-bg:#e2f2e9;--color-partial-text:#8a5600;--color-partial-bg:#fbeed2;--color-unsupported-text:#a3302a;--color-unsupported-bg:#fbe3e0;--color-estimate-text:#5a3ea8;--color-estimate-bg:#ece6fb;--color-series-baseline:#7b8798;--color-series-scenario:#306ce2"><div class="app">
+<header class="top"><div class="brand"><span class="mark" aria-hidden="true"></span><span><b>Horizon</b><small>NextPhase</small></span></div>
+<nav aria-label="Plan steps"><ol class="steps"><li class="done"><span class="n">1</span>Question</li><li aria-current="step" class=""><span class="n">2</span>Household</li><li class=""><span class="n">3</span>Check</li><li class=""><span class="n">4</span>Plan</li><li class=""><span class="n">5</span>Compare</li><li class=""><span class="n">6</span>Export</li></ol><p class="steps-compact">Step 2 of 6 · <b>Household</b></p></nav>
+<div class="tools"><span class="chip neutral"><svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><rect x="2.5" y="2.5" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Sample household</span></span><button class="iconbtn" type="button" aria-label="Switch theme"><svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 2.5a5.5 5.5 0 0 0 0 11z" fill="currentColor"/></svg></button></div></header>
+<main>
+<div class="layout-side"><aside class="card sub"><p class="eyebrow">Sample household</p><p class="hh">Single, 61, still working, plans to retire at 66</p><ol class="substeps"><li class="done">About you</li><li class="done">Income</li><li class="cur">Accounts</li><li class="">Spending</li><li class="">Assumptions</li><li class="">Review your answers</li></ol>
+<p class="help"><svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 7.2v4M8 4.8v.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Your answers stay in this page only. Reload or close it and they're gone.</p></aside>
+<section><h1>Accounts</h1><p class="lede">Four accounts, $750,000 in total today; one entry is marked rough. Round numbers are fine.</p>
+<div class="card"><div class="acct"><div class="acct-h"><b>Cash savings</b><span class="muted small">cash</span><button class="link" type="button">Edit type</button></div><div class="field-row"><label for="pl-bal0">Balance today</label><div class="field"><span class="pre">$</span><input id="pl-bal0" value="20,000" inputmode="numeric"></div></div></div><div class="acct"><div class="acct-h"><b>Brokerage account</b><span class="muted small">taxable</span><button class="link" type="button">Edit type</button></div><div class="field-row"><label for="pl-bal1">Balance today</label><div class="field"><span class="pre">$</span><input id="pl-bal1" value="150,000" inputmode="numeric"></div></div><div class="field-row"><label for="pl-cb1">Cost basis <button class="q" type="button" aria-label="What is cost basis?">?</button></label><div class="field"><span class="pre">$</span><input id="pl-cb1" value="110,000" inputmode="numeric" aria-describedby="pl-cb-help"><span class="chip rough"><svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><path d="M2 6.5c2-2 4 2 6 0s4 2 6 0M2 10.5c2-2 4 2 6 0s4 2 6 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Rough value</span></span></div><p class="help" id="pl-cb-help">What you paid for the investments. It only affects tax when you sell. A rough value is fine.</p></div></div><div class="acct"><div class="acct-h"><b>401(k)</b><span class="muted small">tax-deferred</span><button class="link" type="button">Edit type</button></div><div class="field-row"><label for="pl-bal2">Balance today</label><div class="field"><span class="pre">$</span><input id="pl-bal2" value="520,000" inputmode="numeric"></div></div></div><div class="acct"><div class="acct-h"><b>Roth IRA</b><span class="muted small">Roth</span><button class="link" type="button">Edit type</button></div><div class="field-row"><label for="pl-bal3">Balance today</label><div class="field"><span class="pre">$</span><input id="pl-bal3" value="60,000" inputmode="numeric"></div></div></div><button class="btn" type="button">+ Add an account</button></div>
+<div class="actions"><button class="btn primary" type="button">Continue</button><button class="btn" type="button">Back</button></div></section></div></main>
+<footer class="foot">Open source (AGPL-3.0-only) · Sample data only; nothing you enter is stored · Model horizon-engine-0.4.0 · Federal tax law 2026, projected after</footer>
+</div></div></section></div><script>(function(){var h=location.hash.slice(1);document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest("a[href^='#']");if(!a)return;var d=document.getElementById(a.getAttribute("href").slice(1));if(d&&d.tagName==="DETAILS"){d.open=true;}});if(!h)return;var keep=document.getElementById(h);if(!keep||!keep.classList.contains("fr"))return;document.querySelectorAll(".page>section.fr").forEach(function(s){if(s.id!==h)s.hidden=true});document.querySelectorAll(".page>h1,.page>p").forEach(function(x){x.hidden=true});})();</script></body></html>
