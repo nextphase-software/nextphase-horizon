@@ -1,4 +1,4 @@
-BRIEF VERSION: 0002-W1 v1 (2026-10-18)
+BRIEF VERSION: 0002-W1 v2 (2026-10-18)
 
 # 0002-W1 — Web shell: the engine in the browser
 
@@ -22,6 +22,7 @@ This milestone builds the foundation and its test harness. Designed screens come
    - **Tests:** native unit tests prove each export returns the same bytes as the application operation for one valid and one invalid input.
 2. **The web app** in `apps/web/` (items 1–3), self-contained, with no new top-level entry:
    - React `19.3.0`, React DOM `19.3.0`, Vite `8.3.2`, `@vitejs/plugin-react` `6.1.1` and TypeScript `6.0.3` with `strict: true`;
+   - type packages `@types/react` `19.3.0`, `@types/react-dom` `19.3.0` and `@types/node` `24.19.1`;
    - `packageManager: "pnpm@12.9.1"` and `engines.node: "24.22.0"`, with exact versions and no ranges for every dependency, and a committed `pnpm-lock.yaml`;
    - **scripts:** `build:engine` (release build of `horizon-wasm` for `wasm32-unknown-unknown`, then `wasm-bindgen --target web` into a git-ignored folder), `types` (TypeScript types from `docs/model/schemas/*.json` with `json-schema-to-typescript` `16.0.0` into a git-ignored folder), `dev`, `build`, `typecheck`, `lint`, `format:check`, `test`, `e2e` and `licenses`.
 3. **The engine in a Web Worker** (item 5). Every engine call goes through one worker using a typed message protocol, `{id, op, args}` → `{id, json}`. The main thread never loads the WebAssembly module. Results are shown exactly as returned; the app formats numbers (thousands separators, the dollar sign) but never computes financial values.
@@ -70,7 +71,21 @@ This milestone builds the foundation and its test harness. Designed screens come
 8. **Lint, format and licenses** (item 10):
    - **Lint:** ESLint `9.39.5` with `@eslint/js` `9.39.5`, `typescript-eslint` `8.71.0`, `eslint-plugin-jsx-a11y` `6.10.2`, `eslint-plugin-react-hooks` `7.1.1` and `globals` `17.13.0`.
    - **Format:** Prettier `3.9.9`.
-   - **Licenses:** `licenses` runs `pnpm licenses list --json` and fails on any license outside MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, Zlib, Unicode-3.0 and 0BSD, with two exceptions: OFL-1.1 for the font package, and MPL-2.0 for `axe-core` as a test dependency only. Any other license is escalated, not allowed.
+   - **Licenses** (decision 0011 and its 2026-10-18 amendment): `licenses` runs two checks and fails if either fails.
+     - **Shipped code:** over `pnpm licenses list --json --prod`, every package is MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, Zlib, Unicode-3.0 or 0BSD, except OFL-1.1 for `@fontsource-variable/plus-jakarta-sans`. No other exception applies.
+     - **All packages:** over `pnpm licenses list --json`, every package is on that list, or is the font, or matches one of these exact build- and test-only exceptions:
+
+       | License | Packages |
+       | --- | --- |
+       | MPL-2.0 | `@axe-core/playwright` 4.13.0; `axe-core` 4.13.0 and 4.14.0; `lightningcss` 1.33.0 and each `lightningcss-<platform>` 1.33.0 |
+       | MIT-0 | `@csstools/color-helpers` 6.1.2; `@csstools/css-syntax-patches-for-csstree` 1.1.15 |
+       | CC0-1.0 | `language-subtag-registry` 0.3.23; `mdn-data` 2.27.1 |
+       | CC-BY-4.0 | `caniuse-lite` 1.0.30001816 |
+       | BlueOak-1.0.0 | `lru-cache` 11.5.3; `minimatch` 10.2.6 |
+       | Python-2.0 | `argparse` 2.0.1 |
+       | PSF-2.0 | `argparse` 3.0.3 |
+
+     - The script prints each failure with its package, version and license. Any other license, or a listed license on another package or version, is escalated, not allowed.
 9. **Repository hygiene:** `.gitignore` gains the generated engine and type folders, `test-results/` and `playwright-report/`. A fresh clone must build and pass everything from documented commands alone.
 10. **Documentation:**
     - `docs/architecture/web-shell.md` describes the module, the worker protocol, the token mapping, the page, the security policy and the test layers;
@@ -88,7 +103,7 @@ This milestone builds the foundation and its test harness. Designed screens come
    - axe reports no violations.
 4. **Number parity:** browser runs are byte-identical to the committed run goldens for the four valid households, and the spending figures equal the 0003-W1 reference values.
 5. **Privacy:** no storage or cookie writes, and no off-origin request, in any browser.
-6. **Licenses:** the license check passes, and every new JavaScript package is listed with its exact version and license.
+6. **Licenses:** both license checks pass; shipped code uses only the strict list and the font's OFL-1.1; every new JavaScript package is listed with its exact version and license.
 7. **Earlier guarantees hold:**
    - all Rust validation commands pass unchanged;
    - no earlier reference file, schema or golden changes;
@@ -98,7 +113,7 @@ This milestone builds the foundation and its test harness. Designed screens come
 ## Read first
 
 - `DESIGN.md` (Visual language, version 1) and `AGENTS.md`.
-- Decision records `docs/decisions/0007-*`, `docs/decisions/0010-*`, `docs/decisions/0011-*` and `docs/decisions/0012-*`.
+- Decision records `docs/decisions/0007-*`, `docs/decisions/0010-*`, `docs/decisions/0011-*` (including its 2026-10-18 amendment) and `docs/decisions/0012-*`.
 - `docs/model/answers.md`, `docs/model/scenario-diff-and-export.md`, `docs/model/error-codes.md` and the schemas in `docs/model/schemas/`.
 - Public references, all retrieved 2026-10-18:
   - wasm-bindgen guide: https://wasm-bindgen.github.io/wasm-bindgen/

@@ -1,6 +1,6 @@
 # 0011 — Web shell stack (React 19 on Vite as a static single-page app in `apps/web`; the engine in the browser through a `horizon-wasm` crate in a Web Worker; TypeScript 6.0, pnpm, Vitest, Playwright with axe; hand-built SVG charts; self-hosted fonts; static hosting)
 
-- Status: Accepted
+- Status: Accepted (amendment accepted 2026-10-18)
 - Date: 2026-10-17
 - Related: [0007](0007-rust-core-typescript-shell.md) — the TypeScript interface calling the WebAssembly module through a thin generated binding; [0010](0010-comparison-export-and-command-line-conventions.md) — WebAssembly parity under Node.js 24.22.0, and the contracts the interface displays; [0012](0012-application-operations-for-answers.md) — the operations the interface calls.
 
@@ -55,3 +55,22 @@ Verified on 2026-10-17 against the npm registry and crates.io:
 - **New dependencies:** JavaScript only; the Rust side adds no crate beyond `wasm-bindgen`.
 - **Security:** a strict Content Security Policy, no third-party requests and no stored financial data.
 - **Upkeep:** the TypeScript toolchain is pinned and updated deliberately.
+
+## Amendment — 2026-10-18: JavaScript licenses for shipped code and for build and test tools
+
+Accepted 2026-10-18.
+
+Found while implementing brief 0002-W1: the pinned toolchain brings in build, lint and test packages under licenses outside item 10's list. None of them reaches the built site. The production dependency closure is `react`, `react-dom` and `scheduler` (MIT) and the font package (OFL-1.1).
+
+A1. **Shipped code keeps the strict list.** Every package in the production dependency closure is MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, Zlib, Unicode-3.0 or 0BSD, or OFL-1.1 for the font package. No exception applies to shipped code.
+
+A2. **Build- and test-only packages may also use MPL-2.0, MIT-0, CC0-1.0, CC-BY-4.0, BlueOak-1.0.0, Python-2.0 and PSF-2.0,** each only as an exact package and version exception listed in the license check. This follows the Rust policy, which allows a single crate by exact version in `deny.toml`. An exception for `lightningcss` also covers its per-platform binary packages (`lightningcss-<platform>`) at the same version, since each operating system resolves a different one.
+
+A3. **Escalate, never allow:**
+   - any other license;
+   - a listed license on a package or version that is not in the exception list;
+   - any license outside the strict list in shipped code.
+
+   A version update that changes the exception list is part of that update's brief.
+
+A4. **This replaces** item 10's sentence allowing MPL-2.0 only for test-only `axe-core`. The rest of item 10, and the three-browser matrix of item 9, are unchanged.
