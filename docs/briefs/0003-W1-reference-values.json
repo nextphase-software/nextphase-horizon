@@ -1,0 +1,1633 @@
+{
+ "cap_dollars_per_year": 10000000,
+ "comparison_today": {
+  "answers-working-61 vs answers-working-61-retire-later": {
+   "baseline": {
+    "ending_balances": {
+     "401k": {
+      "balance": 0,
+      "balance_today": 0
+     },
+     "brokerage": {
+      "balance": 0,
+      "balance_today": 0
+     },
+     "cash": {
+      "balance": 0,
+      "balance_today": 0
+     },
+     "roth-ira": {
+      "balance": 122,
+      "balance_today": 53
+     }
+    },
+    "ending_total": 122,
+    "ending_total_today": 53,
+    "last_year": 2060
+   },
+   "scenario": {
+    "ending_balances": {
+     "401k": {
+      "balance": 2457,
+      "balance_today": 1061
+     },
+     "brokerage": {
+      "balance": 0,
+      "balance_today": 0
+     },
+     "cash": {
+      "balance": 0,
+      "balance_today": 0
+     },
+     "roth-ira": {
+      "balance": 17372902,
+      "balance_today": 7503449
+     }
+    },
+    "ending_total": 17375359,
+    "ending_total_today": 7504510,
+    "last_year": 2060
+   }
+  }
+ },
+ "derived": "2026-10-17. Exact integer and fraction arithmetic, derived independently of any implementation by running the independent 0001-W3 model, under decisions 0003, 0009, 0010 and 0012 with its 2026-10-17 amendment. Commit unchanged; escalate if a value seems wrong.",
+ "households": {
+  "answers-cap": {
+   "assumptions": [
+    {
+     "effective_year": 2026,
+     "identifier": "cash_return",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.02"
+    },
+    {
+     "effective_year": 2026,
+     "identifier": "inflation",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.025"
+    },
+    {
+     "effective_year": 2026,
+     "identifier": "investment_return",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.05"
+    },
+    {
+     "effective_year": 2026,
+     "identifier": "tax_indexing",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.025"
+    }
+   ],
+   "household": {
+    "accounts": [
+     {
+      "account_type": "cash",
+      "cost_basis_cents": null,
+      "id": "cash",
+      "opening_balance_cents": 100000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": null
+     },
+     {
+      "account_type": "taxable",
+      "cost_basis_cents": 20000000000,
+      "id": "brokerage",
+      "opening_balance_cents": 30000000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": null
+     },
+     {
+      "account_type": "tax_deferred",
+      "cost_basis_cents": null,
+      "id": "ira",
+      "opening_balance_cents": 20000000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": "traditional_ira"
+     },
+     {
+      "account_type": "roth",
+      "cost_basis_cents": null,
+      "id": "roth-ira",
+      "opening_balance_cents": 10000000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": null
+     }
+    ],
+    "income": {
+     "pension": {
+      "amount": {
+       "cents": 0,
+       "dollar_basis": "nominal"
+      },
+      "start_age": 65
+     },
+     "social_security": {
+      "amount": {
+       "cents": 4000000,
+       "dollar_basis": "today"
+      },
+      "start_age": 67
+     },
+     "wages": []
+    },
+    "persons": [
+     {
+      "birth_date": "1960-06-15",
+      "id": "sample-person",
+      "plan_end_age": 90,
+      "retirement_date": "2025-06-15"
+     }
+    ],
+    "spending": {
+     "after_retirement": {
+      "cents": 20000000,
+      "dollar_basis": "today"
+     },
+     "before_retirement": {
+      "cents": 20000000,
+      "dollar_basis": "today"
+     }
+    },
+    "valuation_date": "2026-01-01"
+   }
+  },
+  "answers-underfunded": {
+   "assumptions": [
+    {
+     "effective_year": 2026,
+     "identifier": "cash_return",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.02"
+    },
+    {
+     "effective_year": 2026,
+     "identifier": "inflation",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.025"
+    },
+    {
+     "effective_year": 2026,
+     "identifier": "investment_return",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.05"
+    },
+    {
+     "effective_year": 2026,
+     "identifier": "tax_indexing",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.025"
+    }
+   ],
+   "household": {
+    "accounts": [
+     {
+      "account_type": "cash",
+      "cost_basis_cents": null,
+      "id": "cash",
+      "opening_balance_cents": 500000,
+      "owner": "sample-person",
+      "tax_deferred_kind": null
+     },
+     {
+      "account_type": "taxable",
+      "cost_basis_cents": 800000,
+      "id": "brokerage",
+      "opening_balance_cents": 1000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": null
+     },
+     {
+      "account_type": "tax_deferred",
+      "cost_basis_cents": null,
+      "id": "401k",
+      "opening_balance_cents": 2000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": "employer_plan"
+     },
+     {
+      "account_type": "roth",
+      "cost_basis_cents": null,
+      "id": "roth-ira",
+      "opening_balance_cents": 500000,
+      "owner": "sample-person",
+      "tax_deferred_kind": null
+     }
+    ],
+    "income": {
+     "pension": {
+      "amount": {
+       "cents": 0,
+       "dollar_basis": "nominal"
+      },
+      "start_age": 65
+     },
+     "social_security": {
+      "amount": {
+       "cents": 2600000,
+       "dollar_basis": "today"
+      },
+      "start_age": 67
+     },
+     "wages": [
+      {
+       "amount": {
+        "cents": 3000000,
+        "dollar_basis": "today"
+       },
+       "end_date": "2031-03-10",
+       "start_date": "2026-01-01"
+      }
+     ]
+    },
+    "persons": [
+     {
+      "birth_date": "1965-03-10",
+      "id": "sample-person",
+      "plan_end_age": 95,
+      "retirement_date": "2031-03-10"
+     }
+    ],
+    "spending": {
+     "after_retirement": {
+      "cents": 6700000,
+      "dollar_basis": "today"
+     },
+     "before_retirement": {
+      "cents": 12000000,
+      "dollar_basis": "today"
+     }
+    },
+    "valuation_date": "2026-01-01"
+   }
+  },
+  "answers-working-61": {
+   "assumptions": [
+    {
+     "effective_year": 2026,
+     "identifier": "cash_return",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.02"
+    },
+    {
+     "effective_year": 2026,
+     "identifier": "inflation",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.025"
+    },
+    {
+     "effective_year": 2026,
+     "identifier": "investment_return",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.05"
+    },
+    {
+     "effective_year": 2026,
+     "identifier": "tax_indexing",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.025"
+    }
+   ],
+   "household": {
+    "accounts": [
+     {
+      "account_type": "cash",
+      "cost_basis_cents": null,
+      "id": "cash",
+      "opening_balance_cents": 2000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": null
+     },
+     {
+      "account_type": "taxable",
+      "cost_basis_cents": 11000000,
+      "id": "brokerage",
+      "opening_balance_cents": 15000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": null
+     },
+     {
+      "account_type": "tax_deferred",
+      "cost_basis_cents": null,
+      "id": "401k",
+      "opening_balance_cents": 52000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": "employer_plan"
+     },
+     {
+      "account_type": "roth",
+      "cost_basis_cents": null,
+      "id": "roth-ira",
+      "opening_balance_cents": 6000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": null
+     }
+    ],
+    "income": {
+     "pension": {
+      "amount": {
+       "cents": 0,
+       "dollar_basis": "nominal"
+      },
+      "start_age": 65
+     },
+     "social_security": {
+      "amount": {
+       "cents": 2600000,
+       "dollar_basis": "today"
+      },
+      "start_age": 67
+     },
+     "wages": [
+      {
+       "amount": {
+        "cents": 8500000,
+        "dollar_basis": "today"
+       },
+       "end_date": "2031-03-10",
+       "start_date": "2026-01-01"
+      }
+     ]
+    },
+    "persons": [
+     {
+      "birth_date": "1965-03-10",
+      "id": "sample-person",
+      "plan_end_age": 95,
+      "retirement_date": "2031-03-10"
+     }
+    ],
+    "spending": {
+     "after_retirement": {
+      "cents": 6700000,
+      "dollar_basis": "today"
+     },
+     "before_retirement": {
+      "cents": 6200000,
+      "dollar_basis": "today"
+     }
+    },
+    "valuation_date": "2026-01-01"
+   }
+  },
+  "answers-working-61-retire-later": {
+   "assumptions": [
+    {
+     "effective_year": 2026,
+     "identifier": "cash_return",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.02"
+    },
+    {
+     "effective_year": 2026,
+     "identifier": "inflation",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.025"
+    },
+    {
+     "effective_year": 2026,
+     "identifier": "investment_return",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.05"
+    },
+    {
+     "effective_year": 2026,
+     "identifier": "tax_indexing",
+     "source": "user",
+     "unit": "decimal_fraction_per_year",
+     "user_overrode_default": false,
+     "value": "0.025"
+    }
+   ],
+   "household": {
+    "accounts": [
+     {
+      "account_type": "cash",
+      "cost_basis_cents": null,
+      "id": "cash",
+      "opening_balance_cents": 2000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": null
+     },
+     {
+      "account_type": "taxable",
+      "cost_basis_cents": 11000000,
+      "id": "brokerage",
+      "opening_balance_cents": 15000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": null
+     },
+     {
+      "account_type": "tax_deferred",
+      "cost_basis_cents": null,
+      "id": "401k",
+      "opening_balance_cents": 52000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": "employer_plan"
+     },
+     {
+      "account_type": "roth",
+      "cost_basis_cents": null,
+      "id": "roth-ira",
+      "opening_balance_cents": 6000000,
+      "owner": "sample-person",
+      "tax_deferred_kind": null
+     }
+    ],
+    "income": {
+     "pension": {
+      "amount": {
+       "cents": 0,
+       "dollar_basis": "nominal"
+      },
+      "start_age": 65
+     },
+     "social_security": {
+      "amount": {
+       "cents": 2600000,
+       "dollar_basis": "today"
+      },
+      "start_age": 67
+     },
+     "wages": [
+      {
+       "amount": {
+        "cents": 8500000,
+        "dollar_basis": "today"
+       },
+       "end_date": "2032-03-10",
+       "start_date": "2026-01-01"
+      }
+     ]
+    },
+    "persons": [
+     {
+      "birth_date": "1965-03-10",
+      "id": "sample-person",
+      "plan_end_age": 95,
+      "retirement_date": "2032-03-10"
+     }
+    ],
+    "spending": {
+     "after_retirement": {
+      "cents": 6700000,
+      "dollar_basis": "today"
+     },
+     "before_retirement": {
+      "cents": 6200000,
+      "dollar_basis": "today"
+     }
+    },
+    "valuation_date": "2026-01-01"
+   }
+  }
+ },
+ "input_impact": {
+  "answers-working-61": {
+   "baseline_headroom": -2006,
+   "items": [
+    {
+     "headroom_high": 4743,
+     "headroom_low": -8342,
+     "high": "0.06",
+     "impact": 6749,
+     "low": "0.04",
+     "path": "/assumptions/investment_return/value"
+    },
+    {
+     "headroom_high": -8706,
+     "headroom_low": 4694,
+     "high": 7370000,
+     "impact": 6700,
+     "low": 6030000,
+     "path": "/household/spending/after_retirement/cents"
+    },
+    {
+     "headroom_high": 274,
+     "headroom_low": -4311,
+     "high": 2860000,
+     "impact": 2305,
+     "low": 2340000,
+     "path": "/household/income/social_security/amount/cents"
+    },
+    {
+     "headroom_high": -3630,
+     "headroom_low": -430,
+     "high": 6820000,
+     "impact": 1624,
+     "low": 5580000,
+     "path": "/household/spending/before_retirement/cents"
+    },
+    {
+     "headroom_high": -617,
+     "headroom_low": -3436,
+     "high": 55000000,
+     "impact": 1430,
+     "low": 49000000,
+     "path": "/household/accounts/2/opening_balance_cents"
+    },
+    {
+     "headroom_high": -1998,
+     "headroom_low": -2014,
+     "high": 13750000,
+     "impact": 8,
+     "low": 8250000,
+     "path": "/household/accounts/1/cost_basis_cents"
+    }
+   ]
+  }
+ },
+ "levers": {
+  "A-drawdown": {
+   "baseline": {
+    "entered": 60000,
+    "headroom": -16310,
+    "sustainable_spending": 43690
+   },
+   "levers": [
+    {
+     "changes": [
+      {
+       "path": "/household/spending/after_retirement/cents",
+       "value": 5400000
+      }
+     ],
+     "effect": 6000,
+     "ending_total_today": 34,
+     "first_shortfall_age": 76,
+     "flag": null,
+     "headroom": -10310,
+     "id": "spend_lower",
+     "kind": "spending",
+     "status": "complete",
+     "sustainable_spending": 43690
+    },
+    {
+     "changes": [
+      {
+       "path": "/household/spending/after_retirement/cents",
+       "value": 6600000
+      }
+     ],
+     "effect": -6000,
+     "ending_total_today": 1,
+     "first_shortfall_age": 75,
+     "flag": null,
+     "headroom": -22310,
+     "id": "spend_higher",
+     "kind": "spending",
+     "status": "complete",
+     "sustainable_spending": 43690
+    },
+    {
+     "changes": [
+      {
+       "path": "/assumptions/investment_return/value",
+       "value": "0.04"
+      }
+     ],
+     "effect": -512,
+     "ending_total_today": 2,
+     "first_shortfall_age": 76,
+     "flag": null,
+     "headroom": -16822,
+     "id": "return_lower",
+     "kind": "return",
+     "status": "complete",
+     "sustainable_spending": 43178
+    },
+    {
+     "changes": [
+      {
+       "path": "/assumptions/investment_return/value",
+       "value": "0.06"
+      }
+     ],
+     "effect": 517,
+     "ending_total_today": 17,
+     "first_shortfall_age": 76,
+     "flag": null,
+     "headroom": -15793,
+     "id": "return_higher",
+     "kind": "return",
+     "status": "complete",
+     "sustainable_spending": 44207
+    }
+   ],
+   "ranking": [
+    "spend_lower",
+    "spend_higher",
+    "return_higher",
+    "return_lower"
+   ],
+   "what_moves_most": [
+    "spending",
+    "return"
+   ]
+  },
+  "answers-working-61": {
+   "baseline": {
+    "entered": 67000,
+    "headroom": -2006,
+    "sustainable_spending": 64994
+   },
+   "levers": [
+    {
+     "changes": [
+      {
+       "path": "/household/persons/0/retirement_date",
+       "value": "2030-03-10"
+      },
+      {
+       "path": "/household/income/wages/0/end_date",
+       "value": "2030-03-10"
+      }
+     ],
+     "effect": -3556,
+     "ending_total_today": 0,
+     "first_shortfall_age": 90,
+     "flag": null,
+     "headroom": -5562,
+     "id": "retire_earlier",
+     "kind": "retirement_date",
+     "status": "partial",
+     "sustainable_spending": 61438
+    },
+    {
+     "changes": [
+      {
+       "path": "/household/persons/0/retirement_date",
+       "value": "2032-03-10"
+      },
+      {
+       "path": "/household/income/wages/0/end_date",
+       "value": "2032-03-10"
+      }
+     ],
+     "effect": 3622,
+     "ending_total_today": 7504510,
+     "first_shortfall_age": null,
+     "flag": null,
+     "headroom": 1616,
+     "id": "retire_later",
+     "kind": "retirement_date",
+     "status": "partial",
+     "sustainable_spending": 68616
+    },
+    {
+     "changes": [
+      {
+       "path": "/household/spending/after_retirement/cents",
+       "value": 6030000
+      }
+     ],
+     "effect": 6700,
+     "ending_total_today": 21679735,
+     "first_shortfall_age": null,
+     "flag": null,
+     "headroom": 4694,
+     "id": "spend_lower",
+     "kind": "spending",
+     "status": "partial",
+     "sustainable_spending": 64994
+    },
+    {
+     "changes": [
+      {
+       "path": "/household/spending/after_retirement/cents",
+       "value": 7370000
+      }
+     ],
+     "effect": -6700,
+     "ending_total_today": 0,
+     "first_shortfall_age": 88,
+     "flag": null,
+     "headroom": -8706,
+     "id": "spend_higher",
+     "kind": "spending",
+     "status": "partial",
+     "sustainable_spending": 64994
+    },
+    {
+     "changes": [
+      {
+       "path": "/assumptions/investment_return/value",
+       "value": "0.04"
+      }
+     ],
+     "effect": -6336,
+     "ending_total_today": 0,
+     "first_shortfall_age": 88,
+     "flag": null,
+     "headroom": -8342,
+     "id": "return_lower",
+     "kind": "return",
+     "status": "partial",
+     "sustainable_spending": 58658
+    },
+    {
+     "changes": [
+      {
+       "path": "/assumptions/investment_return/value",
+       "value": "0.06"
+      }
+     ],
+     "effect": 6749,
+     "ending_total_today": 27573799,
+     "first_shortfall_age": null,
+     "flag": null,
+     "headroom": 4743,
+     "id": "return_higher",
+     "kind": "return",
+     "status": "partial",
+     "sustainable_spending": 71743
+    }
+   ],
+   "ranking": [
+    "return_higher",
+    "spend_lower",
+    "spend_higher",
+    "return_lower",
+    "retire_later",
+    "retire_earlier"
+   ],
+   "what_moves_most": [
+    "return",
+    "spending",
+    "retirement_date"
+   ]
+  }
+ },
+ "sustainable_spending": {
+  "A-drawdown": {
+   "entered": 60000,
+   "flag": null,
+   "runs": 20,
+   "status": "complete",
+   "sustainable_spending": 43690
+  },
+  "answers-cap": {
+   "entered": 200000,
+   "flag": "at_or_above_cap",
+   "runs": 7,
+   "status": "partial",
+   "sustainable_spending": 10000000
+  },
+  "answers-underfunded": {
+   "entered": 67000,
+   "flag": "shortfall_with_no_retirement_spending",
+   "runs": 2,
+   "status": "partial",
+   "sustainable_spending": 0
+  },
+  "answers-working-61": {
+   "entered": 67000,
+   "flag": null,
+   "runs": 20,
+   "status": "partial",
+   "sustainable_spending": 64994
+  },
+  "synthetic-retired": {
+   "entered": 50000,
+   "flag": null,
+   "runs": 20,
+   "status": "complete",
+   "sustainable_spending": 87061
+  }
+ },
+ "today_values": {
+  "answers-working-61": {
+   "status": "partial",
+   "years": [
+    {
+     "accounts_closing_today": {
+      "401k": 54600000,
+      "brokerage": 17086805,
+      "cash": 2040000,
+      "roth-ira": 6300000
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 80026805,
+     "total_closing_today": 80026805,
+     "year": 2026
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 55931707,
+      "brokerage": 18840230,
+      "cash": 2030049,
+      "roth-ira": 6453659
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 85337036,
+     "total_closing_today": 83255645,
+     "year": 2027
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 57295895,
+      "brokerage": 20636250,
+      "cash": 2020146,
+      "roth-ira": 6611065
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 90945626,
+     "total_closing_today": 86563356,
+     "year": 2028
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 58693356,
+      "brokerage": 22475467,
+      "cash": 2010291,
+      "roth-ira": 6772311
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 96867847,
+     "total_closing_today": 89951426,
+     "year": 2029
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 60124901,
+      "brokerage": 24405789,
+      "cash": 2000485,
+      "roth-ira": 6937489
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 103171917,
+     "total_closing_today": 93468665,
+     "year": 2030
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 61591362,
+      "brokerage": 21852668,
+      "cash": 19517,
+      "roth-ira": 7106697
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 102471918,
+     "total_closing_today": 90570244,
+     "year": 2031
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 63093591,
+      "brokerage": 17540068,
+      "cash": 191,
+      "roth-ira": 7280031
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 101953148,
+     "total_closing_today": 87913880,
+     "year": 2032
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 64632459,
+      "brokerage": 13765564,
+      "cash": 2,
+      "roth-ira": 7457593
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 102055349,
+     "total_closing_today": 85855617,
+     "year": 2033
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 66208860,
+      "brokerage": 9898812,
+      "cash": 0,
+      "roth-ira": 7639485
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 102037779,
+     "total_closing_today": 83747157,
+     "year": 2034
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 67823710,
+      "brokerage": 5937747,
+      "cash": 0,
+      "roth-ira": 7825815
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 101891322,
+     "total_closing_today": 81587271,
+     "year": 2035
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 69477947,
+      "brokerage": 1880070,
+      "cash": 0,
+      "roth-ira": 8016688
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 101606334,
+     "total_closing_today": 79374706,
+     "year": 2036
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 68506361,
+      "brokerage": 45855,
+      "cash": 0,
+      "roth-ira": 8212217
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 100721589,
+     "total_closing_today": 76764434,
+     "year": 2037
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 65419500,
+      "brokerage": 1118,
+      "cash": 0,
+      "roth-ira": 8412515
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 99297357,
+     "total_closing_today": 73833134,
+     "year": 2038
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 62207391,
+      "brokerage": 28,
+      "cash": 0,
+      "roth-ira": 8617699
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 97633206,
+     "total_closing_today": 70825117,
+     "year": 2039
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 58915433,
+      "brokerage": 1,
+      "cash": 0,
+      "roth-ira": 8827887
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 95719539,
+     "total_closing_today": 67743321,
+     "year": 2040
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 55544129,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 9043201
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 93541712,
+     "total_closing_today": 64587330,
+     "year": 2041
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 52090709,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 9263768
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 91081066,
+     "total_closing_today": 61354477,
+     "year": 2042
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 48552443,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 9489713
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 88318005,
+     "total_closing_today": 58042156,
+     "year": 2043
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 44928335,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 9721170
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 85234577,
+     "total_closing_today": 54649505,
+     "year": 2044
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 41215627,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 9958271
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 81809161,
+     "total_closing_today": 51173898,
+     "year": 2045
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 37412725,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 10201156
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 78020888,
+     "total_closing_today": 47613881,
+     "year": 2046
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 33516610,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 10449965
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 73845461,
+     "total_closing_today": 43966575,
+     "year": 2047
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 29525985,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 10704842
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 69260241,
+     "total_closing_today": 40230827,
+     "year": 2048
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 25438241,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 10965936
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 64239200,
+     "total_closing_today": 36404177,
+     "year": 2049
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 21251001,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 11233398
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 58755375,
+     "total_closing_today": 32484399,
+     "year": 2050
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 16961104,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 11507383
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 52778984,
+     "total_closing_today": 28468487,
+     "year": 2051
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 12566107,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 11788051
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 46280028,
+     "total_closing_today": 24354158,
+     "year": 2052
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 8064566,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 12075564
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 39228945,
+     "total_closing_today": 20140130,
+     "year": 2053
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 3452730,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 12370090
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 31590182,
+     "total_closing_today": 15822820,
+     "year": 2054
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 84213,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 11483957
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 23673188,
+     "total_closing_today": 11568170,
+     "year": 2055
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 2054,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 7645766
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 16041819,
+     "total_closing_today": 7647820,
+     "year": 2056
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 50,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 3631803
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 7808508,
+     "total_closing_today": 3631853,
+     "year": 2057
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 1,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 88581
+     },
+     "shortfall_nominal": 1226895,
+     "shortfall_today": 556729,
+     "total_closing_nominal": 195213,
+     "total_closing_today": 88582,
+     "year": 2058
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 0,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 2160
+     },
+     "shortfall_nominal": 9066076,
+     "shortfall_today": 4013579,
+     "total_closing_nominal": 4880,
+     "total_closing_today": 2160,
+     "year": 2059
+    },
+    {
+     "accounts_closing_today": {
+      "401k": 0,
+      "brokerage": 0,
+      "cash": 0,
+      "roth-ira": 53
+     },
+     "shortfall_nominal": 9487940,
+     "shortfall_today": 4097892,
+     "total_closing_nominal": 122,
+     "total_closing_today": 53,
+     "year": 2060
+    }
+   ]
+  },
+  "synthetic-retired": {
+   "status": "complete",
+   "years": [
+    {
+     "accounts_closing_today": {
+      "cash": 1742000,
+      "employer": 47250000,
+      "roth": 8400000,
+      "taxable": 18900000
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 76292000,
+     "total_closing_today": 76292000,
+     "year": 2026
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 968840,
+      "employer": 49612500,
+      "roth": 8820000,
+      "taxable": 19845000
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 79246340,
+     "total_closing_today": 79246340,
+     "year": 2027
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 180217,
+      "employer": 52093125,
+      "roth": 9261000,
+      "taxable": 20837250
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 82371592,
+     "total_closing_today": 82371592,
+     "year": 2028
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 183821,
+      "employer": 52682859,
+      "roth": 9724050,
+      "taxable": 22763354
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 85354084,
+     "total_closing_today": 85354084,
+     "year": 2029
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 187497,
+      "employer": 53199358,
+      "roth": 10210253,
+      "taxable": 24872429
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 88469537,
+     "total_closing_today": 88469537,
+     "year": 2030
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 191247,
+      "employer": 53642686,
+      "roth": 10720766,
+      "taxable": 27170829
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 91725528,
+     "total_closing_today": 91725528,
+     "year": 2031
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 195072,
+      "employer": 54004831,
+      "roth": 11256804,
+      "taxable": 29671404
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 95128111,
+     "total_closing_today": 95128111,
+     "year": 2032
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 198973,
+      "employer": 54287825,
+      "roth": 11819644,
+      "taxable": 32379525
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 98685967,
+     "total_closing_today": 98685967,
+     "year": 2033
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 202952,
+      "employer": 54472898,
+      "roth": 12410626,
+      "taxable": 35317811
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 102404287,
+     "total_closing_today": 102404287,
+     "year": 2034
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 207011,
+      "employer": 54550348,
+      "roth": 13031157,
+      "taxable": 38502021
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 106290537,
+     "total_closing_today": 106290537,
+     "year": 2035
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 211151,
+      "employer": 54509841,
+      "roth": 13682715,
+      "taxable": 41947791
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 110351498,
+     "total_closing_today": 110351498,
+     "year": 2036
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 215374,
+      "employer": 54355302,
+      "roth": 14366851,
+      "taxable": 45660556
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 114598083,
+     "total_closing_today": 114598083,
+     "year": 2037
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 219681,
+      "employer": 54061490,
+      "roth": 15085194,
+      "taxable": 49670098
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 119036463,
+     "total_closing_today": 119036463,
+     "year": 2038
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 224075,
+      "employer": 53633885,
+      "roth": 15839454,
+      "taxable": 53980344
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 123677758,
+     "total_closing_today": 123677758,
+     "year": 2039
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 228557,
+      "employer": 53043274,
+      "roth": 16631427,
+      "taxable": 58627329
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 128530587,
+     "total_closing_today": 128530587,
+     "year": 2040
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 233128,
+      "employer": 52297353,
+      "roth": 17462998,
+      "taxable": 63626871
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 133620350,
+     "total_closing_today": 133620350,
+     "year": 2041
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 237791,
+      "employer": 51385590,
+      "roth": 18336148,
+      "taxable": 68998416
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 138957945,
+     "total_closing_today": 138957945,
+     "year": 2042
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 242547,
+      "employer": 50297214,
+      "roth": 19252955,
+      "taxable": 74762746
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 144555462,
+     "total_closing_today": 144555462,
+     "year": 2043
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 247398,
+      "employer": 49048962,
+      "roth": 20215603,
+      "taxable": 80917615
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 150429578,
+     "total_closing_today": 150429578,
+     "year": 2044
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 252346,
+      "employer": 47604109,
+      "roth": 21226383,
+      "taxable": 87507937
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 156590775,
+     "total_closing_today": 156590775,
+     "year": 2045
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 257393,
+      "employer": 45984789,
+      "roth": 22287702,
+      "taxable": 94527970
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 163057854,
+     "total_closing_today": 163057854,
+     "year": 2046
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 262541,
+      "employer": 44185385,
+      "roth": 23402087,
+      "taxable": 101995852
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 169845865,
+     "total_closing_today": 169845865,
+     "year": 2047
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 267792,
+      "employer": 42201134,
+      "roth": 24572191,
+      "taxable": 109931471
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 176972588,
+     "total_closing_today": 176972588,
+     "year": 2048
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 273148,
+      "employer": 40028402,
+      "roth": 25800801,
+      "taxable": 118353382
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 184455733,
+     "total_closing_today": 184455733,
+     "year": 2049
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 278611,
+      "employer": 37710968,
+      "roth": 27090841,
+      "taxable": 127239081
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 192319501,
+     "total_closing_today": 192319501,
+     "year": 2050
+    },
+    {
+     "accounts_closing_today": {
+      "cash": 284183,
+      "employer": 35253400,
+      "roth": 28445383,
+      "taxable": 136601370
+     },
+     "shortfall_nominal": 0,
+     "shortfall_today": 0,
+     "total_closing_nominal": 200584336,
+     "total_closing_today": 200584336,
+     "year": 2051
+    }
+   ]
+  }
+ }
+}
