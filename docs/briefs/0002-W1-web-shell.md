@@ -799,3 +799,51 @@ the unchanged release WASM module. Earlier cumulative results remain historical
 observations. M1, L1 and L2 remain resolved; no separate validation artifact was
 added. Independent browser review remains with a different reviewer. No main
 mutation, push or hook bypass was performed.
+
+### Re-review follow-up — best-effort Firefox cleanup (2026-10-18)
+
+**Branch:** `codex/0002-W1-web-shell`.
+**New source/test revision validated:** `050b89dbf13817eae80c67c840b81947645bac5e`.
+Validation ran in a fresh local Git clone of that committed revision, without
+copied node_modules, generated types/bindings or target output. Source and tests
+stayed unchanged during validation; this record is committed afterward.
+
+The sole code change wraps Firefox's temporary-home `rmSync` in a try/catch.
+The existing recursive/force options, 10 retries and 200 ms retry delay remain.
+A short comment explains that Firefox can keep writing after close, so removal
+of this OS-temp directory is best effort. Cleanup failure cannot fail teardown.
+No browser assertions, application code or other behavior changed.
+
+**Validation commands** (all from `apps/web/`, pinned Node directory first on PATH):
+
+| Command | Exit | Counts / observed result |
+| --- | --- | --- |
+| `node --version` | 0 | v24.22.0 |
+| `corepack --version` | 0 | 0.36.0 |
+| `corepack pnpm --version` | 0 | 12.9.1 |
+| `wasm-bindgen --version` | 0 | wasm-bindgen 0.2.129 |
+| `corepack pnpm install --frozen-lockfile` | 0 | Frozen installation in fresh clone |
+| `corepack pnpm run build:engine` | 0 | Release WASM module and bindings generated |
+| `corepack pnpm run types` | 0 | Schema type generation passed |
+| `corepack pnpm run typecheck` | 0 | Strict typecheck passed, including browser fixture |
+| `corepack pnpm run lint` | 0 | Lint passed |
+| `corepack pnpm run format:check` | 0 | All matched files use Prettier code style! |
+| `corepack pnpm test` | 0 | 6 test files passed; 15 tests passed |
+| `corepack pnpm run build` | 0 | Production site and worker/WASM built |
+| `corepack pnpm run licenses` | 0 | 4 shipped and 359 installed package versions passed |
+| `corepack pnpm exec playwright test --list` | 0 | 12 tests discovered in 1 file |
+
+**End to end:** **not run by the implementer; run by the reviewer**.
+Playwright installation and e2e execution were excluded as requested because
+browsers cannot start in this sandbox. Discovery does not execute teardown or
+page assertions. The reviewer reruns e2e outside the sandbox; no new browser
+result is claimed by the implementer.
+
+**Dependencies/exclusions:** no dependencies added; manifests, pins and lockfiles
+are unchanged. Rust source, financial fixtures, references, schemas and goldens
+are unchanged. Rust tests, CLI sweeps, Rust lint/format, WASM numeric parity and
+Rust license checks were not rerun because this browser-fixture-only change
+cannot affect them. Web build prerequisites and all non-browser web validation
+commands were rerun above. No separate validation artifact was added. No main
+mutation, push or hook bypass was performed. Final branch tip is reported
+separately in the handoff.
