@@ -79,12 +79,26 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
       ? "Alt+Tab"
       : "Tab";
   async function keyboardTo(locator: Locator) {
+    // Stay inside the document when the target precedes the current focus.
+    const backwards = await locator.evaluate(
+      (target) =>
+        !!document.activeElement &&
+        !!(
+          target.compareDocumentPosition(document.activeElement) &
+          Node.DOCUMENT_POSITION_FOLLOWING
+        ),
+    );
+    const key = backwards
+      ? traversal === "Alt+Tab"
+        ? "Alt+Shift+Tab"
+        : "Shift+Tab"
+      : traversal;
     for (let count = 0; count < 90; count++) {
       if (
         await locator.evaluate((element) => element === document.activeElement)
       )
         return;
-      await page.keyboard.press(traversal);
+      await page.keyboard.press(key);
     }
     throw new Error(`Keyboard could not reach ${await locator.textContent()}`);
   }
