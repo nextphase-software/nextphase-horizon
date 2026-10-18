@@ -1,0 +1,2134 @@
+{
+ "compared_paths": [
+  "/income_total",
+  "/spending",
+  "/rmd_total",
+  "/withdrawals_total",
+  "/surplus_deposit",
+  "/shortfall",
+  "/federal_tax/paid",
+  "/accounts/<identifier>/closing"
+ ],
+ "comparisons": {
+  "retirement-date": {
+   "baseline_input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 500000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 5000000,
+       "id": "taxable",
+       "opening_balance_cents": 6000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "k401",
+       "opening_balance_cents": 30000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "employer_plan"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2800000,
+        "dollar_basis": "today"
+       },
+       "start_age": 67
+      },
+      "wages": [
+       {
+        "amount": {
+         "cents": 15000000,
+         "dollar_basis": "today"
+        },
+        "end_date": "2027-01-01",
+        "start_date": "2010-01-01"
+       }
+      ]
+     },
+     "persons": [
+      {
+       "birth_date": "1975-05-20",
+       "id": "synthetic-person",
+       "plan_end_age": 55,
+       "retirement_date": "2027-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 7000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 8000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   },
+   "expected": {
+    "changed_inputs": [
+     {
+      "baseline": "2027-01-01",
+      "change": "modified",
+      "path": "/household/persons/0/retirement_date",
+      "scenario": "2028-01-01"
+     }
+    ],
+    "line_differences": [
+     {
+      "baseline": 4652545,
+      "difference": -1050625,
+      "path": "/accounts/taxable/closing",
+      "scenario": 3601920,
+      "year": 2027
+     },
+     {
+      "baseline": 7175000,
+      "difference": 1025000,
+      "path": "/spending",
+      "scenario": 8200000,
+      "year": 2027
+     },
+     {
+      "baseline": 7175000,
+      "difference": 1025000,
+      "path": "/withdrawals_total",
+      "scenario": 8200000,
+      "year": 2027
+     },
+     {
+      "baseline": 31485628,
+      "difference": -1380628,
+      "path": "/accounts/k401/closing",
+      "scenario": 30105000,
+      "year": 2028
+     },
+     {
+      "baseline": 116314,
+      "difference": -26266,
+      "path": "/accounts/taxable/closing",
+      "scenario": 90048,
+      "year": 2028
+     },
+     {
+      "baseline": 467291,
+      "difference": 296330,
+      "path": "/federal_tax/paid",
+      "scenario": 763621,
+      "year": 2028
+     },
+     {
+      "baseline": 7821666,
+      "difference": 296330,
+      "path": "/withdrawals_total",
+      "scenario": 8117996,
+      "year": 2028
+     },
+     {
+      "baseline": 23277917,
+      "difference": -1483312,
+      "path": "/accounts/k401/closing",
+      "scenario": 21794605,
+      "year": 2029
+     },
+     {
+      "baseline": 2908,
+      "difference": -657,
+      "path": "/accounts/taxable/closing",
+      "scenario": 2251,
+      "year": 2029
+     },
+     {
+      "baseline": 2121538,
+      "difference": 6566,
+      "path": "/federal_tax/paid",
+      "scenario": 2128104,
+      "year": 2029
+     },
+     {
+      "baseline": 9659772,
+      "difference": 6566,
+      "path": "/withdrawals_total",
+      "scenario": 9666338,
+      "year": 2029
+     },
+     {
+      "baseline": 14266553,
+      "difference": -1558321,
+      "path": "/accounts/k401/closing",
+      "scenario": 12708232,
+      "year": 2030
+     },
+     {
+      "baseline": 73,
+      "difference": -17,
+      "path": "/accounts/taxable/closing",
+      "scenario": 56,
+      "year": 2030
+     },
+     {
+      "baseline": 2203302,
+      "difference": 166,
+      "path": "/federal_tax/paid",
+      "scenario": 2203468,
+      "year": 2030
+     },
+     {
+      "baseline": 9929992,
+      "difference": 166,
+      "path": "/withdrawals_total",
+      "scenario": 9930158,
+      "year": 2030
+     }
+    ],
+    "status": "partial",
+    "summary": {
+     "baseline": {
+      "ending_balances": {
+       "cash": 0,
+       "k401": 14266553,
+       "roth": 6381408,
+       "taxable": 73
+      },
+      "ending_total": 20648034,
+      "first_shortfall_year": null,
+      "last_year": 2030,
+      "status": "partial",
+      "total_federal_tax_paid": 7267931,
+      "total_shortfall": 0
+     },
+     "difference": {
+      "ending_total": -1558338,
+      "total_federal_tax_paid": 303062,
+      "total_shortfall": 0
+     },
+     "scenario": {
+      "ending_balances": {
+       "cash": 0,
+       "k401": 12708232,
+       "roth": 6381408,
+       "taxable": 56
+      },
+      "ending_total": 19089696,
+      "first_shortfall_year": null,
+      "last_year": 2030,
+      "status": "partial",
+      "total_federal_tax_paid": 7570993,
+      "total_shortfall": 0
+     }
+    }
+   },
+   "scenario_input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 500000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 5000000,
+       "id": "taxable",
+       "opening_balance_cents": 6000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "k401",
+       "opening_balance_cents": 30000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "employer_plan"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2800000,
+        "dollar_basis": "today"
+       },
+       "start_age": 67
+      },
+      "wages": [
+       {
+        "amount": {
+         "cents": 15000000,
+         "dollar_basis": "today"
+        },
+        "end_date": "2027-01-01",
+        "start_date": "2010-01-01"
+       }
+      ]
+     },
+     "persons": [
+      {
+       "birth_date": "1975-05-20",
+       "id": "synthetic-person",
+       "plan_end_age": 55,
+       "retirement_date": "2028-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 7000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 8000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   }
+  },
+  "return-assumption": {
+   "baseline_input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   },
+   "expected": {
+    "changed_inputs": [
+     {
+      "baseline": "0.05",
+      "change": "modified",
+      "path": "/assumptions/investment_return/value",
+      "scenario": "0.06"
+     }
+    ],
+    "line_differences": [
+     {
+      "baseline": 5056604,
+      "difference": 49057,
+      "path": "/accounts/ira/closing",
+      "scenario": 5105661,
+      "year": 2026
+     },
+     {
+      "baseline": 2100000,
+      "difference": 20000,
+      "path": "/accounts/roth/closing",
+      "scenario": 2120000,
+      "year": 2026
+     },
+     {
+      "baseline": 678396,
+      "difference": 17943,
+      "path": "/accounts/taxable/closing",
+      "scenario": 696339,
+      "year": 2026
+     },
+     {
+      "baseline": 1959275,
+      "difference": 107557,
+      "path": "/accounts/ira/closing",
+      "scenario": 2066832,
+      "year": 2027
+     },
+     {
+      "baseline": 2205000,
+      "difference": 42200,
+      "path": "/accounts/roth/closing",
+      "scenario": 2247200,
+      "year": 2027
+     },
+     {
+      "baseline": 16960,
+      "difference": 3930,
+      "path": "/accounts/taxable/closing",
+      "scenario": 20890,
+      "year": 2027
+     },
+     {
+      "baseline": 266844,
+      "difference": -2768,
+      "path": "/federal_tax/paid",
+      "scenario": 264076,
+      "year": 2027
+     },
+     {
+      "baseline": 198298,
+      "difference": 1924,
+      "path": "/rmd_total",
+      "scenario": 200222,
+      "year": 2027
+     },
+     {
+      "baseline": 3758546,
+      "difference": -4692,
+      "path": "/withdrawals_total",
+      "scenario": 3753854,
+      "year": 2027
+     },
+     {
+      "baseline": 48982,
+      "difference": 13023,
+      "path": "/accounts/ira/closing",
+      "scenario": 62005,
+      "year": 2028
+     },
+     {
+      "baseline": 464187,
+      "difference": 172584,
+      "path": "/accounts/roth/closing",
+      "scenario": 636771,
+      "year": 2028
+     },
+     {
+      "baseline": 424,
+      "difference": 203,
+      "path": "/accounts/taxable/closing",
+      "scenario": 627,
+      "year": 2028
+     },
+     {
+      "baseline": 79645,
+      "difference": 4373,
+      "path": "/rmd_total",
+      "scenario": 84018,
+      "year": 2028
+     },
+     {
+      "baseline": 3702605,
+      "difference": -4373,
+      "path": "/withdrawals_total",
+      "scenario": 3698232,
+      "year": 2028
+     },
+     {
+      "baseline": 1225,
+      "difference": 635,
+      "path": "/accounts/ira/closing",
+      "scenario": 1860,
+      "year": 2029
+     },
+     {
+      "baseline": 11605,
+      "difference": 7498,
+      "path": "/accounts/roth/closing",
+      "scenario": 19103,
+      "year": 2029
+     },
+     {
+      "baseline": 11,
+      "difference": 8,
+      "path": "/accounts/taxable/closing",
+      "scenario": 19,
+      "year": 2029
+     },
+     {
+      "baseline": 2067,
+      "difference": 549,
+      "path": "/rmd_total",
+      "scenario": 2616,
+      "year": 2029
+     },
+     {
+      "baseline": 3363212,
+      "difference": -185810,
+      "path": "/shortfall",
+      "scenario": 3177402,
+      "year": 2029
+     },
+     {
+      "baseline": 511527,
+      "difference": 185261,
+      "path": "/withdrawals_total",
+      "scenario": 696788,
+      "year": 2029
+     },
+     {
+      "baseline": 31,
+      "difference": 25,
+      "path": "/accounts/ira/closing",
+      "scenario": 56,
+      "year": 2030
+     },
+     {
+      "baseline": 290,
+      "difference": 283,
+      "path": "/accounts/roth/closing",
+      "scenario": 573,
+      "year": 2030
+     },
+     {
+      "baseline": 0,
+      "difference": 1,
+      "path": "/accounts/taxable/closing",
+      "scenario": 1,
+      "year": 2030
+     },
+     {
+      "baseline": 53,
+      "difference": 28,
+      "path": "/rmd_total",
+      "scenario": 81,
+      "year": 2030
+     },
+     {
+      "baseline": 3960885,
+      "difference": -8141,
+      "path": "/shortfall",
+      "scenario": 3952744,
+      "year": 2030
+     },
+     {
+      "baseline": 12788,
+      "difference": 8113,
+      "path": "/withdrawals_total",
+      "scenario": 20901,
+      "year": 2030
+     },
+     {
+      "baseline": 1,
+      "difference": 1,
+      "path": "/accounts/ira/closing",
+      "scenario": 2,
+      "year": 2031
+     },
+     {
+      "baseline": 7,
+      "difference": 10,
+      "path": "/accounts/roth/closing",
+      "scenario": 17,
+      "year": 2031
+     },
+     {
+      "baseline": 1,
+      "difference": 2,
+      "path": "/rmd_total",
+      "scenario": 3,
+      "year": 2031
+     },
+     {
+      "baseline": 4072748,
+      "difference": -309,
+      "path": "/shortfall",
+      "scenario": 4072439,
+      "year": 2031
+     },
+     {
+      "baseline": 320,
+      "difference": 307,
+      "path": "/withdrawals_total",
+      "scenario": 627,
+      "year": 2031
+     }
+    ],
+    "status": "complete",
+    "summary": {
+     "baseline": {
+      "ending_balances": {
+       "cash": 0,
+       "ira": 1,
+       "roth": 7,
+       "taxable": 0
+      },
+      "ending_total": 8,
+      "first_shortfall_year": 2029,
+      "last_year": 2031,
+      "status": "complete",
+      "total_federal_tax_paid": 266844,
+      "total_shortfall": 11396845
+     },
+     "difference": {
+      "ending_total": 11,
+      "total_federal_tax_paid": -2768,
+      "total_shortfall": -194260
+     },
+     "scenario": {
+      "ending_balances": {
+       "cash": 0,
+       "ira": 2,
+       "roth": 17,
+       "taxable": 0
+      },
+      "ending_total": 19,
+      "first_shortfall_year": 2029,
+      "last_year": 2031,
+      "status": "complete",
+      "total_federal_tax_paid": 264076,
+      "total_shortfall": 11202585
+     }
+    }
+   },
+   "scenario_input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.06"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   }
+  },
+  "spending-amount": {
+   "baseline_input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   },
+   "expected": {
+    "changed_inputs": [
+     {
+      "baseline": 6000000,
+      "change": "modified",
+      "path": "/household/spending/after_retirement/cents",
+      "scenario": 5500000
+     }
+    ],
+    "line_differences": [
+     {
+      "baseline": 678396,
+      "difference": 512500,
+      "path": "/accounts/taxable/closing",
+      "scenario": 1190896,
+      "year": 2026
+     },
+     {
+      "baseline": 6000000,
+      "difference": -500000,
+      "path": "/spending",
+      "scenario": 5500000,
+      "year": 2026
+     },
+     {
+      "baseline": 3411321,
+      "difference": -500000,
+      "path": "/withdrawals_total",
+      "scenario": 2911321,
+      "year": 2026
+     },
+     {
+      "baseline": 1959275,
+      "difference": 1299271,
+      "path": "/accounts/ira/closing",
+      "scenario": 3258546,
+      "year": 2027
+     },
+     {
+      "baseline": 16960,
+      "difference": 12812,
+      "path": "/accounts/taxable/closing",
+      "scenario": 29772,
+      "year": 2027
+     },
+     {
+      "baseline": 266844,
+      "difference": -242581,
+      "path": "/federal_tax/paid",
+      "scenario": 24263,
+      "year": 2027
+     },
+     {
+      "baseline": 6150000,
+      "difference": -512500,
+      "path": "/spending",
+      "scenario": 5637500,
+      "year": 2027
+     },
+     {
+      "baseline": 3758546,
+      "difference": -755081,
+      "path": "/withdrawals_total",
+      "scenario": 3003465,
+      "year": 2027
+     },
+     {
+      "baseline": 48982,
+      "difference": 32482,
+      "path": "/accounts/ira/closing",
+      "scenario": 81464,
+      "year": 2028
+     },
+     {
+      "baseline": 464187,
+      "difference": 1641808,
+      "path": "/accounts/roth/closing",
+      "scenario": 2105995,
+      "year": 2028
+     },
+     {
+      "baseline": 424,
+      "difference": 320,
+      "path": "/accounts/taxable/closing",
+      "scenario": 744,
+      "year": 2028
+     },
+     {
+      "baseline": 0,
+      "difference": 235631,
+      "path": "/federal_tax/paid",
+      "scenario": 235631,
+      "year": 2028
+     },
+     {
+      "baseline": 79645,
+      "difference": 52816,
+      "path": "/rmd_total",
+      "scenario": 132461,
+      "year": 2028
+     },
+     {
+      "baseline": 6303750,
+      "difference": -525312,
+      "path": "/spending",
+      "scenario": 5778438,
+      "year": 2028
+     },
+     {
+      "baseline": 3702605,
+      "difference": -342497,
+      "path": "/withdrawals_total",
+      "scenario": 3360108,
+      "year": 2028
+     },
+     {
+      "baseline": 1225,
+      "difference": 812,
+      "path": "/accounts/ira/closing",
+      "scenario": 2037,
+      "year": 2029
+     },
+     {
+      "baseline": 11605,
+      "difference": 41045,
+      "path": "/accounts/roth/closing",
+      "scenario": 52650,
+      "year": 2029
+     },
+     {
+      "baseline": 11,
+      "difference": 8,
+      "path": "/accounts/taxable/closing",
+      "scenario": 19,
+      "year": 2029
+     },
+     {
+      "baseline": 2067,
+      "difference": 1370,
+      "path": "/rmd_total",
+      "scenario": 3437,
+      "year": 2029
+     },
+     {
+      "baseline": 3363212,
+      "difference": -2213056,
+      "path": "/shortfall",
+      "scenario": 1150156,
+      "year": 2029
+     },
+     {
+      "baseline": 6461344,
+      "difference": -538446,
+      "path": "/spending",
+      "scenario": 5922898,
+      "year": 2029
+     },
+     {
+      "baseline": 511527,
+      "difference": 1673240,
+      "path": "/withdrawals_total",
+      "scenario": 2184767,
+      "year": 2029
+     },
+     {
+      "baseline": 31,
+      "difference": 20,
+      "path": "/accounts/ira/closing",
+      "scenario": 51,
+      "year": 2030
+     },
+     {
+      "baseline": 290,
+      "difference": 1026,
+      "path": "/accounts/roth/closing",
+      "scenario": 1316,
+      "year": 2030
+     },
+     {
+      "baseline": 53,
+      "difference": 36,
+      "path": "/rmd_total",
+      "scenario": 89,
+      "year": 2030
+     },
+     {
+      "baseline": 3960885,
+      "difference": -593771,
+      "path": "/shortfall",
+      "scenario": 3367114,
+      "year": 2030
+     },
+     {
+      "baseline": 6622877,
+      "difference": -551906,
+      "path": "/spending",
+      "scenario": 6070971,
+      "year": 2030
+     },
+     {
+      "baseline": 12788,
+      "difference": 41829,
+      "path": "/withdrawals_total",
+      "scenario": 54617,
+      "year": 2030
+     },
+     {
+      "baseline": 7,
+      "difference": 26,
+      "path": "/accounts/roth/closing",
+      "scenario": 33,
+      "year": 2031
+     },
+     {
+      "baseline": 1,
+      "difference": 1,
+      "path": "/rmd_total",
+      "scenario": 2,
+      "year": 2031
+     },
+     {
+      "baseline": 4072748,
+      "difference": -566750,
+      "path": "/shortfall",
+      "scenario": 3505998,
+      "year": 2031
+     },
+     {
+      "baseline": 6788449,
+      "difference": -565704,
+      "path": "/spending",
+      "scenario": 6222745,
+      "year": 2031
+     },
+     {
+      "baseline": 320,
+      "difference": 1045,
+      "path": "/withdrawals_total",
+      "scenario": 1365,
+      "year": 2031
+     }
+    ],
+    "status": "complete",
+    "summary": {
+     "baseline": {
+      "ending_balances": {
+       "cash": 0,
+       "ira": 1,
+       "roth": 7,
+       "taxable": 0
+      },
+      "ending_total": 8,
+      "first_shortfall_year": 2029,
+      "last_year": 2031,
+      "status": "complete",
+      "total_federal_tax_paid": 266844,
+      "total_shortfall": 11396845
+     },
+     "difference": {
+      "ending_total": 26,
+      "total_federal_tax_paid": -6950,
+      "total_shortfall": -3373577
+     },
+     "scenario": {
+      "ending_balances": {
+       "cash": 0,
+       "ira": 1,
+       "roth": 33,
+       "taxable": 0
+      },
+      "ending_total": 34,
+      "first_shortfall_year": 2029,
+      "last_year": 2031,
+      "status": "complete",
+      "total_federal_tax_paid": 259894,
+      "total_shortfall": 8023268
+     }
+    }
+   },
+   "scenario_input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 5500000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   }
+  },
+  "unchanged-copy": {
+   "baseline_input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   },
+   "expected": {
+    "changed_inputs": [],
+    "line_differences": [],
+    "status": "complete",
+    "summary": {
+     "baseline": {
+      "ending_balances": {
+       "cash": 0,
+       "ira": 1,
+       "roth": 7,
+       "taxable": 0
+      },
+      "ending_total": 8,
+      "first_shortfall_year": 2029,
+      "last_year": 2031,
+      "status": "complete",
+      "total_federal_tax_paid": 266844,
+      "total_shortfall": 11396845
+     },
+     "difference": {
+      "ending_total": 0,
+      "total_federal_tax_paid": 0,
+      "total_shortfall": 0
+     },
+     "scenario": {
+      "ending_balances": {
+       "cash": 0,
+       "ira": 1,
+       "roth": 7,
+       "taxable": 0
+      },
+      "ending_total": 8,
+      "first_shortfall_year": 2029,
+      "last_year": 2031,
+      "status": "complete",
+      "total_federal_tax_paid": 266844,
+      "total_shortfall": 11396845
+     }
+    }
+   },
+   "scenario_input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   }
+  },
+  "withdrawal-order": {
+   "baseline_input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01"
+    }
+   },
+   "expected": {
+    "changed_inputs": [
+     {
+      "baseline": null,
+      "change": "added",
+      "path": "/household/withdrawal_order",
+      "scenario": "tax_deferred_first"
+     }
+    ],
+    "line_differences": [
+     {
+      "baseline": 5056604,
+      "difference": -2596554,
+      "path": "/accounts/ira/closing",
+      "scenario": 2460050,
+      "year": 2026
+     },
+     {
+      "baseline": 678396,
+      "difference": 2471604,
+      "path": "/accounts/taxable/closing",
+      "scenario": 3150000,
+      "year": 2026
+     },
+     {
+      "baseline": 0,
+      "difference": 121902,
+      "path": "/federal_tax/paid",
+      "scenario": 121902,
+      "year": 2026
+     },
+     {
+      "baseline": 3411321,
+      "difference": 121902,
+      "path": "/withdrawals_total",
+      "scenario": 3533223,
+      "year": 2026
+     },
+     {
+      "baseline": 1959275,
+      "difference": -1897774,
+      "path": "/accounts/ira/closing",
+      "scenario": 61501,
+      "year": 2027
+     },
+     {
+      "baseline": 16960,
+      "difference": 1926338,
+      "path": "/accounts/taxable/closing",
+      "scenario": 1943298,
+      "year": 2027
+     },
+     {
+      "baseline": 266844,
+      "difference": -155865,
+      "path": "/federal_tax/paid",
+      "scenario": 110979,
+      "year": 2027
+     },
+     {
+      "baseline": 198298,
+      "difference": -101825,
+      "path": "/rmd_total",
+      "scenario": 96473,
+      "year": 2027
+     },
+     {
+      "baseline": 3758546,
+      "difference": -54040,
+      "path": "/withdrawals_total",
+      "scenario": 3704506,
+      "year": 2027
+     },
+     {
+      "baseline": 48982,
+      "difference": -47444,
+      "path": "/accounts/ira/closing",
+      "scenario": 1538,
+      "year": 2028
+     },
+     {
+      "baseline": 464187,
+      "difference": 29278,
+      "path": "/accounts/roth/closing",
+      "scenario": 493465,
+      "year": 2028
+     },
+     {
+      "baseline": 424,
+      "difference": 48158,
+      "path": "/accounts/taxable/closing",
+      "scenario": 48582,
+      "year": 2028
+     },
+     {
+      "baseline": 79645,
+      "difference": -77145,
+      "path": "/rmd_total",
+      "scenario": 2500,
+      "year": 2028
+     },
+     {
+      "baseline": 3702605,
+      "difference": 77145,
+      "path": "/withdrawals_total",
+      "scenario": 3779750,
+      "year": 2028
+     },
+     {
+      "baseline": 1225,
+      "difference": -1187,
+      "path": "/accounts/ira/closing",
+      "scenario": 38,
+      "year": 2029
+     },
+     {
+      "baseline": 11605,
+      "difference": 732,
+      "path": "/accounts/roth/closing",
+      "scenario": 12337,
+      "year": 2029
+     },
+     {
+      "baseline": 11,
+      "difference": 1204,
+      "path": "/accounts/taxable/closing",
+      "scenario": 1215,
+      "year": 2029
+     },
+     {
+      "baseline": 2067,
+      "difference": -2002,
+      "path": "/rmd_total",
+      "scenario": 65,
+      "year": 2029
+     },
+     {
+      "baseline": 3363212,
+      "difference": -29992,
+      "path": "/shortfall",
+      "scenario": 3333220,
+      "year": 2029
+     },
+     {
+      "baseline": 511527,
+      "difference": 31994,
+      "path": "/withdrawals_total",
+      "scenario": 543521,
+      "year": 2029
+     },
+     {
+      "baseline": 31,
+      "difference": -30,
+      "path": "/accounts/ira/closing",
+      "scenario": 1,
+      "year": 2030
+     },
+     {
+      "baseline": 290,
+      "difference": 18,
+      "path": "/accounts/roth/closing",
+      "scenario": 308,
+      "year": 2030
+     },
+     {
+      "baseline": 0,
+      "difference": 30,
+      "path": "/accounts/taxable/closing",
+      "scenario": 30,
+      "year": 2030
+     },
+     {
+      "baseline": 53,
+      "difference": -51,
+      "path": "/rmd_total",
+      "scenario": 2,
+      "year": 2030
+     },
+     {
+      "baseline": 3960885,
+      "difference": -749,
+      "path": "/shortfall",
+      "scenario": 3960136,
+      "year": 2030
+     },
+     {
+      "baseline": 12788,
+      "difference": 800,
+      "path": "/withdrawals_total",
+      "scenario": 13588,
+      "year": 2030
+     },
+     {
+      "baseline": 1,
+      "difference": -1,
+      "path": "/accounts/ira/closing",
+      "scenario": 0,
+      "year": 2031
+     },
+     {
+      "baseline": 7,
+      "difference": 1,
+      "path": "/accounts/roth/closing",
+      "scenario": 8,
+      "year": 2031
+     },
+     {
+      "baseline": 0,
+      "difference": 1,
+      "path": "/accounts/taxable/closing",
+      "scenario": 1,
+      "year": 2031
+     },
+     {
+      "baseline": 1,
+      "difference": -1,
+      "path": "/rmd_total",
+      "scenario": 0,
+      "year": 2031
+     },
+     {
+      "baseline": 4072748,
+      "difference": -18,
+      "path": "/shortfall",
+      "scenario": 4072730,
+      "year": 2031
+     },
+     {
+      "baseline": 320,
+      "difference": 19,
+      "path": "/withdrawals_total",
+      "scenario": 339,
+      "year": 2031
+     }
+    ],
+    "status": "complete",
+    "summary": {
+     "baseline": {
+      "ending_balances": {
+       "cash": 0,
+       "ira": 1,
+       "roth": 7,
+       "taxable": 0
+      },
+      "ending_total": 8,
+      "first_shortfall_year": 2029,
+      "last_year": 2031,
+      "status": "complete",
+      "total_federal_tax_paid": 266844,
+      "total_shortfall": 11396845
+     },
+     "difference": {
+      "ending_total": 1,
+      "total_federal_tax_paid": -33963,
+      "total_shortfall": -30759
+     },
+     "scenario": {
+      "ending_balances": {
+       "cash": 0,
+       "ira": 0,
+       "roth": 8,
+       "taxable": 1
+      },
+      "ending_total": 9,
+      "first_shortfall_year": 2029,
+      "last_year": 2031,
+      "status": "complete",
+      "total_federal_tax_paid": 232881,
+      "total_shortfall": 11366086
+     }
+    }
+   },
+   "scenario_input": {
+    "assumptions": [
+     {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+     },
+     {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+     }
+    ],
+    "household": {
+     "accounts": [
+      {
+       "account_type": "cash",
+       "cost_basis_cents": null,
+       "id": "cash",
+       "opening_balance_cents": 1000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "taxable",
+       "cost_basis_cents": 2000000,
+       "id": "taxable",
+       "opening_balance_cents": 3000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      },
+      {
+       "account_type": "tax_deferred",
+       "cost_basis_cents": null,
+       "id": "ira",
+       "opening_balance_cents": 5000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": "traditional_ira"
+      },
+      {
+       "account_type": "roth",
+       "cost_basis_cents": null,
+       "id": "roth",
+       "opening_balance_cents": 2000000,
+       "owner": "synthetic-person",
+       "tax_deferred_kind": null
+      }
+     ],
+     "income": {
+      "pension": {
+       "amount": {
+        "cents": 0,
+        "dollar_basis": "nominal"
+       },
+       "start_age": 65
+      },
+      "social_security": {
+       "amount": {
+        "cents": 2400000,
+        "dollar_basis": "today"
+       },
+       "start_age": 70
+      },
+      "wages": []
+     },
+     "persons": [
+      {
+       "birth_date": "1953-03-10",
+       "id": "synthetic-person",
+       "plan_end_age": 78,
+       "retirement_date": "2018-01-01"
+      }
+     ],
+     "spending": {
+      "after_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      },
+      "before_retirement": {
+       "cents": 6000000,
+       "dollar_basis": "today"
+      }
+     },
+     "valuation_date": "2026-01-01",
+     "withdrawal_order": "tax_deferred_first"
+    }
+   }
+  }
+ },
+ "derived": "2026-10-17. Exact integer arithmetic, derived independently of any implementation, under decisions 0003-0006, 0008, 0009 and 0010. Commit unchanged; escalate if a value seems wrong.",
+ "note": "line_differences lists every difference among compared_paths; the implementation also compares every other cent-valued line, which these values do not cover."
+}
