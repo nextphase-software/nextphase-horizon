@@ -140,3 +140,221 @@ Same toolchain, license checker, Node.js 24.22.0 and `wasm-bindgen-cli` 0.2.129 
 ## Implementation record
 
 Appended by the implementer before handoff: branch, the source/test revision the validation ran against, each validation command with its exit status and counts, the levers wall time and the WebAssembly duration, new dependencies (none expected) with exact versions and licenses, and every exclusion with its reason. The record is committed after that revision and does not name its own commit; the final branch tip is reported in the handoff message.
+
+
+### 2026-10-18 — implementation complete; independent review pending
+
+- Brief: **0003-W1 v1**.
+- Branch: `codex/0003-W1-answer-operations`.
+- Worktree: `.worktrees/codex-0003-W1`, created from committed `main` at
+  `478e72ff3c09bd24d9258aee5014a4f998c563fd`.
+- **Source/test revision:** `9fa28691103dae56c2a37e4ff785da98a69cb71e`.
+  The full documented sequence below ran against that committed revision, with
+  a clean worktree before and after. This later record changes only this brief;
+  the final branch tip is reported separately at handoff. Independent review
+  remains pending; no merge or push is claimed.
+
+#### Delivered behavior and contracts
+
+The application exposes sustainable spending with the exact whole-dollar
+search, cap and zero-spending flags, counted runs, headroom, full result run,
+and injectable verification. Levers preserve the specified offering order,
+exact changes, skipped reasons, entered-input shortfall age and ending balance,
+status, stable effect ranking and kind ranking. Rough-input impact uses declared
+defaults or explicit endpoints and ranks changes in headroom. All search and
+variant inputs are copies. Nominal after-retirement spending is unsupported;
+failed boundary verification and missing/invalid ranges retain explicit errors.
+
+Federal-tax ledgers add declared today's-dollar account closings, annual nominal
+and converted totals and converted shortfalls. Total closings are summed before
+conversion and rounded once. Comparison summaries include ending totals and
+account balances in today's dollars. Historical pre-tax outputs remain unchanged.
+Model version is `horizon-engine-0.4.0`, rule set `us-single-federal-tax-v3`;
+export format stays 1. Six current schemas are generated and drift-tested.
+The earlier v1 schemas and both household-input schemas remain byte-identical.
+A valid-hash 0.3.0 export is explicitly rejected.
+
+All committed spending reference rows, both lever reference cases, six impact
+items, both yearly today's-value cases and the retire-later comparison match.
+The four supplied households are copied exactly. The existing generator produced
+52 current run/export goldens (26 valid fixtures) and eight full answer goldens;
+no golden was hand-edited. Shared proof bodies execute natively and in
+WebAssembly, including canonical answer bytes and every earlier reference suite.
+The CLI adds only dispatch/file handling/status mapping for spend, levers and
+impact; its tests compare outputs byte for byte with application operations for
+all 48 fixtures and the explicit reference impact case.
+
+#### Final cumulative validation
+
+Rust **1.99.1**, cargo-deny **0.20.2**, Node **v24.22.0**, and
+`wasm-bindgen-test-runner 0.2.129`. Before both WebAssembly runs,
+`$HOME/.nvm/versions/node/v24.22.0/bin` was first on PATH;
+`node --version` returned `v24.22.0` (exit 0) and
+`wasm-bindgen-test-runner --version` returned the version above (exit 0).
+README and AGENTS command blocks are identical. The commands below ran in their
+documented order, followed by the expanded CLI commands and isolated WebAssembly
+levers measurement. All expected exits and output contracts passed.
+
+| Command | Exit | Observed result |
+| --- | --- | --- |
+| `cargo test -p horizon-app answers` | 0 | 9 tests passed (3 unit tests and 6 filtered reference/schema tests) |
+| `cargo test -p horizon-app --test reference_values_answers` | 0 | 6 tests passed |
+| `cargo test -p horizon-app compare` | 0 | 3 tests passed |
+| `cargo test -p horizon-app immutability` | 0 | 1 test passed |
+| `cargo test -p horizon-app export` | 0 | 2 tests passed |
+| `cargo test -p horizon-app --test reference_values_w4` | 0 | 1 test passed |
+| `cargo test -p horizon-engine tax` | 0 | 2 tests passed |
+| `cargo test -p horizon-app --test reference_values_w3` | 0 | 4 tests passed |
+| `cargo test -p horizon-app --test reference_values_w2` | 0 | 11 tests passed |
+| `cargo test -p horizon-app --test reference_values` | 0 | 7 tests passed |
+| `cargo test -p horizon-engine ledger` | 0 | 2 tests passed |
+| `cargo test -p horizon-engine money` | 0 | 2 tests passed |
+| `cargo test -p horizon-app validation` | 0 | 5 tests passed |
+| `cargo test -p horizon-parity` | 0 | 15 tests passed |
+| `cargo test --workspace` | 0 | 73 tests passed |
+| `cargo clippy --workspace --all-targets -- -D warnings` | 0 | passed |
+| `cargo fmt --all --check` | 0 | passed |
+| `cargo test --workspace --release` | 0 | 73 tests passed |
+| `cargo build --workspace --release` | 0 | passed |
+| `cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown` | 0 | passed |
+| `CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner cargo test -p horizon-parity --target wasm32-unknown-unknown` | 0 | 14 tests passed |
+| `cargo deny check licenses` | 0 | licenses ok; existing unused BSD-3-Clause and ISC allowance warnings only |
+| `cargo run --release -p horizon-cli -- levers answers-working-61` | 3 | partial; 0.618620 s wall time, below 2 s |
+
+The debug and release workspace runs each passed **73 tests**. The full
+WebAssembly suite passed **14 tests**. Native parity includes one additional
+fixture-manifest completeness test that reads the native fixture directory.
+Schema checks validate all current outputs, including run/export round trips
+for every valid fixture. Non-monotonic tests cover each verification failure;
+other edge checks include nominal spending, cap/zero exits, malformed pointers,
+unknown ranges, cent rounding, exact 18-place rates, leap dates, range caps,
+skipped levers, stable ties and input immutability.
+
+Isolated WebAssembly measurement:
+
+| Command | Exit | Observed result |
+| --- | --- | --- |
+| `CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner cargo test -p horizon-parity --target wasm32-unknown-unknown answers_levers_reference_and_golden` | 0 | test result: ok. 1 passed; 0 failed; 0 ignored; 13 filtered out; finished in 6.04s; 6.977928 s wall time |
+
+The harness duration includes the two reference lever households and full
+canonical golden equality. The native performance measurement above invokes
+the documented cargo command after the release build.
+
+#### Expanded CLI commands and observed exits
+
+Every cell is the observed process exit for
+`cargo run -p horizon-cli -- <operation> ...`. Run/spend/levers/export/dev-run
+use the row's name. Impact uses that name plus
+`packages/app/test-data/empty-rough.json`; compare uses `A-drawdown` as baseline
+and that name as scenario. Import uses the row's current golden export in
+`packages/parity/golden/<name>.export.json`; a dash means no valid export exists.
+Exits are 0 complete, 3 partial, 1 invalid and 2 unsupported; dev-run retains
+0 for partial. Every output parsed as canonical JSON with exactly one newline.
+Committed full answer/run/export goldens were checked where applicable; the
+workspace CLI tests additionally prove application byte equality.
+
+| Fixture | spend | levers | impact | run | compare | export | import | dev-run |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `A-drawdown` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `A-drawdown-pass-limit-1` | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `A-drawdown-proportional_taxable_tax_deferred` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `A-drawdown-roth_before_tax_deferred` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `A-drawdown-tax_deferred_first` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `B-early-retiree` | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `C-partial-base-year-no-taxable` | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `D-still-working-rmd-surplus` | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `E-senior-2028-loss-carry` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `answers-cap` | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `answers-underfunded` | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `answers-working-61` | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `answers-working-61-retire-later` | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `invalid-account-type` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-cost-basis` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-date` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-end-before-start` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-missing-assumption` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-missing-cash-return` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-missing-field` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-missing-investment-return` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-missing-tax-indexing` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-negative-balance` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-negative-tax-indexing` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-output-range` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-owner` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-plan-end-age` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-rate` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `invalid-tax-pass-limit` | 1 | 1 | 1 | 1 | 1 | 1 | — | 1 |
+| `retirement-date-baseline` | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `retirement-date-scenario` | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `return-assumption-baseline` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `return-assumption-scenario` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `spending-amount-baseline` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `spending-amount-scenario` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `synthetic-leap` | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `synthetic-retired` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `synthetic-working` | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `two-person` | 2 | 2 | 2 | 2 | 2 | 2 | — | 2 |
+| `unchanged-copy-baseline` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `unchanged-copy-scenario` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `unsupported-healthcare` | 2 | 2 | 2 | 2 | 2 | 2 | — | 2 |
+| `unsupported-negative-cash-return` | 2 | 2 | 2 | 2 | 2 | 2 | — | 2 |
+| `unsupported-negative-investment-return` | 2 | 2 | 2 | 2 | 2 | 2 | — | 2 |
+| `unsupported-state-tax` | 2 | 2 | 2 | 2 | 2 | 2 | — | 2 |
+| `unsupported-tax-year` | 2 | 2 | 2 | 2 | 2 | 2 | — | 2 |
+| `withdrawal-order-baseline` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `withdrawal-order-scenario` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+The 22 invalid/unsupported fixtures retain their earlier error codes in all
+commands; no error is reported as a successful plan. Additional cases below
+complete **371 CLI invocations**: 48 spend, 48 levers, 49 impact, 48 run,
+53 compare, 48 export, 29 import, and 48 dev-run.
+
+| Additional command arguments after `cargo run -p horizon-cli --` | Exit | Result |
+| --- | --- | --- |
+| `impact answers-working-61 packages/app/test-data/answers-working-61-rough.json` | 3 | `partial` |
+| `compare retirement-date-baseline retirement-date-scenario` | 3 | `partial` |
+| `compare spending-amount-baseline spending-amount-scenario` | 0 | `complete` |
+| `compare return-assumption-baseline return-assumption-scenario` | 0 | `complete` |
+| `compare withdrawal-order-baseline withdrawal-order-scenario` | 0 | `complete` |
+| `compare unchanged-copy-baseline unchanged-copy-scenario` | 0 | `complete` |
+| `import packages/app/test-data/tampered-export.json` | 1 | `EXPORT_HASH_MISMATCH` |
+| `import packages/app/test-data/unknown-format-export.json` | 2 | `EXPORT_FORMAT_UNSUPPORTED` |
+| `import packages/app/test-data/model-0.3.0.export.json` | 2 | `EXPORT_MODEL_VERSION_UNSUPPORTED` |
+
+`git diff --check` passed. Installed repository hooks, working-tree and explicit
+branch ancestry boundary checks passed; these establish their implemented
+checks only and do not constitute an independent milestone review. Public
+`main` remained clean at the base revision above.
+
+Unchanged SHA-256 receipts, each compared byte for byte with committed `main`:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| `Cargo.lock` | `5157b0db378aa3d36b60e861216971a7a94269060b07e0d2574c1f68078cbad9` |
+| `packages/app/tests/reference_values.rs` | `36b073a3a27292892c77144b8d11b8b2cc783110fe3df465a4595c7c4f533953` |
+| `docs/briefs/0001-W1-engine-foundations.md` | `325ed57b818bce42f1e0c7f7cde150cddcf0f2b36976e50cc4e965811099d6d5` |
+| `docs/briefs/0001-W2-reference-values.json` | `251014c80b1e26e428ee8e622cc6fb9795b7340cd4a6dab057dacd620d59292c` |
+| `docs/briefs/0001-W3-reference-values.json` | `207a99e66411b82daf6e6a5bc9304970f3d91b2ccdf41c1bc97228342a85a1c5` |
+| `docs/briefs/0001-W4-reference-values.json` | `ac24ae94f1afaddd45986862a866630aace850fea0e39dd1ef1cb970f1314698` |
+| `docs/briefs/0003-W1-reference-values.json` | `917246f2c4732721052d9e7690fd6c272ee07a79febcb70c704d62c520a81a3b` |
+| `docs/model/schemas/comparison.v1.schema.json` | `06b30952349af20b450cf5a7864fc1808c4fcb335b2368bda7d84b2fa3303cad` |
+| `docs/model/schemas/export.v1.schema.json` | `f4c9f5a448c6f82652da6a90d589acc82816dbb2710d3b531cbbad729bec520b` |
+| `docs/model/schemas/household-input.v1.schema.json` | `22aa89ccc48931962a712a958742de62812241aaa150746066c5d0e30212d9e6` |
+| `docs/model/schemas/run-output.v1.schema.json` | `82c3d0a72f819f4d0e1d39be04567bfdc7176994c8fc561f677dfebac99fd2c9` |
+| `docs/model/schemas/household-input.v2.schema.json` | `5fcc1e70a9f343973d4f7ce6c1b0260cca38bf7804dfea6d596b8b7ca5b010f6` |
+
+#### Dependencies and exclusions
+
+- **New dependencies: none.** Exact versions/licenses remain in
+  `docs/model/dependencies.md`; Cargo.lock and license policy are unchanged.
+  The existing MIT-0 exception remains limited to `borrow-or-share@0.2.4`.
+- Browser module (`horizon-wasm`) and every screen: excluded for the web shell
+  milestones under decision 0011. No TypeScript/browser adapter is introduced.
+- Social Security claiming-age lever: excluded until claiming rules are modeled
+  under decision 0012, item 4.
+- Probability and success-rate measures: excluded until a stochastic-method
+  decision exists.
+- Contribution modeling for working households: later work; these households
+  retain partial status and explicit coverage information.
+- Persistence, accounts and sharing: later features; no such surface is added.
+- Independent milestone review: reserved for a different session after handoff.
