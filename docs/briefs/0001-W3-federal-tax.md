@@ -287,3 +287,86 @@ Unchanged SHA-256 receipts:
 - Graphical UI, TypeScript adapters, persistence, authentication, hosting and
   deployment: no such surface is introduced by this headless milestone.
 - Independent milestone review: reserved for a different session after handoff.
+
+
+### 2026-10-17 — cumulative validation command correction
+
+- Branch: `codex/0001-W3-federal-tax`.
+- **Validated revision:** `250713f18149c05552ef21e45f54abb9c35ae9ce`.
+  The corrected documentation was committed before this fresh run; the worktree
+  was clean before and after validation. Source and tests remain unchanged from
+  `cc904263f651ba6b8dde903a601ec031b79e40dc`. This later record-only commit does
+  not name its own ID; the final tip is reported separately at handoff.
+- Added the omitted `cargo test -p horizon-engine money` and
+  `cargo test -p horizon-app validation` commands to both AGENTS.md and README.md.
+  Grouped the retained ledger command with the other focused tests before the
+  workspace checks, leaving the fixture command last as its instructions state.
+  Both documented command lists are identical.
+- This entry supersedes the earlier claim that the documented sequence was
+  fully cumulative: that sequence omitted these two focused commands. The
+  earlier execution results remain historical; the following are fresh results
+  from the corrected sequence, executed in exactly the documented order.
+
+| Command | Exit | Observed result |
+| --- | --- | --- |
+| `cargo test -p horizon-engine tax` | 0 | 2 tests passed |
+| `cargo test -p horizon-app --test reference_values_w3` | 0 | 4 tests passed |
+| `cargo test -p horizon-app --test reference_values_w2` | 0 | 11 tests passed |
+| `cargo test -p horizon-app --test reference_values` | 0 | 7 tests passed |
+| `cargo test -p horizon-engine ledger` | 0 | 2 tests passed |
+| `cargo test -p horizon-engine money` | 0 | 2 tests passed |
+| `cargo test -p horizon-app validation` | 0 | 5 tests passed |
+| `cargo test --workspace` | 0 | 39 tests passed |
+| `cargo clippy --workspace --all-targets -- -D warnings` | 0 | passed |
+| `cargo fmt --all --check` | 0 | passed |
+| `cargo test --workspace --release` | 0 | 39 tests passed |
+| `cargo build --workspace --release` | 0 | passed |
+| `cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown` | 0 | passed |
+| `cargo deny check licenses` | 0 | licenses ok; existing unused BSD-3-Clause and ISC allowance warnings only |
+
+The final documented command, `cargo run -p horizon-cli -- dev-run <name>`,
+was expanded to every fixture below. All 34 fresh exit statuses and canonical
+result/error envelopes matched their contracts.
+
+| Fixture name | Exit | Result or error code |
+| --- | --- | --- |
+| `A-drawdown-pass-limit-1` | 0 | `partial` |
+| `A-drawdown-proportional_taxable_tax_deferred` | 0 | `complete` |
+| `A-drawdown-roth_before_tax_deferred` | 0 | `complete` |
+| `A-drawdown-tax_deferred_first` | 0 | `complete` |
+| `A-drawdown` | 0 | `complete` |
+| `B-early-retiree` | 0 | `partial` |
+| `C-partial-base-year-no-taxable` | 0 | `partial` |
+| `D-still-working-rmd-surplus` | 0 | `partial` |
+| `E-senior-2028-loss-carry` | 0 | `complete` |
+| `invalid-account-type` | 1 | `UNKNOWN_ACCOUNT_TYPE` |
+| `invalid-cost-basis` | 1 | `ACCOUNT_FIELDS` |
+| `invalid-date` | 1 | `INVALID_DATE` |
+| `invalid-end-before-start` | 1 | `END_BEFORE_START` |
+| `invalid-missing-assumption` | 1 | `MISSING_ASSUMPTION` |
+| `invalid-missing-cash-return` | 1 | `MISSING_ASSUMPTION` |
+| `invalid-missing-field` | 1 | `MISSING_FIELD` |
+| `invalid-missing-investment-return` | 1 | `MISSING_ASSUMPTION` |
+| `invalid-missing-tax-indexing` | 1 | `MISSING_ASSUMPTION` |
+| `invalid-negative-balance` | 1 | `NEGATIVE_BALANCE` |
+| `invalid-negative-tax-indexing` | 1 | `INVALID_TAX_INDEXING` |
+| `invalid-output-range` | 1 | `MONEY_OUTPUT_RANGE` |
+| `invalid-owner` | 1 | `INVALID_OWNER` |
+| `invalid-plan-end-age` | 1 | `PLAN_END_AGE_REACHED` |
+| `invalid-rate` | 1 | `INVALID_RATE` |
+| `invalid-tax-pass-limit` | 1 | `INVALID_TAX_PASS_LIMIT` |
+| `synthetic-leap` | 0 | `partial` |
+| `synthetic-retired` | 0 | `complete` |
+| `synthetic-working` | 0 | `partial` |
+| `two-person` | 2 | `MULTIPLE_PERSONS_UNSUPPORTED` |
+| `unsupported-healthcare` | 2 | `FEATURE_UNSUPPORTED` |
+| `unsupported-negative-cash-return` | 2 | `NEGATIVE_RETURN_UNSUPPORTED` |
+| `unsupported-negative-investment-return` | 2 | `NEGATIVE_RETURN_UNSUPPORTED` |
+| `unsupported-state-tax` | 2 | `FEATURE_UNSUPPORTED` |
+| `unsupported-tax-year` | 2 | `TAX_YEAR_UNSUPPORTED` |
+
+`git diff --check` passed. The documentation commit's repository hooks passed.
+No application code, tests, fixtures, reference values, dependencies, lockfile,
+license policy or scope changed. The dependencies and exclusions in the earlier
+implementation entry therefore remain applicable. This correction makes no
+independent review, merge or publication claim.
