@@ -39,7 +39,7 @@ fn multiply(a: i64, r: &str) -> Result<i64> {
         .cents())
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct RuleValue {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub currency: Option<&'static str>,
@@ -52,7 +52,7 @@ pub struct RuleValue {
     pub tax_year: u16,
     pub kind: &'static str,
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct Law {
     pub currency: &'static str,
     pub unit: &'static str,
@@ -238,7 +238,7 @@ pub fn taxable_social_security(benefits: i64, other: i64) -> Result<i64> {
     };
     Ok(taxable.finalize()?.cents())
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct TaxLine {
     #[serde(flatten)]
     pub value: MonetaryValue,
@@ -265,7 +265,7 @@ impl TaxLine {
         self.value.cents
     }
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct Breakdown {
     pub tax_year: u16,
     pub law_kind: &'static str,
@@ -474,7 +474,7 @@ fn from_ledger(y: &YearLedger, carry: i64) -> Result<TaxInput> {
         early_distributions: early,
     })
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct FundedTax {
     pub breakdown: Breakdown,
     pub paid: TaxLine,

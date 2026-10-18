@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 [workspace]
-members = ["packages/engine", "packages/app", "packages/cli"]
+members = ["packages/engine", "packages/app", "packages/cli", "packages/parity"]
 resolver = "3"
 
 [workspace.package]

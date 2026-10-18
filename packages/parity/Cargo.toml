@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+[package]
+name = "horizon-parity"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+horizon-app = { path = "../app" }
+
+[dev-dependencies]
+horizon-engine = { path = "../engine" }
+serde_json.workspace = true
+wasm-bindgen-test = "=0.3.79"

@@ -28,15 +28,34 @@ Follow the Do's and Don'ts in `DESIGN.md`. In particular:
 
 ## Validation
 
-Install the pinned toolchain through rustup (`rust-toolchain.toml`), then install the license checker once:
+Install the toolchain pinned in `rust-toolchain.toml`, then install the test tools:
 
 ```sh
 cargo install cargo-deny --version 0.20.2 --locked
+cargo install wasm-bindgen-cli --version 0.2.129 --locked
 ```
 
-Run these validation commands in order from the workspace root:
+Install Node.js **24.22.0** (for example, `nvm install 24.22.0`). If it is
+already installed with nvm, select its executable directory before running the
+WebAssembly command:
 
 ```sh
+export PATH="$HOME/.nvm/versions/node/v24.22.0/bin:$PATH"
+node --version
+wasm-bindgen-test-runner --version
+```
+
+Expected versions are `v24.22.0` and `wasm-bindgen-test-runner 0.2.129`.
+The runner version must equal `wasm-bindgen` in Cargo.lock. Node is test-only;
+there is no TypeScript adapter or new top-level tool configuration.
+
+Run the full cumulative W1–W4 validation sequence in order from the workspace root:
+
+```sh
+cargo test -p horizon-app compare
+cargo test -p horizon-app immutability
+cargo test -p horizon-app export
+cargo test -p horizon-app --test reference_values_w4
 cargo test -p horizon-engine tax
 cargo test -p horizon-app --test reference_values_w3
 cargo test -p horizon-app --test reference_values_w2
@@ -44,21 +63,29 @@ cargo test -p horizon-app --test reference_values
 cargo test -p horizon-engine ledger
 cargo test -p horizon-engine money
 cargo test -p horizon-app validation
+cargo test -p horizon-parity
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
 cargo fmt --all --check
 cargo test --workspace --release
 cargo build --workspace --release
 cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown
+CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner cargo test -p horizon-parity --target wasm32-unknown-unknown
 cargo deny check licenses
+cargo run -p horizon-cli -- run <name>
+cargo run -p horizon-cli -- compare <baseline> <scenario>
+cargo run -p horizon-cli -- export <name>
+cargo run -p horizon-cli -- import <export-path>
 cargo run -p horizon-cli -- dev-run <name>
 ```
 
-For the last command, replace `<name>` with each fixture name in
-[the federal-tax fixture reference](docs/model/federal-tax.md#fixtures).
-Valid fixtures exit 0; invalid inputs exit 1; unsupported inputs exit 2.
-Every response is canonical JSON followed by one newline. The workspace test
-suite also checks command output against the application operation byte for byte.
+Expand the final five commands over all fixtures and comparison cases in
+[the scenario/export fixture guide](docs/model/scenario-diff-and-export.md#fixtures-and-command-checks).
+Supported commands exit 0 complete, 3 partial, 1 invalid or 2 unsupported;
+`dev-run` retains exit 0 for partial. Each prints canonical JSON and one newline.
+For exports, status is the embedded `run.status`; import prints the restored run.
+The CLI suite compares command output byte for byte with application operations.
+Record `node --version` with every WebAssembly validation run.
 
 Prove behavior with current source and tests. Interface work also checks the brief's design reference, responsive layouts, light and dark themes, keyboard access and accessible status labels. Report exactly what you ran and observed; cached output is not a new pass. A different reviewer evaluates each change; do not review your own work.
 

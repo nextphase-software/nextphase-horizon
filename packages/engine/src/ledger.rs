@@ -131,7 +131,7 @@ pub fn proportional_split(amount: i64, weights: &[i64]) -> Result<Vec<i64>> {
     Ok(shares)
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct Line {
     #[serde(flatten)]
     pub value: MonetaryValue,
@@ -148,7 +148,7 @@ impl Line {
         self.value.cents
     }
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct DistributionSource {
     pub table: &'static str,
     pub table_year: u16,
@@ -156,7 +156,7 @@ pub struct DistributionSource {
     pub divisor: &'static str,
     pub prior_year_balance_is_estimate: bool,
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct AccountLedger {
     pub identifier: String,
     pub account_type: AccountType,
@@ -175,7 +175,7 @@ pub struct AccountLedger {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub closing_basis: Option<Line>,
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct YearLedger {
     pub period: Period,
     pub before_59_half: bool,

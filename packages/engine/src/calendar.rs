@@ -78,7 +78,7 @@ pub fn benefit_start_date(birth: &Date, start_age: u16) -> Result<Date> {
         1,
     )
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct Period {
     pub start: Date,
     pub end: Date,

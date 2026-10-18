@@ -63,7 +63,7 @@ fn missing_file_and_usage_errors_are_json() {
     for args in [
         vec!["dev-run", "does-not-exist"],
         vec![],
-        vec!["run", "synthetic-working"],
+        vec!["unknown-command", "synthetic-working"],
     ] {
         let result = Command::new(env!("CARGO_BIN_EXE_horizon"))
             .args(&args)

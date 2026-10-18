@@ -10,7 +10,9 @@ use crate::{
 };
 use serde::Serialize;
 
-#[derive(Debug, Clone, Serialize)]
+pub const MODEL_VERSION: &str = "horizon-engine-0.3.0";
+
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct MonetaryValue {
     pub cents: i64,
     pub unit: &'static str,
@@ -31,13 +33,13 @@ impl MonetaryValue {
         })
     }
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct IndexedAmount {
     pub identifier: String,
     pub nominal: MonetaryValue,
     pub today: MonetaryValue,
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct OpeningAccount {
     pub identifier: String,
     pub owner: String,
@@ -45,7 +47,7 @@ pub struct OpeningAccount {
     pub balance: MonetaryValue,
     pub cost_basis: Option<MonetaryValue>,
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct ProjectionYear {
     pub year: u16,
     pub age_on_december_31: u16,
@@ -53,7 +55,7 @@ pub struct ProjectionYear {
     pub indexed_inputs: Vec<IndexedAmount>,
     pub ledger: crate::ledger::YearLedger,
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct Metadata {
     pub model_version: &'static str,
     pub rule_set_identifier: &'static str,
@@ -66,7 +68,7 @@ pub struct Metadata {
     pub indexing: &'static str,
     pub age_label: &'static str,
 }
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct Run {
     pub status: &'static str,
     pub description: &'static str,
@@ -272,7 +274,7 @@ fn project_mode(
         valuation_date: household.valuation_date.clone(),
         metadata: Metadata {
             model_version: if tax_limit.is_some() {
-                "horizon-engine-0.3.0"
+                MODEL_VERSION
             } else {
                 "horizon-engine-0.2.0"
             },
