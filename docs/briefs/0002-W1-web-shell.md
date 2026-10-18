@@ -162,6 +162,79 @@ Record `node --version`, `corepack pnpm --version` and the Playwright browser ve
 - **An HTTP API and agent access:** later features.
 - **Charts:** none are needed on this page; the chart components arrive with the baseline screen.
 
-## Implementation record
+## Implementation record — v2 (2026-10-18)
 
-Appended by the implementer before handoff: branch, the source/test revision the validation ran against, each validation command with its exit status and counts, tool and browser versions, new dependencies with exact versions and licenses, and every exclusion with its reason. The record is committed after that revision and does not name its own commit; the final branch tip is reported in the handoff message.
+- **Branch:** `codex/0002-W1-web-shell`, fast-forwarded from `main` at
+  `4b5d536072132f8fc3265e30a513a36e260cd5dc` before implementation.
+- **Source/test revision validated:** `fddb9e61138b4d8820d17fa99a8d37d8f2736e44`.
+  Every command below ran in a fresh local Git clone of that committed revision,
+  with no copied node_modules, generated bindings/types, build output or target
+  directory. Source/tests stayed unchanged during validation. This record and its
+  [machine-readable receipt](0002-W1-validation.json) are committed afterward;
+  the final branch tip is reported separately in the handoff.
+- **End to end:** **not run by the implementer; run by the reviewer**.
+  Playwright browser installation was also not run by the implementer. The
+  maintainer explicitly excluded both under the sandbox constraint. The reviewer
+  installs Chromium/Firefox/WebKit and runs the committed 12 browser/size/theme
+  projects outside the sandbox, including keyboard, axe, privacy, no-overflow and
+  canonical/number-parity assertions. Actual browser versions are recorded by
+  the harness's browser-version annotations when the reviewer runs it.
+
+### Current validation
+
+The [receipt](0002-W1-validation.json) records each of the **420 commands** in
+execution order, its working directory, actual and expected exits, wall duration,
+harness counts, CLI status and canonical-JSON/newline checks. No cached output
+was counted as a new pass. Empty test counts on setup/build/lint commands mean
+that no test harness is run by that command.
+
+| Commands / layer | Observed result |
+| --- | --- |
+| Full cumulative 0001-W1–W4 / 0003-W1 Rust sequence and all CLI expansions | 408 root commands, all expected exits; 372 CLI invocations over all 48 fixtures and reference/rejection cases. Each emitted canonical JSON plus one newline. Complete/partial/invalid/unsupported exits were 0/3/1/2; dev-run retained 0 for partial. |
+| `cargo test --workspace` | Exit 0; 75 tests passed across harnesses. |
+| `cargo clippy --workspace --all-targets -- -D warnings` | Exit 0. |
+| `cargo fmt --all --check` | Exit 0. |
+| `cargo test --workspace --release` | Exit 0; 75 tests passed across harnesses. |
+| Release workspace and engine/app WASM builds | Exit 0 each. |
+| Native / WASM parity | Exit 0 each; 15 native tests / 14 WASM tests passed. Node v24.22.0 was recorded before every WASM build/test command. |
+| `cargo deny check licenses` | Exit 0. |
+| `cargo run --release -p horizon-cli -- levers answers-working-61` | Expected exit 3; **0.786s** wall time, below 2s, after an explicit CLI release build (exit 0). The extra build keeps feature-selection recompilation outside the measurement. |
+| Isolated WASM levers test | Exit 0; 1 passed / 13 filtered; **5.28s** harness duration; 6.107s command wall time. |
+| `cargo test -p horizon-wasm` | Exit 0; 2 tests passed, covering all eight exports' valid/error bytes and malformed argument/precedence cases. |
+| `cargo build -p horizon-wasm --target wasm32-unknown-unknown --release` | Exit 0. |
+| `corepack pnpm install --frozen-lockfile` | Exit 0 in the fresh clone. |
+| `corepack pnpm run build:engine` / `types` | Exit 0 each; bindings and all 11 schema type modules regenerated from committed inputs. |
+| `corepack pnpm run typecheck` / `lint` / `format:check` | Exit 0 each. |
+| `corepack pnpm test` | Exit 0; 12 tests passed in 5 files, including strict production/exact tool-exception license-policy tests. |
+| `corepack pnpm run build` | Exit 0; static worker/WASM assets, self-hosted font files and OFL-1.1 notice emitted. |
+| `corepack pnpm run licenses` | Exit 0; strict shipped-code check passed for 4 versions and the full installed closure passed for 359 versions using only v2's exact build/test exceptions. |
+| Playwright install / e2e | **not run by the implementer; run by the reviewer**. No browser assertions or runtime-version checks are claimed. |
+
+**Tools observed:** Node **v24.22.0**, corepack **0.36.0**, pnpm **12.9.1**,
+Rust **1.99.1**, wasm-bindgen and its test runner **0.2.129**, cargo-deny
+**0.20.2**. Playwright package **1.63.0** is pinned; browser runtime versions
+remain for the reviewer. Node's pinned executable directory was first on PATH.
+
+### Dependencies and exclusions
+
+Every new JavaScript package/version/license is in
+[dependencies.md](../model/dependencies.md#web-shell--0002-w1-v2) and the committed
+app manifest/lockfile. The v2 type-package pins are @types/react **19.3.0**,
+@types/react-dom **19.3.0**, @types/node **24.19.1** (all MIT). Exact tool-only
+license exceptions come from decision 0011's accepted amendment and v2; they are
+rejected in production. Other packages, versions and licenses still fail closed.
+The font's OFL-1.1 license is included in build output. horizon-wasm depends only
+on horizon-app and wasm-bindgen **=0.2.129** (MIT OR Apache-2.0), already locked;
+no other external Rust dependency is added.
+
+- Designed screens are excluded: this brief is the foundation/sample page only.
+- Deployment/hosting are excluded: a separate brief selects the host/domain.
+- Persistence is excluded by decision 0011 item 8; state stays in memory.
+- HTTP/agent access is excluded: later features.
+- Charts are excluded: they arrive with the baseline screen.
+- Browser installation and launches are excluded from the implementer's run by
+  the maintainer's explicit sandbox instruction; the reviewer runs them outside.
+- Independent review remains with a different reviewer under AGENTS.md.
+- Earlier schemas, reference vectors, fixtures, goldens and decision records are
+  unchanged. No new tracked top-level entry or server authorization surface was
+  introduced. No main-branch mutation, push or hook bypass was performed.
