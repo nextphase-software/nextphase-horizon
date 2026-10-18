@@ -1,9 +1,9 @@
 # Contributing to NextPhase Horizon
 
-- Date: 2026-10-13
-- Status: pre-implementation; licensed under `AGPL-3.0-only`; the public contribution process is not yet open
+- Date: 2026-10-18
+- Status: a Rust command line exists; no graphical interface, database or deployment yet (see the status in `README.md`); licensed under `AGPL-3.0-only`; the public contribution process is not yet open
 
-Read `README.md` and `DESIGN.md` first. There are no install, test or build commands yet.
+Read `README.md` and `DESIGN.md` first. To install the toolchain and test tools, follow **Setup** in `README.md`. To build and test a change, run the cumulative validation sequence in the **Validation** section of `AGENTS.md`, in order, from the workspace root.
 
 ## License and contributor terms
 
