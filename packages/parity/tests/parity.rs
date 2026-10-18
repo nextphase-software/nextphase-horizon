@@ -11,7 +11,13 @@ use horizon_engine::canonical::canonical_json;
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
 #[cfg_attr(not(target_arch = "wasm32"), test)]
 fn every_fixture_matches_native_run_export_golden_and_round_trip() {
-    assert_eq!(fixtures::FIXTURES.len(), 22);
+    assert_eq!(fixtures::FIXTURES.len(), 26);
+    assert_eq!(
+        horizon_app::import(include_str!("../../app/test-data/model-0.3.0.export.json"))
+            .unwrap_err()
+            .code,
+        "EXPORT_MODEL_VERSION_UNSUPPORTED"
+    );
     for (name, input, run, export) in fixtures::FIXTURES {
         let f = horizon_app::parse_fixture(input).unwrap();
         let actual = horizon_app::run_fixture(&f).unwrap();
@@ -58,4 +64,30 @@ fn compiled_manifest_covers_every_valid_fixture() {
         .collect::<Vec<_>>();
     compiled.sort();
     assert_eq!(names, compiled);
+}
+
+#[path = "support/answer_golden.rs"]
+mod answer_golden;
+#[path = "support/answers.rs"]
+mod answers_reference;
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+fn answers_spending_reference_and_golden() {
+    answers_reference::spending();
+}
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+fn answers_levers_reference_and_golden() {
+    answers_reference::lever_values();
+}
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+fn answers_impact_reference_and_golden() {
+    answers_reference::impact();
+}
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+fn answers_today_reference() {
+    answers_reference::today_values();
+    answers_reference::comparison_today();
 }

@@ -169,6 +169,8 @@ pub struct AccountLedger {
     pub growth: Line,
     pub closing: Line,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub closing_today: Option<Line>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub basis_removed: Option<Line>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub realized_gain: Option<Line>,
@@ -188,6 +190,12 @@ pub struct YearLedger {
     pub withdrawals_total: Line,
     pub surplus_deposit: Line,
     pub shortfall: Line,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub total_closing: Option<Line>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub total_closing_today: Option<Line>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub shortfall_today: Option<Line>,
     pub created_account: Option<String>,
     pub flags: Vec<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -566,6 +574,7 @@ impl Ledger {
                     self.base,
                     year,
                 )?,
+                closing_today: None,
                 basis_removed,
                 realized_gain,
                 closing_basis,
@@ -606,6 +615,9 @@ impl Ledger {
                 year,
             )?,
             shortfall: Line::new(remaining, "unfunded_need_no_borrowing", self.base, year)?,
+            total_closing: None,
+            total_closing_today: None,
+            shortfall_today: None,
             created_account,
             flags,
             federal_tax: None,
@@ -663,6 +675,32 @@ fn draw_proportional(
         *need = sub(*need, draw)?;
     }
     Ok(())
+}
+
+impl YearLedger {
+    pub(crate) fn add_today_values(&mut self, inflation: &str, base: u16, year: u16) -> Result<()> {
+        let factor = crate::money::index_factor(inflation, base, year)?;
+        let converted = |cents| -> Result<Line> {
+            let amount = Fraction::integer(cents).divided_by(&factor)?.finalize()?;
+            Ok(Line {
+                value: MonetaryValue::new(amount, DollarBasis::Today, base, year)?,
+                rule_id: "nominal_divided_by_exact_inflation_factor",
+            })
+        };
+        let closing = total(self.accounts.iter().map(|a| a.closing.cents()))?;
+        for a in &mut self.accounts {
+            a.closing_today = Some(converted(a.closing.cents())?);
+        }
+        self.total_closing = Some(Line::new(
+            closing,
+            "sum_finalized_account_closing_lines",
+            base,
+            year,
+        )?);
+        self.total_closing_today = Some(converted(closing)?);
+        self.shortfall_today = Some(converted(self.shortfall.cents())?);
+        Ok(())
+    }
 }
 
 #[cfg(test)]

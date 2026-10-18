@@ -55,4 +55,59 @@ fn main() {
         format!("{}\n", canonical_json(&v).unwrap()),
     )
     .unwrap();
+    let reference: serde_json::Value = serde_json::from_str(include_str!(
+        "../../../docs/briefs/0003-W1-reference-values.json"
+    ))
+    .unwrap();
+    let mut proof = String::from(
+        "// SPDX-License-Identifier: AGPL-3.0-only\n// Generated answer outputs, never edited by tests.\n",
+    );
+    for (key, suffix, constant) in [
+        ("sustainable_spending", "spend", "SPENDING"),
+        ("levers", "levers", "LEVERS"),
+    ] {
+        proof.push_str(&format!("pub const {constant}: &[(&str, &str)] = &[\n"));
+        for name in reference[key].as_object().unwrap().keys() {
+            let f = horizon_app::parse_fixture(
+                &std::fs::read_to_string(root.join(format!("../app/fixtures/{name}.json")))
+                    .unwrap(),
+            )
+            .unwrap();
+            let json = if key == "sustainable_spending" {
+                canonical_json(&horizon_app::sustainable_spending(&f).unwrap()).unwrap()
+            } else {
+                canonical_json(&horizon_app::levers(&f).unwrap()).unwrap()
+            };
+            std::fs::write(
+                root.join(format!("golden/{name}.{suffix}.json")),
+                format!("{json}\n"),
+            )
+            .unwrap();
+            proof.push_str(&format!(
+                "(\"{name}\", include_str!(\"../../golden/{name}.{suffix}.json\")),\n"
+            ));
+        }
+        proof.push_str("];\n");
+    }
+    let f = horizon_app::parse_fixture(
+        &std::fs::read_to_string(root.join("../app/fixtures/answers-working-61.json")).unwrap(),
+    )
+    .unwrap();
+    let rough: Vec<horizon_app::answers::RoughInput> = serde_json::from_str(
+        &std::fs::read_to_string(root.join("../app/test-data/answers-working-61-rough.json"))
+            .unwrap(),
+    )
+    .unwrap();
+    std::fs::write(
+        root.join("golden/answers-working-61.impact.json"),
+        format!(
+            "{}\n",
+            canonical_json(&horizon_app::input_impact(&f, &rough).unwrap()).unwrap()
+        ),
+    )
+    .unwrap();
+    proof.push_str(
+        "pub const IMPACT: &str = include_str!(\"../../golden/answers-working-61.impact.json\");\n",
+    );
+    std::fs::write(root.join("tests/support/answer_golden.rs"), proof).unwrap();
 }

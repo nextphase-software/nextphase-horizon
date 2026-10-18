@@ -126,6 +126,33 @@ impl Fraction {
             .mul(multiple);
         value.to_i64().map(Money).ok_or_else(overflow)
     }
+    /// Exact terminating decimal, without converting through floating point.
+    pub fn decimal_string(&self) -> Result<String> {
+        let size = self.numerator.abs();
+        let mut remainder = size.clone().rem(&self.denominator);
+        let mut text = size.div(&self.denominator).to_string();
+        if !remainder.is_zero() {
+            text.push('.');
+            for _ in 0..18 {
+                remainder = remainder.mul(10);
+                text.push_str(&remainder.clone().div(&self.denominator).to_string());
+                remainder = remainder.rem(&self.denominator);
+                if remainder.is_zero() {
+                    break;
+                }
+            }
+            if !remainder.is_zero() {
+                return Err(Error::invalid(
+                    "INVALID_RATE",
+                    "Rate does not terminate within 18 decimal places.",
+                ));
+            }
+        }
+        if self.is_negative() {
+            text.insert(0, '-');
+        }
+        Ok(text)
+    }
     pub fn is_negative(&self) -> bool {
         self.numerator.is_negative()
     }

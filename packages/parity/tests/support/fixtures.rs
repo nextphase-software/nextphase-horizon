@@ -56,6 +56,30 @@ pub const FIXTURES: &[(&str, &str, &str, &str)] = &[
         include_str!("../../golden/E-senior-2028-loss-carry.export.json"),
     ),
     (
+        "answers-cap",
+        include_str!("../../../app/fixtures/answers-cap.json"),
+        include_str!("../../golden/answers-cap.run.json"),
+        include_str!("../../golden/answers-cap.export.json"),
+    ),
+    (
+        "answers-underfunded",
+        include_str!("../../../app/fixtures/answers-underfunded.json"),
+        include_str!("../../golden/answers-underfunded.run.json"),
+        include_str!("../../golden/answers-underfunded.export.json"),
+    ),
+    (
+        "answers-working-61-retire-later",
+        include_str!("../../../app/fixtures/answers-working-61-retire-later.json"),
+        include_str!("../../golden/answers-working-61-retire-later.run.json"),
+        include_str!("../../golden/answers-working-61-retire-later.export.json"),
+    ),
+    (
+        "answers-working-61",
+        include_str!("../../../app/fixtures/answers-working-61.json"),
+        include_str!("../../golden/answers-working-61.run.json"),
+        include_str!("../../golden/answers-working-61.export.json"),
+    ),
+    (
         "retirement-date-baseline",
         include_str!("../../../app/fixtures/retirement-date-baseline.json"),
         include_str!("../../golden/retirement-date-baseline.run.json"),

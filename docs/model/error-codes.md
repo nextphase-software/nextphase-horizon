@@ -1,4 +1,4 @@
-# Stable error codes — household input v1/v2 / engine models 0.1.0–0.3.0
+# Stable error codes — household input v1/v2 / engine models 0.1.0–0.4.0
 
 Errors serialize as `{ "status": "invalid" | "unsupported", "code": "...", "message": "..." }`.
 The command exits 1 for invalid input and 2 for unsupported input. Codes are
@@ -31,7 +31,7 @@ has status `partial` and exits 3 in supported commands, or 0 in legacy
 | `MONEY_OUTPUT_RANGE` | invalid | A monetary value exceeds ±(2^53 − 1) cents. |
 | `CANONICAL_JSON` | invalid | Non-ASCII object name, noninteger or out-of-range JSON number. |
 | `FIXTURE_READ` | invalid | Requested fixture cannot be read as UTF-8. |
-| `CLI_USAGE` | invalid | Unknown subcommand or wrong argument count for run, compare, export, import or dev-run. |
+| `CLI_USAGE` | invalid | Unknown subcommand or wrong argument count for run, compare, export, import, dev-run, spend, levers or impact. |
 | `MULTIPLE_PERSONS_UNSUPPORTED` | unsupported | More than one person was provided. |
 | `FEATURE_UNSUPPORTED` | unsupported | State-tax or healthcare input was provided. |
 | `ASSUMPTION_UNSUPPORTED` | unsupported | An assumption outside inflation, investment_return, cash_return and tax_indexing was provided. |
@@ -53,3 +53,6 @@ has status `partial` and exits 3 in supported commands, or 0 in legacy
 | `EXPORT_HASH_MISMATCH` | invalid | Content hash is missing, malformed or differs from the canonical export hash. |
 | `EXPORT_MODEL_VERSION_UNSUPPORTED` | unsupported | Export model version differs from the running engine; checked after the hash. |
 | `EXPORT_RESULT_MISMATCH` | invalid | Validated input fails to reproduce the embedded run or its duplicated metadata after rerunning. |
+| `SPENDING_BASIS_UNSUPPORTED` | unsupported | After-retirement spending is not in today's dollars. |
+| `SPENDING_SEARCH_NOT_MONOTONIC` | invalid | Verification failed: the result has a shortfall or the next whole dollar does not. |
+| `IMPACT_RANGE_REQUIRED` | invalid | A rough path without a default needs an explicit low and high range. |

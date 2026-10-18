@@ -39,7 +39,7 @@ fn every_fixture_supported_commands_match_application_bytes_status_and_dev_run()
         .map(|e| e.unwrap().path())
         .collect();
     paths.sort();
-    assert_eq!(paths.len(), 44);
+    assert_eq!(paths.len(), 48);
     let base = common::text("A-drawdown");
     for p in paths {
         let name = p.file_stem().unwrap().to_str().unwrap();
@@ -94,7 +94,11 @@ fn reference_comparison_pairs_and_import_errors_match_application() {
         let c = horizon_app::compare(&common::fixture(&a), &common::fixture(&b)).unwrap();
         invoke(&["compare", &a, &b], &json!(c), exit(c.status));
     }
-    for name in ["tampered-export", "unknown-format-export"] {
+    for name in [
+        "tampered-export",
+        "unknown-format-export",
+        "model-0.3.0.export",
+    ] {
         let p = common::root().join(format!("packages/app/test-data/{name}.json"));
         let e = horizon_app::import(&std::fs::read_to_string(&p).unwrap()).unwrap_err();
         let v = json!(e);

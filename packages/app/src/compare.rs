@@ -287,6 +287,7 @@ pub fn line_differences(a: &Run, b: &Run) -> Result<Vec<LineDifference>> {
 pub struct EndingBalance {
     pub identifier: String,
     pub balance: MonetaryValue,
+    pub balance_today: MonetaryValue,
 }
 #[derive(Debug, Clone, Serialize, JsonSchema)]
 pub struct Summary {
@@ -298,6 +299,7 @@ pub struct Summary {
     pub totals_label: &'static str,
     pub ending_balances: Vec<EndingBalance>,
     pub ending_total: MonetaryValue,
+    pub ending_total_today: MonetaryValue,
 }
 fn summary(run: &Run) -> Result<Summary> {
     let last = run.years.last().ok_or_else(|| {
@@ -322,6 +324,14 @@ fn summary(run: &Run) -> Result<Summary> {
         balances.push(EndingBalance {
             identifier: a.identifier.clone(),
             balance: a.closing.value.clone(),
+            balance_today: a
+                .closing_today
+                .as_ref()
+                .ok_or_else(|| {
+                    Error::invalid("COMPARISON_LINE_INVALID", "Today closing is missing.")
+                })?
+                .value
+                .clone(),
         });
     }
     balances.sort_by(|a, b| a.identifier.cmp(&b.identifier));
@@ -339,6 +349,13 @@ fn summary(run: &Run) -> Result<Summary> {
         totals_label: "nominal, summed across years",
         ending_balances: balances,
         ending_total: line(ending)?,
+        ending_total_today: last
+            .ledger
+            .total_closing_today
+            .as_ref()
+            .ok_or_else(|| Error::invalid("COMPARISON_LINE_INVALID", "Today total is missing."))?
+            .value
+            .clone(),
     })
 }
 #[derive(Debug, Clone, Serialize, JsonSchema)]
@@ -487,4 +504,33 @@ pub fn compare(a: &Fixture, b: &Fixture) -> Result<Comparison> {
 /// Preserve unsupported-input precedence when adapters read two documents.
 pub fn read_pair(a: Result<String>, b: Result<String>) -> Result<(String, String)> {
     pair(a, b)
+}
+
+/// Resolve the same strict pointer grammar used by scenario changes.
+pub(crate) fn input_value(input: &Fixture, path: &str) -> Result<Option<Value>> {
+    let doc = document(input)?;
+    if path.is_empty() {
+        return Ok(Some(doc));
+    }
+    let parts = path
+        .strip_prefix('/')
+        .ok_or_else(malformed)?
+        .split('/')
+        .map(token)
+        .collect::<Result<Vec<_>>>()?;
+    let mut target = &doc;
+    for part in parts {
+        target = match target {
+            Value::Object(m) => match m.get(&part) {
+                Some(v) => v,
+                None => return Ok(None),
+            },
+            Value::Array(a) => match a.get(index(&part)?) {
+                Some(v) => v,
+                None => return Ok(None),
+            },
+            _ => return Ok(None),
+        };
+    }
+    Ok(Some(target.clone()))
 }

@@ -1,0 +1,117 @@
+{
+  "assumptions": [
+    {
+      "effective_year": 2026,
+      "identifier": "cash_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.02"
+    },
+    {
+      "effective_year": 2026,
+      "identifier": "inflation",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+    },
+    {
+      "effective_year": 2026,
+      "identifier": "investment_return",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.05"
+    },
+    {
+      "effective_year": 2026,
+      "identifier": "tax_indexing",
+      "source": "user",
+      "unit": "decimal_fraction_per_year",
+      "user_overrode_default": false,
+      "value": "0.025"
+    }
+  ],
+  "household": {
+    "accounts": [
+      {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash",
+        "opening_balance_cents": 2000000,
+        "owner": "sample-person",
+        "tax_deferred_kind": null
+      },
+      {
+        "account_type": "taxable",
+        "cost_basis_cents": 11000000,
+        "id": "brokerage",
+        "opening_balance_cents": 15000000,
+        "owner": "sample-person",
+        "tax_deferred_kind": null
+      },
+      {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "401k",
+        "opening_balance_cents": 52000000,
+        "owner": "sample-person",
+        "tax_deferred_kind": "employer_plan"
+      },
+      {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth-ira",
+        "opening_balance_cents": 6000000,
+        "owner": "sample-person",
+        "tax_deferred_kind": null
+      }
+    ],
+    "income": {
+      "pension": {
+        "amount": {
+          "cents": 0,
+          "dollar_basis": "nominal"
+        },
+        "start_age": 65
+      },
+      "social_security": {
+        "amount": {
+          "cents": 2600000,
+          "dollar_basis": "today"
+        },
+        "start_age": 67
+      },
+      "wages": [
+        {
+          "amount": {
+            "cents": 8500000,
+            "dollar_basis": "today"
+          },
+          "end_date": "2031-03-10",
+          "start_date": "2026-01-01"
+        }
+      ]
+    },
+    "persons": [
+      {
+        "birth_date": "1965-03-10",
+        "id": "sample-person",
+        "plan_end_age": 95,
+        "retirement_date": "2031-03-10"
+      }
+    ],
+    "spending": {
+      "after_retirement": {
+        "cents": 6700000,
+        "dollar_basis": "today"
+      },
+      "before_retirement": {
+        "cents": 6200000,
+        "dollar_basis": "today"
+      }
+    },
+    "valuation_date": "2026-01-01"
+  }
+}

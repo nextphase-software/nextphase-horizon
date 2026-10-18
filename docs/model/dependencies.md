@@ -1,10 +1,12 @@
-# Resolved dependencies — 0001-W4
+# Resolved dependencies — 0003-W1
 
 Generated from `cargo metadata --format-version 1 --locked` using Cargo.lock.
 All 115 external packages are listed, including dev, build and target-specific
 transitives. Registry license expressions are verified by `cargo deny check licenses`.
 
-The only new direct external dependency is **wasm-bindgen-test 0.3.79**
+0003-W1 adds no dependency; Cargo.lock is unchanged.
+
+The sole direct external dependency added by 0001-W4 was **wasm-bindgen-test 0.3.79**
 (**MIT OR Apache-2.0**), a dev-dependency of the unpublished `horizon-parity`
 proof crate. It adds 23 transitive/direct resolved packages in total; existing
 resolved package versions are unchanged. All workspace crates remain AGPL-3.0-only.

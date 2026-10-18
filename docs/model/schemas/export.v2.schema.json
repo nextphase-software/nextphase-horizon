@@ -1,0 +1,1177 @@
+{
+  "$defs": {
+    "Account": {
+      "additionalProperties": false,
+      "properties": {
+        "account_type": {
+          "$ref": "#/$defs/AccountType"
+        },
+        "cost_basis_cents": {
+          "format": "int64",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "opening_balance_cents": {
+          "format": "int64",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "owner": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "tax_deferred_kind": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TaxDeferredKind"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "owner",
+        "account_type",
+        "opening_balance_cents"
+      ],
+      "type": "object"
+    },
+    "AccountLedger": {
+      "properties": {
+        "account_type": {
+          "$ref": "#/$defs/AccountType"
+        },
+        "basis_removed": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Line"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "closing": {
+          "$ref": "#/$defs/Line"
+        },
+        "closing_basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Line"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "closing_today": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Line"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created": {
+          "type": "boolean"
+        },
+        "deposit": {
+          "$ref": "#/$defs/Line"
+        },
+        "distribution_source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DistributionSource"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "growth": {
+          "$ref": "#/$defs/Line"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "opening": {
+          "$ref": "#/$defs/Line"
+        },
+        "realized_gain": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Line"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rmd": {
+          "$ref": "#/$defs/Line"
+        },
+        "withdrawal": {
+          "$ref": "#/$defs/Line"
+        }
+      },
+      "required": [
+        "identifier",
+        "account_type",
+        "created",
+        "opening",
+        "rmd",
+        "withdrawal",
+        "deposit",
+        "growth",
+        "closing"
+      ],
+      "type": "object"
+    },
+    "AccountType": {
+      "enum": [
+        "cash",
+        "taxable",
+        "tax_deferred",
+        "roth"
+      ],
+      "type": "string"
+    },
+    "AgeIncome": {
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "$ref": "#/$defs/Amount"
+        },
+        "start_age": {
+          "format": "uint16",
+          "maximum": 130,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "amount",
+        "start_age"
+      ],
+      "type": "object"
+    },
+    "Amount": {
+      "additionalProperties": false,
+      "properties": {
+        "cents": {
+          "format": "int64",
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "dollar_basis": {
+          "$ref": "#/$defs/DollarBasis"
+        }
+      },
+      "required": [
+        "cents",
+        "dollar_basis"
+      ],
+      "type": "object"
+    },
+    "Assumption": {
+      "additionalProperties": false,
+      "properties": {
+        "effective_year": {
+          "format": "uint16",
+          "maximum": 9999,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "identifier": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "user_overrode_default": {
+          "type": "boolean"
+        },
+        "value": {
+          "description": "Exact decimal string, never a floating-point number.",
+          "pattern": "^-?[0-9]+(\\.[0-9]{1,18})?$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "identifier",
+        "value",
+        "unit",
+        "source",
+        "effective_year",
+        "user_overrode_default"
+      ],
+      "type": "object"
+    },
+    "Breakdown": {
+      "additionalProperties": {
+        "$ref": "#/$defs/TaxLine"
+      },
+      "properties": {
+        "law_kind": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "niit_threshold_exceeded": {
+          "type": "boolean"
+        },
+        "rules": {
+          "$ref": "#/$defs/Law"
+        },
+        "tax_year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "tax_year",
+        "law_kind",
+        "method",
+        "niit_threshold_exceeded",
+        "rules"
+      ],
+      "type": "object"
+    },
+    "Date": {
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "type": "string"
+    },
+    "DistributionSource": {
+      "properties": {
+        "divisor": {
+          "type": "string"
+        },
+        "prior_year_balance_is_estimate": {
+          "type": "boolean"
+        },
+        "source": {
+          "type": "string"
+        },
+        "table": {
+          "type": "string"
+        },
+        "table_year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "table",
+        "table_year",
+        "source",
+        "divisor",
+        "prior_year_balance_is_estimate"
+      ],
+      "type": "object"
+    },
+    "DollarBasis": {
+      "enum": [
+        "nominal",
+        "today"
+      ],
+      "type": "string"
+    },
+    "ExportHashes": {
+      "properties": {
+        "assumption_set_hash": {
+          "type": "string"
+        },
+        "export_content_hash": {
+          "type": "string"
+        },
+        "input_hash": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "method",
+        "input_hash",
+        "assumption_set_hash",
+        "export_content_hash"
+      ],
+      "type": "object"
+    },
+    "Fixture": {
+      "additionalProperties": false,
+      "properties": {
+        "assumptions": {
+          "items": {
+            "$ref": "#/$defs/Assumption"
+          },
+          "type": "array"
+        },
+        "household": {
+          "$ref": "#/$defs/Household"
+        },
+        "pass_limit": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "household",
+        "assumptions"
+      ],
+      "type": "object"
+    },
+    "FundedTax": {
+      "properties": {
+        "breakdown": {
+          "$ref": "#/$defs/Breakdown"
+        },
+        "converged": {
+          "type": "boolean"
+        },
+        "paid": {
+          "$ref": "#/$defs/TaxLine"
+        },
+        "pass_limit": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "passes": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "rounding_settlement": {
+          "$ref": "#/$defs/TaxLine"
+        },
+        "settled_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "breakdown",
+        "paid",
+        "rounding_settlement",
+        "passes",
+        "pass_limit",
+        "converged"
+      ],
+      "type": "object"
+    },
+    "Household": {
+      "additionalProperties": false,
+      "properties": {
+        "accounts": {
+          "items": {
+            "$ref": "#/$defs/Account"
+          },
+          "type": "array"
+        },
+        "income": {
+          "$ref": "#/$defs/Income"
+        },
+        "persons": {
+          "items": {
+            "$ref": "#/$defs/Person"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "type": "array"
+        },
+        "spending": {
+          "$ref": "#/$defs/Spending"
+        },
+        "valuation_date": {
+          "$ref": "#/$defs/Date"
+        },
+        "withdrawal_order": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WithdrawalOrder"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "valuation_date",
+        "persons",
+        "accounts",
+        "income",
+        "spending"
+      ],
+      "type": "object"
+    },
+    "Income": {
+      "additionalProperties": false,
+      "properties": {
+        "pension": {
+          "$ref": "#/$defs/AgeIncome"
+        },
+        "social_security": {
+          "$ref": "#/$defs/AgeIncome"
+        },
+        "wages": {
+          "items": {
+            "$ref": "#/$defs/Wages"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "wages",
+        "social_security",
+        "pension"
+      ],
+      "type": "object"
+    },
+    "IndexedAmount": {
+      "properties": {
+        "identifier": {
+          "type": "string"
+        },
+        "nominal": {
+          "$ref": "#/$defs/MonetaryValue"
+        },
+        "today": {
+          "$ref": "#/$defs/MonetaryValue"
+        }
+      },
+      "required": [
+        "identifier",
+        "nominal",
+        "today"
+      ],
+      "type": "object"
+    },
+    "Law": {
+      "properties": {
+        "additional_65": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "base_year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "bracket_thresholds": {
+          "items": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "capital_gains_15_max": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "capital_gains_zero_max": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "dollar_basis": {
+          "$ref": "#/$defs/DollarBasis"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "standard_deduction": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "tax_year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "values": {
+          "additionalProperties": {
+            "$ref": "#/$defs/RuleValue"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "currency",
+        "unit",
+        "dollar_basis",
+        "base_year",
+        "tax_year",
+        "kind",
+        "bracket_thresholds",
+        "standard_deduction",
+        "additional_65",
+        "capital_gains_zero_max",
+        "capital_gains_15_max",
+        "values"
+      ],
+      "type": "object"
+    },
+    "Line": {
+      "properties": {
+        "base_year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "cents": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "dollar_basis": {
+          "$ref": "#/$defs/DollarBasis"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "cents",
+        "unit",
+        "currency",
+        "dollar_basis",
+        "base_year",
+        "year",
+        "rule_id"
+      ],
+      "type": "object"
+    },
+    "Metadata": {
+      "properties": {
+        "age_label": {
+          "type": "string"
+        },
+        "assumption_set_hash": {
+          "type": "string"
+        },
+        "canonical_json_method": {
+          "type": "string"
+        },
+        "hash_method": {
+          "type": "string"
+        },
+        "indexing": {
+          "type": "string"
+        },
+        "input_hash": {
+          "type": "string"
+        },
+        "model_version": {
+          "type": "string"
+        },
+        "rounding": {
+          "type": "string"
+        },
+        "rule_set_identifier": {
+          "type": "string"
+        },
+        "rule_set_year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "model_version",
+        "rule_set_identifier",
+        "rule_set_year",
+        "input_hash",
+        "assumption_set_hash",
+        "hash_method",
+        "canonical_json_method",
+        "rounding",
+        "indexing",
+        "age_label"
+      ],
+      "type": "object"
+    },
+    "MonetaryValue": {
+      "properties": {
+        "base_year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "cents": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "dollar_basis": {
+          "$ref": "#/$defs/DollarBasis"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "cents",
+        "unit",
+        "currency",
+        "dollar_basis",
+        "base_year",
+        "year"
+      ],
+      "type": "object"
+    },
+    "OpeningAccount": {
+      "properties": {
+        "account_type": {
+          "$ref": "#/$defs/AccountType"
+        },
+        "balance": {
+          "$ref": "#/$defs/MonetaryValue"
+        },
+        "cost_basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MonetaryValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "identifier",
+        "owner",
+        "account_type",
+        "balance"
+      ],
+      "type": "object"
+    },
+    "Period": {
+      "properties": {
+        "days": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "days_in_year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "end": {
+          "$ref": "#/$defs/Date"
+        },
+        "event_date": {
+          "$ref": "#/$defs/Date"
+        },
+        "start": {
+          "$ref": "#/$defs/Date"
+        }
+      },
+      "required": [
+        "start",
+        "end",
+        "event_date",
+        "days",
+        "days_in_year"
+      ],
+      "type": "object"
+    },
+    "Person": {
+      "additionalProperties": false,
+      "properties": {
+        "birth_date": {
+          "$ref": "#/$defs/Date"
+        },
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "plan_end_age": {
+          "format": "uint16",
+          "maximum": 130,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "retirement_date": {
+          "$ref": "#/$defs/Date"
+        }
+      },
+      "required": [
+        "id",
+        "birth_date",
+        "retirement_date",
+        "plan_end_age"
+      ],
+      "type": "object"
+    },
+    "ProjectionYear": {
+      "properties": {
+        "age_on_december_31": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "indexed_inputs": {
+          "description": "Annual indexed input amounts; activated financial flows are in `ledger`.",
+          "items": {
+            "$ref": "#/$defs/IndexedAmount"
+          },
+          "type": "array"
+        },
+        "ledger": {
+          "$ref": "#/$defs/YearLedger"
+        },
+        "year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "year",
+        "age_on_december_31",
+        "indexed_inputs",
+        "ledger"
+      ],
+      "type": "object"
+    },
+    "RuleValue": {
+      "properties": {
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dollar_basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DollarBasis"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "kind": {
+          "type": "string"
+        },
+        "retrieved": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "tax_year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "source",
+        "retrieved",
+        "tax_year",
+        "kind"
+      ],
+      "type": "object"
+    },
+    "Run": {
+      "properties": {
+        "assumptions_used": {
+          "items": {
+            "$ref": "#/$defs/Assumption"
+          },
+          "type": "array"
+        },
+        "description": {
+          "type": "string"
+        },
+        "metadata": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "omissions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "opening_accounts": {
+          "items": {
+            "$ref": "#/$defs/OpeningAccount"
+          },
+          "type": "array"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valuation_date": {
+          "$ref": "#/$defs/Date"
+        },
+        "withdrawal_order_used": {
+          "type": "string"
+        },
+        "years": {
+          "items": {
+            "$ref": "#/$defs/ProjectionYear"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "status",
+        "description",
+        "omissions",
+        "valuation_date",
+        "metadata",
+        "assumptions_used",
+        "opening_accounts",
+        "years",
+        "withdrawal_order_used"
+      ],
+      "type": "object"
+    },
+    "Spending": {
+      "additionalProperties": false,
+      "properties": {
+        "after_retirement": {
+          "$ref": "#/$defs/Amount"
+        },
+        "before_retirement": {
+          "$ref": "#/$defs/Amount"
+        }
+      },
+      "required": [
+        "before_retirement",
+        "after_retirement"
+      ],
+      "type": "object"
+    },
+    "TaxDeferredKind": {
+      "enum": [
+        "employer_plan",
+        "traditional_ira"
+      ],
+      "type": "string"
+    },
+    "TaxLine": {
+      "properties": {
+        "base_year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "cents": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "dollar_basis": {
+          "$ref": "#/$defs/DollarBasis"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "tax_year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "year": {
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "cents",
+        "unit",
+        "currency",
+        "dollar_basis",
+        "base_year",
+        "year",
+        "rule_id",
+        "tax_year",
+        "kind"
+      ],
+      "type": "object"
+    },
+    "Wages": {
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "$ref": "#/$defs/Amount"
+        },
+        "end_date": {
+          "$ref": "#/$defs/Date"
+        },
+        "start_date": {
+          "$ref": "#/$defs/Date"
+        }
+      },
+      "required": [
+        "amount",
+        "start_date",
+        "end_date"
+      ],
+      "type": "object"
+    },
+    "WithdrawalOrder": {
+      "enum": [
+        "taxable_first",
+        "tax_deferred_first",
+        "roth_before_tax_deferred",
+        "proportional_taxable_tax_deferred"
+      ],
+      "type": "string"
+    },
+    "YearLedger": {
+      "properties": {
+        "accounts": {
+          "items": {
+            "$ref": "#/$defs/AccountLedger"
+          },
+          "type": "array"
+        },
+        "before_59_half": {
+          "type": "boolean"
+        },
+        "created_account": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "federal_tax": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FundedTax"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "flags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "income": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Line"
+          },
+          "type": "object"
+        },
+        "income_total": {
+          "$ref": "#/$defs/Line"
+        },
+        "period": {
+          "$ref": "#/$defs/Period"
+        },
+        "rmd_total": {
+          "$ref": "#/$defs/Line"
+        },
+        "shortfall": {
+          "$ref": "#/$defs/Line"
+        },
+        "shortfall_today": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Line"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "spending": {
+          "$ref": "#/$defs/Line"
+        },
+        "surplus_deposit": {
+          "$ref": "#/$defs/Line"
+        },
+        "total_closing": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Line"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "total_closing_today": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Line"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "withdrawal_order_used": {
+          "type": "string"
+        },
+        "withdrawals_total": {
+          "$ref": "#/$defs/Line"
+        }
+      },
+      "required": [
+        "period",
+        "before_59_half",
+        "withdrawal_order_used",
+        "income",
+        "income_total",
+        "spending",
+        "accounts",
+        "rmd_total",
+        "withdrawals_total",
+        "surplus_deposit",
+        "shortfall",
+        "flags"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "urn:nextphase:horizon:export:v2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "export_format_version": {
+      "format": "uint16",
+      "maximum": 65535,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "hashes": {
+      "$ref": "#/$defs/ExportHashes"
+    },
+    "input": {
+      "$ref": "#/$defs/Fixture"
+    },
+    "model_version": {
+      "type": "string"
+    },
+    "rule_set_identifier": {
+      "type": "string"
+    },
+    "rule_set_year": {
+      "format": "uint16",
+      "maximum": 65535,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "run": {
+      "$ref": "#/$defs/Run"
+    }
+  },
+  "required": [
+    "export_format_version",
+    "model_version",
+    "rule_set_identifier",
+    "rule_set_year",
+    "input",
+    "run",
+    "hashes"
+  ],
+  "title": "Export",
+  "type": "object"
+}

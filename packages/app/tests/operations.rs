@@ -174,7 +174,7 @@ mod export {
     #[test]
     fn export_round_trips_every_valid_fixture_and_reproduces_status() {
         let all = valid();
-        assert_eq!(all.len(), 22);
+        assert_eq!(all.len(), 26);
         for f in all {
             let run = run_fixture(&f).unwrap();
             let e = export_run(&f).unwrap();
@@ -196,6 +196,7 @@ mod export {
         for (name, code) in [
             ("tampered-export", "EXPORT_HASH_MISMATCH"),
             ("unknown-format-export", "EXPORT_FORMAT_UNSUPPORTED"),
+            ("model-0.3.0.export", "EXPORT_MODEL_VERSION_UNSUPPORTED"),
         ] {
             let text = std::fs::read_to_string(
                 common::root().join(format!("packages/app/test-data/{name}.json")),
@@ -259,7 +260,7 @@ fn generated_output_schemas_drift_and_validate_every_output() {
     ];
     for (name, schema) in &schemas {
         let committed = std::fs::read_to_string(
-            common::root().join(format!("docs/model/schemas/{name}.v1.schema.json")),
+            common::root().join(format!("docs/model/schemas/{name}.v2.schema.json")),
         )
         .unwrap();
         assert_eq!(

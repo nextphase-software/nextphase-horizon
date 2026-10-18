@@ -41,6 +41,39 @@ fn execute(args: &[String]) -> Result<(String, bool), Error> {
                 *command == "dev-run",
             )
         }
+        ["spend", requested] => {
+            let result =
+                horizon_app::sustainable_spending(&parse_fixture(&read(requested, true)?)?)?;
+            (
+                serde_json::to_value(&result).expect("answer serialization"),
+                result.status,
+                false,
+            )
+        }
+        ["levers", requested] => {
+            let result = horizon_app::levers(&parse_fixture(&read(requested, true)?)?)?;
+            (
+                serde_json::to_value(&result).expect("answer serialization"),
+                result.status,
+                false,
+            )
+        }
+        ["impact", requested, rough] => {
+            let rough: Vec<horizon_app::answers::RoughInput> =
+                serde_json::from_str(&read(rough, false)?).map_err(|_| {
+                    Error::invalid(
+                        "MALFORMED_INPUT",
+                        "Rough inputs must be a JSON array of path and optional low/high objects.",
+                    )
+                })?;
+            let result =
+                horizon_app::input_impact(&parse_fixture(&read(requested, true)?)?, &rough)?;
+            (
+                serde_json::to_value(&result).expect("answer serialization"),
+                result.status,
+                false,
+            )
+        }
         ["compare", a, b] => {
             let a = read(a, true);
             let b = read(b, true);
@@ -71,7 +104,7 @@ fn execute(args: &[String]) -> Result<(String, bool), Error> {
         _ => {
             return Err(Error::invalid(
                 "CLI_USAGE",
-                "Usage: horizon run <name|path> | compare <baseline> <scenario> | export <name|path> | import <path> | dev-run <name|path>",
+                "Usage: horizon spend <name|path> | levers <name|path> | impact <name|path> <rough.json> | run <name|path> | compare <baseline> <scenario> | export <name|path> | import <path> | dev-run <name|path>",
             ));
         }
     };

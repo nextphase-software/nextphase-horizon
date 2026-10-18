@@ -10,7 +10,7 @@ use crate::{
 };
 use serde::Serialize;
 
-pub const MODEL_VERSION: &str = "horizon-engine-0.3.0";
+pub const MODEL_VERSION: &str = "horizon-engine-0.4.0";
 
 #[derive(Debug, Clone, Serialize, schemars::JsonSchema)]
 pub struct MonetaryValue {
@@ -201,7 +201,7 @@ fn project_mode(
                 year,
             )?);
         }
-        let annual = if let Some(limit) = tax_limit {
+        let mut annual = if let Some(limit) = tax_limit {
             crate::tax::funded_year(
                 &mut ledger,
                 household,
@@ -213,6 +213,9 @@ fn project_mode(
         } else {
             ledger.year(household, &assumptions, year)?
         };
+        if tax_limit.is_some() {
+            annual.add_today_values(inflation, base, year)?;
+        }
         if let Some(tax) = &annual.federal_tax {
             loss_carry = tax.breakdown.cents("loss_carry_out");
         }
