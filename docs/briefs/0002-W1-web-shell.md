@@ -166,7 +166,7 @@ Record `node --version`, `corepack pnpm --version` and the Playwright browser ve
 
 - **Branch:** `codex/0002-W1-web-shell`, fast-forwarded from `main` at
   `4b5d536072132f8fc3265e30a513a36e260cd5dc` before implementation.
-- **Source/test revision validated:** `fddb9e61138b4d8820d17fa99a8d37d8f2736e44`.
+- **Initial source/test revision validated:** `fddb9e61138b4d8820d17fa99a8d37d8f2736e44`.
   Every command below ran in a fresh local Git clone of that committed revision,
   with no copied node_modules, generated bindings/types, build output or target
   directory. Source/tests stayed unchanged during validation. This record and its
@@ -180,7 +180,7 @@ Record `node --version`, `corepack pnpm --version` and the Playwright browser ve
   canonical/number-parity assertions. Actual browser versions are recorded by
   the harness's browser-version annotations when the reviewer runs it.
 
-### Current validation
+### Initial v2 validation (historical)
 
 The original v2 run completed 420 commands with expected exits. Its historical
 summary is retained below. The per-command observations are now inline in this
@@ -665,3 +665,70 @@ no other external Rust dependency is added.
 | apps/web | `corepack pnpm run licenses` | 0 | No test harness |
 
 </details>
+
+### Review follow-up — H1, M1, L1, L2 (2026-10-18)
+
+**Branch:** `codex/0002-W1-web-shell`.
+**New source/test revision validated:** `a006fb113e51179b840b10cdd6500cc36f566a34`.
+All checks below ran in a fresh local Git clone of that committed revision,
+without copied node_modules, target output, generated types or WASM bindings.
+Source/tests stayed unchanged during validation. This record is committed after
+that revision; the final branch tip is reported separately in the handoff.
+
+| Finding | Change |
+| --- | --- |
+| H1 | Keyboard label type-ahead selects households. Focus traversal is Alt+Tab for WebKit on macOS and Tab otherwise. A worker-scoped fixture supplies a fresh empty temporary `CFFIXED_USER_HOME` through Firefox's `launchOptions.env` only on darwin, and removes it after the browser closes. Every existing e2e assertion is retained. |
+| M1 | README/AGENTS document the full contributor validation sequence without a run-specific exception. README describes the shell without a gate state. The architecture document explains the macOS 27 Firefox workaround and its public reference. |
+| L1 | Answer/error reset occurs at the worker-request start in the selection effect. A same-value change event keeps the existing answer; a changed selection clears the answer while its request is pending. Both cases have unit tests. |
+| L2 | The separate JSON validation artifact and all links to it are removed. Its historical command observations and the new results are inline in this brief. |
+
+The same-value regression was first reproduced against the old handler: the unit
+suite exited 1 with 1 failure / 13 passes, leaving only Calculating sample
+household visible. After the fix, the fresh-clone suite passed all 14 tests.
+The synchronous loading reset has one documented, line-scoped exception to
+`react-hooks/set-state-in-effect`; lint configuration and all other rules remain
+unchanged.
+
+**Affected-command validation** (all commands from `apps/web/`):
+
+| Command | Exit | Counts / observed result |
+| --- | --- | --- |
+| `node --version` | 0 | v24.22.0 |
+| `corepack --version` | 0 | 0.36.0 |
+| `corepack pnpm --version` | 0 | 12.9.1 |
+| `wasm-bindgen --version` | 0 | wasm-bindgen 0.2.129 |
+| `corepack pnpm install --frozen-lockfile` | 0 | Frozen lockfile installed in fresh clone |
+| `corepack pnpm run build:engine` | 0 | Release WASM module and bindings generated |
+| `corepack pnpm run types` | 0 | 11 schema type modules generated |
+| `corepack pnpm run typecheck` | 0 | Strict typecheck passed, including e2e fixture/spec |
+| `corepack pnpm run lint` | 0 | Lint passed |
+| `corepack pnpm run format:check` | 0 | All matched files use Prettier code style! |
+| `corepack pnpm test` | 0 | Test Files  6 passed (6); Tests  14 passed (14) |
+| `corepack pnpm run build` | 0 | Static site, worker/WASM, font and license built |
+| `corepack pnpm run licenses` | 0 | Shipped code: license policy passed (4 package versions).; All packages: license policy passed (359 package versions). |
+| `corepack pnpm exec playwright test --list` | 0 | Total: 12 tests in 1 file |
+
+**End to end:** **not run by the implementer; run by the reviewer**.
+Playwright browser installation was also not run. The maintainer excluded both
+because browsers cannot start in this sandbox. `playwright test --list` only
+loaded/discovered the 12 projects; it did not execute browser fixtures or page
+assertions. The reviewer reruns the full e2e matrix outside the sandbox and
+records actual browser versions. This record makes no browser-pass claim.
+
+**Tool versions observed:** Node v24.22.0, corepack 0.36.0, pnpm 12.9.1,
+wasm-bindgen 0.2.129. Node's pinned executable directory was first on PATH for
+every command, including both WASM-producing build commands. Dependencies,
+package pins, package manifests and lockfiles are unchanged; no dependency was
+added. The license checks passed for 4 shipped versions and 359 installed
+versions.
+
+**Validation scope/exclusions:** this follow-up changes only the web component,
+its tests/browser fixture and the four findings' documentation. Rust source,
+Cargo manifests/lockfile, schemas, model references, financial fixtures and
+goldens are unchanged, so native Rust tests, CLI fixture sweeps, Rust lint/format,
+WASM numeric parity and Rust license checks were not rerun. The fresh-clone web
+builds still compiled the unchanged release WASM module. Earlier full cumulative
+observations remain above as historical results, not new passes. Independent
+review remains with a different reviewer. The brief's original exclusions
+(designed screens, charts, persistence, hosting/deployment and HTTP/agent access)
+remain unchanged. No main-branch mutation, push or hook bypass was performed.
