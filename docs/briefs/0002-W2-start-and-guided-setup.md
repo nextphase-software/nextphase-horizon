@@ -716,3 +716,91 @@ successful validation observations for invalid, unsupported and partial cases.
 | `4f11ac4` | workspace root | `cargo run -p horizon-cli -- spend packages/app/test-data/web-edited-working-61.json` | 3 | 1 canonical JSON document + newline; partial |
 
 </details>
+
+### Design-reference follow-up — L1–L4 (2026-10-18)
+
+**Branch:** `codex/0002-W2-start-and-guided-setup`.
+**Source/test revision validated:** `af7a6468fc622b49408a3534fff7dd8e49e21484`.
+Validation ran in a fresh local Git clone of this committed branch, created with
+`git clone --no-local --branch codex/0002-W2-start-and-guided-setup` (exit 0).
+The checkout initially contained no node_modules, target, dist or generated
+bindings/types; none were copied from the worktree. Its HEAD matched the revision
+above, and its source/tests stayed unchanged throughout validation. The clone
+remained clean afterward. This record is committed after the validated revision;
+the final branch tip is reported separately in the handoff.
+
+Only the four requested presentation corrections against references 1 and 2
+are implemented:
+
+- **L1:** account headings and review rows use names derived only from account
+  type and the current plan kind: Cash savings, Brokerage account, Workplace
+  plan, Traditional IRA and Roth IRA. Duplicate names gain suffixes 2, 3 and so
+  on in account order. Names and numbering follow type and plan-kind edits;
+  the type label sits beside the heading in smaller text. Internal IDs remain
+  internal and do not appear in headings or review rows.
+- **L2:** both screens show the reference footer. Model version and federal
+  rule-set year come from already-fetched sustainable-spending run metadata;
+  an unsupported selection uses an available successful sample's metadata.
+  No extra engine call is made. The separate privacy note is unchanged.
+- **L3:** the introduction spells out counts zero through ten, derives its
+  counts from engine replies, and names the sole unsupported sample with the
+  requested lowercased label and parenthetical engine message. Zero/multiple
+  unsupported samples use the count. Unit coverage includes punctuation,
+  preserving the rest of the engine message's capitalization, and counts above
+  ten.
+- **L4:** every dollar input has a separate, aria-hidden visual $ prefix inside
+  its control border. The value and screen-reader field label do not include
+  that prefix; the existing parsing code is unchanged.
+
+**Validation:** every affected web command ran below in the fresh clone.
+All 35 unit tests passed across 8 files. All 12 e2e projects passed: Chromium,
+Firefox and WebKit at 375×812 and 1280×800, each in light and dark themes.
+Actual browser versions from executed browser-version annotations:
+chromium 153.0.8010.12; firefox 155.0; webkit 26.6.
+Playwright 1.63.0 browser installation ran successfully before e2e.
+
+The suite retained the existing keyboard, native/WASM golden/reference,
+error, privacy, exact-CSP, theme and reload assertions. It now also checks the
+footer and visual prefixes on every captured screen, the names in review,
+new duplicate account names, and names following type/plan-kind edits. All
+240 captured screen states passed axe with zero violations and no horizontal
+page overflow. Screenshots and the HTML/JSON reports were refreshed outside the
+repository as requested; prior evidence was retained separately. Start and
+Accounts screenshots were also inspected against the committed references for
+these four corrections. Development validation before the source commit passed
+typecheck/lint, 35 unit tests, the production build and the Chromium phone e2e
+case (1/1); the recorded fresh-clone run below is the handoff evidence.
+
+**Dependencies and exclusions:** none added; manifests and lockfiles are
+unchanged. Production and full dependency-closure license checks both passed.
+Rust source/tests, Cargo pins, the worker protocol, parsing, financial fixtures,
+schemas, references and goldens are unchanged. Native Rust suites, CLI corpus
+sweeps, Rust lint/format and cargo-deny were not rerun because these four
+presentation corrections cannot affect them; earlier observations remain
+historical passes, not new passes. The fresh web engine builds compiled the
+unchanged Rust WebAssembly module. All original brief exclusions remain: screens
+3–6, account removal, withdrawal-order editing and additional wage entries are
+later work; persistence/accounts/sign-in belong to plan 0006; the show-everything
+mode is deferred in favor of Review; printed summaries/charts and claiming-age
+rules remain later work. No affected validation was excluded. No push or
+main-branch mutation occurred; commit hooks passed without bypass.
+
+| Directory | Command | Exit | Counts / observed result |
+| --- | --- | --- | --- |
+| workspace root | `rustc --version` | 0 | rustc 1.99.1 (58cf8f9c3 2026-10-13) |
+| workspace root | `wasm-bindgen --version` | 0 | wasm-bindgen 0.2.129 |
+| apps/web | `node --version` | 0 | v24.22.0 |
+| apps/web | `corepack --version` | 0 | 0.36.0 |
+| apps/web | `corepack pnpm --version` | 0 | 12.9.1 |
+| apps/web | `corepack pnpm install --frozen-lockfile` | 0 | Fresh frozen-lockfile installation completed |
+| apps/web | `corepack pnpm run build:engine` | 0 | Release WASM module and web bindings built |
+| apps/web | `corepack pnpm run types` | 0 | Types generated from the committed schemas |
+| apps/web | `corepack pnpm run typecheck` | 0 | Strict typecheck passed |
+| apps/web | `corepack pnpm run lint` | 0 | Lint passed |
+| apps/web | `corepack pnpm run format:check` | 0 | All matched files use Prettier code style |
+| apps/web | `corepack pnpm test` | 0 | Test Files  8 passed (8); Tests  35 passed (35) |
+| apps/web | `corepack pnpm run build` | 0 | 31 modules transformed; production bundle built |
+| apps/web | `corepack pnpm exec playwright install chromium firefox webkit` | 0 | Matched Chromium, Firefox and WebKit binaries installed |
+| apps/web | `corepack pnpm run e2e` | 0 | 12 passed (1.2m) |
+| apps/web | `corepack pnpm run licenses` | 0 | Shipped code: license policy passed (4 package versions).; All packages: license policy passed (358 package versions). |
+| workspace root | `git status --short` | 0 | Empty output; clean fresh clone |
