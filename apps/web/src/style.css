@@ -295,7 +295,8 @@ h3 {
   border-color: var(--color-accent);
   font-weight: var(--weight-heading);
 }
-button:disabled {
+button:disabled,
+button[aria-disabled="true"] {
   cursor: default;
   background: var(--color-sunken);
   color: var(--color-muted);

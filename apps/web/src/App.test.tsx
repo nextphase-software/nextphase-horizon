@@ -162,8 +162,16 @@ it("ignores a completed check after navigation and reports worker failure withou
         resolve = done;
       }),
   );
-  fireEvent.click(screen.getByRole("button", { name: "Check this household" }));
+  const checkButton = screen.getByRole("button", {
+    name: "Check this household",
+  });
+  checkButton.focus();
+  fireEvent.click(checkButton);
   await screen.findByText("Checking this household…");
+  expect(document.activeElement).toBe(checkButton);
+  expect(checkButton.getAttribute("aria-disabled")).toBe("true");
+  fireEvent.click(checkButton);
+  expect(engine.call).toHaveBeenCalledTimes(6);
   fireEvent.click(screen.getByRole("link", { name: "Edit About you" }));
   resolve(raw);
   fireEvent.click(screen.getByRole("button", { name: "Review your answers" }));

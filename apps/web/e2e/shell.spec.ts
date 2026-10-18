@@ -86,9 +86,7 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
         return;
       await page.keyboard.press(traversal);
     }
-    throw new Error(
-      `Keyboard could not reach ${await locator.getAttribute("id")}`,
-    );
+    throw new Error(`Keyboard could not reach ${await locator.textContent()}`);
   }
   async function activate(locator: Locator) {
     await keyboardTo(locator);

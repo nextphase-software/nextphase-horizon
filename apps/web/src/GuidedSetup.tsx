@@ -359,8 +359,11 @@ export function Setup({
                 <button onClick={() => move(4)}>Back</button>
                 <button
                   className="primary"
-                  disabled={pending}
-                  onClick={() => void check()}
+                  aria-disabled={pending}
+                  aria-busy={pending}
+                  onClick={() => {
+                    if (!pending) void check();
+                  }}
                 >
                   Check this household
                 </button>

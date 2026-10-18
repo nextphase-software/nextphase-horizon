@@ -156,6 +156,13 @@ message without result figures, alongside the review's Edit links. An obsolete
 or unmounted check cannot replace a newer result. No financial rule, persistence,
 worker operation, CSP change or dependency is added.
 
+While checking, the button uses aria-disabled and aria-busy and rejects repeat
+activation in its handler. It retains keyboard focus throughout the worker
+request: disabling the focused native button caused WebKit to leave focus on
+the body and stop subsequent traversal. Unit tests cover pending focus and
+duplicate prevention; the browser flow reaches a review Edit link by keyboard
+after the result arrives.
+
 The browser harness checks every sample's Start card and unchanged run bytes,
 all six setup steps, the edited-working reference result, the linked-date error,
 all four supported sample result views, cancellation/confirmation and reload.
