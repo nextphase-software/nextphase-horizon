@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { engine } from "./engine";
 import { samples } from "./fixtures";
-import { flagWords, statusWord } from "./format";
+import { flagWords, sampleIntroduction, statusWord } from "./format";
 import type { Result } from "./Answer";
 import { Setup } from "./GuidedSetup";
 import { createDraft, type Draft } from "./setup";
@@ -97,6 +97,10 @@ export function App() {
   const sample = samples.find((sample) => sample.name === selected)!;
   const result = results[selected];
   const allResults = Object.values(results);
+  const metadata =
+    result && "run" in result
+      ? result.run.metadata
+      : allResults.find((result) => "run" in result)?.run.metadata;
   return (
     <>
       <header>
@@ -151,22 +155,12 @@ export function App() {
                 </section>
               ) : allResults.length === samples.length ? (
                 <p className="lede" data-testid="intro">
-                  The engine gives a full result for{" "}
-                  {
-                    allResults.filter((result) => result.status === "complete")
-                      .length
-                  }{" "}
-                  of these {samples.length} sample households, a partial one for{" "}
-                  {
-                    allResults.filter((result) => result.status === "partial")
-                      .length
-                  }
-                  , and none for{" "}
-                  {allResults.filter((result) => "code" in result).length}.{" "}
-                  {allResults
-                    .filter((result) => "code" in result)
-                    .map((result) => ("code" in result ? result.message : ""))
-                    .join(" ")}
+                  {sampleIntroduction(
+                    samples.map((sample) => ({
+                      label: sample.label,
+                      result: results[sample.name],
+                    })),
+                  )}
                 </p>
               ) : (
                 <p role="status">Calculating sample households…</p>
@@ -295,6 +289,17 @@ export function App() {
       <footer>
         Your answers stay in this page only. Reload or close it and they're
         gone.
+        <p className="reference-footer">
+          Open source (AGPL-3.0-only) · Sample data only; nothing you enter is
+          stored
+          {metadata && (
+            <>
+              {" "}
+              · Model {metadata.model_version} · Federal tax law{" "}
+              {metadata.rule_set_year}, projected after
+            </>
+          )}
+        </p>
       </footer>
     </>
   );

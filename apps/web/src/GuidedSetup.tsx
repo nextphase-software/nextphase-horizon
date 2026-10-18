@@ -5,6 +5,7 @@ import type { AccountType } from "./generated/types/household-input.v2";
 import { Answer, type Result } from "./Answer";
 import { engine } from "./engine";
 import {
+  accountNames,
   accountTypes,
   addAccount,
   changeAccountType,
@@ -109,6 +110,32 @@ export function Setup({
   function renderField(field: Field) {
     const rough = draft.rough.includes(field.path);
     const eligible = field.kind === "dollars" || field.kind === "percent";
+    const input = (
+      <input
+        id={field.path}
+        type={field.kind === "date" ? "date" : "text"}
+        inputMode={
+          field.kind === "date"
+            ? undefined
+            : field.kind === "percent"
+              ? "decimal"
+              : "numeric"
+        }
+        value={field.value}
+        readOnly={field.readOnly}
+        aria-invalid={!!errors[field.path]}
+        aria-describedby={`${field.path}-help ${errors[field.path] ? `${field.path}-error` : ""}`.trim()}
+        onChange={(event) => {
+          update(changeEntry(draft, field.path, event.target.value));
+          if (errors[field.path])
+            setErrors((previous) => {
+              const next = { ...previous };
+              delete next[field.path];
+              return next;
+            });
+        }}
+      />
+    );
     return (
       <div className={`field-row ${rough ? "rough" : ""}`} key={field.path}>
         <label htmlFor={field.path}>
@@ -136,31 +163,13 @@ export function Setup({
               </option>
             ))}
           </select>
+        ) : field.kind === "dollars" ? (
+          <div className="dollar-field">
+            <span aria-hidden="true">$</span>
+            {input}
+          </div>
         ) : (
-          <input
-            id={field.path}
-            type={field.kind === "date" ? "date" : "text"}
-            inputMode={
-              field.kind === "date"
-                ? undefined
-                : field.kind === "percent"
-                  ? "decimal"
-                  : "numeric"
-            }
-            value={field.value}
-            readOnly={field.readOnly}
-            aria-invalid={!!errors[field.path]}
-            aria-describedby={`${field.path}-help ${errors[field.path] ? `${field.path}-error` : ""}`.trim()}
-            onChange={(event) => {
-              update(changeEntry(draft, field.path, event.target.value));
-              if (errors[field.path])
-                setErrors((previous) => {
-                  const next = { ...previous };
-                  delete next[field.path];
-                  return next;
-                });
-            }}
-          />
+          input
         )}
         <p className="help" id={`${field.path}-help`}>
           {field.help}
@@ -192,6 +201,7 @@ export function Setup({
       </div>
     );
   }
+  const names = accountNames(draft);
   return (
     <>
       <p className="eyebrow">Sample household</p>
@@ -252,11 +262,13 @@ export function Setup({
               )}
               {step === 2 ? (
                 <>
-                  {draft.input.household.accounts.map((account) => (
+                  {draft.input.household.accounts.map((account, index) => (
                     <fieldset className="account" key={account.id}>
                       <legend>
-                        {account.id === "401k" ? "401(k)" : account.id} —{" "}
-                        {accountTypes[account.account_type]}
+                        {names[index]}{" "}
+                        <small className="account-type">
+                          {accountTypes[account.account_type]}
+                        </small>
                       </legend>
                       <button
                         className="link"
@@ -273,7 +285,7 @@ export function Setup({
                       {fields(draft, step)
                         .filter(
                           (field) =>
-                            field.group === account.id &&
+                            field.group === names[index] &&
                             (!field.path.endsWith("/account_type") ||
                               editingType.includes(account.id)),
                         )

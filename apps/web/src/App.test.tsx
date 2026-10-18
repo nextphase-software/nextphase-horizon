@@ -38,7 +38,7 @@ it("loads each status exactly once, derives the introduction and prevents unsupp
   stub();
   render(<App />);
   expect((await screen.findByTestId("intro")).textContent).toContain(
-    "a full result for 2 of these 5 sample households, a partial one for 2, and none for 1",
+    "The engine gives a full result for two of these five sample households, a partial one for two, and none for the couple (only one person is supported).",
   );
   expect(engine.call).toHaveBeenCalledTimes(5);
   expect(
@@ -75,7 +75,9 @@ it("checks the edited household, retains rough marks and requires confirmation b
     fireEvent.click(screen.getByRole("button", { name: "Continue" }));
   next();
   next();
-  const account = screen.getByRole("group", { name: "401(k) — Tax-deferred" });
+  const account = screen.getByRole("group", {
+    name: "Workplace plan Tax-deferred",
+  });
   fireEvent.change(account.querySelector('input[type="text"]')!, {
     target: { value: "600,000" },
   });
@@ -194,4 +196,108 @@ it("disables setup when initial worker requests fail", async () => {
       .disabled,
   ).toBe(true);
   expect(screen.queryByTestId("spending")).toBeNull();
+});
+it("uses fetched run metadata for the reference footer on Start and Setup, including an unsupported selection", async () => {
+  const result = JSON.parse(raw);
+  result.run.metadata.model_version = "horizon-synthetic-footer-9";
+  result.run.metadata.rule_set_year = 2042;
+  vi.mocked(engine.call).mockImplementation(async (...args) =>
+    JSON.parse(args[1]).household.persons.length > 1
+      ? '{"status":"unsupported","code":"MULTIPLE_PERSONS_UNSUPPORTED","message":"Only one person is supported."}'
+      : JSON.stringify(result),
+  );
+  render(<App />);
+  await screen.findByTestId("intro");
+  const expected =
+    "Open source (AGPL-3.0-only) · Sample data only; nothing you enter is stored · Model horizon-synthetic-footer-9 · Federal tax law 2042, projected after";
+  expect(screen.getByText(expected)).toBeTruthy();
+  fireEvent.click(screen.getByRole("radio", { name: "Couple" }));
+  expect(screen.getByText(expected)).toBeTruthy();
+  fireEvent.click(screen.getByRole("radio", { name: samples[0].label }));
+  fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+  expect(screen.getByText(expected)).toBeTruthy();
+  expect(
+    screen.getByText(
+      "Your answers stay in this page only. Reload or close it and they're gone.",
+    ),
+  ).toBeTruthy();
+  expect(engine.call).toHaveBeenCalledTimes(5);
+});
+it("uses readable account headings and review labels after additions, type changes and plan-kind changes", async () => {
+  stub();
+  render(<App />);
+  await screen.findByTestId("intro");
+  const next = () =>
+    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+  next();
+  next();
+  next();
+  expect(screen.getByRole("group", { name: "Cash savings Cash" })).toBeTruthy();
+  expect(
+    screen.getByRole("group", {
+      name: "Brokerage account Brokerage (taxable)",
+    }),
+  ).toBeTruthy();
+  expect(screen.getByRole("group", { name: "Roth IRA Roth" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "+ Add an account" }));
+  fireEvent.click(screen.getByRole("button", { name: "+ Add an account" }));
+  expect(
+    screen.getByRole("group", { name: "Cash savings 2 Cash" }),
+  ).toBeTruthy();
+  expect(
+    screen.getByRole("group", { name: "Cash savings 3 Cash" }),
+  ).toBeTruthy();
+  const cash = screen.getByRole("group", { name: "Cash savings Cash" });
+  fireEvent.click(cash.querySelector("button")!);
+  fireEvent.change(cash.querySelector("select")!, {
+    target: { value: "tax_deferred" },
+  });
+  expect(
+    screen.getByRole("group", { name: "Workplace plan Tax-deferred" }),
+  ).toBeTruthy();
+  expect(
+    screen.getByRole("group", { name: "Workplace plan 2 Tax-deferred" }),
+  ).toBeTruthy();
+  fireEvent.change(
+    screen
+      .getByRole("group", { name: "Workplace plan Tax-deferred" })
+      .querySelectorAll("select")[1],
+    { target: { value: "traditional_ira" } },
+  );
+  expect(
+    screen.getByRole("group", { name: "Traditional IRA Tax-deferred" }),
+  ).toBeTruthy();
+  expect(
+    screen.getByRole("group", { name: "Workplace plan Tax-deferred" }),
+  ).toBeTruthy();
+  expect(
+    screen.getByRole("group", { name: "Cash savings 2 Cash" }),
+  ).toBeTruthy();
+  next();
+  next();
+  next();
+  expect(screen.getByText("Traditional IRA: Account type")).toBeTruthy();
+  expect(screen.getByText("Workplace plan: Balance today")).toBeTruthy();
+  expect(screen.getByText("Cash savings 2: Balance today")).toBeTruthy();
+  expect(screen.queryByText(/401k:|roth-ira:|account-[0-9]+:/)).toBeNull();
+});
+it("renders a separate visual dollar prefix for every amount without changing its value or label", async () => {
+  stub();
+  render(<App />);
+  await screen.findByTestId("intro");
+  fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+  for (const count of [0, 3, 5, 2, 0]) {
+    const wrappers = document.querySelectorAll(".dollar-field");
+    expect(wrappers).toHaveLength(count);
+    for (const wrapper of wrappers) {
+      const prefix = wrapper.querySelector("span")!;
+      const input = wrapper.querySelector("input")!;
+      expect(prefix.textContent).toBe("$");
+      expect(prefix.getAttribute("aria-hidden")).toBe("true");
+      expect(input.value).not.toMatch(/^\$/);
+      expect(input.labels?.length).toBe(1);
+      expect(input.labels?.[0].textContent).not.toContain("$");
+    }
+    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+  }
 });

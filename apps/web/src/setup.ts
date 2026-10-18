@@ -54,6 +54,24 @@ const planKinds = {
   employer_plan: "Workplace plan, such as a 401(k)",
   traditional_ira: "Traditional IRA",
 };
+export function accountNames(draft: Draft): string[] {
+  const counts = new Map<string, number>();
+  return draft.input.household.accounts.map((account, index) => {
+    const kind =
+      draft.entries[`/household/accounts/${index}/tax_deferred_kind`] ??
+      account.tax_deferred_kind;
+    const name = {
+      cash: "Cash savings",
+      taxable: "Brokerage account",
+      tax_deferred:
+        kind === "traditional_ira" ? "Traditional IRA" : "Workplace plan",
+      roth: "Roth IRA",
+    }[account.account_type];
+    const count = (counts.get(name) ?? 0) + 1;
+    counts.set(name, count);
+    return count === 1 ? name : `${name} ${count}`;
+  });
+}
 export const retirementPath = "/household/persons/0/retirement_date";
 export const wageEndPath = "/household/income/wages/0/end_date";
 export function createDraft(json: string): Draft {
@@ -172,10 +190,11 @@ export function fields(draft: Draft, step: number): Field[] {
           "whole",
         ),
       ];
-    case 2:
+    case 2: {
+      const names = accountNames(draft);
       return h.accounts.flatMap((account, index) => {
         const path = `/household/accounts/${index}`;
-        const group = account.id;
+        const group = names[index];
         return [
           field(`${path}/account_type`, "Account type", "select", {
             options: accountTypes,
@@ -205,6 +224,7 @@ export function fields(draft: Draft, step: number): Field[] {
             : []),
         ];
       });
+    }
     case 3:
       return [
         amount(

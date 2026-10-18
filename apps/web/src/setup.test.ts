@@ -4,6 +4,7 @@ import working from "../../../packages/app/fixtures/answers-working-61.json?raw"
 import edited from "../../../packages/app/test-data/web-edited-working-61.json?raw";
 import { samples } from "./fixtures";
 import {
+  accountNames,
   addAccount,
   changeAccountType,
   changeEntry,
@@ -114,4 +115,78 @@ it("limits rough candidates to amounts and rates; formatting errors remain separ
       0,
     ),
   ).toEqual({});
+});
+it("names accounts by type and plan kind, numbering duplicate names in account order", () => {
+  const draft = createDraft(working);
+  const [cash, taxable, workplace, roth] = draft.input.household.accounts;
+  draft.input.household.accounts = [
+    cash,
+    taxable,
+    workplace,
+    roth,
+    { ...workplace, id: "internal-ira", tax_deferred_kind: "traditional_ira" },
+    { ...cash, id: "internal-cash-2" },
+    { ...taxable, id: "internal-taxable-2" },
+    { ...cash, id: "internal-cash-3" },
+    { ...workplace, id: "internal-workplace-2" },
+    { ...roth, id: "internal-roth-2" },
+    {
+      ...workplace,
+      id: "internal-ira-2",
+      tax_deferred_kind: "traditional_ira",
+    },
+  ];
+  const expected = [
+    "Cash savings",
+    "Brokerage account",
+    "Workplace plan",
+    "Roth IRA",
+    "Traditional IRA",
+    "Cash savings 2",
+    "Brokerage account 2",
+    "Cash savings 3",
+    "Workplace plan 2",
+    "Roth IRA 2",
+    "Traditional IRA 2",
+  ];
+  expect(accountNames(draft)).toEqual(expected);
+  draft.input.household.accounts.forEach((account, index) => {
+    account.id = `changed-id-${index}`;
+  });
+  expect(accountNames(draft)).toEqual(expected);
+  expect(
+    fields(draft, 2)
+      .filter((field) => field.label === "Balance today")
+      .map((field) => field.group),
+  ).toEqual(expected);
+});
+it("updates names and duplicate numbering when account type or plan kind changes", () => {
+  let draft = addAccount(createDraft(working));
+  expect(accountNames(draft)).toEqual([
+    "Cash savings",
+    "Brokerage account",
+    "Workplace plan",
+    "Roth IRA",
+    "Cash savings 2",
+  ]);
+  draft = changeAccountType(draft, 0, "tax_deferred");
+  expect(accountNames(draft)).toEqual([
+    "Workplace plan",
+    "Brokerage account",
+    "Workplace plan 2",
+    "Roth IRA",
+    "Cash savings",
+  ]);
+  draft = changeEntry(
+    draft,
+    "/household/accounts/0/tax_deferred_kind",
+    "traditional_ira",
+  );
+  expect(accountNames(draft)).toEqual([
+    "Traditional IRA",
+    "Brokerage account",
+    "Workplace plan",
+    "Roth IRA",
+    "Cash savings",
+  ]);
 });

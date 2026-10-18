@@ -18,10 +18,14 @@ const samples = [
   },
   { name: "two-person", label: "Couple" },
 ];
-import { flagWords, statusWord } from "../src/format";
+import { countWord, flagWords, statusWord } from "../src/format";
 const root = new URL("../../../", import.meta.url);
 const read = (path: string) => readFileSync(new URL(path, root), "utf8");
 const reference = JSON.parse(read("docs/briefs/0003-W1-reference-values.json"));
+const metadata = JSON.parse(
+  read("packages/parity/golden/answers-working-61.spend.json"),
+).run.metadata;
+const footer = `Open source (AGPL-3.0-only) · Sample data only; nothing you enter is stored · Model ${metadata.model_version} · Federal tax law ${metadata.rule_set_year}, projected after`;
 
 test("start and guided setup: keyboard, native parity, accessibility and privacy", async ({
   page,
@@ -118,6 +122,27 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
     await page.keyboard.type(text);
   }
   async function evidence(name: string) {
+    await expect(page.locator(".reference-footer")).toHaveText(footer);
+    for (const field of await page.locator(".dollar-field").all()) {
+      await expect(field.locator("span")).toHaveText("$");
+      await expect(field.locator("span")).toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
+      await expect(field.locator("input")).not.toHaveValue(/^\$/);
+      expect(
+        await field.evaluate((element) => {
+          const box = element.getBoundingClientRect();
+          const prefix = element.querySelector("span")!.getBoundingClientRect();
+          const input = element.querySelector("input")!.getBoundingClientRect();
+          return (
+            prefix.left >= box.left &&
+            prefix.right < input.left &&
+            input.right <= box.right
+          );
+        }),
+      ).toBe(true);
+    }
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
     expect(
       await page.evaluate(
@@ -221,7 +246,7 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
     await evidence(`01-start-${sample.name}`);
   }
   await expect(page.getByTestId("intro")).toContainText(
-    `full result for ${statuses.filter((status) => status === "complete").length} of these 5 sample households, a partial one for ${statuses.filter((status) => status === "partial").length}, and none for ${statuses.filter((status) => status === "unsupported").length}`,
+    `The engine gives a full result for ${countWord(statuses.filter((status) => status === "complete").length)} of these five sample households, a partial one for ${countWord(statuses.filter((status) => status === "partial").length)}, and none for the couple (only one person is supported).`,
   );
   for (let index = 1; index < samples.length; index++)
     await page.keyboard.press("ArrowUp");
@@ -253,7 +278,7 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
   await evidence("03-income");
   await next();
   const account = page.getByRole("group", {
-    name: "401(k) — Tax-deferred",
+    name: "Workplace plan Tax-deferred",
     exact: true,
   });
   await type(
@@ -285,6 +310,18 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
     exact: true,
   });
   await expect(accountsReview).toContainText("$600,000");
+  await expect(accountsReview.locator("dt")).toHaveText([
+    "Cash savings: Account type",
+    "Cash savings: Balance today",
+    "Brokerage account: Account type",
+    "Brokerage account: Balance today",
+    "Brokerage account: Cost basis",
+    "Workplace plan: Account type",
+    "Workplace plan: Balance today",
+    "Workplace plan: Plan kind",
+    "Roth IRA: Account type",
+    "Roth IRA: Balance today",
+  ]);
   await expect(accountsReview.getByText("≈ Rough value")).toBeVisible();
   await expect(
     page.getByRole("region", { name: "Assumptions", exact: true }),
@@ -431,7 +468,7 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
   await page.getByRole("button", { name: "Continue", exact: true }).click();
   await expect(
     page
-      .getByRole("group", { name: "401(k) — Tax-deferred", exact: true })
+      .getByRole("group", { name: "Workplace plan Tax-deferred", exact: true })
       .getByRole("textbox", {
         name: "Balance today today's dollars",
         exact: true,
@@ -442,4 +479,77 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
       .getByRole("checkbox", { name: "Balance today: Rough", exact: true })
       .first(),
   ).not.toBeChecked();
+  await page
+    .getByRole("button", { name: "+ Add an account", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "+ Add an account", exact: true })
+    .click();
+  await expect(page.locator("fieldset.account legend")).toHaveText([
+    "Cash savings Cash",
+    "Brokerage account Brokerage (taxable)",
+    "Workplace plan Tax-deferred",
+    "Roth IRA Roth",
+    "Cash savings 2 Cash",
+    "Cash savings 3 Cash",
+  ]);
+  await expect(page.locator("fieldset.account legend small")).toHaveText([
+    "Cash",
+    "Brokerage (taxable)",
+    "Tax-deferred",
+    "Roth",
+    "Cash",
+    "Cash",
+  ]);
+  await evidence("11-accounts-duplicate-names");
+  const cash = page.getByRole("group", {
+    name: "Cash savings Cash",
+    exact: true,
+  });
+  await cash.getByRole("button", { name: "Edit type", exact: true }).click();
+  await cash.getByLabel("Account type", { exact: true }).selectOption("roth");
+  await expect(
+    page.getByRole("group", { name: "Roth IRA 2 Roth", exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("group", { name: "Workplace plan Tax-deferred", exact: true })
+    .getByLabel("Plan kind", { exact: true })
+    .selectOption("traditional_ira");
+  await expect(
+    page.getByRole("group", {
+      name: "Traditional IRA Tax-deferred",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(page.locator("fieldset.account legend")).toHaveText([
+    "Roth IRA Roth",
+    "Brokerage account Brokerage (taxable)",
+    "Traditional IRA Tax-deferred",
+    "Roth IRA 2 Roth",
+    "Cash savings Cash",
+    "Cash savings 2 Cash",
+  ]);
+  await evidence("12-accounts-type-and-plan-kind-names");
+  for (let step = 0; step < 3; step++)
+    await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await expect(
+    page.getByText("Roth IRA 2: Balance today", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Traditional IRA: Plan kind", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Cash savings 2: Balance today", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("region", { name: "Accounts", exact: true }),
+  ).not.toContainText(/401k:|roth-ira:|account-[0-9]+:/);
+  await evidence("13-review-readable-account-names");
+  expect(offOrigin).toEqual([]);
+  expect(errors).toEqual([]);
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { writes: string[] }).writes,
+    ),
+  ).toEqual([]);
 });

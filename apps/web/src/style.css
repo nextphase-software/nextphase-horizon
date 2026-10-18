@@ -333,7 +333,8 @@ button[aria-disabled="true"] {
   margin-bottom: var(--space-2);
 }
 .field-row input:not([type="checkbox"]),
-select {
+select,
+.dollar-field {
   display: block;
   width: 100%;
   min-width: 0;
@@ -429,4 +430,28 @@ select {
     grid-column: 2;
     justify-self: start;
   }
+}
+
+.account-type {
+  display: inline;
+  font-weight: var(--weight-body);
+  margin-inline-start: var(--space-2);
+}
+.field-row .dollar-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.dollar-field > span {
+  color: var(--color-muted);
+}
+.field-row .dollar-field input {
+  flex: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.reference-footer {
+  margin: var(--space-4) 0 0;
 }
