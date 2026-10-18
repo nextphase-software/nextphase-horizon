@@ -732,3 +732,70 @@ observations remain above as historical results, not new passes. Independent
 review remains with a different reviewer. The brief's original exclusions
 (designed screens, charts, persistence, hosting/deployment and HTTP/agent access)
 remain unchanged. No main-branch mutation, push or hook bypass was performed.
+
+### Re-review follow-up — household radios and Firefox cleanup (2026-10-18)
+
+**Branch:** `codex/0002-W1-web-shell`.
+**New source/test revision validated:** `bdfcd5503cc9d453c5802a5f9b49371ead16bf55`.
+The following commands ran against that committed revision in a fresh local Git
+clone, with no copied node_modules, generated types/bindings or target output.
+The source and tests stayed unchanged throughout validation. This implementation
+record is committed afterward; the final branch tip is reported separately.
+
+The household control now uses a native fieldset with the legend Sample
+household and five labeled radios sharing `name="household"`. The labels and
+order are unchanged, and the first radio starts checked. Wrapping grid labels
+and a zero minimum inline size keep the fieldset within its available width;
+the radios inherit the visible accent focus ring. Unit tests cover labels,
+order, values, initial selection, selecting the checked household again and
+clearing the answer when a different household request starts.
+
+The e2e suite replaces the superseded label type-ahead with ArrowDown from the
+focused, checked radio. It asserts each radio's checked state, value, focus and
+focus outline. Platform/browser focus traversal and every other assertion remain
+in place, including all golden/reference, axe, privacy, overflow and theme checks.
+Firefox home cleanup now uses `rmSync` with `maxRetries: 10` and
+`retryDelay: 200` to retry transient failures caused by late Firefox writes.
+The macOS-only Firefox launch environment and per-launch directory stay intact.
+
+**Affected-command validation** (all commands from `apps/web/`):
+
+| Command | Exit | Counts / observed result |
+| --- | --- | --- |
+| `node --version` | 0 | v24.22.0 |
+| `corepack --version` | 0 | 0.36.0 |
+| `corepack pnpm --version` | 0 | 12.9.1 |
+| `wasm-bindgen --version` | 0 | wasm-bindgen 0.2.129 |
+| `corepack pnpm install --frozen-lockfile` | 0 | Frozen lockfile installed in fresh clone |
+| `corepack pnpm run build:engine` | 0 | Release WASM module and bindings generated |
+| `corepack pnpm run types` | 0 | Schema type generation passed |
+| `corepack pnpm run typecheck` | 0 | Strict typecheck passed, including e2e fixture/spec |
+| `corepack pnpm run lint` | 0 | Lint passed |
+| `corepack pnpm run format:check` | 0 | All matched files use Prettier code style! |
+| `corepack pnpm test` | 0 | 6 test files passed; 15 tests passed |
+| `corepack pnpm run build` | 0 | 27 modules transformed; static site, worker/WASM, font and license built |
+| `corepack pnpm run licenses` | 0 | 4 shipped package versions and 359 installed package versions passed |
+| `corepack pnpm exec playwright test --list` | 0 | 12 tests discovered in 1 file |
+
+**End to end:** **not run by the implementer; run by the reviewer**.
+Playwright browser installation was also not run, as requested because browsers
+cannot start in this sandbox. Test discovery does not launch browsers or execute
+fixtures/page assertions. Actual keyboard behavior, focus, the 375 px overflow
+check, browser versions and retry cleanup require the reviewer's e2e run outside
+the sandbox; no browser pass is claimed here.
+
+**Toolchain/dependencies:** Node v24.22.0 was first on PATH for every command,
+including both WASM-producing builds; corepack 0.36.0 invoked pnpm 12.9.1.
+wasm-bindgen was 0.2.129. No dependencies were added; package manifests, pins and
+lockfiles are unchanged.
+
+**Validation scope/exclusions:** only the household component/styles, their
+unit/e2e tests, Firefox cleanup and the related architecture/implementation
+record changed. Rust source, Cargo manifests/lockfile, schemas, financial
+fixtures, references and goldens are unchanged. Native Rust tests, CLI fixture
+sweeps, Rust lint/format, WASM numeric parity and Rust license checks were not
+rerun because these changes cannot affect them. Fresh-clone web builds compiled
+the unchanged release WASM module. Earlier cumulative results remain historical
+observations. M1, L1 and L2 remain resolved; no separate validation artifact was
+added. Independent browser review remains with a different reviewer. No main
+mutation, push or hook bypass was performed.
