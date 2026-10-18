@@ -46,8 +46,8 @@ wasm-bindgen-test-runner --version
 ```
 
 Expected versions are `v24.22.0` and `wasm-bindgen-test-runner 0.2.129`.
-The runner version must equal `wasm-bindgen` in Cargo.lock. Node is test-only;
-there is no TypeScript adapter or new top-level tool configuration.
+The runner version must equal `wasm-bindgen` in Cargo.lock. Node also builds and tests the self-contained web adapter in `apps/web/`;
+there is no new top-level tool configuration.
 
 Run the full cumulative 0001-W1–W4 and 0003-W1 validation sequence in order from the workspace root:
 
@@ -112,3 +112,61 @@ After any change, include exactly one line near the end of your final response:
 `Recommended commit message: type(scope): imperative summary`
 
 Use Conventional Commits with a concise imperative subject, ideally under 72 characters. Types: feat, fix, refactor, docs, test, perf, build, ci, chore.
+
+
+## Web shell validation — 0002-W1 v2
+
+Use Node.js 24.22.0 and corepack 0.36.0 (bundled with this Node installation).
+Invoke pnpm through corepack; `apps/web/package.json` selects pnpm 12.9.1.
+No global pnpm install or top-level JavaScript configuration is needed. First
+run the entire Rust sequence above unchanged, expanding every placeholder over
+the fixtures/reference cases in both linked guides. Then, from the workspace root:
+
+```sh
+cargo test -p horizon-wasm
+cargo build -p horizon-wasm --target wasm32-unknown-unknown --release
+```
+
+Continue from `apps/web/`, in this order (including on a fresh clone):
+
+```sh
+export PATH="$HOME/.nvm/versions/node/v24.22.0/bin:$PATH"
+node --version
+corepack --version
+corepack pnpm --version
+corepack pnpm install --frozen-lockfile
+corepack pnpm run build:engine
+corepack pnpm run types
+corepack pnpm run typecheck
+corepack pnpm run lint
+corepack pnpm run format:check
+corepack pnpm test
+corepack pnpm run build
+corepack pnpm exec playwright install chromium firefox webkit
+corepack pnpm run e2e
+corepack pnpm run licenses
+```
+
+Expected versions: Node v24.22.0, corepack 0.36.0, pnpm 12.9.1. Playwright
+1.63.0 installs its matched Chromium, Firefox and WebKit binaries. Record actual
+browser versions from the e2e browser-version annotations; installing binaries
+alone does not prove they ran. Browser launches require an environment that
+permits their OS processes. The e2e suite serves the production build locally
+and checks 12 browser/size/theme projects, with every sample in every project.
+
+The license command checks the production and full dependency closures separately.
+Production keeps the strict allow-list and named font exception. Only exact
+build/test package-version-license exceptions in decision 0011's 2026-10-18
+amendment apply to the full closure. Any other license fails with its package,
+version and license. See [the inventory](docs/model/dependencies.md#web-shell--0002-w1-v2).
+
+For the 0002-W1 v2 implementer run, skip Playwright installation and e2e under
+the sandbox constraint. End-to-end validation is **not run by the implementer;
+run by the reviewer** outside the sandbox, using the documented commands above.
+Record the reviewer's actual browser versions with that run.
+
+For local use after installation, run `corepack pnpm run dev` from `apps/web/`
+and open http://127.0.0.1:5173. It watches static builds; reload after a rebuild.
+This preserves the exact CSP without inline development HMR scripts/styles.
+Restart after engine/schema changes. Architecture, protocol, tokens, security
+and test details are in [web-shell.md](docs/architecture/web-shell.md).

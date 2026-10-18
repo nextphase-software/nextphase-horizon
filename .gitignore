@@ -23,3 +23,11 @@ coverage/
 
 # Rust build output
 target/
+
+# Web shell generated bindings, types, and browser evidence
+apps/web/src/generated/
+apps/web/test-results/
+apps/web/playwright-report/
+
+# pnpm local store fallback
+.pnpm-store/

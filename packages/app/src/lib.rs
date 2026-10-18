@@ -135,3 +135,6 @@ pub use export::{export, import};
 
 pub mod answers;
 pub use answers::{input_impact, levers, sustainable_spending};
+
+/// JSON transport helpers shared by thin adapters.
+pub mod json;
