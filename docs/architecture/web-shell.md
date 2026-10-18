@@ -28,8 +28,9 @@ imports/initializes WebAssembly. `protocol.ts` defines the discriminated request
 union `{id, op, args}` and reply `{id, json}`. Argument tuples are specific to
 each operation. The client correlates replies by ID, preserving canonical bytes.
 Worker initialization failure rejects requests and shows Calculation unavailable;
-no figures are presented as a successful result. Selection changes clear the
-previous answer, announce loading and ignore late replies from older selections.
+no figures are presented as a successful result. Start caches its sample status
+replies; edited checks clear their previous answer, announce loading and ignore
+late replies after navigation or newer edits.
 
 ## Page and tokens
 
@@ -125,3 +126,49 @@ the other environment variables and deletes that directory after the browser
 fixture shuts down. Cleanup retries transient directory-removal failures up to
 10 times with a 200 ms retry delay to allow late Firefox writes to finish. The setting is never applied to Chromium, WebKit or other
 platforms and never changes the host process's environment.
+
+## Start and guided setup — 0002-W2 v1
+
+Start now calls `sustainable_spending` once for each of the five samples and
+uses those replies for the introduction, radio-card statuses, flags and selected
+omissions. Question and Household are active step-bar controls; the other four
+steps are text marked Not available yet. The claiming-age question and the
+couple's Continue control are disabled with their reasons.
+
+The selected sample opens About you, Income, Accounts, Spending, Assumptions
+and Review your answers. `setup.ts` describes each field with its input path;
+assumptions are keyed by identifier in the in-memory draft and restored to the
+original array shape for the worker. The draft retains raw entry strings,
+rough paths, wage-date linkage and account additions. Changing households after
+editing requires confirmation; Back preserves the draft and Start choices.
+Account type changes clear incompatible fields and rough marks. New cash
+accounts use the first free `account-N` identifier and the sample person's owner.
+Withdrawal order and all unexposed sample values are preserved.
+
+`entry.ts` parses dollar and whole-number entries with BigInt and shifts percent
+decimals with strings. JSON serialization preserves exact integer tokens even
+beyond JavaScript's safe integer range, leaving their meaning to the engine.
+Only entry syntax blocks step navigation. The retirement-linked wage end date
+tracks the current retirement answer, including dates the engine will reject.
+Check sends the edited fixture to `sustainable_spending`; successful figures and
+omissions use the existing answer view. Error envelopes show their status and
+message without result figures, alongside the review's Edit links. An obsolete
+or unmounted check cannot replace a newer result. No financial rule, persistence,
+worker operation, CSP change or dependency is added.
+
+The browser harness checks every sample's Start card and unchanged run bytes,
+all six setup steps, the edited-working reference result, the linked-date error,
+all four supported sample result views, cancellation/confirmation and reload.
+It uses keyboard traversal for the complete working-sample edit/check path,
+runs axe and overflow checks on every captured screen, and retains the existing
+privacy, theme and CSP checks. All 12 browser/size/theme projects capture full
+page screenshots and attach them to the HTML report. `HORIZON_EVIDENCE_DIR`
+optionally directs screenshots, HTML and JSON reports outside the repository;
+without it the existing ignored output directories are used.
+
+The six committed design HTML/PNG references and their README already satisfy
+the reference deliverable. Only Start and Setup are implemented. Brief-required
+controls, basis labels, rough checkboxes, plan-kind fields and unavailable-step
+labels extend the illustrative drawings. Setup's opening sentence describes the
+editing task; it does not invent an engine answer before Check. Later input
+check, plan, comparison, export, printed summaries and charts remain excluded.

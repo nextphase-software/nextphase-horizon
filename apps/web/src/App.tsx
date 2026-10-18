@@ -1,34 +1,66 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-import { useEffect, useState } from "react";
-import type { SustainableSpending } from "./generated/types/sustainable-spending.v1";
+import { useEffect, useRef, useState } from "react";
 import { engine } from "./engine";
 import { samples } from "./fixtures";
-import { flagWords, formatDollars, statusWord } from "./format";
-type Failure = {
-  status: "invalid" | "unsupported";
-  code: string;
-  message: string;
-};
-type Result = SustainableSpending | Failure;
+import { flagWords, statusWord } from "./format";
+import type { Result } from "./Answer";
+import { Setup } from "./GuidedSetup";
+import { createDraft, type Draft } from "./setup";
+export { Answer } from "./Answer";
+export function Status({ result }: { result: Result }) {
+  return (
+    <span
+      className={`status ${result.status === "invalid" ? "unsupported" : result.status}`}
+    >
+      <span aria-hidden="true">
+        {result.status === "complete"
+          ? "✓"
+          : result.status === "partial"
+            ? "△"
+            : "!"}
+      </span>{" "}
+      {statusWord(
+        result.status,
+        "run" in result ? result.run.omissions.length : 0,
+      )}
+    </span>
+  );
+}
+function SampleNote({ result }: { result: Result }) {
+  return "code" in result ? (
+    <small>{result.message}</small>
+  ) : result.flag ? (
+    <small>{flagWords(result.flag)}</small>
+  ) : null;
+}
 export function App() {
   const [selected, setSelected] = useState(samples[0].name);
-  const [answer, setAnswer] = useState<Result | null>(null);
+  const [question, setQuestion] = useState("retire");
+  const [results, setResults] = useState<Record<string, Result>>({});
   const [failure, setFailure] = useState<string | null>(null);
+  const [draft, setDraft] = useState<Draft | null>(null);
+  const [inSetup, setInSetup] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark" | null>(null);
+  const questionRef = useRef<HTMLInputElement>(null);
+  const householdRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (theme) document.documentElement.dataset.theme = theme;
   }, [theme]);
   useEffect(() => {
     let active = true;
-    const sample = samples.find((sample) => sample.name === selected)!;
-    // A new worker request must clear its previous result, including errors.
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- Loading starts with this external request.
-    setAnswer(null);
-    setFailure(null);
-    engine
-      .call("sustainable_spending", sample.json)
-      .then((json) => {
-        if (active) setAnswer(JSON.parse(json) as Result);
+    Promise.all(
+      samples.map(
+        async (sample) =>
+          [
+            sample.name,
+            JSON.parse(
+              await engine.call("sustainable_spending", sample.json),
+            ) as Result,
+          ] as const,
+      ),
+    )
+      .then((entries) => {
+        if (active) setResults(Object.fromEntries(entries));
       })
       .catch((error: Error) => {
         if (active) setFailure(error.message);
@@ -36,117 +68,234 @@ export function App() {
     return () => {
       active = false;
     };
-  }, [selected]);
+  }, []);
   function toggleTheme() {
     const current =
       theme ??
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     setTheme(current === "dark" ? "light" : "dark");
   }
+  function chooseHousehold(name: string) {
+    if (name === selected) return;
+    if (
+      draft?.dirty &&
+      !window.confirm(
+        "Choosing a different household will discard your edited answers, added accounts and Rough marks. Continue?",
+      )
+    )
+      return;
+    setSelected(name);
+    setDraft(null);
+  }
+  function openStart(part: "question" | "household") {
+    setInSetup(false);
+    // Focus after React has restored the Start screen.
+    requestAnimationFrame(() =>
+      (part === "question" ? questionRef : householdRef).current?.focus(),
+    );
+  }
+  const sample = samples.find((sample) => sample.name === selected)!;
+  const result = results[selected];
+  const allResults = Object.values(results);
   return (
     <>
       <header>
-        <strong>NextPhase Horizon</strong>
+        <strong className="brand">
+          <span className="brand-mark" aria-hidden="true">
+            ☰
+          </span>
+          <span>
+            Horizon<small>NextPhase</small>
+          </span>
+        </strong>
+        <nav aria-label="Planning steps">
+          <ol className="planning-steps">
+            <li aria-current={!inSetup ? "step" : undefined}>
+              <button onClick={() => openStart("question")}>
+                <span aria-hidden="true">1</span> Question
+              </button>
+            </li>
+            <li aria-current={inSetup ? "step" : undefined}>
+              <button onClick={() => openStart("household")}>
+                <span aria-hidden="true">2</span> Household
+              </button>
+            </li>
+            {["Check", "Plan", "Compare", "Export"].map((step, i) => (
+              <li key={step}>
+                <span>
+                  {i + 3} {step}
+                  <small>Not available yet</small>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </nav>
         <button onClick={toggleTheme}>Toggle theme</button>
       </header>
       <main>
-        <h1>Explore a sample household</h1>
-        <p className="sample">
-          <span aria-hidden="true">◇</span> Sample household — invented data
-        </p>
-        <fieldset className="households">
-          <legend>Sample household</legend>
-          {samples.map((sample) => (
-            <label key={sample.name}>
-              <input
-                type="radio"
-                name="household"
-                value={sample.name}
-                checked={selected === sample.name}
-                onChange={(event) => setSelected(event.target.value)}
-              />
-              <span>{sample.label}</span>
-            </label>
-          ))}
-        </fieldset>
-        <div aria-live="polite" aria-atomic="true">
-          {failure ? (
-            <section>
-              <h2>Calculation unavailable</h2>
-              <p>{failure}</p>
-            </section>
-          ) : answer ? (
-            <Answer answer={answer} />
-          ) : (
-            <p role="status">Calculating sample household…</p>
-          )}
-        </div>
+        {inSetup && draft ? (
+          <Setup
+            sample={sample}
+            draft={draft}
+            setDraft={setDraft}
+            backToStart={() => openStart("household")}
+          />
+        ) : (
+          <>
+            <h1>What would you like to find out?</h1>
+            <div aria-live="polite">
+              {failure ? (
+                <section>
+                  <h2>Calculation unavailable</h2>
+                  <p>{failure}</p>
+                </section>
+              ) : allResults.length === samples.length ? (
+                <p className="lede" data-testid="intro">
+                  The engine gives a full result for{" "}
+                  {
+                    allResults.filter((result) => result.status === "complete")
+                      .length
+                  }{" "}
+                  of these {samples.length} sample households, a partial one for{" "}
+                  {
+                    allResults.filter((result) => result.status === "partial")
+                      .length
+                  }
+                  , and none for{" "}
+                  {allResults.filter((result) => "code" in result).length}.{" "}
+                  {allResults
+                    .filter((result) => "code" in result)
+                    .map((result) => ("code" in result ? result.message : ""))
+                    .join(" ")}
+                </p>
+              ) : (
+                <p role="status">Calculating sample households…</p>
+              )}
+            </div>
+            <p className="sample">
+              <span aria-hidden="true">◇</span> Sample household — invented data
+            </p>
+            <div className="start-grid">
+              <fieldset className="card choices">
+                <legend>Your question</legend>
+                {[
+                  {
+                    id: "retire",
+                    label: "Can I afford to retire when I want to?",
+                  },
+                  { id: "spend", label: "How much can I spend each year?" },
+                  {
+                    id: "claim",
+                    label: "When should I claim Social Security?",
+                  },
+                ].map((item, i) => (
+                  <label className="choice" key={item.id}>
+                    <input
+                      ref={question === item.id ? questionRef : undefined}
+                      type="radio"
+                      name="question"
+                      value={item.id}
+                      checked={question === item.id}
+                      disabled={i === 2}
+                      onChange={() => setQuestion(item.id)}
+                      aria-label={item.label}
+                    />
+                    <span>
+                      <strong>{item.label}</strong>
+                      {i === 2 && (
+                        <small>Claiming-age rules are not modelled.</small>
+                      )}
+                    </span>
+                    {i === 2 ? (
+                      <span className="muted">Not available yet</span>
+                    ) : (
+                      <span className="status complete">
+                        <span aria-hidden="true">✓</span> Supported
+                      </span>
+                    )}
+                  </label>
+                ))}
+              </fieldset>
+              <fieldset className="card choices">
+                <legend>Start from a sample household</legend>
+                {samples.map((item) => (
+                  <label className="choice" key={item.name}>
+                    <input
+                      ref={selected === item.name ? householdRef : undefined}
+                      type="radio"
+                      name="household"
+                      value={item.name}
+                      checked={selected === item.name}
+                      onChange={() => chooseHousehold(item.name)}
+                      aria-label={item.label}
+                    />
+                    <span>
+                      <strong>{item.label}</strong>
+                      {results[item.name] && (
+                        <SampleNote result={results[item.name]} />
+                      )}
+                    </span>
+                    {results[item.name] && (
+                      <Status result={results[item.name]} />
+                    )}
+                  </label>
+                ))}
+              </fieldset>
+            </div>
+            <details className="card">
+              <summary>What the statuses mean</summary>
+              <p>
+                ✓ Supported: a full result within the engine's declared
+                coverage.
+              </p>
+              <p>△ Partial: a result with the named omissions.</p>
+              <p>! Unsupported: no result is produced.</p>
+            </details>
+            <details className="card">
+              <summary>What the selected household's result leaves out</summary>
+              {result ? (
+                "run" in result ? (
+                  result.run.omissions.length ? (
+                    <ul>
+                      {result.run.omissions.map((omission) => (
+                        <li key={omission}>{omission}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No omissions reported.</p>
+                  )
+                ) : (
+                  <p>{result.message}</p>
+                )
+              ) : (
+                <p>Waiting for the engine.</p>
+              )}
+            </details>
+            <div className="actions">
+              <button
+                className="primary"
+                disabled={!result || "code" in result || !!failure}
+                onClick={() => {
+                  if (!draft) setDraft(createDraft(sample.json));
+                  setInSetup(true);
+                }}
+              >
+                Continue
+              </button>
+              <p className="help">
+                Setup goes step by step and ends with a review of every answer.
+              </p>
+            </div>
+            {result && "code" in result && (
+              <p role="status">Horizon plans for one person only.</p>
+            )}
+          </>
+        )}
       </main>
+      <footer>
+        Your answers stay in this page only. Reload or close it and they're
+        gone.
+      </footer>
     </>
-  );
-}
-export function Answer({ answer }: { answer: Result }) {
-  if ("code" in answer)
-    return (
-      <section>
-        <h2 className="status unsupported">
-          <span aria-hidden="true">!</span> {statusWord(answer.status)}
-        </h2>
-        <p>{answer.message}</p>
-      </section>
-    );
-  const omissions = answer.run.omissions;
-  return (
-    <section>
-      <h2 className={`status ${answer.status}`}>
-        <span aria-hidden="true">
-          {answer.status === "complete" ? "✓" : "△"}
-        </span>{" "}
-        {statusWord(answer.status, omissions.length)}
-      </h2>
-      <dl>
-        <Figure
-          label="Most you can spend in retirement"
-          amount={answer.sustainable_spending}
-          testId="spending"
-        />
-        <Figure
-          label="Entered after-retirement spending"
-          amount={answer.entered}
-          testId="entered"
-        />
-        <Figure label="Headroom" amount={answer.headroom} testId="headroom" />
-      </dl>
-      {answer.flag && <p className="flag">{flagWords(answer.flag)}</p>}
-      <h3>What this result does not include</h3>
-      {omissions.length ? (
-        <ul>
-          {omissions.map((omission) => (
-            <li key={omission}>{omission}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No omissions reported.</p>
-      )}
-    </section>
-  );
-}
-function Figure({
-  label,
-  amount,
-  testId,
-}: {
-  label: string;
-  amount: number;
-  testId: string;
-}) {
-  return (
-    <div className="figure">
-      <dt>
-        {label}
-        <small>today's dollars, per year</small>
-      </dt>
-      <dd data-testid={testId}>{formatDollars(amount)}</dd>
-    </div>
   );
 }
