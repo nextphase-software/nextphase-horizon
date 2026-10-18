@@ -40,6 +40,9 @@ cargo test -p horizon-engine tax
 cargo test -p horizon-app --test reference_values_w3
 cargo test -p horizon-app --test reference_values_w2
 cargo test -p horizon-app --test reference_values
+cargo test -p horizon-engine ledger
+cargo test -p horizon-engine money
+cargo test -p horizon-app validation
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
 cargo fmt --all --check
@@ -48,7 +51,6 @@ cargo build --workspace --release
 cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown
 cargo deny check licenses
 cargo run -p horizon-cli -- dev-run <name>
-cargo test -p horizon-engine ledger
 ```
 
 For the last command, replace `<name>` with each fixture name in
