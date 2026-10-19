@@ -1,4 +1,4 @@
-BRIEF VERSION: 0004-W1 v1 (2026-10-18)
+BRIEF VERSION: 0004-W1 v1.1 (2026-10-19)
 
 # 0004-W1 — Try a change and compare
 
@@ -33,6 +33,7 @@ This milestone builds reference screen 5 (`docs/briefs/assets/design-v1/05-compa
    - for each copy: `scenario(baseline, changes)`, then `compare(baseline, copy)` and `sustainable_spending(copy)`;
    - for the baseline: `sustainable_spending(baseline)` and `levers(baseline)` (results may be reused from the plan screen for the same serialized input).
    - Each section shows "Calculating…" until its data arrives. An error envelope from any call shows its status word and message with no figures, plus "Back to plan".
+   - An error in one copy's calls replaces only that copy's comparison. The tabs stay, so the other copies remain reachable.
 5. **Display rules** (as 0003-W2):
    - **Amounts:** cents become whole dollars rounded half away from zero, for display only; the minus sign is "−".
    - **No new numbers:** no figure is computed by the interface. A difference is shown only where the engine supplies it (deliverable 6.7).
@@ -45,7 +46,7 @@ This milestone builds reference screen 5 (`docs/briefs/assets/design-v1/05-compa
       - both last: "<Subject>: savings still last to <end>."
       - both short at the same age A: "<Subject>: savings still run short at <A>."
       - both short at different ages: "<Subject>: savings run short at <A'> instead of <A>."
-   3. **Tabs:** "Baseline · retire at <age>" (or "Baseline · retired" when the retirement date is on or before the valuation date), then one tab per copy by name, then "+ New copy". The selected copy's tab is marked current (`aria-current` or `aria-selected`). "+ New copy" opens the panel of deliverable 1 and is disabled with "(no more changes to try)" when every lever has a copy.
+   3. **Tabs:** "Baseline · retire at <age>" (or "Baseline · retired" when the retirement date is on or before the valuation date, or just "Baseline" when no projected year contains the retirement date, as the plan screen's eyebrow omits the age), then one tab per copy by name, then "+ New copy". The selected copy's tab is marked current (`aria-current` or `aria-selected`). "+ New copy" opens the panel of deliverable 1 and is disabled with "(no more changes to try)" when every lever has a copy.
    4. **Status bar:**
       - each plan's status chip with the app's status word (`Supported`, `Partial (<n> omissions)`, `Unsupported`);
       - the sentence "Both results are <word> and leave out the same things." when both runs have the same status and the same omissions; otherwise "The baseline is <word>; the copy is <word>.";
@@ -129,7 +130,8 @@ This milestone builds reference screen 5 (`docs/briefs/assets/design-v1/05-compa
    - one copy per lever; a lever with a copy is disabled in the panel; "+ New copy" is disabled when every lever has one;
    - the baseline's run is unchanged after copies are made (its outputs are byte-identical before and after);
    - changing any entry in the setup removes the copies and shows the removal message;
-   - an engine error shows its status word and message, no figures, and "Back to plan".
+   - an engine error shows its status word and message, no figures, and "Back to plan"; when one copy's calls fail, the tabs stay and another copy can still be opened;
+   - with the working sample's plan end age changed to 65 in the setup, the baseline tab reads "Baseline" and the "Retire at 65" copy can be made and compared.
 5. **Keyboard and screen readers:** the panel, tabs, sections and switches are operable by keyboard; focus moves to the comparison headline after "Make the copy"; the chart is `aria-hidden` with its table reachable; keyboard steps in the end-to-end tests reach their targets whether focus moves forward or backward.
 6. **Accessibility and privacy:** axe reports no violations; no horizontal page scroll at 375 px (tables scroll inside their containers); nothing stored or requested off-origin. This holds in three browsers, both sizes and both themes, with every section open, and the suite passes on Linux and on macOS.
 7. **Earlier guarantees:** Rust validation and licences unchanged; no new dependency, schema, golden or engine change; no new top-level entry.
