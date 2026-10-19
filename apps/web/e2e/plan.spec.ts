@@ -163,7 +163,7 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
     await expect(
       planning.getByRole("button", { name: "Plan", exact: true }),
     ).toBeEnabled();
-    await expect(planning.getByText("Not available yet")).toHaveCount(2);
+    await expect(planning.getByText("Not available yet")).toHaveCount(1);
     await activate(
       page.getByRole("button", { name: "Continue to the input check" }),
     );

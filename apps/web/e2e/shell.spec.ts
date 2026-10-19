@@ -189,8 +189,8 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
   await page.keyboard.press("ArrowUp");
   await expect(questions.getByRole("radio").first()).toBeChecked();
   const planning = page.getByRole("navigation", { name: "Planning steps" });
-  await expect(planning.getByRole("button")).toHaveCount(2);
-  await expect(planning.getByText("Not available yet")).toHaveCount(4);
+  await expect(planning.getByRole("button")).toHaveCount(3);
+  await expect(planning.getByText("Not available yet")).toHaveCount(3);
   await expect(planning.getByRole("link")).toHaveCount(0);
   const households = page.getByRole("group", {
     name: "Start from a sample household",
@@ -564,7 +564,7 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
   await expect(
     planning.getByRole("button", { name: "Check", exact: true }),
   ).toBeVisible();
-  await expect(planning.getByText("Not available yet")).toHaveCount(2);
+  await expect(planning.getByText("Not available yet")).toHaveCount(1);
   await evidence("17-review-three-rough");
   await activate(
     page.getByRole("button", { name: "Continue to the input check" }),
