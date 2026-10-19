@@ -10,4 +10,6 @@ Everything here exists so that someone can understand, build, run, verify or mod
 | `model/` | Calculation model specification, assumptions, limitations, rule sources and reference test vectors | With each calculation |
 | `guides/` | Self-hosting and user documentation | When there is something to run |
 
+[STATUS.md](STATUS.md) lists what works today and what is being built now. It is generated; do not edit it by hand.
+
 Documents describe what exists.

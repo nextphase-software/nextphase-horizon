@@ -2,7 +2,7 @@
 
 Open-source, web-first financial planning software for individuals planning their own retirement. The first supported jurisdiction is the United States.
 
-**Status (2026-10-18):** the supported Rust command line runs synthetic yearly ledgers with single-filer federal tax, compares scenarios, and exports/imports versioned results. It also computes sustainable spending, ranked levers and rough-input impact, with balances and shortfalls in today's dollars. Native and WebAssembly outputs are proven identical. Supported retired scenarios report complete; omissions and partial flags remain explicit. The static web shell loads the engine in a Web Worker and displays results for five synthetic sample households. No database or deployment exists.
+**Status:** see [Project status](docs/STATUS.md) for what works today and what is being built now.
 
 **License:** GNU Affero General Public License, version 3 only (`AGPL-3.0-only`). See [LICENSE](LICENSE). If you run a modified version as a network service, the license requires you to offer its source to the people who use it.
 
