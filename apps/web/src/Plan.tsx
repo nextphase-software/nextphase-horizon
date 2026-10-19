@@ -11,7 +11,7 @@ import type { SustainableSpending } from "./generated/types/sustainable-spending
 import type { Levers } from "./generated/types/levers.v1";
 import type { Failure } from "./Answer";
 import { usePlanResults, type PlanCache } from "./plan-results";
-import { answerOne, answerTwo, answerThree } from "./plan-answers";
+import { answerOne, answerTwo, answerThree, outsidePlan } from "./plan-answers";
 import { formatDollars, statusWord } from "./format";
 import { percentEntry } from "./entry";
 import { serializeDraft, type Draft } from "./setup";
@@ -478,7 +478,7 @@ function PlanResult({
       <div className="card plan-answers">
         <div>
           <h2>
-            {isRetired
+            {isRetired || (run && outsidePlan(run, retirementDate))
               ? "Do your savings last?"
               : retirement
                 ? `Can you retire at ${retirement.age_on_december_31}?`
@@ -497,17 +497,17 @@ function PlanResult({
           <h2>What can you spend?</h2>
           {spending && run ? (
             <p>
-              {!spending.flag ? (
+              {!spending.flag && !outsidePlan(run, retirementDate) ? (
                 <>
                   <strong className="answer-amount">
                     {formatDollars(spending.sustainable_spending)}
                   </strong>
-                  {answerTwo(run, spending).slice(
+                  {answerTwo(run, spending, retirementDate).slice(
                     formatDollars(spending.sustainable_spending).length,
                   )}
                 </>
               ) : (
-                answerTwo(run, spending)
+                answerTwo(run, spending, retirementDate)
               )}
             </p>
           ) : (

@@ -8,7 +8,7 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { Export, exportStory, fileSize, importCheck } from "./Export";
+import { Export, exportStory, fileSize, summaryStatus } from "./Export";
 import { App } from "./App";
 import { createDraft, serializeDraft, changeEntry } from "./setup";
 import { Plan } from "./Plan";
@@ -169,11 +169,11 @@ it("shows loading without old results and ignores replies after unmount", async 
   expect(URL.createObjectURL).not.toHaveBeenCalled();
 });
 it.each([
-  "EXPORT_FORMAT_UNSUPPORTED",
-  "EXPORT_HASH_MISMATCH",
-  "EXPORT_MODEL_VERSION_UNSUPPORTED",
-  "EXPORT_RESULT_MISMATCH",
-])("keeps the household and screen on %s", async (code) => {
+  ["EXPORT_FORMAT_UNSUPPORTED", "the file format"],
+  ["EXPORT_HASH_MISMATCH", "the fingerprint"],
+  ["EXPORT_MODEL_VERSION_UNSUPPORTED", "the engine version"],
+  ["EXPORT_RESULT_MISMATCH", "the rerun"],
+])("keeps the household and screen on %s", async (code, check) => {
   stub();
   const opened = vi.fn();
   render(
@@ -197,7 +197,7 @@ it.each([
     target: { files: [{ text: async () => read(samples[0].name, "export") }] },
   });
   await screen.findByText(
-    `This file did not pass the check of ${importCheck(code)}, so Horizon did not open it.`,
+    `This file did not pass the check of ${check}, so Horizon did not open it.`,
   );
   expect(opened).not.toHaveBeenCalled();
   expect(engine.call).toHaveBeenCalledWith(
@@ -219,7 +219,11 @@ it("rejects non-JSON before calling the worker", async () => {
   fireEvent.change(screen.getByLabelText("Choose a plan file"), {
     target: { files: [{ text: async () => "not JSON" }] },
   });
+  await screen.findByText(
+    "This file did not pass the check of the file format, so Horizon did not open it.",
+  );
   await screen.findByText("The file is not valid JSON.");
+  expect(document.querySelector('[role="alert"] [role="alert"]')).toBeNull();
   expect(engine.call).not.toHaveBeenCalled();
 });
 it("opens the exact imported input, clears copies/rough marks and permits setup and export", async () => {
@@ -280,4 +284,10 @@ it("preserves unedited cents in opened files even after another field is edited"
   );
   expect(changed.household.accounts).toEqual(input.household.accounts);
   expect(changed.household.spending).toEqual(input.household.spending);
+});
+
+it("states that a supported summary has no omissions", () => {
+  expect(summaryStatus({ ...run, status: "complete", omissions: [] })).toBe(
+    "Supported. No omissions are listed.",
+  );
 });

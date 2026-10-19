@@ -2,7 +2,7 @@
 import type { Run } from "./generated/types/run-output.v2";
 import type { SustainableSpending } from "./generated/types/sustainable-spending.v1";
 import type { Levers } from "./generated/types/levers.v1";
-import { endAge, firstShortfall } from "./plan-display";
+import { endAge, firstShortfall, yearAtDate } from "./plan-display";
 import { wholeDollars } from "./compare-display";
 export function answerOne(
   run: Run,
@@ -11,11 +11,25 @@ export function answerOne(
 ) {
   const short = firstShortfall(run);
   const retired = retirementDate <= run.valuation_date;
+  if (outsidePlan(run, retirementDate))
+    return short
+      ? `Retirement falls after the plan ends: savings run short at age ${short.age_on_december_31} (${short.year}).`
+      : `Retirement falls after the plan ends: savings last to ${endAge(run)}.`;
+  if (!retired && short && short.year < Number(retirementDate.slice(0, 4)))
+    return `No: savings run short at age ${short.age_on_december_31} (${short.year}), before you retire.`;
   return short
     ? `${retired ? "No: at" : "Not at"} ${wholeDollars(spending.entered)} a year${retired ? "," : ":"} savings run short at age ${short.age_on_december_31} (${short.year}).`
     : `Yes: at ${wholeDollars(spending.entered)} a year, savings last to ${endAge(run)}.`;
 }
-export function answerTwo(run: Run, spending: SustainableSpending) {
+export const outsidePlan = (run: Run, retirementDate: string) =>
+  retirementDate > run.valuation_date && !yearAtDate(run, retirementDate);
+export function answerTwo(
+  run: Run,
+  spending: SustainableSpending,
+  retirementDate: string,
+) {
+  if (outsidePlan(run, retirementDate))
+    return "Retirement falls after the plan ends, so the plan has no retirement spending to test.";
   if (spending.flag === "shortfall_with_no_retirement_spending")
     return "Savings run short even with no retirement spending.";
   if (spending.flag === "at_or_above_cap")

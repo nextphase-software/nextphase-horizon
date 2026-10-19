@@ -5,7 +5,6 @@ import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { test } from "./fixtures";
 import { keyboardTo } from "./keyboard";
-import type { Run } from "../src/generated/types/run-output.v2";
 import type { Request, Response } from "../src/protocol";
 const root = new URL("../../../", import.meta.url);
 function native(...args: string[]) {
@@ -238,7 +237,14 @@ test("export: keyboard download/import, exact references, rough entries, copies,
   await expect(page.locator(".export-actions, .plan-detail")).toHaveCount(0);
   await capture("export-no-household");
   await open("not JSON");
+  await expect(
+    page.getByText(
+      "This file did not pass the check of the file format, so Horizon did not open it.",
+      { exact: true },
+    ),
+  ).toBeVisible();
   await expect(page.getByText("The file is not valid JSON.")).toBeVisible();
+  await expect(page.locator('[role="alert"] [role="alert"]')).toHaveCount(0);
   expect((await probe()).requests.some((r) => r.op === "import_run")).toBe(
     false,
   );
@@ -261,6 +267,15 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     );
     await expect(page.locator(".eyebrow")).toHaveText(
       `EXPORT · ${label.toUpperCase()} · VALUES AS OF 2026-01-01`,
+    );
+    await expect(page.locator("h1")).toHaveText("Take your plan with you");
+    await expect(
+      page.getByRole("link", { name: "Download plan file" }),
+    ).toHaveCSS(
+      "background-color",
+      await page
+        .getByRole("button", { name: "Print or save as PDF" })
+        .evaluate((element) => getComputedStyle(element).backgroundColor),
     );
     await expect(page.locator(".export-story")).toHaveText(story);
     await expect(page.locator(".export-screen .status")).toHaveText(
@@ -299,6 +314,9 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     if (!index) {
       original = nativeText;
       const summary = page.locator(".plan-detail .plan-summary");
+      await expect(summary.locator(":scope > .help").first()).toHaveText(
+        "Sample household · Single, 61, still working, plans to retire at 66 · values as of 2026-01-01 · horizon-engine-0.4.0",
+      );
       for (const text of [
         "Not at $67,000 a year: savings run short at age 93 (2058).",
         "$64,994 a year in today's dollars lasts to 95: $2,006 less than you plan to spend.",
@@ -311,27 +329,66 @@ test("export: keyboard download/import, exact references, rough entries, copies,
         "8cb745ed60a6ef924b261ed7cf7d43a65740d52fbc74caf0305bb9acb1843128",
       );
     }
+    if (index === 3) {
+      const summary = page.locator(".plan-detail .plan-summary");
+      await expect(summary.locator(":scope > p").nth(1)).toHaveText(
+        "No: savings run short at age 61 (2026), before you retire.",
+      );
+      await expect(summary.locator(":scope > p").nth(2)).toHaveText(
+        "Savings run short even with no retirement spending.",
+      );
+    }
     await capture(`export-${name}-expanded`);
   }
-  // The retirement-outside-projection branch is edited through the real setup.
-  await setup();
-  await activate(page.getByRole("button", { name: "Back to household" }));
-  await activate(
-    page.getByRole("link", { name: "Edit About you", exact: true }),
-  );
-  const end = page.getByRole("textbox", { name: "Plan to age", exact: true });
-  await keyboardTo(page, end, traversal);
-  await page.keyboard.press("ControlOrMeta+A");
-  await page.keyboard.type("65");
-  await activate(planning.getByRole("button", { name: "Export", exact: true }));
-  await expect(page.locator(".export-story")).toHaveText(
-    "Savings last to 65; retirement falls after the plan ends.",
-  );
-  await activate(page.locator(".plan-detail").nth(1).locator("summary"));
-  await expect(page.locator(".file-details")).toContainText(
-    "0.10 MB (95,758 bytes)",
-  );
-  await capture("export-retirement-after-plan");
+  // Edit both outside-plan cases through setup; assert the shared answers on both screens.
+  for (const index of [0, 3]) {
+    await setup(index);
+    await activate(page.getByRole("button", { name: "Back to household" }));
+    await activate(
+      page.getByRole("link", { name: "Edit About you", exact: true }),
+    );
+    const end = page.getByRole("textbox", { name: "Plan to age", exact: true });
+    await keyboardTo(page, end, traversal);
+    await page.keyboard.press("ControlOrMeta+A");
+    await page.keyboard.type("65");
+    await activate(planning.getByRole("button", { name: "Plan", exact: true }));
+    await expect(page.locator(".plan-answers h2").first()).toHaveText(
+      "Do your savings last?",
+    );
+    const answers = [
+      index === 0
+        ? "Retirement falls after the plan ends: savings last to 65."
+        : "Retirement falls after the plan ends: savings run short at age 61 (2026).",
+      "Retirement falls after the plan ends, so the plan has no retirement spending to test.",
+    ];
+    await expect(page.locator(".plan-answers > div > p").nth(0)).toHaveText(
+      answers[0],
+    );
+    await expect(page.locator(".plan-answers > div > p").nth(1)).toHaveText(
+      answers[1],
+    );
+    await capture(`plan-retirement-after-plan-${cases[index][0]}`);
+    await exportFromPlan();
+    await expect(page.locator(".export-story")).toHaveText(
+      index === 0
+        ? "Savings last to 65; retirement falls after the plan ends."
+        : "Savings run short at 61; retirement falls after the plan ends.",
+    );
+    await expect(page.locator(".export-screen .status")).toHaveText(
+      "△ Partial (5 omissions)",
+    );
+    await activate(page.locator(".plan-detail").first().locator("summary"));
+    const summary = page.locator(".plan-detail .plan-summary");
+    await expect(summary.locator(":scope > p").nth(1)).toHaveText(answers[0]);
+    await expect(summary.locator(":scope > p").nth(2)).toHaveText(answers[1]);
+    if (index === 0) {
+      await activate(page.locator(".plan-detail").nth(1).locator("summary"));
+      await expect(page.locator(".file-details")).toContainText(
+        "0.10 MB (95,758 bytes)",
+      );
+    }
+    await capture(`export-retirement-after-plan-${cases[index][0]}`);
+  }
   // All six copies and the three reference marks are included only in the summary.
   await setup(0, true);
   const changes = [
@@ -385,39 +442,18 @@ test("export: keyboard download/import, exact references, rough entries, copies,
       { exact: true },
     ),
   ).toBeVisible();
-  const state = await probe();
-  const comparisons = state.requests.filter((r) => r.op === "compare");
-  expect(comparisons).toHaveLength(6);
-  for (const [i, comparison] of comparisons.entries()) {
-    const result = JSON.parse(state.replies[comparison.id]);
-    expect(await summary.locator("p").allTextContents()).toContain(
-      i < 2
-        ? `Retiring at ${i ? 65 : 67}: savings ${i ? "run short at 90 instead of 93." : "last to 95 instead of running short at 93."}`
-        : await page.evaluate(
-            ({ b, c, subject }) => {
-              const short = (run: Run) =>
-                run.years.find((y) => y.ledger.shortfall.cents > 0)
-                  ?.age_on_december_31;
-              const before = short(b),
-                after = short(c),
-                end = c.years.at(-1)!.age_on_december_31;
-              return `${subject}: savings ${before !== undefined && after === undefined ? `last to ${end} instead of running short at ${before}.` : before === after ? `still run short at ${after}.` : `run short at ${after} instead of ${before}.`}`;
-            },
-            {
-              b: result.baseline,
-              c: result.scenario,
-              subject: [
-                "",
-                "",
-                "Spending $60,300 a year in retirement",
-                "Spending $73,700 a year in retirement",
-                "With returns at 4%",
-                "With returns at 6%",
-              ][i],
-            },
-          ),
-    );
-  }
+  const copyLines = [
+    "Retiring at 67: savings last to 95 instead of running short at 93.",
+    "Retiring at 65: savings run short at 90 instead of 93.",
+    "Spending $60,300 a year in retirement: savings last to 95 instead of running short at 93.",
+    "Spending $73,700 a year in retirement: savings run short at 88 instead of 93.",
+    "With returns at 4%: savings run short at 88 instead of 93.",
+    "With returns at 6%: savings last to 95 instead of running short at 93.",
+  ];
+  await expect(summary.locator(":scope > div > p")).toHaveText(copyLines);
+  await expect(
+    summary.locator(".rough-label > [aria-hidden='true']"),
+  ).toHaveText(["≈", "≈", "≈"]);
   expect((await download()).text).toBe(original);
   await capture("export-six-copies-three-rough");
   await activate(page.getByRole("button", { name: "Print or save as PDF" }));
@@ -432,6 +468,57 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     "color",
     "rgb(27, 36, 51)",
   );
+  expect(
+    await page.evaluate(() => {
+      const style = getComputedStyle(document.documentElement);
+      return Object.fromEntries(
+        [
+          "canvas",
+          "surface",
+          "sunken",
+          "ink",
+          "muted",
+          "line",
+          "accent",
+          "accent-text",
+          "on-accent",
+          "supported-text",
+          "supported-bg",
+          "partial-text",
+          "partial-bg",
+          "unsupported-text",
+          "unsupported-bg",
+          "estimate-text",
+          "estimate-bg",
+          "series-baseline",
+          "series-scenario",
+        ].map((token) => [
+          token,
+          style.getPropertyValue(`--color-${token}`).trim(),
+        ]),
+      );
+    }),
+  ).toEqual({
+    canvas: "#f4f6f9",
+    surface: "#ffffff",
+    sunken: "#eef1f5",
+    ink: "#1b2433",
+    muted: "#525d6c",
+    line: "#d9dfe7",
+    accent: "#306ce2",
+    "accent-text": "#1853c6",
+    "on-accent": "#f8fafd",
+    "supported-text": "#1c6a49",
+    "supported-bg": "#e2f2e9",
+    "partial-text": "#8a5600",
+    "partial-bg": "#fbeed2",
+    "unsupported-text": "#a3302a",
+    "unsupported-bg": "#fbe3e0",
+    "estimate-text": "#5a3ea8",
+    "estimate-bg": "#ece6fb",
+    "series-baseline": "#7b8798",
+    "series-scenario": "#306ce2",
+  });
   if (browserName === "chromium") {
     const path = info.outputPath("summary-letter.pdf");
     const pdf = await page.pdf({
@@ -470,7 +557,21 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     await capture(`export-rejected-${file}`);
   }
   await open("not JSON");
+  await expect(
+    page.getByText(
+      "This file did not pass the check of the file format, so Horizon did not open it.",
+      { exact: true },
+    ),
+  ).toBeVisible();
   await expect(page.getByText("The file is not valid JSON.")).toBeVisible();
+  await expect(page.locator('[role="alert"] [role="alert"]')).toHaveCount(0);
+  expect((await download()).text).toBe(original);
+  await expect(summary.locator(":scope > div > p")).toHaveText(copyLines);
+  await expect(summary.locator(".summary-rough li")).toHaveText([
+    "≈ Rough value Social Security benefit: could change your headroom by up to $2,305 a year (matters)",
+    "≈ Rough value Spending until you retire: could change your headroom by up to $1,624 a year (matters)",
+    "≈ Rough value Brokerage account cost basis: could change your headroom by up to $8 a year (barely matters)",
+  ]);
   await capture("export-rejected-non-json-with-household");
   await open(original);
   await expect(
@@ -492,6 +593,11 @@ test("export: keyboard download/import, exact references, rough entries, copies,
   await capture("export-reopened-plan");
   await exportFromPlan();
   await activate(page.locator(".plan-detail").first().locator("summary"));
+  await expect(
+    page.locator(".plan-detail .plan-summary > .help").first(),
+  ).toHaveText(
+    "Opened plan file · values as of 2026-01-01 · horizon-engine-0.4.0",
+  );
   await expect(page.locator(".plan-detail .plan-summary")).toContainText(
     "No entries are marked rough.",
   );

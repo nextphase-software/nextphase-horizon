@@ -884,9 +884,7 @@ select,
 }
 .download-button {
   display: inline-block;
-  color: var(--color-ink);
-  background: var(--color-surface);
-  border: 1px solid var(--color-muted);
+  border: 1px solid var(--color-accent);
   border-radius: var(--radius-md);
   padding: var(--space-3);
   text-decoration: none;
@@ -961,7 +959,7 @@ select,
     font-size: var(--text-sm);
     line-height: var(--leading-sm);
   }
-  .plan-summary h1 {
+  .plan-summary .summary-title {
     font-size: var(--text-lg);
     margin: 0 0 var(--space-2);
   }

@@ -14,7 +14,9 @@ export function usePlanResults(input: string, cache?: PlanCache) {
   useEffect(() => {
     let active = true;
     const pending = cache?.get(input) ?? {};
+    cache?.delete(input);
     cache?.set(input, pending);
+    if (cache && cache.size > 8) cache.delete(cache.keys().next().value!);
     for (const [key, op] of [
       ["run", "run"],
       ["spending", "sustainable_spending"],

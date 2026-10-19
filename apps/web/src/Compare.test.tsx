@@ -9,6 +9,7 @@ import {
   within,
 } from "@testing-library/react";
 import type { Comparison } from "./generated/types/comparison.v2";
+import { CompareDrawing } from "./CompareChart";
 import { Compare } from "./Compare";
 import {
   amountChange,
@@ -286,3 +287,42 @@ it("keeps valid copies reachable when another copy fails", () => {
   ).toBeTruthy();
   expect(view.container.querySelector("svg")).toBeTruthy();
 });
+
+it.each([false, true])(
+  "places shortfall labels beside their markers on separate rows (compact %s)",
+  (compact) => {
+    const early = structuredClone(baseline.run);
+    early.years[0].ledger.shortfall.cents = 1;
+    const view = render(
+      <CompareDrawing
+        baseline={baseline.run}
+        copy={early}
+        name="Copy"
+        compact={compact}
+      />,
+    );
+    const markers = [...view.container.querySelectorAll(".shortfall-marker")];
+    expect(markers).toHaveLength(2);
+    const labels = markers.map((marker) => marker.nextElementSibling!);
+    expect(labels.map((label) => label.textContent)).toEqual([
+      "Baseline: Runs short at 93",
+      "Copy: Runs short at 61",
+    ]);
+    expect(labels.map((label) => label.getAttribute("text-anchor"))).toEqual([
+      "end",
+      "start",
+    ]);
+    expect(labels.map((label) => label.getAttribute("y"))).toEqual([
+      "20",
+      "40",
+    ]);
+    for (const [i, marker] of markers.entries()) {
+      expect(
+        Math.abs(
+          Number(marker.getAttribute("x1")) -
+            Number(labels[i].getAttribute("x")),
+        ),
+      ).toBe(6);
+    }
+  },
+);

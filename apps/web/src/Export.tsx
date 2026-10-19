@@ -52,15 +52,24 @@ export function fileSize(bytes: number) {
   const hundredths = (BigInt(bytes) + 5000n) / 10000n;
   return `${hundredths / 100n}.${String(hundredths % 100n).padStart(2, "0")} MB (${bytes.toLocaleString("en-US")} bytes)`;
 }
+export function summaryStatus(run: Run) {
+  return `${statusWord(run.status, run.omissions.length)}. ${run.omissions.length ? `What this result does not include: ${run.omissions.join("; ")}.` : "No omissions are listed."}`;
+}
 export const importCheck = (code: string) =>
   ({
     EXPORT_FORMAT_UNSUPPORTED: "the file format",
     EXPORT_HASH_MISMATCH: "the fingerprint",
     EXPORT_MODEL_VERSION_UNSUPPORTED: "the engine version",
   })[code] ?? "the rerun";
-function ErrorMessage({ error }: { error: Failure | string }) {
+function ErrorMessage({
+  error,
+  alert = true,
+}: {
+  error: Failure | string;
+  alert?: boolean;
+}) {
   return (
-    <section className="card" role="alert">
+    <section className="card" role={alert ? "alert" : undefined}>
       <h2 className="status unsupported">
         <span aria-hidden="true">!</span>{" "}
         {typeof error === "string"
@@ -152,7 +161,7 @@ function OpenFile({ opened }: { opened: (input: string) => void }) {
             This file did not pass the check of {failure.check}, so Horizon did
             not open it.
           </p>
-          <ErrorMessage error={failure.error} />
+          <ErrorMessage error={failure.error} alert={false} />
         </div>
       )}
     </div>
@@ -278,7 +287,7 @@ function ExportResult({
     items.every((item) => item.comparison || item.error || item.transport);
   const summary = (
     <article className="plan-summary">
-      <h1>Horizon plan summary</h1>
+      <h2 className="summary-title">Horizon plan summary</h2>
       <p className="help">
         {sample.label === "Opened plan file"
           ? "Opened plan file"
@@ -291,7 +300,7 @@ function ExportResult({
       {run && spending ? (
         <>
           <p>{answerOne(run, spending, retirementDate)}</p>
-          <p>{answerTwo(run, spending)}</p>
+          <p>{answerTwo(run, spending, retirementDate)}</p>
         </>
       ) : (
         <Calculating />
@@ -315,18 +324,7 @@ function ExportResult({
         </div>
       ))}
       <h2>Status and what is not included</h2>
-      {run ? (
-        <p>
-          {statusWord(run.status, run.omissions.length)}. What this result does
-          not include:{" "}
-          {run.omissions.length
-            ? run.omissions.join("; ")
-            : "no omissions reported"}
-          .
-        </p>
-      ) : (
-        <Calculating />
-      )}
+      {run ? <p>{summaryStatus(run)}</p> : <Calculating />}
       <h2>Rough entries</h2>
       {rough === "[]" ? (
         <p>No entries are marked rough.</p>
@@ -337,7 +335,9 @@ function ExportResult({
           <ul className="summary-rough">
             {impact.items.map((item) => (
               <li key={item.path}>
-                <span className="rough-label">≈ Rough value</span>{" "}
+                <span className="rough-label">
+                  <span aria-hidden="true">≈</span> Rough value
+                </span>{" "}
                 {
                   entryDescription(
                     draft,
@@ -411,7 +411,7 @@ function ExportResult({
           </p>
           {file ? (
             <a
-              className="download-button"
+              className="download-button primary"
               href={file.url}
               download={`horizon-plan-${file.data.hashes.export_content_hash.slice(0, 12)}.json`}
             >

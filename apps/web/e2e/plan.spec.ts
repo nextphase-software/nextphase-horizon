@@ -39,7 +39,7 @@ const samples = [
     name: "answers-underfunded",
     label: "Single, 61, spending more than income",
     headline: "Savings run short at 61, 34 years before the plan ends.",
-    answer1: "Not at $67,000 a year: savings run short at age 61 (2026).",
+    answer1: "No: savings run short at age 61 (2026), before you retire.",
     answer2: "Savings run short even with no retirement spending.",
   },
 ];
@@ -183,6 +183,14 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
     await expect(
       page.getByRole("link", { name: "See the levers" }),
     ).toBeVisible();
+    await expect(
+      page.locator(".plan-answers > div").nth(0).locator("h2"),
+    ).toHaveText(
+      sample.name === "answers-working-61" ||
+        sample.name === "answers-underfunded"
+        ? "Can you retire at 66?"
+        : "Do your savings last?",
+    );
     await expect(
       page.locator(".plan-answers > div").nth(0).locator("p"),
     ).toHaveText(sample.answer1);

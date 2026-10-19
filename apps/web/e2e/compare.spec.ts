@@ -489,6 +489,55 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       await expect(
         page.getByRole("button", { name: "Export this comparison" }),
       ).toBeEnabled();
+      if (item.sample === 0 && item.id === "retire_earlier") {
+        const geometry = await page
+          .locator(".compare-screen svg:visible")
+          .first()
+          .evaluate((svg) => {
+            const drawing = svg as SVGSVGElement;
+            const grid = drawing.querySelector(".chart-grid") as SVGLineElement;
+            return [...drawing.querySelectorAll(".shortfall-marker")].map(
+              (element) => {
+                const marker = element as SVGLineElement;
+                const label = marker.nextElementSibling as SVGTextElement;
+                const box = label.getBBox();
+                const point = drawing.createSVGPoint();
+                point.x = marker.x1.baseVal.value;
+                const screenX = point.matrixTransform(
+                  drawing.getScreenCTM()!,
+                ).x;
+                const rect = label.getBoundingClientRect();
+                return {
+                  text: label.textContent,
+                  row: label.y.baseVal.getItem(0).value,
+                  inside:
+                    box.x >= grid.x1.baseVal.value &&
+                    box.x + box.width <= grid.x2.baseVal.value,
+                  distance: Math.min(
+                    Math.abs(rect.left - screenX),
+                    Math.abs(rect.right - screenX),
+                  ),
+                  side: label.getAttribute("text-anchor"),
+                  left: rect.left,
+                  right: rect.right,
+                  top: rect.top,
+                  bottom: rect.bottom,
+                };
+              },
+            );
+          });
+        expect(geometry.map((label) => label.text)).toEqual([
+          "Baseline: Runs short at 93",
+          "Retire at 65: Runs short at 90",
+        ]);
+        for (const label of geometry) {
+          expect(label.inside).toBe(true);
+          expect(label.distance).toBeLessThanOrEqual(160);
+          expect(label.side).toBe("end");
+        }
+        expect(geometry[0].row).toBeLessThan(geometry[1].row);
+        expect(geometry[0].bottom).toBeLessThanOrEqual(geometry[1].top);
+      }
       await evidence(`compare-${sample.name}-${item.id}-default`);
       await activate(page.locator(".compare-status summary"));
       await activate(page.locator(".savings-table summary"));
@@ -733,6 +782,38 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       "+ New copy",
     ]);
     await evidence("compare-error");
+    await activate(
+      planning.getByRole("button", { name: "Export", exact: true }),
+    );
+    await expect(
+      page.getByRole("button", { name: "Print or save as PDF" }),
+    ).toBeEnabled();
+    await activate(page.locator(".plan-detail").first().locator("summary"));
+    await expect(
+      page
+        .locator(".plan-detail .plan-summary")
+        .getByText("Synthetic comparison failure", { exact: true }),
+    ).toBeVisible();
+    await expect(page.locator('[role="alert"] [role="alert"]')).toHaveCount(0);
+    await evidence("export-failed-copy");
+    await page.emulateMedia({ media: "print" });
+    const errorCard = page.locator(".print-summary .card");
+    await expect(errorCard).toHaveCSS("background-color", "rgb(255, 255, 255)");
+    await expect(errorCard).toHaveCSS("border-top-color", "rgb(217, 223, 231)");
+    await expect(errorCard.locator(".status")).toHaveCSS(
+      "color",
+      "rgb(163, 48, 42)",
+    );
+    await expect(errorCard.locator(".status")).toHaveCSS(
+      "background-color",
+      "rgb(251, 227, 224)",
+    );
+    await expect(page.locator(".print-summary .summary-title")).toBeVisible();
+    await evidence("export-print-failed-copy");
+    await page.emulateMedia({ media: "screen" });
+    await activate(
+      planning.getByRole("button", { name: "Compare", exact: true }),
+    );
     await activate(page.getByRole("button", { name: "Back to plan" }));
     await expect(
       page.getByRole("button", { name: "Try a change" }),

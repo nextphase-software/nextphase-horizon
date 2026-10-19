@@ -8,6 +8,7 @@ import {
   screen,
   within,
 } from "@testing-library/react";
+import { usePlanResults, type PlanCache } from "./plan-results";
 import { Plan } from "./Plan";
 import { App } from "./App";
 import { createDraft, changeEntry, serializeDraft } from "./setup";
@@ -274,4 +275,45 @@ it("renders a zero-effect lever as No change with no amount or bar in either vie
   const cells = view.container.querySelector("#plan-levers tbody tr")!.children;
   expect(cells[2].textContent).toBe("No change");
   expect(cells[3].textContent).toBe("No change");
+});
+
+it("keeps only the eight most recently used households, touching cached results on reuse", async () => {
+  stub();
+  const cache: PlanCache = new Map();
+  function Consumer({ input }: { input: string }) {
+    usePlanResults(input, cache);
+    return null;
+  }
+  for (let i = 0; i < 8; i++) {
+    const view = render(<Consumer input={`household-${i}`} />);
+    await act(async () => {});
+    view.unmount();
+  }
+  const first = cache.get("household-0");
+  const reused = render(<Consumer input="household-0" />);
+  await act(async () => {});
+  reused.unmount();
+  expect(engine.call).toHaveBeenCalledTimes(24);
+  expect(cache.get("household-0")).toBe(first);
+  for (let i = 8; i < 12; i++) {
+    const view = render(<Consumer input={`household-${i}`} />);
+    await act(async () => {});
+    view.unmount();
+    expect(cache.size).toBe(8);
+  }
+  expect([...cache.keys()]).toEqual([
+    "household-5",
+    "household-6",
+    "household-7",
+    "household-0",
+    "household-8",
+    "household-9",
+    "household-10",
+    "household-11",
+  ]);
+  const evicted = render(<Consumer input="household-1" />);
+  await act(async () => {});
+  evicted.unmount();
+  expect(engine.call).toHaveBeenCalledTimes(39);
+  expect(cache.has("household-5")).toBe(false);
 });

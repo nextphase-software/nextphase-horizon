@@ -70,9 +70,14 @@ export function CompareDrawing({
                   y2={bottom}
                 />
                 <text
-                  x={index ? right : left}
+                  x={
+                    x(short.year) +
+                    (x(short.year) > (left + right) / 2 ? -6 : 6)
+                  }
                   y={index ? 40 : 20}
-                  textAnchor={index ? "end" : "start"}
+                  textAnchor={
+                    x(short.year) > (left + right) / 2 ? "end" : "start"
+                  }
                 >
                   {index ? name : "Baseline"}: Runs short at{" "}
                   {short.age_on_december_31}

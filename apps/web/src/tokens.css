@@ -105,9 +105,22 @@
     color-scheme: light;
     --color-canvas: #f4f6f9;
     --color-surface: #ffffff;
+    --color-sunken: #eef1f5;
     --color-ink: #1b2433;
     --color-muted: #525d6c;
+    --color-line: #d9dfe7;
+    --color-accent: #306ce2;
+    --color-accent-text: #1853c6;
+    --color-on-accent: #f8fafd;
+    --color-supported-text: #1c6a49;
+    --color-supported-bg: #e2f2e9;
+    --color-partial-text: #8a5600;
+    --color-partial-bg: #fbeed2;
+    --color-unsupported-text: #a3302a;
+    --color-unsupported-bg: #fbe3e0;
     --color-estimate-text: #5a3ea8;
     --color-estimate-bg: #ece6fb;
+    --color-series-baseline: #7b8798;
+    --color-series-scenario: #306ce2;
   }
 }
