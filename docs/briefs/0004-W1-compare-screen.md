@@ -1062,7 +1062,9 @@ Additional diagnostic command observations (before the final source revision):
 | `corepack pnpm exec playwright test e2e/compare.spec.ts --project=chromium-375-light` | 1, then 1, then 0 | First no tests executed due to the raw import; then 1 failed due to the native subprocess buffer; corrected smoke: 1 passed, 0 failed (99.354 s total). |
 | `corepack pnpm exec playwright test e2e/compare.spec.ts --project=firefox-375-light` | 0 | 1 passed, 0 failed after bounding the ledger; 119.700 s total. |
 
-#### Open requirement
+#### Open requirement (resolved by v1.1)
+
+The following v1 observations are retained for history. The v1.1 fallback rule is implemented and validated in Fix round 1 below.
 
 - V1 requires the baseline tab to show its retirement age, and forbids deriving figures in the interface. The engine also accepts a retirement year outside its projected years, where no `age_on_december_31` is supplied for that retirement year. For example, the committed `answers-working-61` fixture with only `household.persons[0].plan_end_age` changed to 65 produces years 2026–2030 while retirement remains 2031-03-10. Fresh native `run` and `levers` probes both exit 3 (Partial); five levers are offered. The baseline retirement-age lookup is absent for this valid input.
 - No fallback wording is defined by v1. AGENTS.md requires stopping and reporting missing requirements; a maintainer choice between an entered-date label and a retirement-outside-plan label is pending. This case remains unimplemented; no passing comparison coverage is claimed for it. The complete prescribed reference/browser matrix above does not exercise it.
@@ -1074,3 +1076,467 @@ Additional diagnostic command observations (before the final source revision):
 - Comparison export: deferred to plan 0005; the button and Export step remain unavailable.
 - Baseline labels when retirement lies outside the projection: unresolved because v1 supplies neither an engine age nor a fallback rule; awaiting maintainer clarification as documented above.
 - Engine levers/comparison output, dependencies, schemas and goldens: unchanged as required. No persistence, hosted route or authorization surface was introduced.
+
+### Fix round 1 — 0004-W1 v1.1 — 2026-10-19
+
+- Branch: `codex/0004-W1-compare-screen`. `git rebase main` completed with exit 0, without conflicts, onto `131db09` (the v1.1 clarification); main was not changed. The preceding v1 record is retained as historical validation before this round.
+- Source/test revision validated: `28a71b8b728054447716c3d275159c01e37de874`. Every ordered command below ran afresh against this revision. This documentation record is committed afterward; its own commit is reported separately in the handoff.
+- The prior open requirement and baseline-label exclusion are **resolved by v1.1**: when no projected year contains retirement, the tab reads exactly “Baseline”. The setup-to-comparison test changes the working sample's plan end age to 65, makes “Retire at 65”, and verifies the rendered result and native/worker parity.
+- Making a new copy clears the household-change removal notice. Errors replace only the selected copy's result; tabs remain available, including after leaving and reopening Compare. Tests exercise an erroring copy alongside a valid copy and switch back to the valid result.
+- The vertical keyboard-scroll assertion uses PageDown and preserves region focus. The ledger scroll region has a direction-neutral accessible name. The A-drawdown “Left at 78” row is matched by its row header and exact cells; the reference ledger sentence and “550 lines · nominal dollars” hint have literal assertions. Comparison sentences reuse the existing status-word mapping.
+- New dependencies: none; no new dependency licenses. Engine, schemas, goldens, design assets, dependency manifests and lockfiles are unchanged.
+
+#### Toolchain, browser and visual evidence
+
+- Node `v24.22.0`, corepack `0.36.0`, corepack pnpm `12.9.1`; Rust `1.99.1`, cargo-deny `0.20.2`, wasm-bindgen and wasm-bindgen-test-runner `0.2.129`. Node was recorded before each WebAssembly build/test invocation. The supplied pinned toolchain was already installed.
+- Playwright `1.63.0`: 36 passed across all 12 browser/size/theme projects, with no unexpected, skipped or flaky tests. Actual browser-version annotations: chromium 153.0.8010.12; firefox 155.0; webkit 26.6.
+- 1032 screenshot captures are attached to the full HTML report, covering every screen/state in each project's sample matrix, plus the new regression states. This round's screenshots, HTML/JSON reports and command logs are saved outside the repository, separately from earlier evidence.
+- Keyboard access, focus, accessible status labels, exact rendered reference cells/sentences, bounded table scrolling, native/worker byte equality, axe with zero violations, responsive layout, light/dark themes and privacy/storage checks passed in every project. The supplied design reference remains applicable; this round changes the baseline fallback label and error/copy-state behavior without changing its layout.
+- The timed release levers command exited 3 (Partial) in 0.552 s after the release builds, below 2 s. The isolated WebAssembly levers test's harness duration is recorded in its row below.
+
+#### Ordered validation commands
+
+Each CLI row produced one canonical JSON document and one newline, with its expected status exit. All 48 fixtures, the five scenario reference pairs, all committed golden exports and the rejection imports were expanded from the two fixture guides. Native and WebAssembly test counts include all harnesses, including zero-test harnesses. Web commands ran from `apps/web`; all others from the workspace root.
+
+| # | Revision | Directory | Command | Exit | Observed result/count | Seconds |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | `28a71b8` | workspace root | `rustc --version` | 0 | rustc 1.99.1 (58cf8f9c3 2026-10-13) | 0.024 |
+| 2 | `28a71b8` | workspace root | `cargo deny --version` | 0 | cargo-deny 0.20.2 | 0.018 |
+| 3 | `28a71b8` | workspace root | `wasm-bindgen --version` | 0 | wasm-bindgen 0.2.129 | 0.001 |
+| 4 | `28a71b8` | workspace root | `wasm-bindgen-test-runner --version` | 0 | wasm-bindgen-test-runner 0.2.129 | 0.001 |
+| 5 | `28a71b8` | workspace root | `cargo test -p horizon-app answers` | 0 | 9 passed, 0 failed, 0 ignored | 6.585 |
+| 6 | `28a71b8` | workspace root | `cargo test -p horizon-app --test reference_values_answers` | 0 | 6 passed, 0 failed, 0 ignored | 5.363 |
+| 7 | `28a71b8` | workspace root | `cargo test -p horizon-app compare` | 0 | 3 passed, 0 failed, 0 ignored | 0.421 |
+| 8 | `28a71b8` | workspace root | `cargo test -p horizon-app immutability` | 0 | 1 passed, 0 failed, 0 ignored | 0.123 |
+| 9 | `28a71b8` | workspace root | `cargo test -p horizon-app export` | 0 | 2 passed, 0 failed, 0 ignored | 4.773 |
+| 10 | `28a71b8` | workspace root | `cargo test -p horizon-app --test reference_values_w4` | 0 | 1 passed, 0 failed, 0 ignored | 0.357 |
+| 11 | `28a71b8` | workspace root | `cargo test -p horizon-engine tax` | 0 | 2 passed, 0 failed, 0 ignored | 0.062 |
+| 12 | `28a71b8` | workspace root | `cargo test -p horizon-app --test reference_values_w3` | 0 | 4 passed, 0 failed, 0 ignored | 0.211 |
+| 13 | `28a71b8` | workspace root | `cargo test -p horizon-app --test reference_values_w2` | 0 | 11 passed, 0 failed, 0 ignored | 0.118 |
+| 14 | `28a71b8` | workspace root | `cargo test -p horizon-app --test reference_values` | 0 | 7 passed, 0 failed, 0 ignored | 0.074 |
+| 15 | `28a71b8` | workspace root | `cargo test -p horizon-engine ledger` | 0 | 2 passed, 0 failed, 0 ignored | 0.050 |
+| 16 | `28a71b8` | workspace root | `cargo test -p horizon-engine money` | 0 | 2 passed, 0 failed, 0 ignored | 0.050 |
+| 17 | `28a71b8` | workspace root | `cargo test -p horizon-app validation` | 0 | 5 passed, 0 failed, 0 ignored | 0.386 |
+| 18 | `28a71b8` | workspace root | `cargo test -p horizon-parity` | 0 | 15 passed, 0 failed, 0 ignored | 6.036 |
+| 19 | `28a71b8` | workspace root | `cargo test --workspace` | 0 | 75 passed, 0 failed, 0 ignored | 95.782 |
+| 20 | `28a71b8` | workspace root | `cargo clippy --workspace --all-targets -- -D warnings` | 0 | passed | 0.196 |
+| 21 | `28a71b8` | workspace root | `cargo fmt --all --check` | 0 | passed | 0.105 |
+| 22 | `28a71b8` | workspace root | `cargo test --workspace --release` | 0 | 75 passed, 0 failed, 0 ignored | 13.649 |
+| 23 | `28a71b8` | workspace root | `cargo build --workspace --release` | 0 | passed | 0.081 |
+| 24 | `28a71b8` | workspace root | `node --version` | 0 | v24.22.0 | 0.003 |
+| 25 | `28a71b8` | workspace root | `cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown` | 0 | passed | 0.086 |
+| 26 | `28a71b8` | workspace root | `node --version` | 0 | v24.22.0 | 0.002 |
+| 27 | `28a71b8` | workspace root | `CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner cargo test -p horizon-parity --target wasm32-unknown-unknown` | 0 | 14 passed, 0 failed, 0 ignored; harness 23.37 s | 24.494 |
+| 28 | `28a71b8` | workspace root | `cargo deny check licenses` | 0 | licenses ok | 0.231 |
+| 29 | `28a71b8` | workspace root | `cargo build -p horizon-cli --release` | 0 | passed | 0.083 |
+| 30 | `28a71b8` | workspace root | `cargo run --release -p horizon-cli -- levers answers-working-61` | 3 | partial; 1 canonical JSON document | 0.552 |
+| 31 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend A-drawdown` | 0 | complete; 1 canonical JSON document | 0.246 |
+| 32 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend A-drawdown-pass-limit-1` | 3 | partial; 1 canonical JSON document | 0.086 |
+| 33 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend A-drawdown-proportional_taxable_tax_deferred` | 0 | complete; 1 canonical JSON document | 0.087 |
+| 34 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend A-drawdown-roth_before_tax_deferred` | 0 | complete; 1 canonical JSON document | 0.105 |
+| 35 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend A-drawdown-tax_deferred_first` | 0 | complete; 1 canonical JSON document | 0.120 |
+| 36 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend B-early-retiree` | 3 | partial; 1 canonical JSON document | 0.173 |
+| 37 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend C-partial-base-year-no-taxable` | 3 | partial; 1 canonical JSON document | 0.125 |
+| 38 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend D-still-working-rmd-surplus` | 3 | partial; 1 canonical JSON document | 0.109 |
+| 39 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend E-senior-2028-loss-carry` | 0 | complete; 1 canonical JSON document | 0.147 |
+| 40 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend answers-cap` | 3 | partial; 1 canonical JSON document | 0.192 |
+| 41 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend answers-underfunded` | 3 | partial; 1 canonical JSON document | 0.122 |
+| 42 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend answers-working-61` | 3 | partial; 1 canonical JSON document | 0.542 |
+| 43 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend answers-working-61-retire-later` | 3 | partial; 1 canonical JSON document | 0.585 |
+| 44 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-account-type` | 1 | invalid; 1 canonical JSON document | 0.079 |
+| 45 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-cost-basis` | 1 | invalid; 1 canonical JSON document | 0.059 |
+| 46 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-date` | 1 | invalid; 1 canonical JSON document | 0.051 |
+| 47 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-end-before-start` | 1 | invalid; 1 canonical JSON document | 0.056 |
+| 48 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-missing-assumption` | 1 | invalid; 1 canonical JSON document | 0.054 |
+| 49 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-missing-cash-return` | 1 | invalid; 1 canonical JSON document | 0.058 |
+| 50 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-missing-field` | 1 | invalid; 1 canonical JSON document | 0.063 |
+| 51 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-missing-investment-return` | 1 | invalid; 1 canonical JSON document | 0.062 |
+| 52 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-missing-tax-indexing` | 1 | invalid; 1 canonical JSON document | 0.059 |
+| 53 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-negative-balance` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 54 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-negative-tax-indexing` | 1 | invalid; 1 canonical JSON document | 0.058 |
+| 55 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-output-range` | 1 | invalid; 1 canonical JSON document | 0.071 |
+| 56 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-owner` | 1 | invalid; 1 canonical JSON document | 0.063 |
+| 57 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-plan-end-age` | 1 | invalid; 1 canonical JSON document | 0.101 |
+| 58 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-rate` | 1 | invalid; 1 canonical JSON document | 0.060 |
+| 59 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend invalid-tax-pass-limit` | 1 | invalid; 1 canonical JSON document | 0.065 |
+| 60 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend retirement-date-baseline` | 3 | partial; 1 canonical JSON document | 0.128 |
+| 61 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend retirement-date-scenario` | 3 | partial; 1 canonical JSON document | 0.121 |
+| 62 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend return-assumption-baseline` | 0 | complete; 1 canonical JSON document | 0.089 |
+| 63 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend return-assumption-scenario` | 0 | complete; 1 canonical JSON document | 0.088 |
+| 64 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend spending-amount-baseline` | 0 | complete; 1 canonical JSON document | 0.090 |
+| 65 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend spending-amount-scenario` | 0 | complete; 1 canonical JSON document | 0.121 |
+| 66 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend synthetic-leap` | 3 | partial; 1 canonical JSON document | 1.829 |
+| 67 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend synthetic-retired` | 0 | complete; 1 canonical JSON document | 0.577 |
+| 68 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend synthetic-working` | 3 | partial; 1 canonical JSON document | 0.812 |
+| 69 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend two-person` | 2 | unsupported; 1 canonical JSON document | 0.064 |
+| 70 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend unchanged-copy-baseline` | 0 | complete; 1 canonical JSON document | 0.082 |
+| 71 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend unchanged-copy-scenario` | 0 | complete; 1 canonical JSON document | 0.118 |
+| 72 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend unsupported-healthcare` | 2 | unsupported; 1 canonical JSON document | 0.061 |
+| 73 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend unsupported-negative-cash-return` | 2 | unsupported; 1 canonical JSON document | 0.059 |
+| 74 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend unsupported-negative-investment-return` | 2 | unsupported; 1 canonical JSON document | 0.058 |
+| 75 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend unsupported-state-tax` | 2 | unsupported; 1 canonical JSON document | 0.053 |
+| 76 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend unsupported-tax-year` | 2 | unsupported; 1 canonical JSON document | 0.056 |
+| 77 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend withdrawal-order-baseline` | 0 | complete; 1 canonical JSON document | 0.082 |
+| 78 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend withdrawal-order-scenario` | 0 | complete; 1 canonical JSON document | 0.074 |
+| 79 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers A-drawdown` | 0 | complete; 1 canonical JSON document | 0.186 |
+| 80 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers A-drawdown-pass-limit-1` | 3 | partial; 1 canonical JSON document | 0.131 |
+| 81 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers A-drawdown-proportional_taxable_tax_deferred` | 0 | complete; 1 canonical JSON document | 0.146 |
+| 82 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers A-drawdown-roth_before_tax_deferred` | 0 | complete; 1 canonical JSON document | 0.208 |
+| 83 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers A-drawdown-tax_deferred_first` | 0 | complete; 1 canonical JSON document | 0.194 |
+| 84 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers B-early-retiree` | 3 | partial; 1 canonical JSON document | 0.474 |
+| 85 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers C-partial-base-year-no-taxable` | 3 | partial; 1 canonical JSON document | 0.310 |
+| 86 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers D-still-working-rmd-surplus` | 3 | partial; 1 canonical JSON document | 0.280 |
+| 87 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers E-senior-2028-loss-carry` | 0 | complete; 1 canonical JSON document | 0.392 |
+| 88 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers answers-cap` | 3 | partial; 1 canonical JSON document | 0.557 |
+| 89 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers answers-underfunded` | 3 | partial; 1 canonical JSON document | 0.235 |
+| 90 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers answers-working-61` | 3 | partial; 1 canonical JSON document | 2.924 |
+| 91 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers answers-working-61-retire-later` | 3 | partial; 1 canonical JSON document | 3.064 |
+| 92 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-account-type` | 1 | invalid; 1 canonical JSON document | 0.059 |
+| 93 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-cost-basis` | 1 | invalid; 1 canonical JSON document | 0.079 |
+| 94 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-date` | 1 | invalid; 1 canonical JSON document | 0.146 |
+| 95 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-end-before-start` | 1 | invalid; 1 canonical JSON document | 0.055 |
+| 96 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-missing-assumption` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 97 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-missing-cash-return` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 98 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-missing-field` | 1 | invalid; 1 canonical JSON document | 0.051 |
+| 99 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-missing-investment-return` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 100 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-missing-tax-indexing` | 1 | invalid; 1 canonical JSON document | 0.060 |
+| 101 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-negative-balance` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 102 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-negative-tax-indexing` | 1 | invalid; 1 canonical JSON document | 0.088 |
+| 103 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-output-range` | 1 | invalid; 1 canonical JSON document | 0.061 |
+| 104 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-owner` | 1 | invalid; 1 canonical JSON document | 0.059 |
+| 105 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-plan-end-age` | 1 | invalid; 1 canonical JSON document | 0.055 |
+| 106 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-rate` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 107 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers invalid-tax-pass-limit` | 1 | invalid; 1 canonical JSON document | 0.055 |
+| 108 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers retirement-date-baseline` | 3 | partial; 1 canonical JSON document | 0.398 |
+| 109 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers retirement-date-scenario` | 3 | partial; 1 canonical JSON document | 0.468 |
+| 110 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers return-assumption-baseline` | 0 | complete; 1 canonical JSON document | 0.176 |
+| 111 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers return-assumption-scenario` | 0 | complete; 1 canonical JSON document | 0.191 |
+| 112 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers spending-amount-baseline` | 0 | complete; 1 canonical JSON document | 0.188 |
+| 113 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers spending-amount-scenario` | 0 | complete; 1 canonical JSON document | 0.207 |
+| 114 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers synthetic-leap` | 3 | partial; 1 canonical JSON document | 3.119 |
+| 115 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers synthetic-retired` | 0 | complete; 1 canonical JSON document | 1.201 |
+| 116 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers synthetic-working` | 3 | partial; 1 canonical JSON document | 3.600 |
+| 117 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers two-person` | 2 | unsupported; 1 canonical JSON document | 0.074 |
+| 118 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers unchanged-copy-baseline` | 0 | complete; 1 canonical JSON document | 0.203 |
+| 119 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers unchanged-copy-scenario` | 0 | complete; 1 canonical JSON document | 0.196 |
+| 120 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers unsupported-healthcare` | 2 | unsupported; 1 canonical JSON document | 0.056 |
+| 121 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers unsupported-negative-cash-return` | 2 | unsupported; 1 canonical JSON document | 0.055 |
+| 122 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers unsupported-negative-investment-return` | 2 | unsupported; 1 canonical JSON document | 0.066 |
+| 123 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers unsupported-state-tax` | 2 | unsupported; 1 canonical JSON document | 0.060 |
+| 124 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers unsupported-tax-year` | 2 | unsupported; 1 canonical JSON document | 0.064 |
+| 125 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers withdrawal-order-baseline` | 0 | complete; 1 canonical JSON document | 0.197 |
+| 126 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- levers withdrawal-order-scenario` | 0 | complete; 1 canonical JSON document | 0.163 |
+| 127 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact A-drawdown packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.096 |
+| 128 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact A-drawdown-pass-limit-1 packages/app/test-data/empty-rough.json` | 3 | partial; 1 canonical JSON document | 0.075 |
+| 129 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact A-drawdown-proportional_taxable_tax_deferred packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.076 |
+| 130 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact A-drawdown-roth_before_tax_deferred packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.094 |
+| 131 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact A-drawdown-tax_deferred_first packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.081 |
+| 132 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact B-early-retiree packages/app/test-data/empty-rough.json` | 3 | partial; 1 canonical JSON document | 0.122 |
+| 133 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact C-partial-base-year-no-taxable packages/app/test-data/empty-rough.json` | 3 | partial; 1 canonical JSON document | 0.090 |
+| 134 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact D-still-working-rmd-surplus packages/app/test-data/empty-rough.json` | 3 | partial; 1 canonical JSON document | 0.086 |
+| 135 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact E-senior-2028-loss-carry packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.132 |
+| 136 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact answers-cap packages/app/test-data/empty-rough.json` | 3 | partial; 1 canonical JSON document | 0.189 |
+| 137 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact answers-underfunded packages/app/test-data/empty-rough.json` | 3 | partial; 1 canonical JSON document | 0.123 |
+| 138 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact answers-working-61 packages/app/test-data/empty-rough.json` | 3 | partial; 1 canonical JSON document | 0.456 |
+| 139 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact answers-working-61-retire-later packages/app/test-data/empty-rough.json` | 3 | partial; 1 canonical JSON document | 0.536 |
+| 140 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-account-type packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.060 |
+| 141 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-cost-basis packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 142 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-date packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.060 |
+| 143 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-end-before-start packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 144 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-missing-assumption packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.056 |
+| 145 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-missing-cash-return packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 146 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-missing-field packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 147 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-missing-investment-return packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.056 |
+| 148 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-missing-tax-indexing packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 149 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-negative-balance packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 150 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-negative-tax-indexing packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 151 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-output-range packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.076 |
+| 152 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-owner packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.056 |
+| 153 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-plan-end-age packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.061 |
+| 154 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-rate packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 155 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact invalid-tax-pass-limit packages/app/test-data/empty-rough.json` | 1 | invalid; 1 canonical JSON document | 0.050 |
+| 156 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact retirement-date-baseline packages/app/test-data/empty-rough.json` | 3 | partial; 1 canonical JSON document | 0.108 |
+| 157 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact retirement-date-scenario packages/app/test-data/empty-rough.json` | 3 | partial; 1 canonical JSON document | 0.115 |
+| 158 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact return-assumption-baseline packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.078 |
+| 159 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact return-assumption-scenario packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.080 |
+| 160 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact spending-amount-baseline packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.080 |
+| 161 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact spending-amount-scenario packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.081 |
+| 162 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact synthetic-leap packages/app/test-data/empty-rough.json` | 3 | partial; 1 canonical JSON document | 0.535 |
+| 163 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact synthetic-retired packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.307 |
+| 164 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact synthetic-working packages/app/test-data/empty-rough.json` | 3 | partial; 1 canonical JSON document | 0.572 |
+| 165 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact two-person packages/app/test-data/empty-rough.json` | 2 | unsupported; 1 canonical JSON document | 0.065 |
+| 166 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact unchanged-copy-baseline packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.098 |
+| 167 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact unchanged-copy-scenario packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.087 |
+| 168 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact unsupported-healthcare packages/app/test-data/empty-rough.json` | 2 | unsupported; 1 canonical JSON document | 0.053 |
+| 169 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact unsupported-negative-cash-return packages/app/test-data/empty-rough.json` | 2 | unsupported; 1 canonical JSON document | 0.054 |
+| 170 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact unsupported-negative-investment-return packages/app/test-data/empty-rough.json` | 2 | unsupported; 1 canonical JSON document | 0.054 |
+| 171 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact unsupported-state-tax packages/app/test-data/empty-rough.json` | 2 | unsupported; 1 canonical JSON document | 0.063 |
+| 172 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact unsupported-tax-year packages/app/test-data/empty-rough.json` | 2 | unsupported; 1 canonical JSON document | 0.057 |
+| 173 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact withdrawal-order-baseline packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.088 |
+| 174 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact withdrawal-order-scenario packages/app/test-data/empty-rough.json` | 0 | complete; 1 canonical JSON document | 0.080 |
+| 175 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- impact answers-working-61 packages/app/test-data/answers-working-61-rough.json` | 3 | partial; 1 canonical JSON document | 5.179 |
+| 176 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run A-drawdown` | 0 | complete; 1 canonical JSON document | 0.082 |
+| 177 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run A-drawdown-pass-limit-1` | 3 | partial; 1 canonical JSON document | 0.072 |
+| 178 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run A-drawdown-proportional_taxable_tax_deferred` | 0 | complete; 1 canonical JSON document | 0.067 |
+| 179 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run A-drawdown-roth_before_tax_deferred` | 0 | complete; 1 canonical JSON document | 0.062 |
+| 180 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run A-drawdown-tax_deferred_first` | 0 | complete; 1 canonical JSON document | 0.063 |
+| 181 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run B-early-retiree` | 3 | partial; 1 canonical JSON document | 0.064 |
+| 182 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run C-partial-base-year-no-taxable` | 3 | partial; 1 canonical JSON document | 0.060 |
+| 183 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run D-still-working-rmd-surplus` | 3 | partial; 1 canonical JSON document | 0.065 |
+| 184 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run E-senior-2028-loss-carry` | 0 | complete; 1 canonical JSON document | 0.069 |
+| 185 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run answers-cap` | 3 | partial; 1 canonical JSON document | 0.123 |
+| 186 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run answers-underfunded` | 3 | partial; 1 canonical JSON document | 0.100 |
+| 187 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run answers-working-61` | 3 | partial; 1 canonical JSON document | 0.119 |
+| 188 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run answers-working-61-retire-later` | 3 | partial; 1 canonical JSON document | 0.135 |
+| 189 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-account-type` | 1 | invalid; 1 canonical JSON document | 0.055 |
+| 190 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-cost-basis` | 1 | invalid; 1 canonical JSON document | 0.051 |
+| 191 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-date` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 192 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-end-before-start` | 1 | invalid; 1 canonical JSON document | 0.057 |
+| 193 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-missing-assumption` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 194 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-missing-cash-return` | 1 | invalid; 1 canonical JSON document | 0.046 |
+| 195 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-missing-field` | 1 | invalid; 1 canonical JSON document | 0.057 |
+| 196 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-missing-investment-return` | 1 | invalid; 1 canonical JSON document | 0.054 |
+| 197 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-missing-tax-indexing` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 198 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-negative-balance` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 199 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-negative-tax-indexing` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 200 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-output-range` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 201 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-owner` | 1 | invalid; 1 canonical JSON document | 0.055 |
+| 202 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-plan-end-age` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 203 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-rate` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 204 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run invalid-tax-pass-limit` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 205 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run retirement-date-baseline` | 3 | partial; 1 canonical JSON document | 0.066 |
+| 206 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run retirement-date-scenario` | 3 | partial; 1 canonical JSON document | 0.065 |
+| 207 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run return-assumption-baseline` | 0 | complete; 1 canonical JSON document | 0.067 |
+| 208 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run return-assumption-scenario` | 0 | complete; 1 canonical JSON document | 0.062 |
+| 209 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run spending-amount-baseline` | 0 | complete; 1 canonical JSON document | 0.061 |
+| 210 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run spending-amount-scenario` | 0 | complete; 1 canonical JSON document | 0.060 |
+| 211 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run synthetic-leap` | 3 | partial; 1 canonical JSON document | 0.100 |
+| 212 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run synthetic-retired` | 0 | complete; 1 canonical JSON document | 0.087 |
+| 213 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run synthetic-working` | 3 | partial; 1 canonical JSON document | 0.106 |
+| 214 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run two-person` | 2 | unsupported; 1 canonical JSON document | 0.055 |
+| 215 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run unchanged-copy-baseline` | 0 | complete; 1 canonical JSON document | 0.061 |
+| 216 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run unchanged-copy-scenario` | 0 | complete; 1 canonical JSON document | 0.060 |
+| 217 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run unsupported-healthcare` | 2 | unsupported; 1 canonical JSON document | 0.051 |
+| 218 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run unsupported-negative-cash-return` | 2 | unsupported; 1 canonical JSON document | 0.051 |
+| 219 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run unsupported-negative-investment-return` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 220 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run unsupported-state-tax` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 221 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run unsupported-tax-year` | 2 | unsupported; 1 canonical JSON document | 0.053 |
+| 222 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run withdrawal-order-baseline` | 0 | complete; 1 canonical JSON document | 0.064 |
+| 223 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- run withdrawal-order-scenario` | 0 | complete; 1 canonical JSON document | 0.060 |
+| 224 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown A-drawdown` | 0 | complete; 1 canonical JSON document | 0.075 |
+| 225 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown A-drawdown-pass-limit-1` | 3 | partial; 1 canonical JSON document | 0.076 |
+| 226 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown A-drawdown-proportional_taxable_tax_deferred` | 0 | complete; 1 canonical JSON document | 0.077 |
+| 227 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown A-drawdown-roth_before_tax_deferred` | 0 | complete; 1 canonical JSON document | 0.077 |
+| 228 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown A-drawdown-tax_deferred_first` | 0 | complete; 1 canonical JSON document | 0.081 |
+| 229 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown B-early-retiree` | 3 | partial; 1 canonical JSON document | 0.081 |
+| 230 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown C-partial-base-year-no-taxable` | 3 | partial; 1 canonical JSON document | 0.078 |
+| 231 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown D-still-working-rmd-surplus` | 3 | partial; 1 canonical JSON document | 0.073 |
+| 232 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown E-senior-2028-loss-carry` | 0 | complete; 1 canonical JSON document | 0.079 |
+| 233 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown answers-cap` | 3 | partial; 1 canonical JSON document | 0.131 |
+| 234 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown answers-underfunded` | 3 | partial; 1 canonical JSON document | 0.166 |
+| 235 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown answers-working-61` | 3 | partial; 1 canonical JSON document | 0.175 |
+| 236 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown answers-working-61-retire-later` | 3 | partial; 1 canonical JSON document | 0.172 |
+| 237 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-account-type` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 238 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-cost-basis` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 239 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-date` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 240 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-end-before-start` | 1 | invalid; 1 canonical JSON document | 0.046 |
+| 241 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-missing-assumption` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 242 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-missing-cash-return` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 243 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-missing-field` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 244 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-missing-investment-return` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 245 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-missing-tax-indexing` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 246 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-negative-balance` | 1 | invalid; 1 canonical JSON document | 0.054 |
+| 247 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-negative-tax-indexing` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 248 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-output-range` | 1 | invalid; 1 canonical JSON document | 0.051 |
+| 249 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-owner` | 1 | invalid; 1 canonical JSON document | 0.054 |
+| 250 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-plan-end-age` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 251 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-rate` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 252 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown invalid-tax-pass-limit` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 253 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown retirement-date-baseline` | 3 | partial; 1 canonical JSON document | 0.082 |
+| 254 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown retirement-date-scenario` | 3 | partial; 1 canonical JSON document | 0.083 |
+| 255 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown return-assumption-baseline` | 0 | complete; 1 canonical JSON document | 0.076 |
+| 256 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown return-assumption-scenario` | 0 | complete; 1 canonical JSON document | 0.092 |
+| 257 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown spending-amount-baseline` | 0 | complete; 1 canonical JSON document | 0.079 |
+| 258 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown spending-amount-scenario` | 0 | complete; 1 canonical JSON document | 0.079 |
+| 259 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown synthetic-leap` | 3 | partial; 1 canonical JSON document | 0.159 |
+| 260 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown synthetic-retired` | 0 | complete; 1 canonical JSON document | 0.137 |
+| 261 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown synthetic-working` | 3 | partial; 1 canonical JSON document | 0.166 |
+| 262 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown two-person` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 263 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown unchanged-copy-baseline` | 0 | complete; 1 canonical JSON document | 0.075 |
+| 264 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown unchanged-copy-scenario` | 0 | complete; 1 canonical JSON document | 0.074 |
+| 265 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown unsupported-healthcare` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 266 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown unsupported-negative-cash-return` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 267 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown unsupported-negative-investment-return` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 268 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown unsupported-state-tax` | 2 | unsupported; 1 canonical JSON document | 0.051 |
+| 269 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown unsupported-tax-year` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 270 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown withdrawal-order-baseline` | 0 | complete; 1 canonical JSON document | 0.072 |
+| 271 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare A-drawdown withdrawal-order-scenario` | 0 | complete; 1 canonical JSON document | 0.077 |
+| 272 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare retirement-date-baseline retirement-date-scenario` | 3 | partial; 1 canonical JSON document | 0.079 |
+| 273 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare spending-amount-baseline spending-amount-scenario` | 0 | complete; 1 canonical JSON document | 0.079 |
+| 274 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare return-assumption-baseline return-assumption-scenario` | 0 | complete; 1 canonical JSON document | 0.076 |
+| 275 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare withdrawal-order-baseline withdrawal-order-scenario` | 0 | complete; 1 canonical JSON document | 0.078 |
+| 276 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare unchanged-copy-baseline unchanged-copy-scenario` | 0 | complete; 1 canonical JSON document | 0.071 |
+| 277 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export A-drawdown` | 0 | complete; 1 canonical JSON document | 0.066 |
+| 278 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export A-drawdown-pass-limit-1` | 3 | partial; 1 canonical JSON document | 0.066 |
+| 279 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export A-drawdown-proportional_taxable_tax_deferred` | 0 | complete; 1 canonical JSON document | 0.059 |
+| 280 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export A-drawdown-roth_before_tax_deferred` | 0 | complete; 1 canonical JSON document | 0.071 |
+| 281 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export A-drawdown-tax_deferred_first` | 0 | complete; 1 canonical JSON document | 0.069 |
+| 282 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export B-early-retiree` | 3 | partial; 1 canonical JSON document | 0.070 |
+| 283 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export C-partial-base-year-no-taxable` | 3 | partial; 1 canonical JSON document | 0.065 |
+| 284 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export D-still-working-rmd-surplus` | 3 | partial; 1 canonical JSON document | 0.060 |
+| 285 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export E-senior-2028-loss-carry` | 0 | complete; 1 canonical JSON document | 0.066 |
+| 286 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export answers-cap` | 3 | partial; 1 canonical JSON document | 0.122 |
+| 287 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export answers-underfunded` | 3 | partial; 1 canonical JSON document | 0.152 |
+| 288 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export answers-working-61` | 3 | partial; 1 canonical JSON document | 0.165 |
+| 289 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export answers-working-61-retire-later` | 3 | partial; 1 canonical JSON document | 0.166 |
+| 290 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-account-type` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 291 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-cost-basis` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 292 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-date` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 293 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-end-before-start` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 294 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-missing-assumption` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 295 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-missing-cash-return` | 1 | invalid; 1 canonical JSON document | 0.046 |
+| 296 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-missing-field` | 1 | invalid; 1 canonical JSON document | 0.051 |
+| 297 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-missing-investment-return` | 1 | invalid; 1 canonical JSON document | 0.054 |
+| 298 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-missing-tax-indexing` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 299 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-negative-balance` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 300 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-negative-tax-indexing` | 1 | invalid; 1 canonical JSON document | 0.058 |
+| 301 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-output-range` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 302 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-owner` | 1 | invalid; 1 canonical JSON document | 0.051 |
+| 303 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-plan-end-age` | 1 | invalid; 1 canonical JSON document | 0.054 |
+| 304 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-rate` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 305 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export invalid-tax-pass-limit` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 306 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export retirement-date-baseline` | 3 | partial; 1 canonical JSON document | 0.068 |
+| 307 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export retirement-date-scenario` | 3 | partial; 1 canonical JSON document | 0.068 |
+| 308 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export return-assumption-baseline` | 0 | complete; 1 canonical JSON document | 0.071 |
+| 309 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export return-assumption-scenario` | 0 | complete; 1 canonical JSON document | 0.083 |
+| 310 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export spending-amount-baseline` | 0 | complete; 1 canonical JSON document | 0.069 |
+| 311 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export spending-amount-scenario` | 0 | complete; 1 canonical JSON document | 0.068 |
+| 312 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export synthetic-leap` | 3 | partial; 1 canonical JSON document | 0.147 |
+| 313 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export synthetic-retired` | 0 | complete; 1 canonical JSON document | 0.123 |
+| 314 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export synthetic-working` | 3 | partial; 1 canonical JSON document | 0.154 |
+| 315 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export two-person` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 316 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export unchanged-copy-baseline` | 0 | complete; 1 canonical JSON document | 0.059 |
+| 317 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export unchanged-copy-scenario` | 0 | complete; 1 canonical JSON document | 0.068 |
+| 318 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export unsupported-healthcare` | 2 | unsupported; 1 canonical JSON document | 0.055 |
+| 319 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export unsupported-negative-cash-return` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 320 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export unsupported-negative-investment-return` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 321 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export unsupported-state-tax` | 2 | unsupported; 1 canonical JSON document | 0.055 |
+| 322 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export unsupported-tax-year` | 2 | unsupported; 1 canonical JSON document | 0.051 |
+| 323 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export withdrawal-order-baseline` | 0 | complete; 1 canonical JSON document | 0.069 |
+| 324 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- export withdrawal-order-scenario` | 0 | complete; 1 canonical JSON document | 0.068 |
+| 325 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/A-drawdown-pass-limit-1.export.json` | 3 | partial; 1 canonical JSON document | 0.100 |
+| 326 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/A-drawdown-proportional_taxable_tax_deferred.export.json` | 0 | complete; 1 canonical JSON document | 0.099 |
+| 327 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/A-drawdown-roth_before_tax_deferred.export.json` | 0 | complete; 1 canonical JSON document | 0.102 |
+| 328 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/A-drawdown-tax_deferred_first.export.json` | 0 | complete; 1 canonical JSON document | 0.124 |
+| 329 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/A-drawdown.export.json` | 0 | complete; 1 canonical JSON document | 0.104 |
+| 330 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/B-early-retiree.export.json` | 3 | partial; 1 canonical JSON document | 0.098 |
+| 331 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/C-partial-base-year-no-taxable.export.json` | 3 | partial; 1 canonical JSON document | 0.087 |
+| 332 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/D-still-working-rmd-surplus.export.json` | 3 | partial; 1 canonical JSON document | 0.078 |
+| 333 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/E-senior-2028-loss-carry.export.json` | 0 | complete; 1 canonical JSON document | 0.094 |
+| 334 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/answers-cap.export.json` | 3 | partial; 1 canonical JSON document | 0.253 |
+| 335 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/answers-underfunded.export.json` | 3 | partial; 1 canonical JSON document | 0.378 |
+| 336 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/answers-working-61-retire-later.export.json` | 3 | partial; 1 canonical JSON document | 0.370 |
+| 337 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/answers-working-61.export.json` | 3 | partial; 1 canonical JSON document | 0.356 |
+| 338 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/retirement-date-baseline.export.json` | 3 | partial; 1 canonical JSON document | 0.097 |
+| 339 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/retirement-date-scenario.export.json` | 3 | partial; 1 canonical JSON document | 0.096 |
+| 340 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/return-assumption-baseline.export.json` | 0 | complete; 1 canonical JSON document | 0.099 |
+| 341 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/return-assumption-scenario.export.json` | 0 | complete; 1 canonical JSON document | 0.107 |
+| 342 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/spending-amount-baseline.export.json` | 0 | complete; 1 canonical JSON document | 0.101 |
+| 343 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/spending-amount-scenario.export.json` | 0 | complete; 1 canonical JSON document | 0.106 |
+| 344 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/synthetic-leap.export.json` | 3 | partial; 1 canonical JSON document | 0.329 |
+| 345 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/synthetic-retired.export.json` | 0 | complete; 1 canonical JSON document | 0.259 |
+| 346 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/synthetic-working.export.json` | 3 | partial; 1 canonical JSON document | 0.345 |
+| 347 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/unchanged-copy-baseline.export.json` | 0 | complete; 1 canonical JSON document | 0.107 |
+| 348 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/unchanged-copy-scenario.export.json` | 0 | complete; 1 canonical JSON document | 0.101 |
+| 349 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/withdrawal-order-baseline.export.json` | 0 | complete; 1 canonical JSON document | 0.100 |
+| 350 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/parity/golden/withdrawal-order-scenario.export.json` | 0 | complete; 1 canonical JSON document | 0.102 |
+| 351 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/app/test-data/tampered-export.json` | 1 | invalid; 1 canonical JSON document | 0.062 |
+| 352 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/app/test-data/unknown-format-export.json` | 2 | unsupported; 1 canonical JSON document | 0.054 |
+| 353 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- import packages/app/test-data/model-0.3.0.export.json` | 2 | unsupported; 1 canonical JSON document | 0.061 |
+| 354 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run A-drawdown` | 0 | complete; 1 canonical JSON document | 0.059 |
+| 355 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run A-drawdown-pass-limit-1` | 0 | partial; 1 canonical JSON document | 0.061 |
+| 356 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run A-drawdown-proportional_taxable_tax_deferred` | 0 | complete; 1 canonical JSON document | 0.060 |
+| 357 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run A-drawdown-roth_before_tax_deferred` | 0 | complete; 1 canonical JSON document | 0.059 |
+| 358 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run A-drawdown-tax_deferred_first` | 0 | complete; 1 canonical JSON document | 0.060 |
+| 359 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run B-early-retiree` | 0 | partial; 1 canonical JSON document | 0.065 |
+| 360 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run C-partial-base-year-no-taxable` | 0 | partial; 1 canonical JSON document | 0.059 |
+| 361 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run D-still-working-rmd-surplus` | 0 | partial; 1 canonical JSON document | 0.061 |
+| 362 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run E-senior-2028-loss-carry` | 0 | complete; 1 canonical JSON document | 0.059 |
+| 363 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run answers-cap` | 0 | partial; 1 canonical JSON document | 0.086 |
+| 364 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run answers-underfunded` | 0 | partial; 1 canonical JSON document | 0.097 |
+| 365 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run answers-working-61` | 0 | partial; 1 canonical JSON document | 0.113 |
+| 366 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run answers-working-61-retire-later` | 0 | partial; 1 canonical JSON document | 0.117 |
+| 367 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-account-type` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 368 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-cost-basis` | 1 | invalid; 1 canonical JSON document | 0.044 |
+| 369 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-date` | 1 | invalid; 1 canonical JSON document | 0.051 |
+| 370 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-end-before-start` | 1 | invalid; 1 canonical JSON document | 0.058 |
+| 371 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-missing-assumption` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 372 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-missing-cash-return` | 1 | invalid; 1 canonical JSON document | 0.051 |
+| 373 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-missing-field` | 1 | invalid; 1 canonical JSON document | 0.079 |
+| 374 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-missing-investment-return` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 375 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-missing-tax-indexing` | 1 | invalid; 1 canonical JSON document | 0.056 |
+| 376 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-negative-balance` | 1 | invalid; 1 canonical JSON document | 0.051 |
+| 377 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-negative-tax-indexing` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 378 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-output-range` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 379 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-owner` | 1 | invalid; 1 canonical JSON document | 0.051 |
+| 380 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-plan-end-age` | 1 | invalid; 1 canonical JSON document | 0.053 |
+| 381 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-rate` | 1 | invalid; 1 canonical JSON document | 0.052 |
+| 382 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run invalid-tax-pass-limit` | 1 | invalid; 1 canonical JSON document | 0.051 |
+| 383 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run retirement-date-baseline` | 0 | partial; 1 canonical JSON document | 0.062 |
+| 384 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run retirement-date-scenario` | 0 | partial; 1 canonical JSON document | 0.062 |
+| 385 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run return-assumption-baseline` | 0 | complete; 1 canonical JSON document | 0.060 |
+| 386 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run return-assumption-scenario` | 0 | complete; 1 canonical JSON document | 0.060 |
+| 387 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run spending-amount-baseline` | 0 | complete; 1 canonical JSON document | 0.060 |
+| 388 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run spending-amount-scenario` | 0 | complete; 1 canonical JSON document | 0.060 |
+| 389 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run synthetic-leap` | 0 | partial; 1 canonical JSON document | 0.100 |
+| 390 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run synthetic-retired` | 0 | complete; 1 canonical JSON document | 0.087 |
+| 391 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run synthetic-working` | 0 | partial; 1 canonical JSON document | 0.107 |
+| 392 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run two-person` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 393 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run unchanged-copy-baseline` | 0 | complete; 1 canonical JSON document | 0.059 |
+| 394 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run unchanged-copy-scenario` | 0 | complete; 1 canonical JSON document | 0.063 |
+| 395 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run unsupported-healthcare` | 2 | unsupported; 1 canonical JSON document | 0.051 |
+| 396 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run unsupported-negative-cash-return` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 397 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run unsupported-negative-investment-return` | 2 | unsupported; 1 canonical JSON document | 0.052 |
+| 398 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run unsupported-state-tax` | 2 | unsupported; 1 canonical JSON document | 0.053 |
+| 399 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run unsupported-tax-year` | 2 | unsupported; 1 canonical JSON document | 0.053 |
+| 400 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run withdrawal-order-baseline` | 0 | complete; 1 canonical JSON document | 0.060 |
+| 401 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- dev-run withdrawal-order-scenario` | 0 | complete; 1 canonical JSON document | 0.061 |
+| 402 | `28a71b8` | workspace root | `node --version` | 0 | v24.22.0 | 0.003 |
+| 403 | `28a71b8` | workspace root | `CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner cargo test -p horizon-parity --target wasm32-unknown-unknown answers_levers_reference_and_golden` | 0 | 1 passed, 0 failed, 0 ignored; harness 5.11 s | 6.413 |
+| 404 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend packages/app/test-data/web-edited-working-61.json` | 3 | partial; 1 canonical JSON document | 0.495 |
+| 405 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- compare answers-working-61 answers-working-61-retire-later` | 3 | partial; 1 canonical JSON document | 0.229 |
+| 406 | `28a71b8` | workspace root | `cargo run -p horizon-cli -- spend answers-working-61-retire-later` | 3 | partial; 1 canonical JSON document | 0.506 |
+| 407 | `28a71b8` | workspace root | `cargo test -p horizon-wasm` | 0 | 2 passed, 0 failed, 0 ignored | 4.179 |
+| 408 | `28a71b8` | workspace root | `node --version` | 0 | v24.22.0 | 0.002 |
+| 409 | `28a71b8` | workspace root | `cargo build -p horizon-wasm --target wasm32-unknown-unknown --release` | 0 | passed | 0.083 |
+| 410 | `28a71b8` | apps/web | `node --version` | 0 | v24.22.0 | 0.002 |
+| 411 | `28a71b8` | apps/web | `corepack --version` | 0 | 0.36.0 | 0.030 |
+| 412 | `28a71b8` | apps/web | `corepack pnpm --version` | 0 | 12.9.1 | 0.042 |
+| 413 | `28a71b8` | apps/web | `corepack pnpm install --frozen-lockfile` | 0 | passed | 0.095 |
+| 414 | `28a71b8` | apps/web | `node --version` | 0 | v24.22.0 | 0.002 |
+| 415 | `28a71b8` | apps/web | `corepack pnpm run build:engine` | 0 | passed | 0.166 |
+| 416 | `28a71b8` | apps/web | `corepack pnpm run types` | 0 | passed | 0.294 |
+| 417 | `28a71b8` | apps/web | `corepack pnpm run typecheck` | 0 | passed | 1.693 |
+| 418 | `28a71b8` | apps/web | `corepack pnpm run lint` | 0 | passed | 2.447 |
+| 419 | `28a71b8` | apps/web | `corepack pnpm run format:check` | 0 | passed | 0.656 |
+| 420 | `28a71b8` | apps/web | `corepack pnpm test` | 0 | 74 passed / 13 files; 0 failed | 5.149 |
+| 421 | `28a71b8` | apps/web | `node --version` | 0 | v24.22.0 | 0.002 |
+| 422 | `28a71b8` | apps/web | `corepack pnpm run build` | 0 | passed | 2.154 |
+| 423 | `28a71b8` | apps/web | `corepack pnpm exec playwright install chromium firefox webkit` | 0 | three matched browser binaries installed | 0.310 |
+| 424 | `28a71b8` | apps/web | `corepack pnpm run e2e` | 0 | 36 passed; 12 projects; 1032 captures; 0 unexpected/skipped/flaky | 1892.981 |
+| 425 | `28a71b8` | apps/web | `corepack pnpm run licenses` | 0 | 4 shipped / 358 full package versions passed | 0.540 |
+| 426 | `28a71b8` | workspace root | `git diff --exit-code main HEAD -- packages Cargo.toml Cargo.lock rust-toolchain.toml deny.toml docs/model docs/briefs/assets apps/web/package.json apps/web/pnpm-lock.yaml` | 0 | 0 protected source/dependency/asset changes | 0.020 |
+
+#### Diagnostic runs and limits
+
+- Before the source commit, the first new-test typecheck exited 2 because a Testing Library query used Playwright's `exact` option. Removing that unsupported option resolved it. The subsequent typecheck and lint passed; all 74 unit tests passed across 13 files; production build and Playwright install passed.
+- `corepack pnpm exec playwright test e2e/compare.spec.ts --project=webkit-375-light` passed (1 test, 0 failures; 431.852 s total), using the source snapshot subsequently committed above. Its separate smoke report retains all 35 comparison captures. The full ordered matrix above then passed against the committed source/test revision.
+- macOS execution is not observed in this Linux container. PageDown is now used for vertical keyboard scrolling in all projects; the existing cross-platform keyboard traversal remains in place. A macOS pass is not claimed from Linux.
+- Independent review remains a separate reviewer step; this record does not claim self-review.
+
+#### Exclusions
+
+- Editing multiple entries within a copy, combining changes, naming/saving/deleting copies, and comparing copies with each other remain excluded by the brief: each in-memory copy contains one engine lever's changes and compares with the protected baseline.
+- Comparison export remains deferred to plan 0005; Export stays unavailable.
+- Engine levers/comparison output, financial models, schemas, goldens, dependencies, design assets and top-level configuration remain unchanged as required. No persistence, hosted route or authorization surface was added.
+- The previous v1 retirement-outside-projection exclusion no longer applies; v1.1 supplies the rule and this round implements and tests it.
