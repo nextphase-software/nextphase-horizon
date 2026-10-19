@@ -2,8 +2,6 @@
 
 This page lists what works today and what is being built now. It is not a promise of features or dates.
 
-Generated 2026-10-18 from the merged history of this repository.
-
 ## Works today
 
 ### Calculation engine
@@ -19,8 +17,12 @@ Generated 2026-10-18 from the merged history of this repository.
 - **Engine in the browser:** The engine runs in the browser inside a Web Worker and shows results for five synthetic sample households. ([0002-W1](briefs/0002-W1-web-shell.md), `52d8e58`)
 - **Start and guided setup:** Pick a question and a sample household, edit it one short step at a time, and review it on one page. ([0002-W2](briefs/0002-W2-start-and-guided-setup.md), `27f6986`)
 - **Input check:** Mark entries as rough and see which could change the result, ranked, with a plain note that this measures completeness, not likelihood. ([0002-W3](briefs/0002-W3-input-check.md), `08f7869`)
-- **Plan screen:** A factual headline, three answers and savings over time in today's dollars, with levers, reasons, the yearly ledger and assumptions one click away, each as a chart and a table. ([0003-W2](briefs/0003-W2-plan-screen.md), `f764456`)
+- **Plan screen:** A factual headline, three answers and savings over time in today's dollars, with the levers, why savings run short, the yearly ledger and the assumptions one click away; the savings, levers and yearly ledger each have a chart and a table. ([0003-W2](briefs/0003-W2-plan-screen.md), `f764456`)
+
+Generated 2026-10-18 from the merged history of this repository.
 
 ## Being built now
 
 No milestone is in progress.
+
+Generated 2026-10-18 from the merged history of this repository.
