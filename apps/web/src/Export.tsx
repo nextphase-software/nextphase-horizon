@@ -285,91 +285,94 @@ function ExportResult({
     levers &&
     (rough === "[]" || impact || impactTransport) &&
     items.every((item) => item.comparison || item.error || item.transport);
-  const summary = (printed = false) => (
-    <article className="plan-summary">
-      <h2
-        className="summary-title"
-        role={printed ? "heading" : undefined}
-        aria-level={printed ? 1 : undefined}
-      >
-        Horizon plan summary
-      </h2>
-      <p className="help">
-        {sample.label === "Opened plan file"
-          ? "Opened plan file"
-          : `Sample household · ${sample.label}`}{" "}
-        · values as of{" "}
-        {run?.valuation_date ?? draft.input.household.valuation_date} ·{" "}
-        {run?.metadata.model_version ?? "Calculating…"}
-      </p>
-      <h2>Answers</h2>
-      {run && spending ? (
-        <>
-          <p>{answerOne(run, spending, retirementDate)}</p>
-          <p>{answerTwo(run, spending, retirementDate)}</p>
-        </>
-      ) : (
-        <Calculating />
-      )}
-      {levers ? <p>{answerThree(levers)}</p> : <Calculating />}
-      {items.map((copy) => (
-        <div key={copy.lever.id}>
-          {copy.error || copy.transport ? (
-            <ErrorMessage error={copy.error ?? copy.transport!} />
-          ) : copy.comparison ? (
+  const summary = (printed = false) => {
+    const Title = printed ? "p" : "h2";
+    return (
+      <article className="plan-summary">
+        <Title
+          className="summary-title"
+          role={printed ? "heading" : undefined}
+          aria-level={printed ? 1 : undefined}
+        >
+          Horizon plan summary
+        </Title>
+        <p className="help">
+          {sample.label === "Opened plan file"
+            ? "Opened plan file"
+            : `Sample household · ${sample.label}`}{" "}
+          · values as of{" "}
+          {run?.valuation_date ?? draft.input.household.valuation_date} ·{" "}
+          {run?.metadata.model_version ?? "Calculating…"}
+        </p>
+        <h2>Answers</h2>
+        {run && spending ? (
+          <>
+            <p>{answerOne(run, spending, retirementDate)}</p>
+            <p>{answerTwo(run, spending, retirementDate)}</p>
+          </>
+        ) : (
+          <Calculating />
+        )}
+        {levers ? <p>{answerThree(levers)}</p> : <Calculating />}
+        {items.map((copy) => (
+          <div key={copy.lever.id}>
+            {copy.error || copy.transport ? (
+              <ErrorMessage error={copy.error ?? copy.transport!} />
+            ) : copy.comparison ? (
+              <p>
+                {compareHeadline(
+                  copy.subject,
+                  copy.comparison.baseline,
+                  copy.comparison.scenario,
+                )}
+              </p>
+            ) : (
+              <Calculating />
+            )}
+          </div>
+        ))}
+        <h2>Status and what is not included</h2>
+        {run ? <p>{summaryStatus(run)}</p> : <Calculating />}
+        <h2>Rough entries</h2>
+        {rough === "[]" ? (
+          <p>No entries are marked rough.</p>
+        ) : impactTransport || (impact && "code" in impact) ? (
+          <ErrorMessage error={impactTransport ?? (impact as Failure)} />
+        ) : impact && "items" in impact ? (
+          <>
+            <ul className="summary-rough">
+              {impact.items.map((item) => (
+                <li key={item.path}>
+                  <span className="rough-label">
+                    <span aria-hidden="true">≈</span> Rough value
+                  </span>{" "}
+                  {
+                    entryDescription(
+                      draft,
+                      fields.find((field) => field.path === item.path)!,
+                    ).title
+                  }
+                  : could change your headroom by up to{" "}
+                  {wholeDollars(Math.abs(item.impact))} a year (
+                  {matters(impact.baseline.sustainable_spending, item.impact)
+                    ? "matters"
+                    : "barely matters"}
+                  )
+                </li>
+              ))}
+            </ul>
             <p>
-              {compareHeadline(
-                copy.subject,
-                copy.comparison.baseline,
-                copy.comparison.scenario,
-              )}
+              An entry matters when it could change headroom by at least 1% of{" "}
+              {wholeDollars(impact.baseline.sustainable_spending)} a year.
             </p>
-          ) : (
-            <Calculating />
-          )}
-        </div>
-      ))}
-      <h2>Status and what is not included</h2>
-      {run ? <p>{summaryStatus(run)}</p> : <Calculating />}
-      <h2>Rough entries</h2>
-      {rough === "[]" ? (
-        <p>No entries are marked rough.</p>
-      ) : impactTransport || (impact && "code" in impact) ? (
-        <ErrorMessage error={impactTransport ?? (impact as Failure)} />
-      ) : impact && "items" in impact ? (
-        <>
-          <ul className="summary-rough">
-            {impact.items.map((item) => (
-              <li key={item.path}>
-                <span className="rough-label">
-                  <span aria-hidden="true">≈</span> Rough value
-                </span>{" "}
-                {
-                  entryDescription(
-                    draft,
-                    fields.find((field) => field.path === item.path)!,
-                  ).title
-                }
-                : could change your headroom by up to{" "}
-                {wholeDollars(Math.abs(item.impact))} a year (
-                {matters(impact.baseline.sustainable_spending, item.impact)
-                  ? "matters"
-                  : "barely matters"}
-                )
-              </li>
-            ))}
-          </ul>
-          <p>
-            An entry matters when it could change headroom by at least 1% of{" "}
-            {wholeDollars(impact.baseline.sustainable_spending)} a year.
-          </p>
-        </>
-      ) : (
-        <Calculating />
-      )}
-      <p className="help">The summary fits one printed page.</p>
-    </article>
-  );
+          </>
+        ) : (
+          <Calculating />
+        )}
+        <p className="help">The summary fits one printed page.</p>
+      </article>
+    );
+  };
   return (
     <>
       <div aria-live="polite">

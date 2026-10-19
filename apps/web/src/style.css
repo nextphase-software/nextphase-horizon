@@ -961,6 +961,7 @@ select,
   }
   .plan-summary .summary-title {
     font-size: var(--text-lg);
+    font-weight: var(--weight-heading);
     margin: 0 0 var(--space-2);
   }
   .plan-summary h2 {
