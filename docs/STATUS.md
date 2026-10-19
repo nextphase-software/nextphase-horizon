@@ -14,6 +14,7 @@ This page lists what works today and what is being built now. It is not a promis
 | Input check | Mark entries as rough and see which ones could change the result. | [0002-W3](briefs/0002-W3-input-check.md) · `08f7869` |
 | Plan screen | See whether savings last, what you can spend and what moves the result most, with charts and tables. | [0003-W2](briefs/0003-W2-plan-screen.md) · `f764456` |
 | Try a change and compare | Make a copy of your plan with one change, such as retiring a year later, and compare the two side by side. | [0004-W1](briefs/0004-W1-compare-screen.md) · `eea96bd` |
+| Export and reopen | Print or save a one-page summary, download a plan file, and reopen a file after Horizon checks and reruns it. | [0005-W1](briefs/0005-W1-export-screen.md) · `b2097dd` |
 | Engine in the browser | The calculation engine runs inside your browser, in a background worker. | [0002-W1](briefs/0002-W1-web-shell.md) · `52d8e58` |
 
 ### Calculation engine
