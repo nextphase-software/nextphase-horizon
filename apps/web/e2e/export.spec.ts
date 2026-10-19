@@ -494,7 +494,10 @@ test("export: keyboard download/import, exact references, rough entries, copies,
           "series-scenario",
         ].map((token) => [
           token,
-          style.getPropertyValue(`--color-${token}`).trim(),
+          style
+            .getPropertyValue(`--color-${token}`)
+            .trim()
+            .replace(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/, "#$1$1$2$2$3$3"),
         ]),
       );
     }),
