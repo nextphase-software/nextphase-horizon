@@ -17,6 +17,8 @@ describe("engine presentation", () => {
   });
   it("spells out status and omission count", () => {
     expect(statusWord("complete")).toBe("Supported");
+    expect(statusWord("partial")).toBe("Partial");
+    expect(statusWord("partial", 0)).toBe("Partial (0 omissions)");
     expect(statusWord("partial", 7)).toBe("Partial (7 omissions)");
     expect(statusWord("unsupported")).toBe("Unsupported");
     expect(statusWord("invalid")).toBe("Invalid");

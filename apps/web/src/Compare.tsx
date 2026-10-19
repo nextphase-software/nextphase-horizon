@@ -82,13 +82,36 @@ export function Compare({
   const baselineName =
     retirementDate <= baseline.valuation_date
       ? "Baseline · retired"
-      : `Baseline · retire at ${retirement!.age_on_december_31}`;
+      : retirement
+        ? `Baseline · retire at ${retirement.age_on_december_31}`
+        : "Baseline";
+  const exhausted = copies.baseline.levers.levers.every((lever) =>
+    copies.items.some((item) => item.lever.id === lever.id),
+  );
+  const tabs = (
+    <div className="copy-tabs" role="group" aria-label="Plans">
+      <button onClick={back}>{baselineName}</button>
+      {copies.items.map((item) => (
+        <button
+          key={item.lever.id}
+          aria-current={item.lever.id === copy.lever.id ? "page" : undefined}
+          onClick={() => select(item.lever.id)}
+        >
+          {item.name}
+        </button>
+      ))}
+      <button className="new-copy" disabled={exhausted} onClick={newCopy}>
+        + New copy{exhausted ? " (no more changes to try)" : ""}
+      </button>
+    </div>
+  );
   if (error || transport)
     return (
       <div className="plan-screen compare-screen">
         <h1 ref={heading} tabIndex={-1}>
           Compare
         </h1>
+        {tabs}
         <section className="card" role="alert">
           <h2 className="status unsupported">
             <span aria-hidden="true">!</span>{" "}
@@ -103,12 +126,6 @@ export function Compare({
     comparison &&
     JSON.stringify(comparison.baseline.omissions) ===
       JSON.stringify(comparison.scenario.omissions);
-  const word = (status: string) =>
-    status === "complete"
-      ? "Supported"
-      : status === "partial"
-        ? "Partial"
-        : "Unsupported";
   const selectedYears =
     comparison &&
     new Set(
@@ -133,9 +150,6 @@ export function Compare({
   const difference = comparison?.summary.difference;
   const baseSpend = copies.baseline.spending;
   const lines = comparison?.line_differences;
-  const exhausted = copies.baseline.levers.levers.every((lever) =>
-    copies.items.some((item) => item.lever.id === lever.id),
-  );
   const measures =
     comparison && b && c && difference
       ? [
@@ -222,21 +236,7 @@ export function Compare({
             )
           : "Compare"}
       </h1>
-      <div className="copy-tabs" role="group" aria-label="Plans">
-        <button onClick={back}>{baselineName}</button>
-        {copies.items.map((item) => (
-          <button
-            key={item.lever.id}
-            aria-current={item.lever.id === copy.lever.id ? "page" : undefined}
-            onClick={() => select(item.lever.id)}
-          >
-            {item.name}
-          </button>
-        ))}
-        <button className="new-copy" disabled={exhausted} onClick={newCopy}>
-          + New copy{exhausted ? " (no more changes to try)" : ""}
-        </button>
-      </div>
+      {tabs}
       {comparison ? (
         <div className="card plan-status compare-status">
           <div className="compare-status-chips">
@@ -246,8 +246,8 @@ export function Compare({
           <p className="status-sentence">
             {comparison.baseline.status === comparison.scenario.status &&
             sameOmissions
-              ? `Both results are ${word(comparison.baseline.status)} and leave out the same things.`
-              : `The baseline is ${word(comparison.baseline.status)}; the copy is ${word(comparison.scenario.status)}.`}
+              ? `Both results are ${statusWord(comparison.baseline.status)} and leave out the same things.`
+              : `The baseline is ${statusWord(comparison.baseline.status)}; the copy is ${statusWord(comparison.scenario.status)}.`}
           </p>
           <details>
             <summary>What this result does not include</summary>

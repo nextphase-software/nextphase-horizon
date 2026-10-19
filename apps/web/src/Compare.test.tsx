@@ -1,6 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import { afterEach, expect, it, vi } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { useState } from "react";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from "@testing-library/react";
 import type { Comparison } from "./generated/types/comparison.v2";
 import { Compare } from "./Compare";
 import {
@@ -42,11 +49,11 @@ const store = (): Copies => ({
   baseline,
   items: [fresh()],
 });
-const show = (copy: PlanCopy) =>
+const show = (copy: PlanCopy, copies = store()) =>
   render(
     <Compare
       sample={samples[0]}
-      copies={store()}
+      copies={copies}
       copy={copy}
       select={vi.fn()}
       newCopy={vi.fn()}
@@ -137,7 +144,8 @@ it.each(["scenario", "compare", "sustainable_spending"] as const)(
     expect(screen.getByRole("heading", { name: "Unsupported" })).toBeTruthy();
     expect(screen.getByText(error.message)).toBeTruthy();
     expect(screen.getByRole("button", { name: "Back to plan" })).toBeTruthy();
-    expect(view.container.querySelector("svg, table, .copy-tabs")).toBeNull();
+    expect(view.container.querySelector("svg, table")).toBeNull();
+    expect(screen.getByRole("group", { name: "Plans" })).toBeTruthy();
     expect(vi.mocked(engine.call).mock.calls.map(([op]) => op)).toEqual(
       operation === "scenario"
         ? ["scenario"]
@@ -213,4 +221,68 @@ it("keeps unequal omissions separate and renders null ledger sides as dashes", (
       (cell) => cell.textContent,
     ),
   ).toEqual(["2031", "synthetic/line", "—", "$1", "—"]);
+});
+
+it("uses Baseline when retirement has no projected year", () => {
+  const copies = structuredClone(store());
+  copies.baseline.run.years = copies.baseline.run.years.filter(
+    (row) => row.year <= 2030,
+  );
+  const earlier = copies.baseline.levers.levers.find(
+    (item) => item.id === "retire_earlier",
+  )!;
+  const copy = { lever: earlier, ...copyLabels(earlier, copies.baseline.run) };
+  copies.items = [copy];
+  show(copy, copies);
+  const tabs = within(screen.getByRole("group", { name: "Plans" }));
+  expect(
+    tabs.getAllByRole("button").map((button) => button.textContent),
+  ).toEqual(["Baseline", "Retire at 65", "+ New copy"]);
+});
+it("keeps valid copies reachable when another copy fails", () => {
+  const valid = {
+    ...fresh(),
+    comparison: {
+      baseline: baseline.run,
+      scenario: baseline.run,
+      summary: {},
+      changed_inputs: [],
+      line_differences: [],
+    } as unknown as Comparison,
+  };
+  const earlier = baseline.levers.levers.find(
+    (item) => item.id === "retire_earlier",
+  )!;
+  const failed = {
+    lever: earlier,
+    ...copyLabels(earlier, baseline.run),
+    error,
+  };
+  const copies = { ...store(), items: [valid, failed] };
+  function Harness() {
+    const [selected, select] = useState(failed.lever.id);
+    return (
+      <Compare
+        sample={samples[0]}
+        copies={copies}
+        copy={copies.items.find((item) => item.lever.id === selected)!}
+        select={select}
+        newCopy={vi.fn()}
+        back={vi.fn()}
+      />
+    );
+  }
+  const view = render(<Harness />);
+  expect(screen.getByText(error.message)).toBeTruthy();
+  expect(view.container.querySelector("svg, table")).toBeNull();
+  fireEvent.click(
+    within(screen.getByRole("group", { name: "Plans" })).getByRole("button", {
+      name: "Retire at 67",
+    }),
+  );
+  expect(screen.queryByText(error.message)).toBeNull();
+  expect(
+    screen.getByText("Both results are Partial and leave out the same things."),
+  ).toBeTruthy();
+  expect(view.container.querySelector("svg")).toBeTruthy();
 });

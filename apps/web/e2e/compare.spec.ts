@@ -474,10 +474,18 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
             ),
         ).toEqual(expected);
       }
-      if (item.sample === 2)
-        await expect(
-          headlineTable.locator("tbody tr").nth(3).locator("td"),
-        ).toHaveText(["$0", "$0", "Same", "—"]);
+      if (item.sample === 2) {
+        const leftHeader = headlineTable.getByRole("rowheader", {
+          name: /^Left at 78/,
+        });
+        await expect(leftHeader).toHaveText("Left at 78today's dollars");
+        await expect(leftHeader.locator("..").locator("td")).toHaveText([
+          "$0",
+          "$0",
+          "Same",
+          "—",
+        ]);
+      }
       await expect(
         page.getByRole("button", { name: "Export this comparison" }),
       ).toBeDisabled();
@@ -511,6 +519,14 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         `${years.length} ledger lines differ, in years ${Math.min(...years)} to ${Math.max(...years)}. All are nominal dollars, each with both values and the difference.`,
       );
       if (item.sample === 0 && item.id === "retire_later") {
+        await expect(
+          page.locator(".plan-detail").last().locator("summary .help"),
+        ).toHaveText("550 lines · nominal dollars");
+        await expect(
+          page.locator(".plan-detail").last().locator(".detail-body > p"),
+        ).toHaveText(
+          "550 ledger lines differ, in years 2031 to 2060. All are nominal dollars, each with both values and the difference.",
+        );
         expect(
           await lines.evaluateAll((rows) =>
             rows
@@ -577,7 +593,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       }
       await evidence(`compare-${sample.name}-${item.id}-all-open`);
       const scroll = page.getByRole("region", {
-        name: "Every line that differs table, scroll horizontally",
+        name: "Every line that differs table, scrollable",
       });
       await reach(scroll);
       await page.keyboard.press("ArrowRight");
@@ -586,7 +602,8 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
           (element) => element.scrollHeight > element.clientHeight,
         ),
       ).toBe(true);
-      await page.keyboard.press("ArrowDown");
+      await page.keyboard.press("PageDown");
+      await expect(scroll).toBeFocused();
       await expect
         .poll(() => scroll.evaluate((element) => element.scrollTop))
         .toBeGreaterThan(0);
@@ -667,6 +684,27 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
           page.getByText("Calculating…", { exact: true }),
         ).toHaveCount(0);
         await evidence("plan-copies-removed");
+        await activate(page.getByRole("button", { name: "Try a change" }));
+        await activate(panel.getByRole("button", { name: "Make the copy" }));
+        await expect(
+          page
+            .locator(".compare-screen")
+            .getByText("Calculating…", { exact: true }),
+        ).toHaveCount(0);
+        await activate(page.getByRole("button", { name: "Back to plan" }));
+        await expect(
+          planning.getByRole("button", { name: "Compare", exact: true }),
+        ).toBeEnabled();
+        await expect(
+          page.getByText(
+            "Your copies were removed because the household changed.",
+            { exact: true },
+          ),
+        ).toHaveCount(0);
+        await expect(
+          page.getByText("Calculating…", { exact: true }),
+        ).toHaveCount(0);
+        await evidence("plan-new-copy-after-removal");
       }
     }
     // Synthetic error envelope from the actual worker boundary after a valid copy.
@@ -687,11 +725,101 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     await expect(
       page.locator(".compare-screen svg, .compare-screen table"),
     ).toHaveCount(0);
+    const errorTabs = page.getByRole("group", { name: "Plans", exact: true });
+    await expect(errorTabs.getByRole("button")).toHaveText([
+      "Baseline · retire at 66",
+      "Retire at 67",
+      "Retire at 65",
+      "+ New copy",
+    ]);
     await evidence("compare-error");
     await activate(page.getByRole("button", { name: "Back to plan" }));
     await expect(
       page.getByRole("button", { name: "Try a change" }),
     ).toBeEnabled();
+    await activate(
+      planning.getByRole("button", { name: "Compare", exact: true }),
+    );
+    await expect(
+      page.getByText("Synthetic comparison failure", { exact: true }),
+    ).toBeVisible();
+    await activate(
+      errorTabs.getByRole("button", { name: "Retire at 67", exact: true }),
+    );
+    await expect(page.locator(".compare-screen h1")).toHaveText(
+      "Retiring at 67: savings still run short at 61.",
+    );
+    await expect(
+      page.getByText("Synthetic comparison failure", { exact: true }),
+    ).toHaveCount(0);
+    await expect(page.locator(".headline-differences")).toBeVisible();
+    await evidence("compare-valid-after-copy-error");
+
+    // V1.1: the original retirement year is outside the entered plan horizon.
+    await openPlan(0);
+    await activate(page.getByRole("button", { name: "Back to household" }));
+    await activate(
+      page.getByRole("link", { name: "Edit About you", exact: true }),
+    );
+    await page.getByLabel("Plan to age", { exact: true }).fill("65");
+    await activate(planning.getByRole("button", { name: "Plan", exact: true }));
+    await expect(page.getByText("Calculating…", { exact: true })).toHaveCount(
+      0,
+    );
+    await evidence("plan-retirement-outside-projection");
+    await activate(page.getByRole("button", { name: "Try a change" }));
+    const horizonPanel = page.getByRole("region", {
+      name: "Try one change in a copy",
+    });
+    await expect(
+      horizonPanel.getByRole("radio", {
+        name: "Retire a year earlier, at 65",
+        exact: true,
+      }),
+    ).toBeChecked();
+    await evidence("copy-panel-retirement-outside-projection");
+    const horizonBefore = (await probe()).requests.length;
+    await activate(horizonPanel.getByRole("button", { name: "Make the copy" }));
+    await expect(page.locator(".compare-screen h1")).toHaveText(
+      "Retiring at 65: savings still last to 65.",
+    );
+    await expect(
+      page
+        .locator(".compare-screen")
+        .getByText("Calculating…", { exact: true }),
+    ).toHaveCount(0);
+    const horizonTabs = page.getByRole("group", { name: "Plans", exact: true });
+    await expect(horizonTabs.getByRole("button")).toHaveText([
+      "Baseline",
+      "Retire at 65",
+      "+ New copy",
+    ]);
+    await expect(
+      horizonTabs.getByRole("button", { name: "Retire at 65", exact: true }),
+    ).toHaveAttribute("aria-current", "page");
+    await expect(page.locator(".headline-differences")).toBeVisible();
+    const horizonActual = await probe();
+    const horizonCalls = horizonActual.requests.slice(horizonBefore);
+    expect(horizonCalls.map((call) => call.op)).toEqual([
+      "scenario",
+      "compare",
+      "sustainable_spending",
+    ]);
+    const baselineFile = join(temp, "short-horizon-baseline.json");
+    const copyFile = join(temp, "short-horizon-copy.json");
+    writeFileSync(baselineFile, horizonCalls[0].args[0]);
+    writeFileSync(copyFile, horizonActual.replies[horizonCalls[0].id]);
+    expect(horizonActual.replies[horizonCalls[1].id]).toBe(
+      native("compare", baselineFile, copyFile),
+    );
+    expect(horizonActual.replies[horizonCalls[2].id]).toBe(
+      native("spend", copyFile),
+    );
+    await evidence("compare-retirement-outside-projection");
+    await activate(page.locator(".compare-status summary"));
+    await activate(page.locator(".savings-table summary"));
+    await activate(page.locator(".plan-detail").last().locator("summary"));
+    await evidence("compare-retirement-outside-projection-all-open");
     expect(offOrigin).toEqual([]);
     expect(errors).toEqual([]);
     expect(

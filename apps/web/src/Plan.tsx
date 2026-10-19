@@ -105,7 +105,7 @@ export function ScrollTable({
       className="table-scroll"
       tabIndex={0}
       role="region"
-      aria-label={`${label} table, scroll horizontally`}
+      aria-label={`${label} table, scrollable`}
     >
       {children}
     </div>

@@ -45,12 +45,14 @@ export function sampleIntroduction(
   }
   return `The engine gives a full result for ${countWord(complete)} of these ${countWord(samples.length)} sample households, a partial one for ${countWord(partial)}, and none for ${none}.`;
 }
-export function statusWord(status: string, omissions = 0): string {
+export function statusWord(status: string, omissions?: number): string {
   switch (status) {
     case "complete":
       return "Supported";
     case "partial":
-      return `Partial (${omissions} omissions)`;
+      return omissions === undefined
+        ? "Partial"
+        : `Partial (${omissions} omissions)`;
     case "unsupported":
       return "Unsupported";
     default:

@@ -97,6 +97,7 @@ export function App() {
       baseline,
       items: [...(previous?.items ?? []), copy],
     }));
+    setCopiesRemoved(false);
     setCurrentCopy(lever.id);
     setPanel(null);
     setInCompare(true);
