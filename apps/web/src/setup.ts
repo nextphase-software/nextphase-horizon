@@ -288,7 +288,14 @@ export function serializeDraft(draft: Draft): string {
   const input = structuredClone(draft.input);
   for (let step = 0; step < 5; step++)
     for (const field of fields(draft, step))
-      set(input, field.path, parseField(field));
+      // Keep unedited values (including cents) exactly as entered in a plan file.
+      if (
+        field.path in draft.entries ||
+        (field.path === wageEndPath &&
+          draft.linkedWages &&
+          retirementPath in draft.entries)
+      )
+        set(input, field.path, parseField(field));
   return exactJson({ ...input, assumptions: Object.values(input.assumptions) });
 }
 export function changeEntry(draft: Draft, path: string, value: string): Draft {

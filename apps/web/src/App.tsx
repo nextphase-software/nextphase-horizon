@@ -8,6 +8,8 @@ import { Setup } from "./GuidedSetup";
 import { createDraft, fieldErrors, serializeDraft, type Draft } from "./setup";
 import { InputCheck } from "./InputCheck";
 import { Plan } from "./Plan";
+import { Export } from "./Export";
+import type { PlanCache } from "./plan-results";
 import { Compare } from "./Compare";
 import { CopyPanel } from "./CopyPanel";
 import {
@@ -54,6 +56,9 @@ export function App() {
   const [inCheck, setInCheck] = useState(false);
   const [inPlan, setInPlan] = useState(false);
   const [inCompare, setInCompare] = useState(false);
+  const [inExport, setInExport] = useState(false);
+  const [openedFile, setOpenedFile] = useState(false);
+  const [planCache] = useState<PlanCache>(() => new Map());
   const [copies, setCopies] = useState<Copies | null>(null);
   const [currentCopy, setCurrentCopy] = useState("");
   const [panel, setPanel] = useState<Baseline | null>(null);
@@ -105,6 +110,7 @@ export function App() {
     void calculateCopy(input, baseline, copy, setCopies);
   }
   function openCompare() {
+    setInExport(false);
     if (!copies?.items.length) return;
     setInSetup(false);
     setInCheck(false);
@@ -153,7 +159,7 @@ export function App() {
     setTheme(current === "dark" ? "light" : "dark");
   }
   function chooseHousehold(name: string) {
-    if (name === selected) return;
+    if (name === selected && !openedFile) return;
     if (
       draft?.dirty &&
       !window.confirm(
@@ -161,10 +167,13 @@ export function App() {
       )
     )
       return;
+    setOpenedFile(false);
+    planCache.clear();
     setSelected(name);
     setDraft(null);
   }
   function openStart(part: "question" | "household") {
+    setInExport(false);
     setInCompare(false);
     setPanel(null);
     setInSetup(false);
@@ -176,6 +185,7 @@ export function App() {
     );
   }
   function openSetup(step: number, path?: string) {
+    setInExport(false);
     setInCompare(false);
     setPanel(null);
     setSetupTarget((previous) => ({ step, path, id: previous.id + 1 }));
@@ -184,6 +194,7 @@ export function App() {
     setInSetup(true);
   }
   function openResults(plan = false) {
+    setInExport(false);
     setInCompare(false);
     setPanel(null);
     if (!draft) return;
@@ -200,7 +211,42 @@ export function App() {
   }
   const openInputCheck = () => openResults();
   const openPlan = () => openResults(true);
-  const sample = samples.find((sample) => sample.name === selected)!;
+  function openExport() {
+    if (draft) {
+      for (let step = 0; step < 5; step++) {
+        const errors = fieldErrors(draft, step);
+        if (Object.keys(errors).length) {
+          openSetup(step, Object.keys(errors)[0]);
+          return;
+        }
+      }
+    }
+    setInSetup(false);
+    setInCheck(false);
+    setInPlan(false);
+    setInCompare(false);
+    setPanel(null);
+    setInExport(true);
+  }
+  function openFile(input: string) {
+    const next = createDraft(input);
+    next.visited = [0, 1, 2, 3, 4, 5];
+    setDraft(next);
+    setOpenedFile(true);
+    setCopies(null);
+    setCopiesRemoved(false);
+    setCurrentCopy("");
+    setPanel(null);
+    planCache.clear();
+    setInExport(false);
+    setInSetup(false);
+    setInCheck(false);
+    setInCompare(false);
+    setInPlan(true);
+  }
+  const sample = openedFile
+    ? { label: "Opened plan file", name: "opened", json: "" }
+    : samples.find((sample) => sample.name === selected)!;
   const result = results[selected];
   const allResults = Object.values(results);
   const metadata =
@@ -222,7 +268,7 @@ export function App() {
           <ol className="planning-steps">
             <li
               aria-current={
-                !inSetup && !inCheck && !inPlan && !inCompare
+                !inSetup && !inCheck && !inPlan && !inCompare && !inExport
                   ? "step"
                   : undefined
               }
@@ -269,17 +315,25 @@ export function App() {
                 </span>
               )}
             </li>
-            <li>
-              <span>
-                6 Export<small>Not available yet</small>
-              </span>
+            <li aria-current={inExport ? "step" : undefined}>
+              <button onClick={openExport}>
+                <span aria-hidden="true">6</span> Export
+              </button>
             </li>
           </ol>
         </nav>
         <button onClick={toggleTheme}>Toggle theme</button>
       </header>
       <main>
-        {inCompare && copies ? (
+        {inExport ? (
+          <Export
+            sample={sample}
+            draft={draft}
+            copies={copies}
+            cache={planCache}
+            opened={openFile}
+          />
+        ) : inCompare && copies ? (
           <Compare
             key={currentCopy}
             sample={sample}
@@ -291,6 +345,7 @@ export function App() {
             }}
             newCopy={() => showCopyPanel(copies.baseline)}
             back={openPlan}
+            exportPlan={openExport}
           />
         ) : inPlan && draft ? (
           <>
@@ -304,6 +359,8 @@ export function App() {
               draft={draft}
               back={() => openSetup(5)}
               tryChange={showCopyPanel}
+              exportPlan={openExport}
+              cache={planCache}
             />
           </>
         ) : inCheck && draft ? (

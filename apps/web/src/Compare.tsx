@@ -59,6 +59,7 @@ export function Compare({
   select,
   newCopy,
   back,
+  exportPlan,
 }: {
   sample: { label: string };
   copies: Copies;
@@ -66,6 +67,7 @@ export function Compare({
   select: (id: string) => void;
   newCopy: () => void;
   back: () => void;
+  exportPlan?: () => void;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -452,8 +454,7 @@ export function Compare({
       </Detail>
       <div className="actions">
         <div>
-          <button disabled>Export this comparison</button>
-          <small>Not available yet</small>
+          <button onClick={exportPlan}>Export this comparison</button>
         </div>
         <button onClick={back}>Back to plan</button>
       </div>

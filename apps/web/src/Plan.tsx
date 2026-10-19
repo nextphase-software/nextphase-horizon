@@ -10,7 +10,8 @@ import type { Run } from "./generated/types/run-output.v2";
 import type { SustainableSpending } from "./generated/types/sustainable-spending.v1";
 import type { Levers } from "./generated/types/levers.v1";
 import type { Failure } from "./Answer";
-import { engine } from "./engine";
+import { usePlanResults, type PlanCache } from "./plan-results";
+import { answerOne, answerTwo, answerThree } from "./plan-answers";
 import { formatDollars, statusWord } from "./format";
 import { percentEntry } from "./entry";
 import { serializeDraft, type Draft } from "./setup";
@@ -349,21 +350,20 @@ function Ledger({ run, retirementDate }: { run: Run; retirementDate: string }) {
   );
 }
 
-type Results = {
-  run?: Run | Failure;
-  spending?: SustainableSpending | Failure;
-  levers?: Levers | Failure;
-};
 export function Plan({
   sample,
   draft,
   back,
   tryChange,
+  exportPlan,
+  cache,
 }: {
   sample: { label: string };
   draft: Draft;
   back: () => void;
   tryChange?: (baseline: Baseline) => void;
+  exportPlan?: () => void;
+  cache?: PlanCache;
 }) {
   return (
     <PlanResult
@@ -372,6 +372,8 @@ export function Plan({
       draft={draft}
       back={back}
       tryChange={tryChange}
+      exportPlan={exportPlan}
+      cache={cache}
     />
   );
 }
@@ -380,43 +382,23 @@ function PlanResult({
   draft,
   back,
   tryChange,
+  exportPlan,
+  cache,
 }: {
   sample: { label: string };
   draft: Draft;
   back: () => void;
   tryChange?: (baseline: Baseline) => void;
+  exportPlan?: () => void;
+  cache?: PlanCache;
 }) {
-  const [results, setResults] = useState<Results>({});
-  const [transport, setTransport] = useState<string | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const leversRef = useRef<HTMLDetailsElement>(null);
   const input = serializeDraft(draft);
+  const { results, transport } = usePlanResults(input, cache);
   useEffect(() => {
     heading.current?.focus();
-    let active = true;
-    for (const [key, op] of [
-      ["run", "run"],
-      ["spending", "sustainable_spending"],
-      ["levers", "levers"],
-    ] as const) {
-      engine
-        .call(op, input)
-        .then((json) => {
-          const result = JSON.parse(json);
-          if (active)
-            setResults((previous) => ({
-              ...previous,
-              [key]: result,
-            }));
-        })
-        .catch((error: Error) => {
-          if (active) setTransport(error.message);
-        });
-    }
-    return () => {
-      active = false;
-    };
-  }, [input]);
+  }, []);
   const error = Object.values(results).find(
     (result): result is Failure => "code" in result,
   );
@@ -462,7 +444,10 @@ function PlanResult({
         {run ? planHeadline(run) : "Plan"}
       </h1>
       <p className="sample">
-        <span aria-hidden="true">◇</span> Sample household — invented data
+        <span aria-hidden="true">◇</span>{" "}
+        {sample.label === "Opened plan file"
+          ? "Opened plan file"
+          : "Sample household — invented data"}
       </p>
       {run ? (
         <div className="card plan-status" aria-live="polite">
@@ -501,11 +486,7 @@ function PlanResult({
           </h2>
           {run && spending ? (
             <>
-              <p>
-                {short
-                  ? `${isRetired ? "No: at" : "Not at"} ${formatDollars(spending.entered)} a year${isRetired ? "," : ":"} savings run short at age ${short.age_on_december_31} (${short.year}).`
-                  : `Yes: at ${formatDollars(spending.entered)} a year, savings last to ${endAge(run)}.`}
-              </p>
+              <p>{answerOne(run, spending, retirementDate)}</p>
               <small>Spending in today's dollars</small>
             </>
           ) : (
@@ -516,20 +497,17 @@ function PlanResult({
           <h2>What can you spend?</h2>
           {spending && run ? (
             <p>
-              {spending.flag === "shortfall_with_no_retirement_spending" ? (
-                "Savings run short even with no retirement spending."
-              ) : spending.flag === "at_or_above_cap" ? (
-                `At least ${formatDollars(spending.cap)} a year in today's dollars; the search stops there.`
-              ) : (
+              {!spending.flag ? (
                 <>
                   <strong className="answer-amount">
                     {formatDollars(spending.sustainable_spending)}
-                  </strong>{" "}
-                  a year in today's dollars lasts to {endAge(run)}:{" "}
-                  {spending.headroom === 0
-                    ? "exactly what you plan to spend."
-                    : `${formatDollars(Math.abs(spending.headroom))} ${spending.headroom < 0 ? "less" : "more"} than you plan to spend.`}
+                  </strong>
+                  {answerTwo(run, spending).slice(
+                    formatDollars(spending.sustainable_spending).length,
+                  )}
                 </>
+              ) : (
+                answerTwo(run, spending)
               )}
             </p>
           ) : (
@@ -540,18 +518,7 @@ function PlanResult({
           <h2>What moves it most?</h2>
           {levers ? (
             <p>
-              {levers.what_moves_most
-                .map(
-                  (kind) =>
-                    ({
-                      return: "investment returns",
-                      spending: "spending",
-                      retirement_date: "the retirement date",
-                    })[kind as "return" | "spending" | "retirement_date"],
-                )
-                .join(", then ")
-                .replace(/^./, (letter) => letter.toUpperCase())}
-              .{" "}
+              {answerThree(levers)}{" "}
               <a
                 href="#plan-levers"
                 onClick={(event) => {
@@ -724,8 +691,7 @@ function PlanResult({
           </button>
         </div>
         <div>
-          <button disabled>Export</button>
-          <small>Not available yet</small>
+          <button onClick={exportPlan}>Export</button>
         </div>
         <button onClick={back}>Back to household</button>
       </div>

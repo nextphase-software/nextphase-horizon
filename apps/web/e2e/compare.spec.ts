@@ -488,7 +488,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       }
       await expect(
         page.getByRole("button", { name: "Export this comparison" }),
-      ).toBeDisabled();
+      ).toBeEnabled();
       await evidence(`compare-${sample.name}-${item.id}-default`);
       await activate(page.locator(".compare-status summary"));
       await activate(page.locator(".savings-table summary"));

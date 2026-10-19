@@ -216,10 +216,18 @@ export function Setup({
   const names = accountNames(draft);
   return (
     <>
-      <p className="eyebrow">Sample household</p>
+      <p className="eyebrow">
+        {sample.label === "Opened plan file"
+          ? "Opened plan file"
+          : "Sample household"}
+      </p>
       <h1>{sample.label}</h1>
       <p className="lede">
-        Review the sample's answers, one short step at a time.
+        Review{" "}
+        {sample.label === "Opened plan file"
+          ? "your plan file's"
+          : "the sample's"}{" "}
+        answers, one short step at a time.
       </p>
       <div className="setup-layout">
         <aside className="card">

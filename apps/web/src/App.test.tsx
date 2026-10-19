@@ -63,7 +63,7 @@ it("loads each status exactly once, derives the introduction and prevents unsupp
     ).disabled,
   ).toBe(true);
   expect(screen.getByText("Horizon plans for one person only.")).toBeTruthy();
-  for (const name of ["Check", "Plan", "Compare", "Export"])
+  for (const name of ["Check", "Plan", "Compare"])
     expect(screen.queryByRole("button", { name })).toBeNull();
 });
 it("checks the edited household, retains rough marks and requires confirmation before discarding edits", async () => {

@@ -236,8 +236,10 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
       page.getByRole("button", { name: "Try a change" }),
     ).toBeEnabled();
     await expect(
-      page.getByRole("button", { name: "Export", exact: true }),
-    ).toBeDisabled();
+      page
+        .locator(".plan-screen")
+        .getByRole("button", { name: "Export", exact: true }),
+    ).toBeEnabled();
     if (sample.name === "answers-working-61") {
       await expect(page.locator(".eyebrow")).toHaveText(
         "SINGLE, 61, STILL WORKING, PLANS TO RETIRE AT 66 · RETIRE AT 66",

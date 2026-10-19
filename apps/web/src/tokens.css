@@ -96,3 +96,18 @@
   --color-series-scenario: #75a9ff;
   color-scheme: dark;
 }
+
+/* Printed summaries always use the light palette. */
+@media print {
+  :root,
+  :root[data-theme],
+  :root:not([data-theme="light"]) {
+    color-scheme: light;
+    --color-canvas: #f4f6f9;
+    --color-surface: #ffffff;
+    --color-ink: #1b2433;
+    --color-muted: #525d6c;
+    --color-estimate-text: #5a3ea8;
+    --color-estimate-bg: #ece6fb;
+  }
+}

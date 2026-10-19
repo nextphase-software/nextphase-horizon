@@ -868,3 +868,118 @@ select,
   white-space: nowrap;
   border: 0;
 }
+
+/* Export and the printable summary, reference screen 6. */
+.export-actions {
+  display: grid;
+  gap: var(--space-4);
+}
+.export-actions .card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.export-actions h2 {
+  margin: 0;
+}
+.download-button {
+  display: inline-block;
+  color: var(--color-ink);
+  background: var(--color-surface);
+  border: 1px solid var(--color-muted);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  text-decoration: none;
+  margin-top: auto;
+}
+.open-file {
+  margin-bottom: var(--space-5);
+}
+.link-button {
+  color: var(--color-accent-text);
+  font-weight: var(--weight-heading);
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.file-details {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+}
+.file-details dt {
+  color: var(--color-muted);
+}
+.file-details dd {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  font-weight: var(--weight-body);
+  overflow-wrap: anywhere;
+}
+.plan-summary p {
+  max-width: 70ch;
+}
+.summary-rough {
+  list-style: none;
+  padding: 0;
+}
+.summary-rough li {
+  margin-bottom: var(--space-3);
+}
+.print-summary {
+  display: none;
+}
+@media (min-width: 900px) {
+  .export-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@page {
+  size: letter portrait;
+  margin: 0.5in;
+}
+@media print {
+  body {
+    background: var(--color-surface);
+  }
+  header,
+  footer,
+  main > :not(.export-screen),
+  .export-screen > :not(.print-summary) {
+    display: none !important;
+  }
+  main {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+  .print-summary {
+    display: block;
+  }
+  .plan-summary {
+    font-size: var(--text-sm);
+    line-height: var(--leading-sm);
+  }
+  .plan-summary h1 {
+    font-size: var(--text-lg);
+    margin: 0 0 var(--space-2);
+  }
+  .plan-summary h2 {
+    font-size: var(--text-base);
+    margin: var(--space-3) 0 var(--space-1);
+  }
+  .plan-summary p {
+    margin: var(--space-2) 0;
+    max-width: none;
+  }
+  .summary-rough {
+    margin: var(--space-2) 0;
+  }
+  .summary-rough li {
+    margin-bottom: var(--space-2);
+  }
+  .plan-summary .rough-label {
+    display: inline;
+  }
+}
