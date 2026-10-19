@@ -30,24 +30,28 @@ import {
   yearAtDate,
 } from "./plan-display";
 import { FlowDrawing, SavingsDrawing } from "./PlanCharts";
+import type { Baseline } from "./plan-copies";
 
-function Calculating() {
+export function Calculating() {
   return <p role="status">Calculating…</p>;
 }
-function Detail({
+export function Detail({
   title,
   hint,
   children,
   detailRef,
+  initiallyOpen = false,
 }: {
   title: string;
   hint: string;
   children: ReactNode;
   detailRef?: RefObject<HTMLDetailsElement | null>;
+  initiallyOpen?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(initiallyOpen);
   return (
     <details
+      open={open}
       className="card plan-detail"
       ref={detailRef}
       onToggle={(event) => setOpen(event.currentTarget.open)}
@@ -89,7 +93,7 @@ function Views({
   );
 }
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex -- Focus lets keyboard users scroll wide tables. */
-function ScrollTable({
+export function ScrollTable({
   children,
   label,
 }: {
@@ -354,10 +358,12 @@ export function Plan({
   sample,
   draft,
   back,
+  tryChange,
 }: {
   sample: { label: string };
   draft: Draft;
   back: () => void;
+  tryChange?: (baseline: Baseline) => void;
 }) {
   return (
     <PlanResult
@@ -365,6 +371,7 @@ export function Plan({
       sample={sample}
       draft={draft}
       back={back}
+      tryChange={tryChange}
     />
   );
 }
@@ -372,10 +379,12 @@ function PlanResult({
   sample,
   draft,
   back,
+  tryChange,
 }: {
   sample: { label: string };
   draft: Draft;
   back: () => void;
+  tryChange?: (baseline: Baseline) => void;
 }) {
   const [results, setResults] = useState<Results>({});
   const [transport, setTransport] = useState<string | null>(null);
@@ -703,8 +712,16 @@ function PlanResult({
       </Detail>
       <div className="actions">
         <div>
-          <button disabled>Try a change</button>
-          <small>Not available yet</small>
+          <button
+            className="primary"
+            disabled={!run || !spending || !levers}
+            onClick={() => {
+              if (run && spending && levers)
+                tryChange?.({ run, spending, levers });
+            }}
+          >
+            Try a change
+          </button>
         </div>
         <div>
           <button disabled>Export</button>

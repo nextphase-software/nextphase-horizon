@@ -776,3 +776,92 @@ select,
     flex-basis: 100%;
   }
 }
+
+/* Compare and the one-change panel, reference screen 5. */
+.copy-tabs,
+.compare-status-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+.copy-tabs button {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-heading);
+  border-color: var(--color-line);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  border-bottom: 3px solid var(--color-line);
+  color: var(--color-muted);
+}
+.copy-tabs button[aria-current] {
+  color: var(--color-ink);
+  border-bottom-color: var(--color-accent);
+}
+.copy-tabs .new-copy {
+  border: 1px dashed var(--color-muted);
+  background: transparent;
+}
+.status-plan-name {
+  font-size: var(--text-sm);
+}
+.compare-status p {
+  margin: var(--space-2) 0;
+}
+.changed-inputs {
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+.plan-screen svg .scenario-line {
+  fill: none;
+  stroke: var(--color-series-scenario);
+  stroke-width: 3;
+  stroke-dasharray: 8 5;
+  stroke-linejoin: round;
+}
+.plan-screen svg .series-label {
+  fill: var(--color-ink);
+  font-weight: var(--weight-heading);
+}
+.headline-differences {
+  min-width: 800px;
+}
+.headline-differences th[scope="row"] {
+  min-width: 200px;
+}
+.headline-differences td.amount {
+  white-space: normal;
+  min-width: 140px;
+}
+.change-word {
+  white-space: nowrap;
+  font-weight: var(--weight-heading);
+}
+.line-differences {
+  min-width: 900px;
+}
+.line-differences code {
+  white-space: nowrap;
+}
+.copy-panel {
+  margin-top: var(--space-5);
+}
+.copy-panel .choices {
+  min-inline-size: 0;
+  padding: 0;
+  border: 0;
+}
+.copy-panel .choice {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

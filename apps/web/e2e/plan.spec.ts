@@ -234,7 +234,7 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
       await expect(detail).not.toHaveAttribute("open");
     await expect(
       page.getByRole("button", { name: "Try a change" }),
-    ).toBeDisabled();
+    ).toBeEnabled();
     await expect(
       page.getByRole("button", { name: "Export", exact: true }),
     ).toBeDisabled();

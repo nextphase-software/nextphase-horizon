@@ -5,9 +5,18 @@ import { samples } from "./fixtures";
 import { flagWords, sampleIntroduction, statusWord } from "./format";
 import type { Result } from "./Answer";
 import { Setup } from "./GuidedSetup";
-import { createDraft, fieldErrors, type Draft } from "./setup";
+import { createDraft, fieldErrors, serializeDraft, type Draft } from "./setup";
 import { InputCheck } from "./InputCheck";
 import { Plan } from "./Plan";
+import { Compare } from "./Compare";
+import { CopyPanel } from "./CopyPanel";
+import {
+  calculateCopy,
+  copyLabels,
+  type Baseline,
+  type Copies,
+} from "./plan-copies";
+import type { Lever } from "./generated/types/levers.v1";
 export { Answer } from "./Answer";
 export function Status({ result }: { result: Result }) {
   return (
@@ -44,6 +53,64 @@ export function App() {
   const [inSetup, setInSetup] = useState(false);
   const [inCheck, setInCheck] = useState(false);
   const [inPlan, setInPlan] = useState(false);
+  const [inCompare, setInCompare] = useState(false);
+  const [copies, setCopies] = useState<Copies | null>(null);
+  const [currentCopy, setCurrentCopy] = useState("");
+  const [panel, setPanel] = useState<Baseline | null>(null);
+  const [copiesRemoved, setCopiesRemoved] = useState(false);
+  const panelTrigger = useRef<HTMLElement | null>(null);
+  // An unparseable entry also ceases to represent the copies' serialized input.
+  if (copies) {
+    let input: string | null = null;
+    try {
+      input = draft && serializeDraft(draft);
+    } catch {
+      /* Setup reports entry syntax. */
+    }
+    if (input !== copies.input) {
+      setCopies(null);
+      setPanel(null);
+      setInCompare(false);
+      setCopiesRemoved(true);
+    }
+  }
+  function showCopyPanel(baseline: Baseline) {
+    panelTrigger.current = document.activeElement as HTMLElement | null;
+    setPanel(baseline);
+  }
+  function cancelCopyPanel() {
+    setPanel(null);
+    requestAnimationFrame(() => panelTrigger.current?.focus());
+  }
+  function makeCopy(lever: Lever) {
+    if (
+      !draft ||
+      !panel ||
+      copies?.items.some((copy) => copy.lever.id === lever.id)
+    )
+      return;
+    const input = serializeDraft(draft);
+    const baseline = copies?.baseline ?? panel;
+    const copy = { lever, ...copyLabels(lever, baseline.run) };
+    setCopies((previous) => ({
+      input,
+      baseline,
+      items: [...(previous?.items ?? []), copy],
+    }));
+    setCurrentCopy(lever.id);
+    setPanel(null);
+    setInCompare(true);
+    setInPlan(false);
+    void calculateCopy(input, baseline, copy, setCopies);
+  }
+  function openCompare() {
+    if (!copies?.items.length) return;
+    setInSetup(false);
+    setInCheck(false);
+    setInPlan(false);
+    setPanel(null);
+    setInCompare(true);
+  }
   const [setupTarget, setSetupTarget] = useState<{
     step: number;
     path?: string;
@@ -97,6 +164,8 @@ export function App() {
     setDraft(null);
   }
   function openStart(part: "question" | "household") {
+    setInCompare(false);
+    setPanel(null);
     setInSetup(false);
     setInCheck(false);
     setInPlan(false);
@@ -106,12 +175,16 @@ export function App() {
     );
   }
   function openSetup(step: number, path?: string) {
+    setInCompare(false);
+    setPanel(null);
     setSetupTarget((previous) => ({ step, path, id: previous.id + 1 }));
     setInCheck(false);
     setInPlan(false);
     setInSetup(true);
   }
   function openResults(plan = false) {
+    setInCompare(false);
+    setPanel(null);
     if (!draft) return;
     for (let step = 0; step < 5; step++) {
       const errors = fieldErrors(draft, step);
@@ -148,7 +221,9 @@ export function App() {
           <ol className="planning-steps">
             <li
               aria-current={
-                !inSetup && !inCheck && !inPlan ? "step" : undefined
+                !inSetup && !inCheck && !inPlan && !inCompare
+                  ? "step"
+                  : undefined
               }
             >
               <button onClick={() => openStart("question")}>
@@ -182,21 +257,54 @@ export function App() {
                 </span>
               )}
             </li>
-            {["Compare", "Export"].map((step, i) => (
-              <li key={step}>
+            <li aria-current={inCompare ? "step" : undefined}>
+              {copies?.items.length ? (
+                <button onClick={openCompare}>
+                  <span aria-hidden="true">5</span> Compare
+                </button>
+              ) : (
                 <span>
-                  {i + 5} {step}
-                  <small>Not available yet</small>
+                  5 Compare<small>Not available yet</small>
                 </span>
-              </li>
-            ))}
+              )}
+            </li>
+            <li>
+              <span>
+                6 Export<small>Not available yet</small>
+              </span>
+            </li>
           </ol>
         </nav>
         <button onClick={toggleTheme}>Toggle theme</button>
       </header>
       <main>
-        {inPlan && draft ? (
-          <Plan sample={sample} draft={draft} back={() => openSetup(5)} />
+        {inCompare && copies ? (
+          <Compare
+            key={currentCopy}
+            sample={sample}
+            copies={copies}
+            copy={copies.items.find((copy) => copy.lever.id === currentCopy)!}
+            select={(id) => {
+              setPanel(null);
+              setCurrentCopy(id);
+            }}
+            newCopy={() => showCopyPanel(copies.baseline)}
+            back={openPlan}
+          />
+        ) : inPlan && draft ? (
+          <>
+            {copiesRemoved && (
+              <p role="status">
+                Your copies were removed because the household changed.
+              </p>
+            )}
+            <Plan
+              sample={sample}
+              draft={draft}
+              back={() => openSetup(5)}
+              tryChange={showCopyPanel}
+            />
+          </>
         ) : inCheck && draft ? (
           <InputCheck
             sample={sample}
@@ -356,6 +464,15 @@ export function App() {
               <p role="status">Horizon plans for one person only.</p>
             )}
           </>
+        )}
+        {panel && (
+          <CopyPanel
+            key={copies?.items.length ?? 0}
+            baseline={panel}
+            copies={copies?.items ?? []}
+            make={makeCopy}
+            cancel={cancelCopyPanel}
+          />
         )}
       </main>
       <footer>
