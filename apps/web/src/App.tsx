@@ -5,7 +5,8 @@ import { samples } from "./fixtures";
 import { flagWords, sampleIntroduction, statusWord } from "./format";
 import type { Result } from "./Answer";
 import { Setup } from "./GuidedSetup";
-import { createDraft, type Draft } from "./setup";
+import { createDraft, fieldErrors, type Draft } from "./setup";
+import { InputCheck } from "./InputCheck";
 export { Answer } from "./Answer";
 export function Status({ result }: { result: Result }) {
   return (
@@ -40,6 +41,12 @@ export function App() {
   const [failure, setFailure] = useState<string | null>(null);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [inSetup, setInSetup] = useState(false);
+  const [inCheck, setInCheck] = useState(false);
+  const [setupTarget, setSetupTarget] = useState<{
+    step: number;
+    path?: string;
+    id: number;
+  }>({ step: 0, id: 0 });
   const [theme, setTheme] = useState<"light" | "dark" | null>(null);
   const questionRef = useRef<HTMLInputElement>(null);
   const householdRef = useRef<HTMLInputElement>(null);
@@ -89,10 +96,28 @@ export function App() {
   }
   function openStart(part: "question" | "household") {
     setInSetup(false);
+    setInCheck(false);
     // Focus after React has restored the Start screen.
     requestAnimationFrame(() =>
       (part === "question" ? questionRef : householdRef).current?.focus(),
     );
+  }
+  function openSetup(step: number, path?: string) {
+    setSetupTarget((previous) => ({ step, path, id: previous.id + 1 }));
+    setInCheck(false);
+    setInSetup(true);
+  }
+  function openInputCheck() {
+    if (!draft) return;
+    for (let step = 0; step < 5; step++) {
+      const errors = fieldErrors(draft, step);
+      if (Object.keys(errors).length) {
+        openSetup(step, Object.keys(errors)[0]);
+        return;
+      }
+    }
+    setInSetup(false);
+    setInCheck(true);
   }
   const sample = samples.find((sample) => sample.name === selected)!;
   const result = results[selected];
@@ -114,7 +139,7 @@ export function App() {
         </strong>
         <nav aria-label="Planning steps">
           <ol className="planning-steps">
-            <li aria-current={!inSetup ? "step" : undefined}>
+            <li aria-current={!inSetup && !inCheck ? "step" : undefined}>
               <button onClick={() => openStart("question")}>
                 <span aria-hidden="true">1</span> Question
               </button>
@@ -124,10 +149,21 @@ export function App() {
                 <span aria-hidden="true">2</span> Household
               </button>
             </li>
-            {["Check", "Plan", "Compare", "Export"].map((step, i) => (
+            <li aria-current={inCheck ? "step" : undefined}>
+              {draft?.visited.includes(5) ? (
+                <button onClick={openInputCheck}>
+                  <span aria-hidden="true">3</span> Check
+                </button>
+              ) : (
+                <span>
+                  3 Check<small>Not available yet</small>
+                </span>
+              )}
+            </li>
+            {["Plan", "Compare", "Export"].map((step, i) => (
               <li key={step}>
                 <span>
-                  {i + 3} {step}
+                  {i + 4} {step}
                   <small>Not available yet</small>
                 </span>
               </li>
@@ -137,8 +173,19 @@ export function App() {
         <button onClick={toggleTheme}>Toggle theme</button>
       </header>
       <main>
-        {inSetup && draft ? (
+        {inCheck && draft ? (
+          <InputCheck
+            sample={sample}
+            draft={draft}
+            back={() => openSetup(5)}
+            refine={openSetup}
+          />
+        ) : inSetup && draft ? (
           <Setup
+            key={setupTarget.id}
+            initialStep={setupTarget.step}
+            focusPath={setupTarget.path}
+            openInputCheck={openInputCheck}
             sample={sample}
             draft={draft}
             setDraft={setDraft}
@@ -271,7 +318,7 @@ export function App() {
                 disabled={!result || "code" in result || !!failure}
                 onClick={() => {
                   if (!draft) setDraft(createDraft(sample.json));
-                  setInSetup(true);
+                  openSetup(0);
                 }}
               >
                 Continue

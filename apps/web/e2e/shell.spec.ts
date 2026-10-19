@@ -3,6 +3,7 @@ import { expect, type Locator } from "@playwright/test";
 import { test } from "./fixtures";
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import type { SustainableSpending } from "../src/generated/types/sustainable-spending.v1";
 import type { Operation, Request, Response } from "../src/protocol";
 const samples = [
@@ -48,8 +49,12 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
     const probe = window as unknown as {
       writes: string[];
       engineWorker: Worker;
+      impactRequests: Request[];
+      impactReplies: string[];
     };
     probe.writes = [];
+    probe.impactRequests = [];
+    probe.impactReplies = [];
     const deny = (name: string) => () => {
       probe.writes.push(name);
       throw new Error(`Forbidden storage write: ${name}`);
@@ -67,6 +72,18 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
       constructor(url: string | URL, options?: WorkerOptions) {
         super(url, options);
         probe.engineWorker = this;
+        const ids = new Set<number>();
+        const post = this.postMessage.bind(this);
+        this.postMessage = (request: Request) => {
+          if (request.op === "input_impact") {
+            probe.impactRequests.push(request);
+            ids.add(request.id);
+          }
+          post(request);
+        };
+        this.addEventListener("message", ({ data }: MessageEvent<Response>) => {
+          if (ids.has(data.id)) probe.impactReplies.push(data.json);
+        });
       }
     };
   });
@@ -288,13 +305,13 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
     }),
     "600,000",
   );
-  const rough = account.getByRole("checkbox", {
-    name: "Balance today: Rough",
+  const rough = account.getByRole("button", {
+    name: "Mark Balance today, Workplace plan, as rough",
     exact: true,
   });
   await keyboardTo(rough);
   await page.keyboard.press("Space");
-  await expect(rough).toBeChecked();
+  await expect(rough).toHaveAttribute("aria-pressed", "true");
   await evidence("04-accounts");
   await next();
   await evidence("05-spending");
@@ -475,10 +492,8 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
       }),
   ).toHaveValue("520,000");
   await expect(
-    page
-      .getByRole("checkbox", { name: "Balance today: Rough", exact: true })
-      .first(),
-  ).not.toBeChecked();
+    page.getByRole("button", { name: /Mark Balance today.*as rough/ }).first(),
+  ).toHaveAttribute("aria-pressed", "false");
   await page
     .getByRole("button", { name: "+ Add an account", exact: true })
     .click();
@@ -545,6 +560,177 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
     page.getByRole("region", { name: "Accounts", exact: true }),
   ).not.toContainText(/401k:|roth-ira:|account-[0-9]+:/);
   await evidence("13-review-readable-account-names");
+  // W3's entire reference flow uses keyboard controls and an unedited sample.
+  await page.reload();
+  await expect(page.getByTestId("intro")).toBeVisible();
+  await activate(page.getByRole("button", { name: "Continue", exact: true }));
+  await next();
+  const toggle = (name: string) =>
+    page.getByRole("button", { name, exact: true });
+  await activate(toggle("Mark Social Security per year as rough"));
+  await expect(
+    toggle("Mark Social Security per year as rough"),
+  ).toHaveAttribute("aria-pressed", "true");
+  await evidence("14-income-rough-toggle");
+  await next();
+  await activate(toggle("Mark Cost basis, Brokerage account, as rough"));
+  await expect(page.locator(".rough")).toHaveCSS("border-style", "dashed");
+  await evidence("15-accounts-rough-toggle");
+  await next();
+  await activate(toggle("Mark Spending per year before retirement as rough"));
+  await evidence("16-spending-rough-toggle");
+  await next();
+  await next();
+  await expect(
+    planning.getByRole("button", { name: "Check", exact: true }),
+  ).toBeVisible();
+  await expect(planning.getByText("Not available yet")).toHaveCount(3);
+  await evidence("17-review-three-rough");
+  await activate(
+    page.getByRole("button", { name: "Continue to the input check" }),
+  );
+  await expect(
+    page.getByRole("heading", {
+      name: "Three entries are rough. Two of them matter.",
+      exact: true,
+    }),
+  ).toBeVisible();
+  const cards = page.locator(".check-item");
+  await expect(cards.locator("h2")).toHaveText([
+    "Social Security benefit",
+    "Spending until you retire",
+    "Brokerage account cost basis",
+  ]);
+  const expected = [
+    ["Matters", "$2,305", "$23,400 to $28,600 a year", "−$4,311 to $274"],
+    ["Matters", "$1,624", "$55,800 to $68,200 a year", "−$430 to −$3,630"],
+    ["Barely matters", "$8", "$82,500 to $137,500", "−$2,014 to −$1,998"],
+  ];
+  for (const [index, parts] of expected.entries()) {
+    for (const part of parts)
+      await expect(cards.nth(index)).toContainText(part);
+    await expect(cards.nth(index).locator("svg")).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
+  }
+  await expect(
+    page.getByRole("button", { name: "See the plan" }),
+  ).toBeDisabled();
+  const native = spawnSync(
+    "cargo",
+    [
+      "run",
+      "-p",
+      "horizon-cli",
+      "--",
+      "impact",
+      "answers-working-61",
+      "packages/app/test-data/web-input-check-rough.json",
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  expect(native.status).toBe(3);
+  expect(native.stdout.endsWith("\n")).toBe(true);
+  const probe = () =>
+    page.evaluate(() => {
+      const probe = window as unknown as {
+        impactRequests: Request[];
+        impactReplies: string[];
+      };
+      return { requests: probe.impactRequests, replies: probe.impactReplies };
+    });
+  const first = await probe();
+  expect(first.requests).toHaveLength(1);
+  expect(JSON.parse(first.requests[0].args[0])).toEqual(
+    JSON.parse(read("packages/app/fixtures/answers-working-61.json")),
+  );
+  expect(JSON.parse(first.requests[0].args[1]!)).toEqual(
+    JSON.parse(read("packages/app/test-data/web-input-check-rough.json")),
+  );
+  expect(first.replies).toEqual([native.stdout.slice(0, -1)]);
+  await evidence("18-input-check-reference");
+  for (const name of [
+    "How “matters” is decided",
+    "How each entry was tested",
+    "Entered without a rough mark",
+  ]) {
+    const summary = page.locator("summary").filter({ hasText: name });
+    await activate(summary);
+    await evidence(
+      `19-input-check-detail-${name === "How “matters” is decided" ? "rule" : name === "How each entry was tested" ? "ranges" : "unmarked"}`,
+    );
+    await activate(summary);
+  }
+  await activate(cards.first().getByRole("button", { name: "Keep as rough" }));
+  await expect(cards.first()).toContainText("Kept as rough");
+  await evidence("20-input-check-kept");
+  await activate(cards.first().getByRole("button", { name: "Undo" }));
+  await expect(cards.first()).not.toContainText("Kept as rough");
+  await activate(cards.first().getByRole("button", { name: "Refine" }));
+  const benefit = page.getByRole("textbox", {
+    name: "Social Security per year today's dollars",
+    exact: true,
+  });
+  await expect(benefit).toBeFocused();
+  await evidence("21-refine-focus");
+  // Remove two rough marks, preserve the benefit mark, then re-run with an edit.
+  await type(benefit, "27,000");
+  await activate(page.getByRole("button", { name: "Accounts", exact: true }));
+  await activate(toggle("Mark Cost basis, Brokerage account, as rough"));
+  await activate(page.getByRole("button", { name: "Spending", exact: true }));
+  await activate(toggle("Mark Spending per year before retirement as rough"));
+  await activate(planning.getByRole("button", { name: "Check", exact: true }));
+  await expect(
+    page.getByRole("heading", {
+      name: "One entry is rough. It matters.",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(cards).toHaveCount(1);
+  await expect(cards.first()).toContainText(
+    "$27,000 a year from 67, today's dollars",
+  );
+  expect((await probe()).requests).toHaveLength(2);
+  expect(
+    JSON.parse((await probe()).requests[1].args[0]).household.income
+      .social_security.amount.cents,
+  ).toBe(2700000);
+  await evidence("22-input-check-one-rough");
+  await activate(page.getByRole("button", { name: "Back to household" }));
+  await expect(
+    page.getByRole("heading", { name: "Review your answers", exact: true }),
+  ).toBeFocused();
+  await activate(page.getByRole("link", { name: "Edit Income", exact: true }));
+  await activate(toggle("Mark Social Security per year as rough"));
+  await activate(planning.getByRole("button", { name: "Check", exact: true }));
+  await expect(
+    page.getByRole("heading", {
+      name: "No entries are marked rough.",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.locator("details").filter({ hasText: "Entered without a rough mark" }),
+  ).toHaveAttribute("open", "");
+  await expect(cards).toHaveCount(0);
+  await evidence("23-input-check-no-rough");
+  await activate(page.getByRole("button", { name: "Back to household" }));
+  await activate(
+    page.getByRole("link", { name: "Edit About you", exact: true }),
+  );
+  await page.getByLabel("Retirement date", { exact: true }).fill("2025-06-01");
+  await page.keyboard.press("Escape");
+  await planning.getByRole("button", { name: "Check", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Invalid", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Wage end date precedes its start date."),
+  ).toBeVisible();
+  await expect(cards).toHaveCount(0);
+  await expect(page.locator(".impact-bar, dd, .check-detail")).toHaveCount(0);
+  await evidence("24-input-check-engine-error");
   expect(offOrigin).toEqual([]);
   expect(errors).toEqual([]);
   expect(

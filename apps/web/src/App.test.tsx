@@ -81,7 +81,7 @@ it("checks the edited household, retains rough marks and requires confirmation b
   fireEvent.change(account.querySelector('input[type="text"]')!, {
     target: { value: "600,000" },
   });
-  fireEvent.click(account.querySelector('input[type="checkbox"]')!);
+  fireEvent.click(account.querySelector("button[aria-pressed]")!);
   next();
   next();
   fireEvent.change(screen.getByLabelText("Inflation percent per year"), {

@@ -1,0 +1,5 @@
+[
+  { "path": "/household/income/social_security/amount/cents" },
+  { "path": "/household/accounts/1/cost_basis_cents" },
+  { "path": "/household/spending/before_retirement/cents" }
+]

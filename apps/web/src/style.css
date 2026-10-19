@@ -239,7 +239,6 @@ fieldset.account {
   cursor: default;
 }
 .choice input,
-.rough-toggle input,
 .wage-link input {
   accent-color: var(--color-accent);
   flex-shrink: 0;
@@ -327,7 +326,7 @@ button[aria-disabled="true"] {
   margin: var(--space-4) 0;
   max-width: 440px;
 }
-.field-row > label:first-child {
+.field-label > label {
   display: block;
   font-weight: var(--weight-heading);
   margin-bottom: var(--space-2);
@@ -357,7 +356,6 @@ select,
   border-radius: var(--radius-md);
   padding: var(--space-3);
 }
-.rough-toggle,
 .wage-link {
   display: flex;
   align-items: center;
@@ -454,4 +452,94 @@ select,
 }
 .reference-footer {
   margin: var(--space-4) 0 0;
+}
+
+/* Input check and the field-label rough toggle, reference screen 3. */
+.field-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  font-weight: var(--weight-heading);
+}
+.rough-toggle {
+  display: inline-flex;
+  margin: 0;
+  padding: var(--space-1) var(--space-2);
+  border: 0;
+  color: var(--color-muted);
+  background: transparent;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-body);
+}
+.rough-toggle[aria-pressed="true"] {
+  color: var(--color-estimate-text);
+}
+.check-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-2) var(--space-4);
+}
+.check-title h2 {
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  margin: 0;
+}
+.check-title > span {
+  font-size: var(--text-sm);
+}
+.check-item > .rough-label {
+  justify-self: start;
+}
+.check-impact,
+.check-actions {
+  grid-column: 1 / -1;
+}
+.check-impact p,
+.check-actions {
+  margin: 0;
+}
+.check-actions .link {
+  background: transparent;
+}
+.impact-bar {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: 45px;
+  margin-top: var(--space-2);
+  overflow: visible;
+}
+.bar-track {
+  fill: var(--color-sunken);
+}
+.bar-matters {
+  fill: var(--color-series-scenario);
+}
+.bar-barely {
+  fill: var(--color-series-baseline);
+}
+.bar-marker {
+  stroke: var(--color-ink);
+  stroke-width: 2;
+}
+.impact-bar text {
+  fill: var(--color-ink);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-heading);
+}
+.check-detail summary {
+  color: var(--color-ink);
+}
+.check-detail summary small {
+  display: inline-block;
+  margin-left: var(--space-3);
+  font-weight: var(--weight-body);
+}
+@media (max-width: 559px) {
+  .check-item {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

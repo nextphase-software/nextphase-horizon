@@ -23,15 +23,23 @@ export function Setup({
   draft,
   setDraft,
   backToStart,
+  openInputCheck,
+  initialStep = 0,
+  focusPath,
 }: {
   sample: { name: string; label: string };
   draft: Draft;
   setDraft: Dispatch<SetStateAction<Draft | null>>;
   backToStart: () => void;
+  openInputCheck: () => void;
+  initialStep?: number;
+  focusPath?: string;
 }) {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(initialStep);
   const visited = draft.visited;
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string>>(() =>
+    focusPath ? fieldErrors(draft, initialStep) : {},
+  );
   const [editingType, setEditingType] = useState<string[]>([]);
   const [answer, setAnswer] = useState<Result | null>(null);
   const [failure, setFailure] = useState<string | null>(null);
@@ -39,8 +47,10 @@ export function Setup({
   const heading = useRef<HTMLHeadingElement>(null);
   const request = useRef(0);
   useEffect(() => {
-    heading.current?.focus();
-  }, [step]);
+    if (focusPath && step === initialStep)
+      document.getElementById(focusPath)?.focus();
+    else heading.current?.focus();
+  }, [step, focusPath, initialStep]);
   useEffect(
     () => () => {
       request.current++;
@@ -138,9 +148,30 @@ export function Setup({
     );
     return (
       <div className={`field-row ${rough ? "rough" : ""}`} key={field.path}>
-        <label htmlFor={field.path}>
-          {field.label} {field.basis && <small>{field.basis}</small>}
-        </label>
+        <div className="field-label">
+          <label htmlFor={field.path}>
+            {field.label} {field.basis && <small>{field.basis}</small>}
+          </label>
+          {eligible && (
+            <button
+              type="button"
+              className="rough-toggle"
+              aria-pressed={rough}
+              aria-label={`Mark ${field.label}${field.group ? `, ${field.group},` : ""} as rough`}
+              onClick={() =>
+                update({
+                  ...draft,
+                  rough: rough
+                    ? draft.rough.filter((path) => path !== field.path)
+                    : [...draft.rough, field.path],
+                  dirty: true,
+                })
+              }
+            >
+              ≈ {rough ? "Rough value ✓" : "Rough?"}
+            </button>
+          )}
+        </div>
         {field.kind === "select" ? (
           <select
             id={field.path}
@@ -174,25 +205,6 @@ export function Setup({
         <p className="help" id={`${field.path}-help`}>
           {field.help}
         </p>
-        {eligible && (
-          <label className="rough-toggle">
-            <input
-              type="checkbox"
-              aria-label={`${field.label}: Rough`}
-              checked={rough}
-              onChange={() =>
-                update({
-                  ...draft,
-                  rough: rough
-                    ? draft.rough.filter((path) => path !== field.path)
-                    : [...draft.rough, field.path],
-                  dirty: true,
-                })
-              }
-            />{" "}
-            Rough{rough && <span className="rough-label">≈ Rough value</span>}
-          </label>
-        )}
         {errors[field.path] && (
           <p className="field-error" id={`${field.path}-error`} role="alert">
             {errors[field.path]}
@@ -369,8 +381,10 @@ export function Setup({
               ))}
               <div className="actions">
                 <button onClick={() => move(4)}>Back</button>
+                <button className="primary" onClick={openInputCheck}>
+                  Continue to the input check
+                </button>
                 <button
-                  className="primary"
                   aria-disabled={pending}
                   aria-busy={pending}
                   onClick={() => {
