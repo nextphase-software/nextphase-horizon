@@ -37,10 +37,10 @@ Light and dark are designed separately; dark is not light inverted. Text pairs m
 | `color-accent` | `#306ce2` | `#75a9ff` | Primary buttons, focus rings, selected states, scenario series |
 | `color-accent-text` | `#1853c6` | `#75a9ff` | Links and blue text on any background |
 | `color-on-accent` | `#f8fafd` | `#0a111f` | Text and icons on `color-accent` |
-| `color-supported-text` / `-bg` | `#1c6a49` / `#e2f2e9` | `#74d3a4` / `#12301f` | Supported (a complete result within declared coverage) |
-| `color-partial-text` / `-bg` | `#8a5600` / `#fbeed2` | `#f2c467` / `#382906` | Partial (a result with named omissions) |
-| `color-unsupported-text` / `-bg` | `#a3302a` / `#fbe3e0` | `#ff958b` / `#3d1714` | Unsupported (no result is produced), and errors |
-| `color-estimate-text` / `-bg` | `#5a3ea8` / `#ece6fb` | `#c6b2ff` / `#2a2144` | A figure the person estimated, and rough values |
+| `color-supported-text` / `-bg` | `#1c6a49` / `#e2f2e9` | `#74d3a4` / `#12301f` | A result that covers the person's situation |
+| `color-partial-text` / `-bg` | `#8a5600` / `#fbeed2` | `#f2c467` / `#382906` | A result that leaves things out, each named |
+| `color-unsupported-text` / `-bg` | `#a3302a` / `#fbe3e0` | `#ff958b` / `#3d1714` | No result: Horizon can't plan for this yet; and errors |
+| `color-estimate-text` / `-bg` | `#5a3ea8` / `#ece6fb` | `#c6b2ff` / `#2a2144` | A figure the person estimated, and answers marked "not sure" |
 | `color-series-baseline` | `#7b8798` | `#7f8a9c` | Baseline line or bar in charts |
 | `color-series-scenario` | `#306ce2` | `#75a9ff` | Scenario line or bar in charts |
 
@@ -77,8 +77,9 @@ Light and dark are designed separately; dark is not light inverted. Text pairs m
 ### Financial content
 
 - **Results come first:** plain answers lead; the year-by-year ledger is one level deeper.
-- **Status labels:** every result, comparison and export shows its status in words, with an icon. The words are Supported, Partial (with the count of omissions), Unsupported, Your estimate, Rough value, and Sample household for invented data.
-- **Rough values:** marked with a dashed `color-estimate-text` outline wherever they appear.
+- **Status words:** every result, comparison and export says in plain words, with an icon, whether it covers the person's situation: "✓ Covers your situation", "△ Leaves out N things" (the list one click away, under "What this result leaves out"), or "! Horizon can't plan for this yet" with the reason. Other labels: "Your estimate", "not sure" for an answer the person marked "I'm not sure of this", and "Example household — invented figures" for invented data. Engine terms such as "supported", "partial", "omission" and "rough" never appear on screen.
+- **Gaps before a result:** no coverage label appears before there is a result. Each gap is said once, in one plain line, at the question it concerns, and the review page lists what Horizon doesn't count yet.
+- **Answers marked "not sure":** shown with a dashed `color-estimate-text` outline wherever they appear.
 - **Amounts:**
   - right-aligned in tables;
   - whole dollars in summaries;
