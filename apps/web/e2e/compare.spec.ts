@@ -581,6 +581,15 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       });
       await reach(scroll);
       await page.keyboard.press("ArrowRight");
+      expect(
+        await scroll.evaluate(
+          (element) => element.scrollHeight > element.clientHeight,
+        ),
+      ).toBe(true);
+      await page.keyboard.press("ArrowDown");
+      await expect
+        .poll(() => scroll.evaluate((element) => element.scrollTop))
+        .toBeGreaterThan(0);
       if (testInfo.project.use.viewport!.width === 375)
         expect(
           await scroll.evaluate(

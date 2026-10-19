@@ -837,6 +837,9 @@ select,
   white-space: nowrap;
   font-weight: var(--weight-heading);
 }
+.compare-screen .table-scroll:has(.line-differences) {
+  max-block-size: 70vh;
+}
 .line-differences {
   min-width: 900px;
 }
