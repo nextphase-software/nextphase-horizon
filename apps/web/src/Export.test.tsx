@@ -121,6 +121,12 @@ it("reuses plan calls, downloads exact engine bytes, releases the blob and opens
   const blob = vi.mocked(URL.createObjectURL).mock.calls[0][0] as Blob;
   expect(blob.type).toBe("application/json");
   expect(await blob.text()).toBe(read(samples[0].name, "export"));
+  expect(view.container.querySelectorAll("h1")).toHaveLength(1);
+  expect(
+    view.container.querySelector(
+      ".print-summary [role='heading'][aria-level='1']",
+    )?.textContent,
+  ).toBe("Horizon plan summary");
   const details = view.container.querySelectorAll("details");
   expect(details).toHaveLength(3);
   for (const detail of details) expect(detail.open).toBe(false);

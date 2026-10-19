@@ -285,9 +285,15 @@ function ExportResult({
     levers &&
     (rough === "[]" || impact || impactTransport) &&
     items.every((item) => item.comparison || item.error || item.transport);
-  const summary = (
+  const summary = (printed = false) => (
     <article className="plan-summary">
-      <h2 className="summary-title">Horizon plan summary</h2>
+      <h2
+        className="summary-title"
+        role={printed ? "heading" : undefined}
+        aria-level={printed ? 1 : undefined}
+      >
+        Horizon plan summary
+      </h2>
       <p className="help">
         {sample.label === "Opened plan file"
           ? "Opened plan file"
@@ -427,7 +433,7 @@ function ExportResult({
         title="What's in the summary"
         hint="Answers, status, rough entries"
       >
-        {summary}
+        {summary()}
       </Detail>
       <Detail title="File details" hint="Format, engine, size, fingerprint">
         {file ? (
@@ -477,7 +483,7 @@ function ExportResult({
           If any check fails, Horizon says which one and does not open the plan.
         </p>
       </Detail>
-      <div className="print-summary">{summary}</div>
+      <div className="print-summary">{summary(true)}</div>
     </>
   );
 }

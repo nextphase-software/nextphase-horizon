@@ -461,6 +461,9 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     await page.evaluate(() => (window as unknown as { prints: number }).prints),
   ).toBe(1);
   await page.emulateMedia({ media: "print" });
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Horizon plan summary",
+  );
   await expect(page.locator("header")).toBeHidden();
   await expect(page.locator("footer")).toBeHidden();
   await expect(page.getByRole("button")).toHaveCount(0);
