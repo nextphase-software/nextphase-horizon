@@ -3,6 +3,7 @@ import { expect, type Locator } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { spawnSync } from "node:child_process";
 import { test } from "./fixtures";
+import { keyboardTo as reachByKeyboard } from "./keyboard";
 import type { Request, Response } from "../src/protocol";
 import type { Run } from "../src/generated/types/run-output.v2";
 const root = new URL("../../../", import.meta.url);
@@ -14,6 +15,7 @@ const samples = [
     answer1: "Not at $67,000 a year: savings run short at age 93 (2058).",
     answer2:
       "$64,994 a year in today's dollars lasts to 95: $2,006 less than you plan to spend.",
+    answer3: "Investment returns, then spending, then the retirement date.",
   },
   {
     name: "synthetic-retired",
@@ -22,6 +24,7 @@ const samples = [
     answer1: "Yes: at $50,000 a year, savings last to 95.",
     answer2:
       "$87,061 a year in today's dollars lasts to 95: $37,061 more than you plan to spend.",
+    answer3: "Spending, then investment returns.",
   },
   {
     name: "A-drawdown",
@@ -30,6 +33,7 @@ const samples = [
     answer1: "No: at $60,000 a year, savings run short at age 76 (2029).",
     answer2:
       "$43,690 a year in today's dollars lasts to 78: $16,310 less than you plan to spend.",
+    answer3: "Spending, then investment returns.",
   },
   {
     name: "answers-underfunded",
@@ -45,7 +49,10 @@ function native(command: string, fixture: string) {
     ["run", "-p", "horizon-cli", "--", command, fixture],
     { cwd: root, encoding: "utf8" },
   );
-  expect([0, 3]).toContain(result.status);
+  expect(
+    [0, 3],
+    `Native ${command} ${fixture}: status=${result.status}; signal=${result.signal ?? "none"}; error=${result.error?.stack ?? "none"}; stderr tail:\n${result.stderr?.slice(-4000) ?? ""}`,
+  ).toContain(result.status);
   expect(result.stdout.endsWith("\n")).toBe(true);
   return result.stdout.slice(0, -1);
 }
@@ -107,34 +114,14 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
       ? "Alt+Tab"
       : "Tab";
   async function activate(locator: Locator) {
-    const backwards = await locator.evaluate(
-      (target) =>
-        !!document.activeElement &&
-        !!(
-          target.compareDocumentPosition(document.activeElement) &
-          Node.DOCUMENT_POSITION_FOLLOWING
-        ),
-    );
-    const key = backwards
-      ? traversal === "Tab"
-        ? "Shift+Tab"
-        : "Alt+Shift+Tab"
-      : traversal;
-    for (let i = 0; i < 100; i++) {
-      if (
-        await locator.evaluate((element) => element === document.activeElement)
-      ) {
-        expect(
-          await locator.evaluate(
-            (element) => getComputedStyle(element).outlineWidth,
-          ),
-        ).toBe("3px");
-        await page.keyboard.press("Enter");
-        return;
-      }
-      await page.keyboard.press(key);
-    }
-    throw new Error(`Cannot reach ${await locator.textContent()} by keyboard`);
+    await reachByKeyboard(page, locator, traversal);
+    await expect(locator).toBeFocused();
+    expect(
+      await locator.evaluate(
+        (element) => getComputedStyle(element).outlineWidth,
+      ),
+    ).toBe("3px");
+    await page.keyboard.press("Enter");
   }
   const planning = page.getByRole("navigation", { name: "Planning steps" });
   async function evidence(name: string) {
@@ -196,12 +183,16 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
     await expect(
       page.getByRole("link", { name: "See the levers" }),
     ).toBeVisible();
-    await expect(page.locator(".plan-answers > div").nth(0)).toContainText(
-      sample.answer1,
-    );
-    await expect(page.locator(".plan-answers > div").nth(1)).toHaveText(
-      `What can you spend?${sample.answer2}`,
-    );
+    await expect(
+      page.locator(".plan-answers > div").nth(0).locator("p"),
+    ).toHaveText(sample.answer1);
+    await expect(
+      page.locator(".plan-answers > div").nth(1).locator("p"),
+    ).toHaveText(sample.answer2);
+    if (sample.answer3)
+      await expect(
+        page.locator(".plan-answers > div").nth(2).locator("p"),
+      ).toHaveText(`${sample.answer3} See the levers`);
     await expect(
       page.getByText("Results are modeled annual amounts, not predictions."),
     ).toBeVisible();
@@ -228,10 +219,10 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
       expect(actual.replies[request.id]).toBe(expected);
       if (request.op === "run") run = JSON.parse(expected);
     }
-    await expect(page.locator(".plan-status .status")).toContainText(
+    await expect(page.locator(".plan-status .status")).toHaveText(
       run.status === "partial"
-        ? `Partial (${run.omissions.length} omissions)`
-        : "Supported",
+        ? `△ Partial (${run.omissions.length} omissions)`
+        : "✓ Supported",
     );
     const details = page.locator(".plan-detail");
     await expect(details.locator(".detail-title")).toHaveText(
@@ -251,8 +242,15 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
       await expect(page.locator(".eyebrow")).toHaveText(
         "SINGLE, 61, STILL WORKING, PLANS TO RETIRE AT 66 · RETIRE AT 66",
       );
-      await expect(page.locator(".plan-answers > div").nth(2)).toContainText(
-        "Investment returns, then spending, then the retirement date.",
+    }
+    const retired =
+      sample.name === "synthetic-retired" || sample.name === "A-drawdown";
+    if (retired) {
+      await expect(page.locator(".eyebrow")).toHaveText(
+        `${sample.label.toUpperCase()} · RETIRED`,
+      );
+      await expect(page.locator("#plan-levers summary .help")).toHaveText(
+        "What moves the answer most · 4 changes, ranked",
       );
     }
     await evidence(`plan-${sample.name}-collapsed`);
@@ -288,17 +286,11 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
           hasText: "Why savings run short",
         }),
       });
-      for (const text of [
-        "$147,652 by 2058 (nominal)",
-        "income brings in $57,298",
-        "savings supply $78,085",
-        "leaving $12,269 not covered",
-        "inflation (2.5%)",
-        "Required distributions from age 75",
-        "2026 federal tax law",
-        "cash and taxable accounts first, then tax-deferred, then Roth",
-      ])
-        await expect(why).toContainText(text);
+      await expect(why.locator("p")).toHaveText([
+        "After retiring, spending of $67,000 a year in today's dollars grows with inflation (2.5%) to $147,652 by 2058 (nominal). That year income brings in $57,298 and savings supply $78,085, leaving $12,269 not covered.",
+        "Required distributions from age 75 don't add money; they move it out of the tax-deferred account earlier, and it is taxed.",
+        "Rules used: 2026 federal tax law for a single filer, projected after 2026 with tax-threshold indexing · Withdrawal order: cash and taxable accounts first, then tax-deferred, then Roth.",
+      ]);
       await expect(page.locator(".lever-row > span")).toHaveText([
         "Investment returns 1 point higher (6%)",
         "Spend 10% less in retirement ($60,300 a year)",
@@ -319,6 +311,26 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
         "Retires at 66 · Distributions from 75 · Runs short 2058 (age 93)",
       );
     }
+    if (retired) {
+      await expect(page.locator(".lever-row")).toHaveCount(4);
+      await expect(
+        page.locator(".lever-row").filter({ hasText: /Retire a year/ }),
+      ).toHaveCount(0);
+    }
+    await expect(page.locator("#plan-levers .help li")).toHaveCount(0);
+    if (sample.name === "answers-underfunded")
+      await expect(
+        details
+          .filter({
+            has: page.locator(".detail-title", {
+              hasText: "Why savings run short",
+            }),
+          })
+          .locator("p")
+          .first(),
+      ).toHaveText(
+        "In 2026, before retiring, spending is $120,000 (nominal). That year income brings in $30,000 and savings supply $40,000, leaving $53,826 not covered.",
+      );
     await evidence(`plan-${sample.name}-all-charts`);
     await activate(page.locator(".savings-table summary"));
     for (const name of ["Levers", "Year by year"])
@@ -328,6 +340,15 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
           .getByRole("button", { name: "Table", exact: true }),
       );
     const rows = page.locator(".ledger-table tbody tr");
+    for (const row of await page.locator(".savings-table tbody tr").all()) {
+      const year = Number(await row.locator("td").nth(1).textContent());
+      const expected = run.years.find((entry) => entry.year === year)!;
+      await expect(row.locator("td")).toHaveText([
+        String(expected.age_on_december_31),
+        String(expected.year),
+        dollars(expected.ledger.total_closing_today!.cents),
+      ]);
+    }
     await expect(rows).toHaveCount(run.years.length);
     for (let i = 0; i < run.years.length; i++) {
       const row = run.years[i];
@@ -350,19 +371,39 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
         await expect(rows.nth(i)).toHaveClass("shortfall-row");
     }
     if (sample.name === "answers-working-61") {
+      await expect(
+        page.locator(".savings-table tbody tr td:first-child"),
+      ).toHaveText([
+        "61",
+        "65",
+        "66",
+        "67",
+        "70",
+        "75",
+        "80",
+        "85",
+        "90",
+        "93",
+        "95",
+      ]);
       for (const [age, value] of [
         [61, "$800,268"],
+        [65, "$934,687"],
         [66, "$905,702"],
         [93, "$886"],
         [95, "$1"],
       ] as const)
         await expect(
-          page.locator(".savings-table tbody tr").filter({
-            has: page.locator("td:first-child", {
-              hasText: new RegExp(`^${age}$`),
-            }),
-          }),
-        ).toContainText(value);
+          page
+            .locator(".savings-table tbody tr")
+            .filter({
+              has: page.locator("td:first-child", {
+                hasText: new RegExp(`^${age}$`),
+              }),
+            })
+            .locator("td")
+            .nth(2),
+        ).toHaveText(value);
       await expect(
         page.locator("#plan-levers tbody tr td:nth-child(2)"),
       ).toHaveText([
@@ -388,13 +429,16 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
         [2058, "Savings run short"],
       ] as const)
         await expect(
-          rows.filter({
-            has: page.getByRole("rowheader", {
-              name: String(year),
-              exact: true,
-            }),
-          }),
-        ).toContainText(note);
+          rows
+            .filter({
+              has: page.getByRole("rowheader", {
+                name: String(year),
+                exact: true,
+              }),
+            })
+            .locator("td")
+            .last(),
+        ).toHaveText(note);
     }
     await evidence(`plan-${sample.name}-all-tables`);
     // A keyboard user can focus the ledger container and scroll its wide table.
@@ -454,8 +498,9 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
   await expect(
     page
       .getByRole("rowheader", { name: "Inflation", exact: true })
-      .locator(".."),
-  ).toContainText("3%Changed by you2026");
+      .locator("..")
+      .locator("th, td"),
+  ).toHaveText(["Inflation", "3%", "Changed by you", "2026"]);
   await evidence("plan-edited-household");
   await activate(page.getByRole("button", { name: "Back to household" }));
   await activate(

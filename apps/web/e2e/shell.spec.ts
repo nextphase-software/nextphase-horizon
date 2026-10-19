@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import { expect, type Locator } from "@playwright/test";
 import { test } from "./fixtures";
+import { keyboardTo as reachByKeyboard } from "./keyboard";
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
@@ -100,28 +101,7 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
       ? "Alt+Tab"
       : "Tab";
   async function keyboardTo(locator: Locator) {
-    // Stay inside the document when the target precedes the current focus.
-    const backwards = await locator.evaluate(
-      (target) =>
-        !!document.activeElement &&
-        !!(
-          target.compareDocumentPosition(document.activeElement) &
-          Node.DOCUMENT_POSITION_FOLLOWING
-        ),
-    );
-    const key = backwards
-      ? traversal === "Alt+Tab"
-        ? "Alt+Shift+Tab"
-        : "Shift+Tab"
-      : traversal;
-    for (let count = 0; count < 90; count++) {
-      if (
-        await locator.evaluate((element) => element === document.activeElement)
-      )
-        return;
-      await page.keyboard.press(key);
-    }
-    throw new Error(`Keyboard could not reach ${await locator.textContent()}`);
+    await reachByKeyboard(page, locator, traversal);
   }
   async function activate(locator: Locator) {
     await keyboardTo(locator);

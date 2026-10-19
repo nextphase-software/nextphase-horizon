@@ -185,16 +185,20 @@ function LeverViews({ levers, run }: { levers: Levers; run: Run }) {
                       y1="0"
                       y2="30"
                     />
-                    <rect
-                      className="lever-bar"
-                      x={lever.effect < 0 ? 160 - width : 160}
-                      y="6"
-                      width={width}
-                      height="18"
-                    />
+                    {lever.effect !== 0 && (
+                      <rect
+                        className="lever-bar"
+                        x={lever.effect < 0 ? 160 - width : 160}
+                        y="6"
+                        width={width}
+                        height="18"
+                      />
+                    )}
                   </svg>
                   <strong>
-                    {direction(lever.effect)} {signedEffect(lever.effect)}
+                    {lever.effect === 0
+                      ? "No change"
+                      : `${direction(lever.effect)} ${signedEffect(lever.effect)}`}
                   </strong>
                 </div>
               );
@@ -233,15 +237,6 @@ function LeverViews({ levers, run }: { levers: Levers; run: Run }) {
           </ScrollTable>
         }
       />
-      {levers.skipped.length > 0 && (
-        <ul className="help">
-          {levers.skipped.map((lever) => (
-            <li key={lever.id}>
-              {lever.id.replaceAll("_", " ")}: {lever.reason}
-            </li>
-          ))}
-        </ul>
-      )}
       <p className="help">
         Claiming Social Security later isn't offered: claiming-age rules are not
         modeled yet.
@@ -540,12 +535,13 @@ function PlanResult({
                 .map(
                   (kind) =>
                     ({
-                      return: "Investment returns",
+                      return: "investment returns",
                       spending: "spending",
                       retirement_date: "the retirement date",
                     })[kind as "return" | "spending" | "retirement_date"],
                 )
-                .join(", then ")}
+                .join(", then ")
+                .replace(/^./, (letter) => letter.toUpperCase())}
               .{" "}
               <a
                 href="#plan-levers"
@@ -593,11 +589,21 @@ function PlanResult({
         >
           {spending ? (
             <p>
-              After retiring, spending of {formatDollars(spending.entered)} a
-              year in today's dollars grows with inflation (
-              {percentEntry(inflation!.value)}%) to{" "}
-              {centsDollars(short.ledger.spending.cents)} by {short.year}{" "}
-              (nominal). That year income brings in{" "}
+              {short.year < Number(retirementDate.slice(0, 4)) ? (
+                <>
+                  In {short.year}, before retiring, spending is{" "}
+                  {centsDollars(short.ledger.spending.cents)} (nominal).
+                </>
+              ) : (
+                <>
+                  After retiring, spending of {formatDollars(spending.entered)}{" "}
+                  a year in today's dollars grows with inflation (
+                  {percentEntry(inflation!.value)}%) to{" "}
+                  {centsDollars(short.ledger.spending.cents)} by {short.year}{" "}
+                  (nominal).
+                </>
+              )}{" "}
+              That year income brings in{" "}
               {centsDollars(short.ledger.income_total.cents)} and savings supply{" "}
               {centsDollars(short.ledger.withdrawals_total.cents)}, leaving{" "}
               {centsDollars(short.ledger.shortfall.cents)} not covered.

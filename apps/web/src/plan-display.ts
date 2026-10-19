@@ -31,6 +31,12 @@ export function planHeadline(run: Run): string {
 export function savingsRows(run: Run, retirementDate: string) {
   const retirementYear = Number(retirementDate.slice(0, 4));
   const short = firstShortfall(run);
+  const highest = run.years.reduce((best, year) =>
+    year.ledger.total_closing_today!.cents >
+    best.ledger.total_closing_today!.cents
+      ? year
+      : best,
+  );
   return run.years.filter(
     (year, index, years) =>
       index === 0 ||
@@ -38,6 +44,7 @@ export function savingsRows(run: Run, retirementDate: string) {
       year.year === retirementYear ||
       year.year === retirementYear + 1 ||
       year.age_on_december_31 % 5 === 0 ||
+      year === highest ||
       year === short,
   );
 }
@@ -55,9 +62,11 @@ export function leverLabel(lever: Lever, run: Run): string {
   }
 }
 export const direction = (effect: number) =>
-  effect > 0 ? "▲ Better" : effect < 0 ? "▼ Worse" : "Unchanged";
+  effect > 0 ? "▲ Better" : effect < 0 ? "▼ Worse" : "No change";
 export const signedEffect = (effect: number) =>
-  `${effect > 0 ? "+" : effect < 0 ? "−" : ""}${formatDollars(Math.abs(effect))}`;
+  effect === 0
+    ? "No change"
+    : `${effect > 0 ? "+" : "−"}${formatDollars(Math.abs(effect))}`;
 export const assumptionNames: Record<string, string> = {
   cash_return: "Cash return",
   inflation: "Inflation",

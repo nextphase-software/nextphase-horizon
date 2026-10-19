@@ -11,7 +11,7 @@ import {
 import { Plan } from "./Plan";
 import { App } from "./App";
 import { createDraft, changeEntry, serializeDraft } from "./setup";
-import { centsDollars, planHeadline } from "./plan-display";
+import { centsDollars, planHeadline, savingsRows } from "./plan-display";
 import { samples } from "./fixtures";
 vi.mock("./engine", () => ({ engine: { call: vi.fn() } }));
 import { engine } from "./engine";
@@ -86,8 +86,8 @@ it("loads each section independently and sends the exact edited input to all thr
     expect(input).toBe(serializeDraft(edited));
   }
   await act(async () => pending.run(JSON.stringify(run)));
-  expect(screen.getByRole("heading", { level: 1 }).textContent).toContain(
-    "Savings run short at 93",
+  expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(
+    "Savings run short at 93, two years before the plan ends.",
   );
   expect(screen.queryByText("$64,994")).toBeNull();
   await act(async () =>
@@ -219,10 +219,59 @@ it("activates Plan after Review and returns to Review with edits preserved", asy
   expect(screen.queryByRole("button", { name: "Plan" })).toBeNull();
   for (let i = 0; i < 6; i++)
     fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+  fireEvent.click(screen.getByRole("link", { name: "Edit Accounts" }));
+  fireEvent.change(
+    within(
+      screen.getByRole("group", { name: "Workplace plan Tax-deferred" }),
+    ).getByRole("textbox", { name: "Balance today today's dollars" }),
+    { target: { value: "600,000" } },
+  );
   fireEvent.click(screen.getByRole("button", { name: "Plan" }));
   await screen.findByText("$64,994");
+  for (const [, input] of vi.mocked(engine.call).mock.calls.slice(-3))
+    expect(JSON.parse(input).household.accounts[2].opening_balance_cents).toBe(
+      60000000,
+    );
   fireEvent.click(screen.getByRole("button", { name: "Back to household" }));
   expect(document.activeElement).toBe(
     screen.getByRole("heading", { name: "Review your answers" }),
   );
+  expect(screen.getByText("$600,000")).toBeTruthy();
+});
+
+it("includes the highest-savings year even when it is not a five-year or retirement landmark", () => {
+  const changed = structuredClone(run);
+  const peak = changed.years.find(
+    (year: { age_on_december_31: number }) => year.age_on_december_31 === 64,
+  )!;
+  peak.ledger.total_closing_today.cents = 100000000;
+  expect(savingsRows(changed, "2031-03-10")).toContain(peak);
+});
+
+it("renders a zero-effect lever as No change with no amount or bar in either view", async () => {
+  vi.mocked(engine.call).mockImplementation(async (...args) => {
+    const json = read(
+      samples[0].name,
+      args[0] === "sustainable_spending" ? "spend" : args[0],
+    );
+    if (args[0] !== "levers") return json;
+    const levers = JSON.parse(json);
+    levers.levers.find(
+      (lever: { id: string }) => lever.id === levers.ranking[0],
+    ).effect = 0;
+    return JSON.stringify(levers);
+  });
+  const view = show();
+  fireEvent.click(await screen.findByRole("link", { name: "See the levers" }));
+  const chartRow = view.container.querySelector(".lever-row")!;
+  expect(chartRow.querySelector("strong")!.textContent).toBe("No change");
+  expect(chartRow.querySelector(".lever-bar")).toBeNull();
+  fireEvent.click(
+    within(
+      view.container.querySelector("#plan-levers") as HTMLElement,
+    ).getByRole("button", { name: "Table" }),
+  );
+  const cells = view.container.querySelector("#plan-levers tbody tr")!.children;
+  expect(cells[2].textContent).toBe("No change");
+  expect(cells[3].textContent).toBe("No change");
 });
