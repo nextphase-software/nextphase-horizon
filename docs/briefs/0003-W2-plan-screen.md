@@ -1,4 +1,4 @@
-BRIEF VERSION: 0003-W2 v1 (2026-10-18)
+BRIEF VERSION: 0003-W2 v1.1 (2026-10-18)
 
 # 0003-W2 — Plan screen
 
@@ -48,12 +48,12 @@ This milestone builds reference screen 4 (`docs/briefs/assets/design-v1/04-basel
      - "…: exactly what you plan to spend." when `H = 0`;
      - with the flag `shortfall_with_no_retirement_spending`: "Savings run short even with no retirement spending.";
      - with `at_or_above_cap`: "At least $10,000,000 a year in today's dollars; the search stops there."
-   - **Answer 3,** "What moves it most?": from the engine's `what_moves_most`, mapped `return` → "Investment returns", `spending` → "spending", `retirement_date` → "the retirement date", and joined "A, then B, then C.". Then a "See the levers" link that opens the Levers section.
+   - **Answer 3,** "What moves it most?": from the engine's `what_moves_most`, mapped `return` → "investment returns", `spending` → "spending", `retirement_date` → "the retirement date", joined "A, then B, then C.", with only the first letter of the sentence capitalised: "Investment returns, then spending, then the retirement date." or "Spending, then investment returns.". Then a "See the levers" link that opens the Levers section.
 6. **Savings by age** (must-match 4):
    - a line of `total_closing_today` by age, in today's dollars of the valuation year, labelled so;
    - a "Retire at <age>" label at the retirement age;
    - a dotted "Runs short at <A>" marker when there is a shortfall;
-   - a "Show as a table" alternative listing age, year and savings for the first year, the retirement year and the year after, every age divisible by 5, the first shortfall year and the last year;
+   - a "Show as a table" alternative listing age, year and savings for the first year, the retirement year and the year after, every age divisible by 5, the year with the highest savings, the first shortfall year and the last year. Any amount the chart labels appears in this table;
    - at 375 px, a compact drawing.
 7. **Collapsed sections** (must-match 5), each with a hint:
    - **Levers** (hint "What moves the answer most · <n> changes, ranked"):
@@ -61,9 +61,12 @@ This milestone builds reference screen 4 (`docs/briefs/assets/design-v1/04-basel
      - the chart is horizontal bars of each lever's `effect` in the engine's `ranking` order, diverging from zero, with "▲ Better +$X" or "▼ Worse −$X" written beside each bar and no status colours;
      - the table has the columns Change, Savings ("lasts to <end age>", or "runs short at <first_shortfall_age>"), Change in headroom (signed, today's dollars a year) and Better/Worse in words;
      - lever labels use the values in each lever's `changes`: "Investment returns 1 point higher (6%)", "Investment returns 1 point lower (4%)", "Spend 10% less in retirement ($60,300 a year)", "Spend 10% more in retirement ($73,700 a year)", "Retire a year later, at <age + 1>", "Retire a year earlier, at <age − 1>";
+     - a lever whose `effect` is 0 shows "No change" in place of the arrow, word and amount, and no bar;
+     - levers in the engine's `skipped` list are not shown, and `<n>` in the hint counts only the levers shown;
      - a note: "Claiming Social Security later isn't offered: claiming-age rules are not modeled yet."
    - **Why savings run short** (only when there is a shortfall; hint "In <year>, at <A>"):
-     - "After retiring, spending of $E a year in today's dollars grows with inflation (<inflation %>) to $<spending that year> by <year> (nominal). That year income brings in $<income_total> and savings supply $<withdrawals_total>, leaving $<shortfall> not covered."
+     - when the first shortfall year is on or after the retirement-date year: "After retiring, spending of $E a year in today's dollars grows with inflation (<inflation %>) to $<spending that year> by <year> (nominal). That year income brings in $<income_total> and savings supply $<withdrawals_total>, leaving $<shortfall> not covered.";
+     - when it is before the retirement-date year: "In <year>, before retiring, spending is $<spending that year> (nominal). That year income brings in $<income_total> and savings supply $<withdrawals_total>, leaving $<shortfall> not covered."
      - When required distributions occur: "Required distributions from age <age in the first year with rmd_total > 0> don't add money; they move it out of the tax-deferred account earlier, and it is taxed."
      - A rules line: "Rules used: <rule_set_year> federal tax law for a single filer, projected after <rule_set_year> with tax-threshold indexing · Withdrawal order: <withdrawal_order_used in words>." The words are: `taxable_first` → "cash and taxable accounts first, then tax-deferred, then Roth"; `tax_deferred_first` → "tax-deferred accounts first"; `roth_before_tax_deferred` → "Roth before tax-deferred"; `proportional_taxable_tax_deferred` → "taxable and tax-deferred in proportion".
    - **Year by year** (hint "Nominal dollars · <n> years"):
@@ -100,7 +103,7 @@ This milestone builds reference screen 4 (`docs/briefs/assets/design-v1/04-basel
    - **answer 1:** "Not at $67,000 a year: savings run short at age 93 (2058).";
    - **answer 2:** "**$64,994** a year in today's dollars lasts to 95: $2,006 less than you plan to spend.";
    - **answer 3:** "Investment returns, then spending, then the retirement date.";
-   - **chart table:** age 61 $800,268; 66 $905,702; 93 $885; 95 $0 (today's dollars);
+   - **chart table:** age 61 $800,268; 65 $934,687 (the highest); 66 $905,702; 93 $886; 95 $1 (today's dollars);
    - **levers,** in this order:
 
      | Lever | Change in headroom | Savings |
@@ -123,14 +126,21 @@ This milestone builds reference screen 4 (`docs/briefs/assets/design-v1/04-basel
    | `A-drawdown` | "Savings run short at 76, two years before the plan ends." | | $43,690, "$16,310 less…" |
    | `answers-underfunded` | "Savings run short at 61, 34 years before the plan ends." | | "Savings run short even with no retirement spending." |
 
+   Also:
+   - **eyebrow:** `synthetic-retired` reads "SINGLE, 70, RETIRED · RETIRED";
+   - **answer 3:** `synthetic-retired` and `A-drawdown` read "Spending, then investment returns.";
+   - **levers:** `synthetic-retired` and `A-drawdown` show four levers, with the hint "What moves the answer most · 4 changes, ranked", and no retirement-date lever;
+   - **"Why"** for `answers-underfunded`: "In 2026, before retiring, spending is $120,000 (nominal). That year income brings in $30,000 and savings supply $40,000, leaving $53,826 not covered."
+
 3. **Parity:**
    - the worker's `run`, `sustainable_spending` and `levers` outputs for the working sample are byte-identical to the native CLI's;
    - the 0002-W1, W2 and W3 parity checks still pass;
-   - every figure asserted in Done when 1 and 2 is read from the rendered page.
+   - every figure and sentence asserted in Done when 1 and 2 is read from the rendered page and matched exactly against its whole table cell or sentence, not as a substring.
 4. **Keyboard and screen readers:**
    - every section and switch is operable by keyboard;
    - "See the levers" opens and focuses the Levers section;
-   - the charts are `aria-hidden` with their tables reachable.
+   - the charts are `aria-hidden` with their tables reachable;
+   - keyboard steps in the end-to-end tests reach their targets whether focus has to move forward or backward, and the suite passes on Linux and on macOS.
 5. **Accessibility and privacy:** axe reports no violations, there is no horizontal page scroll at 375 px (tables scroll inside their containers), and nothing is stored or requested off-origin. This holds in three browsers, both sizes and both themes, with every section open and in both chart and table views.
 6. **The input-check hint** reads "Five groups of entries" for the working sample.
 7. **Earlier guarantees:** Rust validation and licences unchanged; no new dependency, schema or golden change; no new top-level entry.
