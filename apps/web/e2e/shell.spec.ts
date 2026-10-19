@@ -584,7 +584,7 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
   await expect(
     planning.getByRole("button", { name: "Check", exact: true }),
   ).toBeVisible();
-  await expect(planning.getByText("Not available yet")).toHaveCount(3);
+  await expect(planning.getByText("Not available yet")).toHaveCount(2);
   await evidence("17-review-three-rough");
   await activate(
     page.getByRole("button", { name: "Continue to the input check" }),
@@ -616,7 +616,7 @@ test("start and guided setup: keyboard, native parity, accessibility and privacy
   }
   await expect(
     page.getByRole("button", { name: "See the plan" }),
-  ).toBeDisabled();
+  ).toBeEnabled();
   const native = spawnSync(
     "cargo",
     [

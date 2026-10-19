@@ -7,6 +7,7 @@ import type { Result } from "./Answer";
 import { Setup } from "./GuidedSetup";
 import { createDraft, fieldErrors, type Draft } from "./setup";
 import { InputCheck } from "./InputCheck";
+import { Plan } from "./Plan";
 export { Answer } from "./Answer";
 export function Status({ result }: { result: Result }) {
   return (
@@ -42,6 +43,7 @@ export function App() {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [inSetup, setInSetup] = useState(false);
   const [inCheck, setInCheck] = useState(false);
+  const [inPlan, setInPlan] = useState(false);
   const [setupTarget, setSetupTarget] = useState<{
     step: number;
     path?: string;
@@ -97,6 +99,7 @@ export function App() {
   function openStart(part: "question" | "household") {
     setInSetup(false);
     setInCheck(false);
+    setInPlan(false);
     // Focus after React has restored the Start screen.
     requestAnimationFrame(() =>
       (part === "question" ? questionRef : householdRef).current?.focus(),
@@ -105,9 +108,10 @@ export function App() {
   function openSetup(step: number, path?: string) {
     setSetupTarget((previous) => ({ step, path, id: previous.id + 1 }));
     setInCheck(false);
+    setInPlan(false);
     setInSetup(true);
   }
-  function openInputCheck() {
+  function openResults(plan = false) {
     if (!draft) return;
     for (let step = 0; step < 5; step++) {
       const errors = fieldErrors(draft, step);
@@ -117,8 +121,11 @@ export function App() {
       }
     }
     setInSetup(false);
-    setInCheck(true);
+    setInCheck(!plan);
+    setInPlan(plan);
   }
+  const openInputCheck = () => openResults();
+  const openPlan = () => openResults(true);
   const sample = samples.find((sample) => sample.name === selected)!;
   const result = results[selected];
   const allResults = Object.values(results);
@@ -139,7 +146,11 @@ export function App() {
         </strong>
         <nav aria-label="Planning steps">
           <ol className="planning-steps">
-            <li aria-current={!inSetup && !inCheck ? "step" : undefined}>
+            <li
+              aria-current={
+                !inSetup && !inCheck && !inPlan ? "step" : undefined
+              }
+            >
               <button onClick={() => openStart("question")}>
                 <span aria-hidden="true">1</span> Question
               </button>
@@ -160,10 +171,21 @@ export function App() {
                 </span>
               )}
             </li>
-            {["Plan", "Compare", "Export"].map((step, i) => (
+            <li aria-current={inPlan ? "step" : undefined}>
+              {draft?.visited.includes(5) ? (
+                <button onClick={openPlan}>
+                  <span aria-hidden="true">4</span> Plan
+                </button>
+              ) : (
+                <span>
+                  4 Plan<small>Not available yet</small>
+                </span>
+              )}
+            </li>
+            {["Compare", "Export"].map((step, i) => (
               <li key={step}>
                 <span>
-                  {i + 4} {step}
+                  {i + 5} {step}
                   <small>Not available yet</small>
                 </span>
               </li>
@@ -173,12 +195,15 @@ export function App() {
         <button onClick={toggleTheme}>Toggle theme</button>
       </header>
       <main>
-        {inCheck && draft ? (
+        {inPlan && draft ? (
+          <Plan sample={sample} draft={draft} back={() => openSetup(5)} />
+        ) : inCheck && draft ? (
           <InputCheck
             sample={sample}
             draft={draft}
             back={() => openSetup(5)}
             refine={openSetup}
+            plan={openPlan}
           />
         ) : inSetup && draft ? (
           <Setup

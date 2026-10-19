@@ -4,7 +4,7 @@ import type { InputImpact } from "./generated/types/input-impact.v1";
 import type { Failure } from "./Answer";
 import { engine } from "./engine";
 import { percentEntry } from "./entry";
-import { statusWord } from "./format";
+import { countWord, statusWord } from "./format";
 import { serializeDraft, setupSteps, type Draft } from "./setup";
 import {
   barScale,
@@ -22,11 +22,13 @@ export function InputCheck({
   draft,
   back,
   refine,
+  plan,
 }: {
   sample: { label: string };
   draft: Draft;
   back: () => void;
   refine: (step: number, path: string) => void;
+  plan?: () => void;
 }) {
   const [result, setResult] = useState<InputImpact | Failure | null>(null);
   const [failure, setFailure] = useState<string | null>(null);
@@ -226,7 +228,13 @@ export function InputCheck({
             open={success.items.length === 0 ? true : undefined}
           >
             <summary>
-              Entered without a rough mark<small>5 groups of entries</small>
+              Entered without a rough mark
+              <small>
+                {countWord(setupSteps.length - 1).replace(/^./, (letter) =>
+                  letter.toUpperCase(),
+                )}{" "}
+                groups of entries
+              </small>
             </summary>
             <ul>
               {setupSteps.slice(0, 5).map((step, index) => (
@@ -248,10 +256,9 @@ export function InputCheck({
       )}
       <div className="actions">
         {success && (
-          <>
-            <button disabled>See the plan</button>
-            <span className="help">Not available yet</span>
-          </>
+          <button className="primary" onClick={plan}>
+            See the plan
+          </button>
         )}
         <button onClick={back}>Back to household</button>
       </div>
