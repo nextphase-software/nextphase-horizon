@@ -251,12 +251,22 @@ export function IntakeQuestion({
       )}
       {q === 2 && (
         <>
-          {f.birthMode === "later" ? (
-            <p className="intake-tip">
-              Fine. Horizon needs this for any plan; you can add it from your
-              results.
-            </p>
-          ) : f.birthMode === "age" ? (
+          {f.birthMode === "later" && (
+            <>
+              <p className="intake-tip">
+                Fine. Horizon needs this for any plan; you can add it from your
+                results.
+              </p>
+              <button
+                type="button"
+                className="link-button"
+                onClick={() => update({ birthMode: "date" })}
+              >
+                Answer it now instead
+              </button>
+            </>
+          )}
+          {f.birthMode === "age" ? (
             <AgeField
               label="Your age"
               value={f.age}
@@ -266,7 +276,7 @@ export function IntakeQuestion({
             <DateFields
               label="Date of birth"
               value={f.birth}
-              change={(birth) => update({ birth })}
+              change={(birth) => update({ birth, birthMode: "date" })}
             />
           )}
           <div className="intake-links">
@@ -281,19 +291,15 @@ export function IntakeQuestion({
                 ? "I'd rather give my date of birth"
                 : "I'd rather give my age"}
             </button>
-            <button
-              type="button"
-              className="link-button"
-              onClick={() =>
-                update({
-                  birthMode: f.birthMode === "later" ? "date" : "later",
-                })
-              }
-            >
-              {f.birthMode === "later"
-                ? "Answer it now instead"
-                : "I'll add this later"}
-            </button>
+            {f.birthMode !== "later" && (
+              <button
+                type="button"
+                className="link-button"
+                onClick={() => update({ birthMode: "later" })}
+              >
+                I'll add this later
+              </button>
+            )}
           </div>
         </>
       )}
