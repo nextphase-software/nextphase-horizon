@@ -33,7 +33,9 @@ test("intake: dates, add later, brokerage ranges, assumptions and Forget cancell
   const next = () =>
     page.getByRole("button", { name: "Continue", exact: true }).click();
   async function date(month: string, day: string, year: string) {
-    await page.getByLabel("Month", { exact: true }).selectOption(month);
+    await page
+      .getByRole("combobox", { name: "Month", exact: true })
+      .selectOption(month);
     const dayField = page.getByLabel("Day", { exact: true });
     await dayField.fill("");
     // Real digit entry catches zero-padding that would turn typing 10 into 010.
@@ -52,7 +54,9 @@ test("intake: dates, add later, brokerage ranges, assumptions and Forget cancell
   await page
     .getByRole("button", { name: "I'll add this later", exact: true })
     .click();
-  await expect(page.getByLabel("Month", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("combobox", { name: "Month", exact: true }),
+  ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Continue", exact: true }),
   ).toBeEnabled();
@@ -100,7 +104,7 @@ test("intake: dates, add later, brokerage ranges, assumptions and Forget cancell
     }),
   ).toBeVisible();
   await page
-    .getByLabel("Kind of account", { exact: true })
+    .getByRole("combobox", { name: "Kind of account", exact: true })
     .selectOption("taxable");
   await page
     .getByRole("button", {

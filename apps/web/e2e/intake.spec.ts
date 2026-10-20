@@ -483,6 +483,10 @@ test("intake: result cases, saved validation, resumption and example isolation",
     await expect(page.getByTestId("intake-headline")).toHaveText(
       sentences[name][0].slice(3),
     );
+    if (reference.cases[name].result.household_input)
+      await expect(
+        page.getByRole("button", { name: "Try a change", exact: true }),
+      ).toBeEnabled();
     await capture(page, info, `head-${name}`);
     if (name === "v2-working-complete") {
       await expect(

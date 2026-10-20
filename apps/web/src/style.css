@@ -1267,3 +1267,11 @@ header:has(.brand-button) {
 .reference-footer .link-button {
   margin-inline-start: var(--space-1);
 }
+header:has(.brand-button) {
+  padding-block: var(--space-3);
+}
+header:has(.brand-button) > button:last-child {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+}
