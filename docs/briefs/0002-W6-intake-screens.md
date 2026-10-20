@@ -1,4 +1,4 @@
-BRIEF VERSION: 0002-W6 v1 (2026-10-20)
+BRIEF VERSION: 0002-W6 v1.1 (2026-10-20)
 
 # 0002-W6 — Intake screens: your own figures, in your own words
 
@@ -31,7 +31,7 @@ The status words of decision 0016 replace "Supported" and "Partial" everywhere. 
    | 4 | At what age do you plan to retire? (hidden when retired) | Most results turn on this. You can try other ages later. | An age; **I know the date instead** (Month · Day · Year); **I'll add this later** | `retirement` `{age}` · `{date}` · `{later}` |
    | 5 | How long should the plan last? | Running short late in life is the main risk, so the plan runs to 95 unless you choose otherwise. | An age field, empty, with "95" as its placeholder | `plan_end_age` when typed; omitted when empty |
    | 6 | What do you earn now, before tax? (hidden when retired) | Your pay covers your spending until you retire. Note: "Horizon does not yet count money you add to your savings from your pay." | Money | `pay` |
-   | 7 | Will you keep working until you retire? (hidden when retired) | Your pay stops when your work does. | Yes · No, my work ends earlier (then Month · Day · Year) | `pay_ends` omitted · `{date}` |
+   | 7 | Will you keep working until you retire? (hidden when retired) | Your pay stops when your work does. | Yes · No, my work ends earlier (then Month · Day · Year) | `pay_ends` `{at_retirement: true}` · `{date}` |
    | 8 | Do you expect Social Security? | For most people it is the largest income in retirement. | Yes · No · Not sure | `social_security.expects` |
    | 9 | At what age do you plan to start it? (hidden for "No") | The amount depends on when you start. Tip: "Not sure? Start with 67. You can try other ages later." | An age field, empty, with "67" as its placeholder | `social_security.start_age` when typed; omitted when empty |
    | 10 | About how much will you get, in today's money? (hidden for "No") | Use the amount for the age you just gave. Tip: "Your estimate is on your Social Security statement at ssa.gov. Horizon cannot estimate it for you yet; a best guess is fine for now." | Money | `social_security.amount` |
@@ -43,8 +43,9 @@ The status words of decision 0016 replace "Supported" and "Partial" everywhere. 
 
    - **Always set:** `format` `"horizon-answers"` and `version` 2.
    - **`valuation_date`:** the person's local date when they first choose **Start with my own figures**. It is kept with the answers, and the review page shows it as "Figures are as of <day month year>".
-   - **`assumptions`:** only the rates the person changed on the review page.
-   - **`not_sure`:** the names of the answers marked "not sure", in question order: `pay`, `spending_now`, `social_security`, `pension`, `savings`, `spending_in_retirement`.
+   - **`assumptions`:** always present: an object with only the rates the person changed on the review page, empty when none.
+   - **Money answers** always carry `per`. Questions hidden for a retired person (4, 6, 7, 14) are omitted from the document. **(v1.1)**
+   - **`not_sure`:** always present, empty when none: the names of the answers marked "not sure", in question order: `pay`, `spending_now`, `social_security`, `pension`, `savings`, `spending_in_retirement`.
 3. **Answer controls:**
    - **Money:** accepts `85000`, `85,000`, `$85,000`, `85k` and `1.2m`. The typed text is converted to whole cents exactly as text: no floating point, at most two decimal places after any suffix, and no minus sign. A **a year · a month** switch sets `per`. The echo under the field repeats the entry in its own unit ("$5,000 a month."), and the screen never converts a month to a year.
    - **I'm not sure of this:** shown on questions 6, 10, 12, 13, 14 and 15. With an amount, it keeps the amount and adds the answer to `not_sure`. With no amount, the answer is `{later}`, and a tip says the person can come back to it. Ticking it always lets the person continue.
@@ -121,7 +122,7 @@ The status words of decision 0016 replace "Supported" and "Partial" everywhere. 
 ## Done when
 
 1. **Flow:** a person can go from the welcome screen through every question in each style, to the review page and the results, by keyboard alone, with any answer left for later, and "See my plan" never switched off.
-2. **Answers and head text:** for each of the 24 version 2 reference cases of brief 0002-W5, the results head rendered from its `result` shows the text in [the head sentences](0002-W6-head-sentences.json) exactly. For the 20 of them the questions can produce (all but the three with `what_if` and `v2-age-too-young`, which the controls prevent), a unit test builds the `answers` document from the corresponding control state, with that case's `valuation_date`, and matches it exactly.
+2. **Answers and head text:** for each of the 24 version 2 reference cases of brief 0002-W5, the results head rendered from its `result` shows the text in [the head sentences](0002-W6-head-sentences.json) exactly. For the 20 of them the questions can produce (all but the three with `what_if` and `v2-age-too-young`, which the controls prevent), a unit test builds the `answers` document from the corresponding control state, with that case's `valuation_date`, and **(v1.1)** `plan_from_answers` on it returns a result byte-identical to that case's `result`. The documents themselves may differ only where the engine treats both forms alike, for example an explicit `"per": "year"` or `"pay_ends": {"at_retirement": true}`.
 3. **No interface arithmetic:** every figure in the head comes from the result; the only conversions are text-to-cents parsing of typed money, cents to whole dollars for display, and moving a decimal point for rates.
 4. **Device storage:** decision 0018 items 1–9 hold, each with an end-to-end check.
 5. **Examples:** each of the five examples opens on the plan screen as today, with the new label and status words, and every earlier plan, compare and export reference still matches apart from those words.
