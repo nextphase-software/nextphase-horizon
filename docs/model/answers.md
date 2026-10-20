@@ -250,7 +250,7 @@ complete generated inputs. Record Node v24.22.0 for each WebAssembly command.
 No screen or web worker protocol changes are part of this operation.
 
 
-## Reverse answers and what-if — 0002-W5 v1.1
+## Reverse answers and what-if — 0002-W5 v1.2
 
 `plan_from_answers` also accepts [answers.v2](schemas/answers.v2.schema.json)
 (`intake::v2::AnswersV2` for typed Rust callers) and returns
@@ -304,7 +304,12 @@ headroom bounds apply exactly. Status still comes from the entered run, raised
 to partial for left-out answers; these are estimates under the stated assumptions.
 
 Optional `what_if: {savings_total_cents?: integer}` is echoed exactly when given,
-otherwise null, alongside `solved` in every v2 result. A total replaces savings
+otherwise null, alongside `solved` in every well-formed v2 result. The total must
+be a whole number within ±9,007,199,254,740,991 cents; both parsing and the schema
+enforce this range. A malformed document with version 2 returns the v2 shape
+with `invalid`, `MALFORMED_INPUT`, empty lists and null input, central, bounds,
+solved and what-if fields: nothing is echoed. Other unreadable documents retain
+the v1 malformed result. A total replaces savings
 left for later, or is shared across existing accounts in answer order using
 balance middles as weights. Each share is floored to cents; leftover cents go
 to largest remainders, ties to earlier accounts. These balances replace ranges;

@@ -323,14 +323,7 @@ pub fn plan_from_answers_json(text: &str) -> AnswersPlanDocument {
     if value.as_ref().is_some_and(|v| v["version"] == 2) {
         let out = match serde_json::from_str::<v2::AnswersV2>(text) {
             Ok(a) => plan_from_answers(&a),
-            Err(_) => {
-                let mut out = v2::AnswersPlanV2::from_error(malformed());
-                out.what_if = value
-                    .as_ref()
-                    .and_then(|v| v.get("what_if"))
-                    .and_then(|v| serde_json::from_value(v.clone()).ok());
-                out
-            }
+            Err(_) => v2::AnswersPlanV2::from_error(malformed()),
         };
         AnswersPlanDocument {
             status: out.status,

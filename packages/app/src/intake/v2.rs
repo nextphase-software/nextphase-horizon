@@ -16,8 +16,43 @@ pub enum BirthAnswerV2 {
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct WhatIf {
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(
+        default,
+        deserialize_with = "bounded_total",
+        skip_serializing_if = "Option::is_none"
+    )]
+    #[schemars(with = "i64", range(min = -9_007_199_254_740_991i64, max = 9_007_199_254_740_991i64), transform = total_schema)]
     pub savings_total_cents: Option<i64>,
+}
+fn total_schema(schema: &mut schemars::Schema) {
+    schema.remove("default");
+}
+fn bounded_total<'de, D: serde::Deserializer<'de>>(
+    deserializer: D,
+) -> std::result::Result<Option<i64>, D::Error> {
+    let value = i64::deserialize(deserializer)?;
+    if !total_in_range(value) {
+        return Err(serde::de::Error::custom(
+            "what-if total exceeds the exact JSON integer range",
+        ));
+    }
+    Ok(Some(value))
+}
+fn total_in_range(value: i64) -> bool {
+    (-horizon_engine::money::JSON_CENT_LIMIT..=horizon_engine::money::JSON_CENT_LIMIT)
+        .contains(&value)
+}
+// These date fields share v1's Date type. Match its published structural pattern
+// before the v2 rules; real calendar/date-order checks still belong to build/run.
+fn date_shape(date: &Date) -> bool {
+    date.0.len() == 10
+        && date.0.bytes().enumerate().all(|(i, b)| {
+            if i == 4 || i == 7 {
+                b == b'-'
+            } else {
+                b.is_ascii_digit()
+            }
+        })
 }
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
@@ -461,9 +496,18 @@ fn plan_with<F>(a: &AnswersV2, mut calculate: F) -> AnswersPlanV2
 where
     F: FnMut(&Fixture) -> Result<Run>,
 {
+    let total = a.what_if.as_ref().and_then(|w| w.savings_total_cents);
+    if a.version != 2
+        || total.is_some_and(|n| !total_in_range(n))
+        || !date_shape(&a.valuation_date)
+        || matches!(&a.birth_date, BirthAnswerV2::Date {date} if !date_shape(date))
+        || matches!(&a.retirement, Some(Retirement::Date {date}) if !date_shape(date))
+        || matches!(&a.pay_ends, PayEnds::Date {date} if !date_shape(date))
+    {
+        return AnswersPlanV2::from_error(malformed());
+    }
     let mut common = a.common();
     let mut out = AnswersPlan::empty("incomplete", &a.not_sure);
-    let total = a.what_if.as_ref().and_then(|w| w.savings_total_cents);
     let result = (|| -> Result<AnswersPlanV2> {
         if a.planning == Planning::Partner {
             return Err(Error::unsupported(
@@ -494,9 +538,6 @@ where
             || (out.needed == ["retirement"] && a.pay.as_ref().is_none_or(MoneyAnswer::later))
         {
             return Ok(out.into());
-        }
-        if a.version != 2 {
-            return Err(malformed());
         }
         validate_amounts_with(&common, &total.into_iter().collect::<Vec<_>>())?;
         let birth_start = if let BirthAnswerV2::Age { age } = a.birth_date {
@@ -872,5 +913,29 @@ mod retirement_limit_tests {
         assert_eq!(input.household.persons[0].retirement_date.0, "2026-01-01");
         assert_eq!(input.household.income.wages[0].end_date.0, "2026-01-01");
         assert!(no_shortfall(&run_fixture(&input).unwrap()));
+    }
+}
+
+#[cfg(test)]
+mod malformed_tests {
+    use super::*;
+    #[test]
+    fn intake_v12_typed_out_of_range_total_never_runs_or_echoes() {
+        let cases: Value = serde_json::from_str(include_str!(
+            "../../../../docs/briefs/0002-W5-reference-values.json"
+        ))
+        .unwrap();
+        let mut a: AnswersV2 =
+            serde_json::from_value(cases["cases"]["v2-working-complete"]["answers"].clone())
+                .unwrap();
+        a.not_sure = vec!["savings".into()];
+        for total in [-9_007_199_254_740_992i64, 9_007_199_254_740_992i64] {
+            a.what_if = Some(WhatIf {
+                savings_total_cents: Some(total),
+            });
+            let result = plan_with(&a, |_| panic!("malformed documents must not run"));
+            assert_eq!(result.code.as_deref(), Some("MALFORMED_INPUT"));
+            assert!(result.what_if.is_none() && result.not_sure.is_empty());
+        }
     }
 }

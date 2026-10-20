@@ -617,10 +617,9 @@
       "properties": {
         "savings_total_cents": {
           "format": "int64",
-          "type": [
-            "integer",
-            "null"
-          ]
+          "maximum": 9007199254740991,
+          "minimum": -9007199254740991,
+          "type": "integer"
         }
       },
       "type": "object"

@@ -137,3 +137,29 @@ mod intake_v2_tests {
         }
     }
 }
+
+#[cfg(test)]
+mod intake_v12_malformed_tests {
+    #[test]
+    fn browser_export_keeps_malformed_v2_envelope() {
+        let base = r#"{"format":"horizon-answers","version":2,"valuation_date":"2026-01-01","planning":"alone","birth_date":{"age":60},"retired":true,"savings":{"none":true},"social_security":{"expects":"no"},"pension":{"expects":"no"},"spending_in_retirement":{"cents":0},"not_sure":["savings"]}"#;
+        let expected = r#"{"bounds":null,"central":null,"code":"MALFORMED_INPUT","household_input":null,"left_out":[],"needed":[],"not_sure":[],"solved":null,"starting_values":[],"status":"invalid","what_if":null}"#;
+        for text in [
+            base.replace(
+                r#""version":2"#,
+                r#""version":2,"what_if":{"savings_total_cents":9007199254740992}"#,
+            ),
+            base.replace(
+                r#""version":2"#,
+                r#""version":2,"what_if":{"savings_total_cents":-9007199254740992}"#,
+            ),
+            base.replace(
+                r#""version":2"#,
+                r#""version":2,"unknown":true,"what_if":{"savings_total_cents":100}"#,
+            ),
+            r#"{"version":2}"#.to_string(),
+        ] {
+            assert_eq!(super::plan_from_answers(&text), expected);
+        }
+    }
+}

@@ -39,3 +39,31 @@ fn intake_v2_every_reference_case_cli_bytes_and_status() {
     }
     std::fs::remove_dir_all(directory).unwrap();
 }
+
+#[path = "../../parity/tests/support/intake_v2_malformed.rs"]
+mod malformed;
+#[test]
+fn intake_v2_malformed_cli_preserves_full_result_shape() {
+    malformed::prove();
+    let directory = std::env::temp_dir().join(format!(
+        "horizon-intake-v12-malformed-{}",
+        std::process::id()
+    ));
+    std::fs::create_dir(&directory).unwrap();
+    for (name, a) in malformed::cases() {
+        let path = directory.join(format!("{name}.json"));
+        std::fs::write(&path, a.to_string()).unwrap();
+        let output = Command::new(env!("CARGO_BIN_EXE_horizon"))
+            .args(["intake", path.to_str().unwrap()])
+            .output()
+            .unwrap();
+        assert_eq!(output.status.code(), Some(1), "{name}");
+        assert_eq!(
+            output.stdout,
+            format!("{}\n", canonical_json(&malformed::expected()).unwrap()).as_bytes(),
+            "{name}"
+        );
+        assert!(output.stderr.is_empty());
+    }
+    std::fs::remove_dir_all(directory).unwrap();
+}

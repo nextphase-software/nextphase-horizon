@@ -74,3 +74,48 @@ fn intake_v2_schemas_match_and_every_result_validates() {
         }
     }
 }
+
+#[path = "../../parity/tests/support/intake_v2_malformed.rs"]
+mod malformed_v2;
+#[test]
+fn intake_v2_malformed_documents_and_schema_bounds() {
+    malformed_v2::prove();
+    let input_schema = horizon_app::schemas::answers_schema_v2();
+    let input_validator = jsonschema::validator_for(&input_schema).unwrap();
+    let output_validator =
+        jsonschema::validator_for(&horizon_app::schemas::answers_plan_schema_v2()).unwrap();
+    for (name, a) in malformed_v2::cases() {
+        assert!(!input_validator.is_valid(&a), "{name}");
+        let result = horizon_app::plan_from_answers_json(&a.to_string());
+        assert!(
+            output_validator.is_valid(&serde_json::to_value(result).unwrap()),
+            "{name}"
+        );
+    }
+    let mut base = reference_v2::cases()["v2-working-complete"]["answers"].clone();
+    for total in [-9_007_199_254_740_991i64, 0, 9_007_199_254_740_991i64] {
+        base["planning"] = serde_json::json!("partner");
+        base["what_if"] = serde_json::json!({"savings_total_cents":total});
+        assert!(input_validator.is_valid(&base));
+        let result = horizon_app::plan_from_answers_json(&base.to_string());
+        let value = serde_json::to_value(result).unwrap();
+        assert_eq!(value["code"], "ANSWERS_ONE_PERSON_ONLY");
+        assert_eq!(value["what_if"], base["what_if"]);
+        horizon_engine::canonical::canonical_json(&value).unwrap();
+    }
+    base["planning"] = serde_json::json!("alone");
+    base["what_if"] = serde_json::json!({"savings_total_cents":-9_007_199_254_740_991i64});
+    assert_eq!(
+        serde_json::to_value(horizon_app::plan_from_answers_json(&base.to_string())).unwrap()["code"],
+        "ANSWERS_NEGATIVE_AMOUNT"
+    );
+    for what_if in [serde_json::json!({}), serde_json::Value::Null] {
+        base["planning"] = serde_json::json!("partner");
+        base["what_if"] = what_if.clone();
+        assert!(input_validator.is_valid(&base));
+        assert_eq!(
+            serde_json::to_value(horizon_app::plan_from_answers_json(&base.to_string())).unwrap()["what_if"],
+            what_if
+        );
+    }
+}

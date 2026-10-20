@@ -57,7 +57,7 @@ has status `partial` and exits 3 in supported commands, or 0 in legacy
 | `SPENDING_SEARCH_NOT_MONOTONIC` | invalid | Verification failed: the result has a shortfall or the next whole dollar does not. |
 | `IMPACT_RANGE_REQUIRED` | invalid | A rough path without a default needs an explicit low and high range. |
 
-## Answers intake — 0002-W4 v2 / 0002-W5 v1.1
+## Answers intake — 0002-W4 v2 / 0002-W5 v1.2
 
 Intake uses `answers-plan.v1` or `answers-plan.v2`, matching the answers version,
 for all answers outcomes. `incomplete`
