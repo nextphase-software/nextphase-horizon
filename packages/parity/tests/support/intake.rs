@@ -10,7 +10,7 @@ pub fn cases() -> Value {
 }
 pub fn reference_values() {
     let cases = cases();
-    assert_eq!(cases.as_object().unwrap().len(), 22);
+    assert_eq!(cases.as_object().unwrap().len(), 29);
     for (name, case) in cases.as_object().unwrap() {
         let answers = case["answers"].to_string();
         let actual = horizon_app::plan_from_answers_json(&answers);

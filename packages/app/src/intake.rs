@@ -333,7 +333,7 @@ where
         if a.version != 1 {
             return Err(malformed());
         }
-        // Validate all supplied amounts before selecting middles or generating dates.
+        // Check used answers in B3 order, then annualize range ends (B1–B2).
         let ranges = validate_amounts(a)?;
         let input = build(a, &BTreeMap::new(), &mut out)?;
         let central = calculate(&input)?;
@@ -432,34 +432,57 @@ fn summarize(input: &Fixture) -> Result<PlanSummary> {
 fn validate_amounts(a: &Answers) -> Result<BTreeMap<String, CentRange>> {
     let mut ranges = BTreeMap::new();
     let mut amounts = Vec::new();
+    let mut monthly_ranges = Vec::new();
     fn money(
         name: &str,
         m: &MoneyAnswer,
         ranges: &mut BTreeMap<String, CentRange>,
         amounts: &mut Vec<i64>,
+        monthly_ranges: &mut Vec<String>,
     ) {
         match m {
             MoneyAnswer::Cents { cents, .. } => amounts.push(*cents),
-            MoneyAnswer::Range { range, .. } => {
+            MoneyAnswer::Range { range, per } => {
                 ranges.insert(name.into(), range.clone());
+                if matches!(per, Period::Month) {
+                    monthly_ranges.push(name.into());
+                }
             }
             MoneyAnswer::Later { .. } => (),
         }
     }
-    for (name, m) in [
-        ("pay", a.pay.as_ref()),
-        ("spending_now", a.spending_now.as_ref()),
-        ("social_security.amount", a.social_security.amount.as_ref()),
-    ] {
+    let mut used = Vec::new();
+    if !a.retired {
+        used.extend([
+            ("pay", a.pay.as_ref()),
+            ("spending_now", a.spending_now.as_ref()),
+        ]);
+    }
+    if a.social_security.expects != Expectation::No {
+        used.push(("social_security.amount", a.social_security.amount.as_ref()));
+    }
+    for (name, m) in used {
         if let Some(m) = m {
-            money(name, m, &mut ranges, &mut amounts);
+            money(name, m, &mut ranges, &mut amounts, &mut monthly_ranges);
         }
     }
     if let Pension::Yes { amount, .. } = &a.pension {
-        money("pension.amount", amount, &mut ranges, &mut amounts);
+        money(
+            "pension.amount",
+            amount,
+            &mut ranges,
+            &mut amounts,
+            &mut monthly_ranges,
+        );
     }
     if let RetirementSpending::Money(m) = &a.spending_in_retirement {
-        money("spending_in_retirement", m, &mut ranges, &mut amounts);
+        money(
+            "spending_in_retirement",
+            m,
+            &mut ranges,
+            &mut amounts,
+            &mut monthly_ranges,
+        );
     }
     if let Savings::Accounts { accounts } = &a.savings {
         for (i, account) in accounts.iter().enumerate() {
@@ -495,6 +518,11 @@ fn validate_amounts(a: &Answers) -> Result<BTreeMap<String, CentRange>> {
     {
         Money::from_cents(cents).output_cents()?;
     }
+    // The endpoint map and every trial use annual cents, including monthly ranges.
+    for name in monthly_ranges {
+        let range = ranges.get_mut(&name).expect("collected ranged answer");
+        *range = yearly_range(range, Period::Month)?;
+    }
     Ok(ranges)
 }
 fn starting(out: &mut AnswersPlan, answer: &str, value: Value, direction: Option<&'static str>) {
@@ -528,24 +556,31 @@ fn balance(b: &Balance, name: &str, ends: &BTreeMap<String, i64>) -> Result<i64>
             .unwrap_or_else(|| middle(range)),
     }
 }
-fn money(m: Option<&MoneyAnswer>, name: &str, ends: &BTreeMap<String, i64>) -> Result<i64> {
-    let (cents, per) = match m {
-        Some(MoneyAnswer::Cents { cents, per }) => (*cents, per),
-        Some(MoneyAnswer::Range { range, per }) => (
-            ends.get(name)
-                .copied()
-                .map(Ok)
-                .unwrap_or_else(|| middle(range))?,
-            per,
-        ),
-        _ => return Ok(0),
-    };
+fn yearly_cents(cents: i64, per: Period) -> Result<i64> {
     let cents = match per {
         Period::Year => cents,
         Period::Month => cents.checked_mul(12).ok_or_else(overflow)?,
     };
-    Money::from_cents(cents).output_cents()?;
-    Ok(cents)
+    Money::from_cents(cents).output_cents()
+}
+fn yearly_range(range: &CentRange, per: Period) -> Result<CentRange> {
+    Ok(CentRange {
+        low_cents: yearly_cents(range.low_cents, per)?,
+        high_cents: yearly_cents(range.high_cents, per)?,
+    })
+}
+fn money(m: Option<&MoneyAnswer>, name: &str, ends: &BTreeMap<String, i64>) -> Result<i64> {
+    match m {
+        Some(MoneyAnswer::Cents { cents, per }) => yearly_cents(*cents, *per),
+        Some(MoneyAnswer::Range { range, per }) => {
+            let annual = yearly_range(range, *per)?;
+            ends.get(name)
+                .copied()
+                .map(Ok)
+                .unwrap_or_else(|| middle(&annual))
+        }
+        _ => Ok(0),
+    }
 }
 fn amount(cents: i64, dollar_basis: DollarBasis) -> Amount {
     Amount {
@@ -591,7 +626,11 @@ fn build(a: &Answers, ends: &BTreeMap<String, i64>, out: &mut AnswersPlan) -> Re
     if a.plan_end_age.is_none() {
         starting(out, "plan_end_age", json!(95), None);
     }
-    let now = money(a.spending_now.as_ref(), "spending_now", ends)?;
+    let now = if a.retired {
+        0
+    } else {
+        money(a.spending_now.as_ref(), "spending_now", ends)?
+    };
     let after = match &a.spending_in_retirement {
         RetirementSpending::Money(m) => money(Some(m), "spending_in_retirement", ends)?,
         RetirementSpending::Same { .. } => now,
@@ -667,13 +706,21 @@ fn build(a: &Answers, ends: &BTreeMap<String, i64>, out: &mut AnswersPlan) -> Re
             start_age: 65,
         },
         Pension::Yes {
+            amount: MoneyAnswer::Later { .. },
+            ..
+        } => {
+            leave(out, "pension", "too_pessimistic", "Pension not given yet");
+            AgeIncome {
+                amount: amount(0, DollarBasis::Nominal),
+                start_age: 65,
+            }
+        }
+        Pension::Yes {
             amount: m,
             start_age,
             rises_with_prices,
         } => {
-            if m.later() {
-                leave(out, "pension", "too_pessimistic", "Pension not given yet");
-            } else if start_age.is_none() || rises_with_prices.is_none() {
+            if start_age.is_none() || rises_with_prices.is_none() {
                 return Err(malformed());
             }
             if *rises_with_prices == Some(Expectation::NotSure) {
@@ -856,12 +903,12 @@ mod tests {
             per: Period::Month,
         });
         let (f, _) = converted(&a);
-        assert_eq!(f.household.spending.before_retirement.cents, 1212);
-        assert_eq!(f.household.spending.after_retirement.cents, 1212);
+        assert_eq!(f.household.spending.before_retirement.cents, 1206);
+        assert_eq!(f.household.spending.after_retirement.cents, 1206);
         let mut out = AnswersPlan::empty("incomplete", &[]);
         let f = build(
             &a,
-            &BTreeMap::from([("spending_now".into(), 100)]),
+            &BTreeMap::from([("spending_now".into(), 1200)]),
             &mut out,
         )
         .unwrap();
@@ -998,9 +1045,9 @@ mod tests {
         let f = build(
             &a,
             &BTreeMap::from([
-                ("pay".into(), 100),
-                ("pension.amount".into(), 200),
-                ("social_security.amount".into(), 100),
+                ("pay".into(), 1200),
+                ("pension.amount".into(), 2400),
+                ("social_security.amount".into(), 1200),
             ]),
             &mut out,
         )
@@ -1108,6 +1155,302 @@ mod tests {
             .unwrap(),
             i64::MAX
         );
+    }
+    fn stub_summary(_: &Fixture) -> Result<PlanSummary> {
+        Ok(PlanSummary {
+            run_status: "complete",
+            omissions: vec![],
+            first_shortfall_age: None,
+            lasts_to_plan_end: true,
+            headroom: 0,
+            sustainable_spending: 0,
+        })
+    }
+    #[test]
+    fn intake_monthly_odd_ranges_use_annual_middle_and_trial_ends() {
+        for name in [
+            "pay",
+            "spending_now",
+            "spending_in_retirement",
+            "social_security.amount",
+            "pension.amount",
+        ] {
+            let mut a = case("working-complete");
+            let range = MoneyAnswer::Range {
+                range: CentRange {
+                    low_cents: 100,
+                    high_cents: 101,
+                },
+                per: Period::Month,
+            };
+            match name {
+                "pay" => a.pay = Some(range),
+                "spending_now" => a.spending_now = Some(range),
+                "spending_in_retirement" => {
+                    a.spending_in_retirement = RetirementSpending::Money(range)
+                }
+                "social_security.amount" => a.social_security.amount = Some(range),
+                _ => {
+                    a.pension = Pension::Yes {
+                        amount: range,
+                        start_age: Some(65),
+                        rises_with_prices: Some(Expectation::Yes),
+                    }
+                }
+            }
+            let mut trials = Vec::new();
+            let result = plan_with(&a, |f| {
+                let cents = match name {
+                    "pay" => f.household.income.wages[0].amount.cents,
+                    "spending_now" => f.household.spending.before_retirement.cents,
+                    "spending_in_retirement" => f.household.spending.after_retirement.cents,
+                    "social_security.amount" => f.household.income.social_security.amount.cents,
+                    _ => f.household.income.pension.amount.cents,
+                };
+                trials.push(cents);
+                let mut summary = stub_summary(f)?;
+                summary.headroom = cents;
+                Ok(summary)
+            });
+            assert_eq!(trials, vec![1206, 1200, 1212, 1200, 1212], "{name}");
+            assert!(result.bounds.unwrap().ordered);
+        }
+        let a = case("monthly-range-odd");
+        assert_eq!(
+            converted(&a).0.household.spending.before_retirement.cents,
+            6_600_006
+        );
+        let ranges = validate_amounts(&a).unwrap();
+        assert_eq!(ranges["spending_now"].low_cents, 6_200_004);
+        assert_eq!(ranges["spending_now"].high_cents, 7_000_008);
+    }
+    #[test]
+    fn intake_retired_ignores_each_unused_answer_without_trials_or_lists() {
+        let base = case("already-retired");
+        let expected = serde_json::to_value(plan_with(&base, stub_summary)).unwrap();
+        for (name, value) in [
+            (
+                "pay",
+                json!({"range":{"low_cents":-5,"high_cents":-9},"per":"month"}),
+            ),
+            (
+                "pay",
+                json!({"range":{"low_cents":100,"high_cents":101},"per":"month"}),
+            ),
+            ("spending_now", json!({"cents":-1})),
+            (
+                "spending_now",
+                json!({"range":{"low_cents":0,"high_cents":i64::MAX},"per":"month"}),
+            ),
+            ("pay_ends", json!({"date":"not-a-date"})),
+            ("retirement", json!({"date":"not-a-date"})),
+            ("retirement", json!({"age":0})),
+            ("retirement", json!({"later":true})),
+        ] {
+            let mut value0 = serde_json::to_value(&base).unwrap();
+            value0[name] = value;
+            let a: Answers = serde_json::from_value(value0).unwrap();
+            let mut calls = 0u32;
+            let result = plan_with(&a, |f| {
+                calls = calls.checked_add(1).unwrap();
+                stub_summary(f)
+            });
+            assert_eq!(calls, 1, "{name}");
+            assert_eq!(serde_json::to_value(result).unwrap(), expected, "{name}");
+        }
+    }
+    #[test]
+    fn intake_no_social_security_ignores_amount_and_start_age() {
+        let mut base = case("working-complete");
+        base.social_security = SocialSecurity {
+            expects: Expectation::No,
+            amount: None,
+            start_age: None,
+        };
+        let expected = serde_json::to_value(plan_with(&base, stub_summary)).unwrap();
+        for amount in [
+            MoneyAnswer::Cents {
+                cents: -1,
+                per: Period::Month,
+            },
+            MoneyAnswer::Range {
+                range: CentRange {
+                    low_cents: -5,
+                    high_cents: -9,
+                },
+                per: Period::Year,
+            },
+            MoneyAnswer::Range {
+                range: CentRange {
+                    low_cents: 100,
+                    high_cents: 101,
+                },
+                per: Period::Month,
+            },
+            MoneyAnswer::Range {
+                range: CentRange {
+                    low_cents: 0,
+                    high_cents: i64::MAX,
+                },
+                per: Period::Month,
+            },
+            MoneyAnswer::Later { later: Yes },
+        ] {
+            let mut a = base.clone();
+            a.social_security.amount = Some(amount);
+            let mut calls = 0u32;
+            let result = plan_with(&a, |f| {
+                calls = calls.checked_add(1).unwrap();
+                stub_summary(f)
+            });
+            assert_eq!(calls, 1);
+            assert_eq!(serde_json::to_value(result).unwrap(), expected);
+        }
+        base.social_security.start_age = Some(131);
+        assert_eq!(
+            serde_json::to_value(plan_with(&base, stub_summary)).unwrap(),
+            expected
+        );
+    }
+    #[test]
+    fn intake_v2_check_order_selects_first_failure_without_running() {
+        let mut a = case("working-complete");
+        a.planning = Planning::Partner;
+        a.birth_date = BirthAnswer::Later { later: Yes };
+        a.pay = Some(MoneyAnswer::Cents {
+            cents: -1,
+            per: Period::Year,
+        });
+        a.spending_now = Some(MoneyAnswer::Range {
+            range: CentRange {
+                low_cents: -5,
+                high_cents: -9,
+            },
+            per: Period::Year,
+        });
+        a.retirement = Some(Retirement::Age { age: 60 });
+        let no_run = |_: &Fixture| -> Result<PlanSummary> {
+            panic!("invalid/incomplete answers must not run")
+        };
+        assert_eq!(
+            plan_with(&a, no_run).code.as_deref(),
+            Some("ANSWERS_ONE_PERSON_ONLY")
+        );
+        a.planning = Planning::Alone;
+        assert_eq!(plan_with(&a, no_run).needed, vec!["birth_date"]);
+        a.birth_date = case("working-complete").birth_date;
+        assert_eq!(
+            plan_with(&a, no_run).code.as_deref(),
+            Some("ANSWERS_RANGE_ORDER")
+        );
+        a.spending_now = Some(MoneyAnswer::Range {
+            range: CentRange {
+                low_cents: -9,
+                high_cents: -5,
+            },
+            per: Period::Year,
+        });
+        assert_eq!(
+            plan_with(&a, no_run).code.as_deref(),
+            Some("ANSWERS_NEGATIVE_AMOUNT")
+        );
+        a.spending_now = None;
+        assert_eq!(
+            plan_with(&a, no_run).code.as_deref(),
+            Some("ANSWERS_NEGATIVE_AMOUNT")
+        );
+        a.pay = None;
+        assert_eq!(
+            plan_with(&a, no_run).code.as_deref(),
+            Some("ANSWERS_RETIREMENT_NOT_AFTER_VALUATION")
+        );
+    }
+    #[test]
+    fn intake_later_pension_is_zero_nominal_at_65_for_every_price_choice() {
+        let baseline = case("left-out-pension");
+        let expected = serde_json::to_value(plan_with(&baseline, stub_summary)).unwrap();
+        for rises in [
+            None,
+            Some(Expectation::Yes),
+            Some(Expectation::No),
+            Some(Expectation::NotSure),
+        ] {
+            for start in [None, Some(62), Some(131)] {
+                let mut a = baseline.clone();
+                a.pension = Pension::Yes {
+                    amount: MoneyAnswer::Later { later: Yes },
+                    start_age: start,
+                    rises_with_prices: rises,
+                };
+                let result = plan_with(&a, stub_summary);
+                let input = result.household_input.as_ref().unwrap();
+                assert_eq!(input.household.income.pension.amount.cents, 0);
+                assert_eq!(
+                    input.household.income.pension.amount.dollar_basis,
+                    DollarBasis::Nominal
+                );
+                assert_eq!(input.household.income.pension.start_age, 65);
+                assert!(
+                    !result
+                        .starting_values
+                        .iter()
+                        .any(|v| v.answer.starts_with("pension."))
+                );
+                assert_eq!(serde_json::to_value(result).unwrap(), expected);
+            }
+        }
+    }
+    #[test]
+    fn intake_not_sure_preserves_person_order_for_every_outcome() {
+        let order = vec![
+            "spending_in_retirement".to_string(),
+            "pay".to_string(),
+            "savings".to_string(),
+            "pay".to_string(),
+        ];
+        for name in [
+            "working-complete",
+            "already-retired",
+            "range-two",
+            "needed-all-four",
+            "invalid-range-order",
+            "partner",
+        ] {
+            let mut a = case(name);
+            a.not_sure = order.clone();
+            assert_eq!(plan_with(&a, stub_summary).not_sure, order, "{name}");
+        }
+    }
+    #[test]
+    fn intake_given_pension_requires_details_and_non_taxable_basis_stays_malformed() {
+        let no_run =
+            |_: &Fixture| -> Result<PlanSummary> { panic!("malformed answers must not run") };
+        for (start_age, rises_with_prices) in [(None, Some(Expectation::Yes)), (Some(65), None)] {
+            let mut a = case("working-complete");
+            a.pension = Pension::Yes {
+                amount: MoneyAnswer::Cents {
+                    cents: 0,
+                    per: Period::Year,
+                },
+                start_age,
+                rises_with_prices,
+            };
+            assert_eq!(
+                plan_with(&a, no_run).code.as_deref(),
+                Some("MALFORMED_INPUT")
+            );
+        }
+        for name in ["working-complete", "already-retired"] {
+            let mut a = case(name);
+            let Savings::Accounts { accounts } = &mut a.savings else {
+                panic!()
+            };
+            accounts[0].cost_basis = Some(CostBasis::Cents { cents: 0 });
+            assert_eq!(
+                plan_with(&a, no_run).code.as_deref(),
+                Some("MALFORMED_INPUT")
+            );
+        }
     }
     #[test]
     fn intake_reproduces_samples_and_omission_directions() {

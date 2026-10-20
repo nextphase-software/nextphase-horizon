@@ -91,7 +91,7 @@ cargo run -p horizon-cli -- dev-run <name>
 Expand the command placeholders over all fixtures and reference cases in
 [the answer guide](docs/model/answers.md#fixtures-and-validation) and
 [the scenario/export fixture guide](docs/model/scenario-diff-and-export.md#fixtures-and-command-checks).
-Run intake over all 22 answers documents in the [intake reference values](docs/briefs/0002-W4-reference-values.json), extracted to separate JSON files. Intake also exits 4 incomplete.
+Run intake over all 29 answers documents in the [intake reference values](docs/briefs/0002-W4-reference-values.json), extracted to separate JSON files. Intake also exits 4 incomplete.
 Supported commands exit 0 complete, 3 partial, 1 invalid or 2 unsupported;
 `dev-run` retains exit 0 for partial. Each prints canonical JSON and one newline.
 For exports, status is the embedded `run.status`; import prints the restored run.

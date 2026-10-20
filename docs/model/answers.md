@@ -159,21 +159,22 @@ The horizon-wasm browser binding and all screens are excluded. Social Security
 claiming rules/levers, probability/success measures, contribution modeling,
 persistence, accounts and sharing remain later work.
 
-## Answers and ranges — 0002-W4 v1
+## Answers and ranges — 0002-W4 v2
 
 `horizon_app::plan_from_answers(&Answers)` converts the separate
 [answers.v1](schemas/answers.v1.schema.json) document into an
 [answers-plan.v1](schemas/answers-plan.v1.schema.json) result. The JSON entry
 point `plan_from_answers_json` also returns that shape for malformed documents.
 Both schemas are generated with `cargo run -p horizon-app --example output-schemas`.
-The conversion rules are [decision 0017 and its amendment](../decisions/0017-incomplete-answers-and-ranges.md).
+The conversion rules are [decision 0017 and its amendments](../decisions/0017-incomplete-answers-and-ranges.md).
 The strict engine, model/tax versions, earlier schemas and export format stay unchanged.
 
 Answers use integer USD cents, with `per` year (default) or month. Monthly cents
-are multiplied by twelve exactly. A range's middle is computed with exact
-rational arithmetic and rounded half away from zero to the cent before annual
-conversion. Every supplied and generated amount must fit the exact JSON cent
-range; checked arithmetic failures return the existing money error codes.
+are multiplied by twelve exactly. Monthly range ends are multiplied by twelve
+first; their middle and all trials use annual cents (B1). The middle of
+$1.00–$1.01 per month is $12.06 per year. Yearly range middles use exact rational
+arithmetic, rounded half away from zero to the cent. Every used and generated
+amount must fit the exact JSON cent range; checked arithmetic failures return the existing money error codes.
 Pay, spending and Social Security are in valuation-year dollars. Pension is in
 those dollars only when it rises with prices, otherwise nominal. Account
 balances and cost basis are cents at valuation. Headroom and sustainable
@@ -185,7 +186,9 @@ birth date, future retirement age/date, savings, or retirement spending yields
 `incomplete`, with `needed` in that order and no run. `same_as_now` uses the
 spending-now answer, including its range, and is missing when that answer is
 later or the person is already retired. `none` savings means an empty account
-list and permits a run. Reversed ranges, negative money and a retirement date
+list and permits a run. Checks run in order: unsupported planning, needed
+answers, all used range orders, all used amount signs, then retirement date (B3).
+Reversed ranges, negative money and a retirement date
 not after valuation when working yield the four documented answers error codes
 (including the unsupported partner code). Other input/engine errors keep their
 existing codes, inside the same result shape, with no successful calculation.
@@ -209,7 +212,17 @@ year, and `user_overrode_default` false unless overridden. Unknown taxable
 cost basis follows the balance, even across a range (too optimistic); a pension
 whose price adjustment is not sure is fixed nominal (too pessimistic). A no
 answer to Social Security or pension uses zero at ages 67/65 without a starting
-value. The person's `not_sure` list is preserved independently of coverage.
+value. A pension amount left for later also uses zero nominal dollars at 65
+without a starting value, regardless of its start age or price adjustment (B4).
+The person's `not_sure` list is preserved as given, in their order, independently
+of coverage (B5).
+
+Unused answers are ignored in validation, ranges and generated result lists
+(B2): Social Security amount and start age when expecting none, and pay, spending
+now, pay end and retirement age/date when already retired. Explicit `not_sure`
+entries still retain their original order under B5. A pension with a given
+amount requires start age and price adjustment; a cost basis on a non-taxable
+account remains `MALFORMED_INPUT`.
 
 For each ranged answer, the other answers stay at their middles while the
 operation measures headroom at low and high. The lower headroom is worse,
@@ -226,7 +239,7 @@ cargo test -p horizon-app --test reference_values_intake
 cargo run -p horizon-cli -- intake <answers.json>
 ```
 
-For cumulative command checks, extract each of the 22 cases' `answers` from
+For cumulative command checks, extract each of the 29 cases' `answers` from
 [the unchanged reference values](../briefs/0002-W4-reference-values.json) to a
 separate JSON file and run `intake` on every file. Exits are 0 complete,
 3 partial, 4 incomplete, 1 invalid, 2 unsupported. The CLI contains only file

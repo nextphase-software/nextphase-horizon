@@ -8,6 +8,7 @@ fn intake_every_reference_case_cli_bytes_and_status() {
         "../../../docs/briefs/0002-W4-reference-values.json"
     ))
     .unwrap();
+    assert_eq!(cases["cases"].as_object().unwrap().len(), 29);
     let directory = std::env::temp_dir().join(format!("horizon-intake-{}", std::process::id()));
     std::fs::create_dir(&directory).unwrap();
     for (name, case) in cases["cases"].as_object().unwrap() {
