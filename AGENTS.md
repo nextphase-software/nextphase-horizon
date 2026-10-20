@@ -49,9 +49,11 @@ Expected versions are `v24.22.0` and `wasm-bindgen-test-runner 0.2.129`.
 The runner version must equal `wasm-bindgen` in Cargo.lock. Node also builds and tests the self-contained web adapter in `apps/web/`;
 there is no new top-level tool configuration.
 
-Run the full cumulative 0001-W1–W4 and 0003-W1 validation sequence in order from the workspace root:
+Run the full cumulative 0001-W1–W4, 0003-W1 and 0002-W4 validation sequence in order from the workspace root:
 
 ```sh
+cargo test -p horizon-app intake
+cargo test -p horizon-app --test reference_values_intake
 cargo test -p horizon-app answers
 cargo test -p horizon-app --test reference_values_answers
 cargo test -p horizon-app compare
@@ -75,6 +77,7 @@ cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown
 CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner cargo test -p horizon-parity --target wasm32-unknown-unknown
 cargo deny check licenses
 cargo run --release -p horizon-cli -- levers answers-working-61
+cargo run -p horizon-cli -- intake <answers.json>
 cargo run -p horizon-cli -- spend <name>
 cargo run -p horizon-cli -- levers <name>
 cargo run -p horizon-cli -- impact <name> <rough.json>
@@ -88,6 +91,7 @@ cargo run -p horizon-cli -- dev-run <name>
 Expand the command placeholders over all fixtures and reference cases in
 [the answer guide](docs/model/answers.md#fixtures-and-validation) and
 [the scenario/export fixture guide](docs/model/scenario-diff-and-export.md#fixtures-and-command-checks).
+Run intake over all 22 answers documents in the [intake reference values](docs/briefs/0002-W4-reference-values.json), extracted to separate JSON files. Intake also exits 4 incomplete.
 Supported commands exit 0 complete, 3 partial, 1 invalid or 2 unsupported;
 `dev-run` retains exit 0 for partial. Each prints canonical JSON and one newline.
 For exports, status is the embedded `run.status`; import prints the restored run.

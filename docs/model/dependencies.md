@@ -4,7 +4,9 @@ Generated from `cargo metadata --format-version 1 --locked` using Cargo.lock.
 All 115 external packages are listed, including dev, build and target-specific
 transitives. Registry license expressions are verified by `cargo deny check licenses`.
 
-0003-W1 adds no dependency; Cargo.lock is unchanged.
+0003-W1 and 0002-W4 add no dependency; Cargo.lock is unchanged.
+The answers intake, schema generation, CLI and browser export reuse the existing
+serde, serde_json, schemars and wasm-bindgen packages, with the same licenses.
 
 The sole direct external dependency added by 0001-W4 was **wasm-bindgen-test 0.3.79**
 (**MIT OR Apache-2.0**), a dev-dependency of the unpublished `horizon-parity`

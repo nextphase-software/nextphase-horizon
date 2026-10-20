@@ -91,3 +91,11 @@ fn answers_today_reference() {
     answers_reference::today_values();
     answers_reference::comparison_today();
 }
+
+#[path = "support/intake.rs"]
+mod intake;
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test::wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+fn intake_reference_values_and_canonical_bytes() {
+    intake::reference_values();
+}

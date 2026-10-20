@@ -38,6 +38,11 @@ pub fn input_impact(fixture: &str, rough: &str) -> String {
     encode(app::json::rough(rough).and_then(|r| app::input_impact(&parse_fixture(fixture)?, &r)))
 }
 
+#[wasm_bindgen]
+pub fn plan_from_answers(answers: &str) -> String {
+    encode(Ok(app::plan_from_answers_json(answers)))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -79,6 +84,23 @@ mod tests {
         let export = export_run(VALID);
         for text in [export.as_str(), "{}"] {
             assert_eq!(import_run(text), encode(app::import(text)));
+        }
+    }
+
+    #[test]
+    fn intake_export_matches_application_bytes_for_all_result_states() {
+        let template = r#"{"format":"horizon-answers","version":1,"valuation_date":"2026-01-01","planning":"alone","birth_date":{"date":"1960-01-01"},"retired":true,"savings":{"none":true},"social_security":{"expects":"no"},"pension":{"expects":"no"},"spending_in_retirement":{"cents":0}}"#;
+        for text in [
+            template.to_string(),
+            template.replace("alone", "partner"),
+            template.replace(r#"{"date":"1960-01-01"}"#, r#"{"later":true}"#),
+            template.replace(r#""cents":0"#, r#""cents":-1"#),
+            "{}".into(),
+        ] {
+            assert_eq!(
+                plan_from_answers(&text),
+                encode(Ok(app::plan_from_answers_json(&text)))
+            );
         }
     }
 

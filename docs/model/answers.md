@@ -158,3 +158,80 @@ The cumulative sequence records `node --version`, the release levers wall time
 The horizon-wasm browser binding and all screens are excluded. Social Security
 claiming rules/levers, probability/success measures, contribution modeling,
 persistence, accounts and sharing remain later work.
+
+## Answers and ranges — 0002-W4 v1
+
+`horizon_app::plan_from_answers(&Answers)` converts the separate
+[answers.v1](schemas/answers.v1.schema.json) document into an
+[answers-plan.v1](schemas/answers-plan.v1.schema.json) result. The JSON entry
+point `plan_from_answers_json` also returns that shape for malformed documents.
+Both schemas are generated with `cargo run -p horizon-app --example output-schemas`.
+The conversion rules are [decision 0017 and its amendment](../decisions/0017-incomplete-answers-and-ranges.md).
+The strict engine, model/tax versions, earlier schemas and export format stay unchanged.
+
+Answers use integer USD cents, with `per` year (default) or month. Monthly cents
+are multiplied by twelve exactly. A range's middle is computed with exact
+rational arithmetic and rounded half away from zero to the cent before annual
+conversion. Every supplied and generated amount must fit the exact JSON cent
+range; checked arithmetic failures return the existing money error codes.
+Pay, spending and Social Security are in valuation-year dollars. Pension is in
+those dollars only when it rises with prices, otherwise nominal. Account
+balances and cost basis are cents at valuation. Headroom and sustainable
+spending are whole USD per year in valuation-year dollars, using the existing
+spending search, its cap and boundary verification.
+
+`planning: "partner"` is unsupported before any missing-answer check. Missing
+birth date, future retirement age/date, savings, or retirement spending yields
+`incomplete`, with `needed` in that order and no run. `same_as_now` uses the
+spending-now answer, including its range, and is missing when that answer is
+later or the person is already retired. `none` savings means an empty account
+list and permits a run. Reversed ranges, negative money and a retirement date
+not after valuation when working yield the four documented answers error codes
+(including the unsupported partner code). Other input/engine errors keep their
+existing codes, inside the same result shape, with no successful calculation.
+
+The generated input is a complete `Fixture` containing `household` and sorted
+`assumptions`. One person is named `person`; each account kind has its own
+one-based counter in answer order. Age retirement uses the birthday, clamping
+29 February to 28 February in a non-leap year. Already-retired inputs use the
+valuation date and equal before/after spending. Wages run from valuation to
+retirement or the explicit pay end. Optional unknown income is zero, unknown
+spending before retirement is zero, and each omission appears in `left_out`
+with its tested direction. When both pay and spending now are unknown the
+direction is `not_stated`. The top-level status is the entered run's status,
+raised to `partial` for any left-out answer; `central.run_status` and
+`central.omissions` describe that entered run, rather than the search run.
+
+Every default is listed in `starting_values`: end age 95, Social Security age
+67 when expecting benefits, and cash return 0.02, inflation 0.025, investment
+return 0.05 and tax indexing 0.025. Assumptions use source `user`, valuation
+year, and `user_overrode_default` false unless overridden. Unknown taxable
+cost basis follows the balance, even across a range (too optimistic); a pension
+whose price adjustment is not sure is fixed nominal (too pessimistic). A no
+answer to Social Security or pension uses zero at ages 67/65 without a starting
+value. The person's `not_sure` list is preserved independently of coverage.
+
+For each ranged answer, the other answers stay at their middles while the
+operation measures headroom at low and high. The lower headroom is worse,
+with low winning ties. Spread is the absolute difference. Ranges rank by
+spread descending, then answer name. Two combined inputs put every range at
+its worse or better end; shared spending and inferred cost basis move together.
+Each bound reports the same summary as `central`. `ordered` is true only when
+worse headroom ≤ central headroom ≤ better headroom; a replaceable calculation
+test proves a result outside those bounds is explicitly unordered.
+
+```sh
+cargo test -p horizon-app intake
+cargo test -p horizon-app --test reference_values_intake
+cargo run -p horizon-cli -- intake <answers.json>
+```
+
+For cumulative command checks, extract each of the 22 cases' `answers` from
+[the unchanged reference values](../briefs/0002-W4-reference-values.json) to a
+separate JSON file and run `intake` on every file. Exits are 0 complete,
+3 partial, 4 incomplete, 1 invalid, 2 unsupported. The CLI contains only file
+reading, operation dispatch, canonical JSON/newline output and exit mapping.
+The `horizon-wasm::plan_from_answers` binding returns identical canonical bytes.
+Native, CLI and Node WebAssembly tests compare every reference result, including
+complete generated inputs. Record Node v24.22.0 for each WebAssembly command.
+No screen or web worker protocol changes are part of this operation.

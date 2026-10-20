@@ -31,7 +31,7 @@ has status `partial` and exits 3 in supported commands, or 0 in legacy
 | `MONEY_OUTPUT_RANGE` | invalid | A monetary value exceeds ±(2^53 − 1) cents. |
 | `CANONICAL_JSON` | invalid | Non-ASCII object name, noninteger or out-of-range JSON number. |
 | `FIXTURE_READ` | invalid | Requested fixture cannot be read as UTF-8. |
-| `CLI_USAGE` | invalid | Unknown subcommand or wrong argument count for run, compare, export, import, dev-run, spend, levers or impact. |
+| `CLI_USAGE` | invalid | Unknown subcommand or wrong argument count for run, compare, export, import, dev-run, spend, levers, impact or intake. |
 | `MULTIPLE_PERSONS_UNSUPPORTED` | unsupported | More than one person was provided. |
 | `FEATURE_UNSUPPORTED` | unsupported | State-tax or healthcare input was provided. |
 | `ASSUMPTION_UNSUPPORTED` | unsupported | An assumption outside inflation, investment_return, cash_return and tax_indexing was provided. |
@@ -56,3 +56,17 @@ has status `partial` and exits 3 in supported commands, or 0 in legacy
 | `SPENDING_BASIS_UNSUPPORTED` | unsupported | After-retirement spending is not in today's dollars. |
 | `SPENDING_SEARCH_NOT_MONOTONIC` | invalid | Verification failed: the result has a shortfall or the next whole dollar does not. |
 | `IMPACT_RANGE_REQUIRED` | invalid | A rough path without a default needs an explicit low and high range. |
+
+## Answers intake — 0002-W4 v1
+
+Intake uses the `answers-plan.v1` shape for all answers outcomes. `incomplete`
+is not an error: it has no code, lists needed answers, makes no run and exits 4.
+An invalid or unsupported intake result has no run and exits 1 or 2 respectively.
+Existing structural, date, money and engine codes remain applicable.
+
+| Code | Status | Meaning |
+| --- | --- | --- |
+| `ANSWERS_ONE_PERSON_ONLY` | unsupported | Planning with a partner is not supported; checked before missing answers. |
+| `ANSWERS_RANGE_ORDER` | invalid | A ranged answer has low cents above high cents. |
+| `ANSWERS_NEGATIVE_AMOUNT` | invalid | An entered amount, range endpoint, balance or cost basis is negative. |
+| `ANSWERS_RETIREMENT_NOT_AFTER_VALUATION` | invalid | A person who is not retired supplied a retirement age/date at or before valuation. |

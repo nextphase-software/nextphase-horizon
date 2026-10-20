@@ -26,7 +26,7 @@ fn read(requested: &str, fixture: bool) -> Result<String, Error> {
         )
     })
 }
-fn execute(args: &[String]) -> Result<(String, bool), Error> {
+fn execute(args: &[String]) -> Result<(String, u8), Error> {
     let (value, status, legacy): (Value, &str, bool) = match args
         .iter()
         .map(String::as_str)
@@ -39,6 +39,14 @@ fn execute(args: &[String]) -> Result<(String, bool), Error> {
                 serde_json::to_value(&run).expect("run serialization"),
                 run.status,
                 *command == "dev-run",
+            )
+        }
+        ["intake", requested] => {
+            let result = horizon_app::plan_from_answers_json(&read(requested, false)?);
+            (
+                serde_json::to_value(&result).expect("intake serialization"),
+                result.status,
+                false,
             )
         }
         ["spend", requested] => {
@@ -104,18 +112,27 @@ fn execute(args: &[String]) -> Result<(String, bool), Error> {
         _ => {
             return Err(Error::invalid(
                 "CLI_USAGE",
-                "Usage: horizon spend <name|path> | levers <name|path> | impact <name|path> <rough.json> | run <name|path> | compare <baseline> <scenario> | export <name|path> | import <path> | dev-run <name|path>",
+                "Usage: horizon intake <answers.json> | spend <name|path> | levers <name|path> | impact <name|path> <rough.json> | run <name|path> | compare <baseline> <scenario> | export <name|path> | import <path> | dev-run <name|path>",
             ));
         }
     };
-    Ok((canonical_json(&value)?, status == "partial" && !legacy))
+    Ok((
+        canonical_json(&value)?,
+        match status {
+            "partial" if !legacy => 3,
+            "incomplete" => 4,
+            "invalid" => 1,
+            "unsupported" => 2,
+            _ => 0,
+        },
+    ))
 }
 fn main() -> ExitCode {
     let args: Vec<_> = std::env::args().skip(1).collect();
     match execute(&args) {
-        Ok((json, partial)) => {
+        Ok((json, exit)) => {
             println!("{json}");
-            ExitCode::from(if partial { 3 } else { 0 })
+            ExitCode::from(exit)
         }
         Err(error) => {
             println!(

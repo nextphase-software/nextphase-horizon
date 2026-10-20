@@ -41,3 +41,14 @@ pub fn input_impact_schema() -> Value {
         1,
     )
 }
+
+pub fn answers_schema() -> Value {
+    named(schemars::schema_for!(crate::intake::Answers), "answers", 1)
+}
+pub fn answers_plan_schema() -> Value {
+    named(
+        schemars::schema_for!(crate::intake::AnswersPlan),
+        "answers-plan",
+        1,
+    )
+}

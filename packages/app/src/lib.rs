@@ -138,3 +138,6 @@ pub use answers::{input_impact, levers, sustainable_spending};
 
 /// JSON transport helpers shared by thin adapters.
 pub mod json;
+
+pub mod intake;
+pub use intake::{plan_from_answers, plan_from_answers_json};
