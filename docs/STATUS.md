@@ -17,6 +17,7 @@ This page lists what works today and what is being built now. It is not a promis
 | Export and reopen | Print or save a one-page summary, download a plan file, and reopen a file after Horizon checks and reruns it. | [0005-W1](briefs/0005-W1-export-screen.md) · `b2097dd` |
 | Screen tidy-up | Clearer answers when the plan ends before retirement or savings run short before it, chart labels beside their markers, and export screen fixes. | [0005-W2](briefs/0005-W2-tidy-up.md) · `a133c7d` |
 | Engine in the browser | The calculation engine runs inside your browser, in a background worker. | [0002-W1](briefs/0002-W1-web-shell.md) · `52d8e58` |
+| Answer in your own words | Enter your own figures through plain questions in one of three styles, as a figure, a range or "not sure", leave any for later, and keep your answers on your device until you forget them. | [0002-W6](briefs/0002-W6-intake-screens.md) · `2ae5254` |
 
 ### Calculation engine
 
