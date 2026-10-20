@@ -299,7 +299,7 @@ function ExportResult({
         <p className="help">
           {sample.label === "Opened plan file"
             ? "Opened plan file"
-            : `Sample household · ${sample.label}`}{" "}
+            : `Example household · ${sample.label}`}{" "}
           · values as of{" "}
           {run?.valuation_date ?? draft.input.household.valuation_date} ·{" "}
           {run?.metadata.model_version ?? "Calculating…"}

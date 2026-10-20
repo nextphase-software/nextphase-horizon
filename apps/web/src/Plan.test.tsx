@@ -10,7 +10,6 @@ import {
 } from "@testing-library/react";
 import { usePlanResults, type PlanCache } from "./plan-results";
 import { Plan } from "./Plan";
-import { App } from "./App";
 import { createDraft, changeEntry, serializeDraft } from "./setup";
 import { centsDollars, planHeadline, savingsRows } from "./plan-display";
 import { samples } from "./fixtures";
@@ -112,7 +111,9 @@ it.each(["run", "sustainable_spending", "levers"])(
     );
     const view = show();
     await screen.findByText("Synthetic failure");
-    expect(screen.getByRole("heading", { name: "Unsupported" })).toBeTruthy();
+    expect(
+      screen.getByRole("heading", { name: "Horizon can't plan for this yet" }),
+    ).toBeTruthy();
     expect(
       view.container.querySelector("svg, table, .plan-answers"),
     ).toBeNull();
@@ -212,32 +213,6 @@ it.each([
   await screen.findByText(
     (_, node) => node?.tagName === "P" && !!node.textContent?.includes(text),
   );
-});
-it("activates Plan after Review and returns to Review with edits preserved", async () => {
-  stub();
-  render(<App />);
-  await screen.findByTestId("intro");
-  expect(screen.queryByRole("button", { name: "Plan" })).toBeNull();
-  for (let i = 0; i < 6; i++)
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  fireEvent.click(screen.getByRole("link", { name: "Edit Accounts" }));
-  fireEvent.change(
-    within(
-      screen.getByRole("group", { name: "Workplace plan Tax-deferred" }),
-    ).getByRole("textbox", { name: "Balance today today's dollars" }),
-    { target: { value: "600,000" } },
-  );
-  fireEvent.click(screen.getByRole("button", { name: "Plan" }));
-  await screen.findByText("$64,994");
-  for (const [, input] of vi.mocked(engine.call).mock.calls.slice(-3))
-    expect(JSON.parse(input).household.accounts[2].opening_balance_cents).toBe(
-      60000000,
-    );
-  fireEvent.click(screen.getByRole("button", { name: "Back to household" }));
-  expect(document.activeElement).toBe(
-    screen.getByRole("heading", { name: "Review your answers" }),
-  );
-  expect(screen.getByText("$600,000")).toBeTruthy();
 });
 
 it("includes the highest-savings year even when it is not a five-year or retirement landmark", () => {

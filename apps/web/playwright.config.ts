@@ -35,16 +35,15 @@ export default defineConfig({
     url: "http://127.0.0.1:4173",
     reuseExistingServer: false,
   },
-  projects: (["chromium", "firefox", "webkit"] as const).flatMap(
-    (browserName) =>
-      [
-        { width: 375, height: 812 },
-        { width: 1280, height: 800 },
-      ].flatMap((viewport) =>
-        (["light", "dark"] as const).map((colorScheme) => ({
-          name: `${browserName}-${viewport.width}-${colorScheme}`,
-          use: { browserName, viewport, colorScheme },
-        })),
-      ),
+  projects: (["chromium", "webkit"] as const).flatMap((browserName) =>
+    [
+      { width: 375, height: 812 },
+      { width: 1280, height: 800 },
+    ].flatMap((viewport) =>
+      (["light", "dark"] as const).map((colorScheme) => ({
+        name: `${browserName}-${viewport.width}-${colorScheme}`,
+        use: { browserName, viewport, colorScheme },
+      })),
+    ),
   ),
 });

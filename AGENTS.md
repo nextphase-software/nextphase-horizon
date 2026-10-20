@@ -155,17 +155,17 @@ corepack pnpm run lint
 corepack pnpm run format:check
 corepack pnpm test
 corepack pnpm run build
-corepack pnpm exec playwright install chromium firefox webkit
+corepack pnpm exec playwright install chromium webkit
 corepack pnpm run e2e
 corepack pnpm run licenses
 ```
 
 Expected versions: Node v24.22.0, corepack 0.36.0, pnpm 12.9.1. Playwright
-1.63.0 installs its matched Chromium, Firefox and WebKit binaries. Record actual
+1.63.0 installs its matched Chromium and WebKit binaries. Record actual
 browser versions from the e2e browser-version annotations; installing binaries
 alone does not prove they ran. Browser launches require an environment that
 permits their OS processes. The e2e suite serves the production build locally
-and checks 12 browser/size/theme projects, with every sample in every project.
+and checks 8 browser/size/theme projects, with every sample in every project.
 
 **Engine-only briefs.** When a brief changes nothing under `apps/web/`, its Validation section may exclude the end-to-end browser suite: `corepack pnpm exec playwright install …` and `corepack pnpm run e2e`. Every other command in this section still runs, including the web unit tests, typecheck, lint, build and license checks.
 

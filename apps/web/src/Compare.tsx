@@ -248,8 +248,8 @@ export function Compare({
           <p className="status-sentence">
             {comparison.baseline.status === comparison.scenario.status &&
             sameOmissions
-              ? `Both results are ${statusWord(comparison.baseline.status)} and leave out the same things.`
-              : `The baseline is ${statusWord(comparison.baseline.status)}; the copy is ${statusWord(comparison.scenario.status)}.`}
+              ? `Both results: ${statusWord(comparison.baseline.status, comparison.baseline.omissions.length)}; they leave out the same things.`
+              : `Baseline: ${statusWord(comparison.baseline.status, comparison.baseline.omissions.length)}; copy: ${statusWord(comparison.scenario.status, comparison.scenario.omissions.length)}.`}
           </p>
           <details>
             <summary>What this result does not include</summary>

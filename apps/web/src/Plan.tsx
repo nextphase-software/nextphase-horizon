@@ -357,6 +357,7 @@ export function Plan({
   tryChange,
   exportPlan,
   cache,
+  intake = false,
 }: {
   sample: { label: string };
   draft: Draft;
@@ -364,6 +365,7 @@ export function Plan({
   tryChange?: (baseline: Baseline) => void;
   exportPlan?: () => void;
   cache?: PlanCache;
+  intake?: boolean;
 }) {
   return (
     <PlanResult
@@ -374,6 +376,7 @@ export function Plan({
       tryChange={tryChange}
       exportPlan={exportPlan}
       cache={cache}
+      intake={intake}
     />
   );
 }
@@ -384,6 +387,7 @@ function PlanResult({
   tryChange,
   exportPlan,
   cache,
+  intake = false,
 }: {
   sample: { label: string };
   draft: Draft;
@@ -391,14 +395,15 @@ function PlanResult({
   tryChange?: (baseline: Baseline) => void;
   exportPlan?: () => void;
   cache?: PlanCache;
+  intake?: boolean;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
   const leversRef = useRef<HTMLDetailsElement>(null);
   const input = serializeDraft(draft);
   const { results, transport } = usePlanResults(input, cache);
   useEffect(() => {
-    heading.current?.focus();
-  }, []);
+    if (!intake) heading.current?.focus();
+  }, [intake]);
   const error = Object.values(results).find(
     (result): result is Failure => "code" in result,
   );
@@ -408,6 +413,13 @@ function PlanResult({
         <h1 ref={heading} tabIndex={-1}>
           Plan
         </h1>
+        {!intake && (
+          <p className="sample">
+            {sample.label === "Opened plan file"
+              ? "Opened plan file"
+              : "◇ Example household — invented figures"}
+          </p>
+        )}
         <section className="card" role="alert">
           <h2 className="status unsupported">
             <span aria-hidden="true">!</span>{" "}
@@ -415,7 +427,7 @@ function PlanResult({
           </h2>
           <p>{error?.message ?? transport}</p>
         </section>
-        <button onClick={back}>Back to household</button>
+        {!intake && <button onClick={back}>Back to household</button>}
       </div>
     );
   const run = results.run as Run | undefined;
@@ -432,48 +444,52 @@ function PlanResult({
   );
   return (
     <div className="plan-screen">
-      <p className="eyebrow">
-        {sample.label.toUpperCase()}
-        {isRetired
-          ? " · RETIRED"
-          : retirement
-            ? ` · RETIRE AT ${retirement.age_on_december_31}`
-            : ""}
-      </p>
-      <h1 ref={heading} tabIndex={-1}>
-        {run ? planHeadline(run) : "Plan"}
-      </h1>
-      <p className="sample">
-        <span aria-hidden="true">◇</span>{" "}
-        {sample.label === "Opened plan file"
-          ? "Opened plan file"
-          : "Sample household — invented data"}
-      </p>
-      {run ? (
-        <div className="card plan-status" aria-live="polite">
-          <div>
-            <span className={`status ${run.status}`}>
-              <span aria-hidden="true">
-                {run.status === "complete" ? "✓" : "△"}
-              </span>{" "}
-              {statusWord(run.status, run.omissions.length)}
-            </span>{" "}
-            This result leaves some things out.
-          </div>
-          <details>
-            <summary>What this result does not include</summary>
-            <ul>
-              {run.omissions.map((omission) => (
-                <li key={omission}>{omission}</li>
-              ))}
-            </ul>
-          </details>
-          <p className="help">
-            Results are modeled annual amounts, not predictions.
+      {!intake && (
+        <>
+          <p className="eyebrow">
+            {sample.label.toUpperCase()}
+            {isRetired
+              ? " · RETIRED"
+              : retirement
+                ? ` · RETIRE AT ${retirement.age_on_december_31}`
+                : ""}
           </p>
-        </div>
-      ) : (
-        <Calculating />
+          <h1 ref={heading} tabIndex={-1}>
+            {run ? planHeadline(run) : "Plan"}
+          </h1>
+          <p className="sample">
+            <span aria-hidden="true">◇</span>{" "}
+            {sample.label === "Opened plan file"
+              ? "Opened plan file"
+              : "Example household — invented figures"}
+          </p>
+          {run ? (
+            <div className="card plan-status" aria-live="polite">
+              <div>
+                <span className={`status ${run.status}`}>
+                  <span aria-hidden="true">
+                    {run.status === "complete" ? "✓" : "△"}
+                  </span>{" "}
+                  {statusWord(run.status, run.omissions.length)}
+                </span>{" "}
+                This result leaves some things out.
+              </div>
+              <details>
+                <summary>What this result does not include</summary>
+                <ul>
+                  {run.omissions.map((omission) => (
+                    <li key={omission}>{omission}</li>
+                  ))}
+                </ul>
+              </details>
+              <p className="help">
+                Results are modeled annual amounts, not predictions.
+              </p>
+            </div>
+          ) : (
+            <Calculating />
+          )}
+        </>
       )}
       <div className="card plan-answers">
         <div>
@@ -659,7 +675,7 @@ function PlanResult({
                       <td>
                         {rate.value ===
                         draft.input.assumptions[rate.identifier].value
-                          ? "Sample household"
+                          ? "Example household"
                           : "Changed by you"}
                       </td>
                       <td>{rate.effective_year}</td>
@@ -693,7 +709,7 @@ function PlanResult({
         <div>
           <button onClick={exportPlan}>Export</button>
         </div>
-        <button onClick={back}>Back to household</button>
+        {!intake && <button onClick={back}>Back to household</button>}
       </div>
     </div>
   );

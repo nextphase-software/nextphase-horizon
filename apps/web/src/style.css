@@ -982,3 +982,288 @@ select,
     display: inline;
   }
 }
+
+/* Intake, design-v2 references 1–11. */
+.brand-button {
+  border: 0;
+  padding: 0;
+  text-align: left;
+}
+header:has(.brand-button) {
+  justify-content: space-between;
+}
+.intake,
+.intake-head {
+  max-width: 688px;
+  margin: auto;
+}
+.intake .card,
+.intake-head .card {
+  padding: var(--space-5);
+}
+.intake h1 {
+  margin: 0 0 var(--space-2);
+}
+.intake .eyebrow {
+  margin-top: 0;
+}
+.intake .why {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+}
+.intake-layout,
+.intake-body {
+  min-width: 0;
+}
+.intake-options {
+  border: 0;
+  padding: 0;
+  margin: var(--space-4) 0;
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.intake-options .choice {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+.intake input {
+  accent-color: var(--color-accent);
+}
+.intake input:not([type="radio"]):not([type="checkbox"]) {
+  font: inherit;
+  color: var(--color-ink);
+  background: var(--color-sunken);
+  border: 1px solid var(--color-muted);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  width: 100%;
+  min-width: 0;
+}
+.date-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr) minmax(0, 1fr);
+  gap: var(--space-2);
+  padding: 0;
+  border: 0;
+  max-width: 360px;
+  min-width: 0;
+}
+.date-fields legend {
+  margin-bottom: var(--space-2);
+}
+.date-fields label {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  min-width: 0;
+}
+.date-fields input,
+.date-fields select {
+  margin-top: var(--space-1);
+}
+.age-field {
+  max-width: 200px;
+}
+.intake-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+}
+.money-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-2) 0;
+}
+.money-input {
+  min-width: 0;
+  flex: 1 1 120px;
+  max-width: 240px;
+}
+.money-input .dollar-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.intake .money-input input {
+  border: 0 !important;
+  padding: 0 !important;
+}
+.period-switch {
+  display: flex;
+}
+.period-switch button {
+  font-size: var(--text-sm);
+  padding: var(--space-2);
+  border-color: var(--color-line);
+}
+.period-switch [aria-pressed="true"] {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  border-color: var(--color-accent);
+}
+.money-echo {
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-2);
+}
+.intake-tip {
+  background: var(--color-sunken);
+  border-inline-start: 3px solid var(--color-accent);
+  padding: var(--space-3);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-size: var(--text-sm);
+}
+.gap-tip {
+  background: var(--color-partial-bg);
+  border-color: var(--color-partial-text);
+}
+.add-later {
+  display: block;
+  margin-top: var(--space-3);
+}
+.intake-progress {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+.intake-progress li + li {
+  margin: 0;
+}
+progress {
+  display: block;
+  width: 100%;
+  height: 4px;
+  accent-color: var(--color-accent);
+  margin: var(--space-4) 0 var(--space-2);
+  border: 0;
+  background: var(--color-line);
+}
+progress::-webkit-progress-bar {
+  background: var(--color-line);
+  border-radius: var(--radius-pill);
+}
+progress::-webkit-progress-value {
+  background: var(--color-accent);
+  border-radius: var(--radius-pill);
+}
+.style-switch {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+}
+.intake-review-row {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  font-size: var(--text-sm);
+}
+.intake-review-row > span:first-child {
+  color: var(--color-muted);
+}
+.intake-review-row .rough-label {
+  margin-inline-start: var(--space-2);
+}
+.still-to-add {
+  border-color: var(--color-partial-text);
+}
+.saved-account {
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+}
+.so-far {
+  display: none;
+}
+.thread-answer {
+  margin: 0 0 var(--space-3) auto;
+  padding: var(--space-3);
+  width: fit-content;
+  max-width: 90%;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-lg);
+  background: var(--color-sunken);
+}
+.section-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.folded-section p {
+  font-size: var(--text-sm);
+  margin: 0;
+}
+.intake-guided_page .intake-question + .intake-question {
+  border-top: 1px solid var(--color-line);
+  padding-top: var(--space-5);
+  margin-top: var(--space-5);
+}
+.intake-head h1 {
+  margin-top: 0;
+}
+.intake-head .gap-card {
+  border-inline-start: 3px solid var(--color-partial-text);
+}
+.intake-head .gap-card p {
+  margin-top: 0;
+}
+.intake-head .starting-values {
+  margin-top: var(--space-4);
+}
+@media (min-width: 900px) {
+  .intake-conversation,
+  .intake-guided_page {
+    max-width: none;
+  }
+  .intake-conversation .intake-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: var(--space-5);
+    align-items: start;
+  }
+  .so-far {
+    display: block;
+    position: sticky;
+    top: var(--space-4);
+    font-size: var(--text-sm);
+  }
+  .so-far p {
+    margin-bottom: var(--space-1);
+  }
+  .intake-guided_page .intake-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: var(--space-5);
+    align-items: start;
+  }
+  .section-list {
+    flex-direction: column;
+  }
+  .intake-review-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .intake-review-row > span:last-child {
+    text-align: right;
+  }
+}
+.brand-button {
+  font-weight: var(--weight-heading);
+}
+.brand-button small {
+  font-weight: var(--weight-body);
+}
+.brand-button .brand-mark {
+  display: block;
+  padding: 0;
+  width: var(--space-5);
+  height: var(--space-5);
+}
+header:has(.brand-button) {
+  padding-inline: var(--space-4);
+}
+.reference-footer .link-button {
+  margin-inline-start: var(--space-1);
+}

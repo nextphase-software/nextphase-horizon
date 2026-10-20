@@ -2,10 +2,11 @@
 import { expect, type Locator } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { mkdtempSync, writeFileSync, rmSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "./fixtures";
+import { storageTrap } from "./privacy";
 import { keyboardTo } from "./keyboard";
 const samples = [
   {
@@ -145,6 +146,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       offOrigin.push(request.url());
   });
   page.on("pageerror", (error) => errors.push(error.message));
+  await storageTrap(page);
   await page.addInitScript(() => {
     const probe = window as unknown as {
       requests: Request[];
@@ -155,18 +157,6 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     probe.requests = [];
     probe.replies = {};
     probe.writes = [];
-    const deny = (name: string) => () => {
-      probe.writes.push(name);
-      throw new Error(`Forbidden storage: ${name}`);
-    };
-    for (const name of ["setItem", "removeItem", "clear"] as const)
-      Storage.prototype[name] = deny(name);
-    indexedDB.open = deny("indexedDB.open");
-    indexedDB.deleteDatabase = deny("indexedDB.deleteDatabase");
-    Object.defineProperty(document, "cookie", {
-      get: () => "",
-      set: deny("cookie"),
-    });
     const NativeWorker = Worker;
     window.Worker = class extends NativeWorker {
       constructor(url: string | URL, options?: WorkerOptions) {
@@ -235,7 +225,18 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
   const planning = page.getByRole("navigation", { name: "Planning steps" });
   async function openPlan(index: number) {
     await page.goto("/");
-    await expect(page.getByTestId("intro")).toBeVisible();
+    await expect(
+      page.getByRole("button", {
+        name: "Try an example household",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await activate(
+      page.getByRole("button", {
+        name: "Try an example household",
+        exact: true,
+      }),
+    );
     // Choose the household through the native radio group using only keys.
     const radio = page.getByRole("radio", {
       name: samples[0].label,
@@ -246,11 +247,9 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     await expect(
       page.getByRole("radio", { name: samples[index].label, exact: true }),
     ).toBeChecked();
-    for (let i = 0; i < 6; i++)
-      await activate(
-        page.getByRole("button", { name: "Continue", exact: true }),
-      );
-    await activate(planning.getByRole("button", { name: "Plan", exact: true }));
+    await activate(
+      page.getByRole("button", { name: "Open example plan", exact: true }),
+    );
     await expect(
       page.getByRole("button", { name: "Try a change", exact: true }),
     ).toBeEnabled();
@@ -372,15 +371,17 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       expect(actual.replies[calls[2].id]).toBe(native("spend", file));
       expect(JSON.stringify(comparison.baseline)).toBe(originalRun);
       const word =
-        item.sample === 0 || item.sample === 3 ? "Partial" : "Supported";
+        item.sample === 0 || item.sample === 3
+          ? "Leaves out 5 things"
+          : "Covers your situation";
       await expect(page.locator(".status-sentence")).toHaveText(
-        `Both results are ${word} and leave out the same things.`,
+        `Both results: ${word}; they leave out the same things.`,
       );
       await expect(page.locator(".compare-status .status")).toHaveText(
         [comparison.baseline, comparison.scenario].map((run) =>
           run.status === "partial"
-            ? `△ Partial (${run.omissions.length} omissions)`
-            : "✓ Supported",
+            ? `△ Leaves out ${run.omissions.length} things`
+            : "✓ Covers your situation",
         ),
       );
       await expect(page.locator(".eyebrow")).toHaveText(
@@ -703,57 +704,6 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         await expect(
           page.getByRole("button", { name: "Try a change" }),
         ).toBeFocused();
-        await activate(page.getByRole("button", { name: "Back to household" }));
-        await activate(
-          page.getByRole("link", { name: "Edit Accounts", exact: true }),
-        );
-        await page
-          .getByRole("group", {
-            name: "Workplace plan Tax-deferred",
-            exact: true,
-          })
-          .getByRole("textbox", {
-            name: "Balance today today's dollars",
-            exact: true,
-          })
-          .fill("600,000");
-        await expect(
-          planning.getByRole("button", { name: "Compare", exact: true }),
-        ).toHaveCount(0);
-        await activate(
-          planning.getByRole("button", { name: "Plan", exact: true }),
-        );
-        await expect(
-          page.getByText(
-            "Your copies were removed because the household changed.",
-            { exact: true },
-          ),
-        ).toBeVisible();
-        await expect(
-          page.getByText("Calculating…", { exact: true }),
-        ).toHaveCount(0);
-        await evidence("plan-copies-removed");
-        await activate(page.getByRole("button", { name: "Try a change" }));
-        await activate(panel.getByRole("button", { name: "Make the copy" }));
-        await expect(
-          page
-            .locator(".compare-screen")
-            .getByText("Calculating…", { exact: true }),
-        ).toHaveCount(0);
-        await activate(page.getByRole("button", { name: "Back to plan" }));
-        await expect(
-          planning.getByRole("button", { name: "Compare", exact: true }),
-        ).toBeEnabled();
-        await expect(
-          page.getByText(
-            "Your copies were removed because the household changed.",
-            { exact: true },
-          ),
-        ).toHaveCount(0);
-        await expect(
-          page.getByText("Calculating…", { exact: true }),
-        ).toHaveCount(0);
-        await evidence("plan-new-copy-after-removal");
       }
     }
     // Synthetic error envelope from the actual worker boundary after a valid copy.
@@ -766,7 +716,10 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     });
     await activate(page.getByRole("button", { name: "Make the copy" }));
     await expect(
-      page.getByRole("heading", { name: "Unsupported", exact: true }),
+      page.getByRole("heading", {
+        name: "Horizon can't plan for this yet",
+        exact: true,
+      }),
     ).toBeVisible();
     await expect(
       page.getByText("Synthetic comparison failure", { exact: true }),
@@ -836,14 +789,32 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     await expect(page.locator(".headline-differences")).toBeVisible();
     await evidence("compare-valid-after-copy-error");
 
-    // V1.1: the original retirement year is outside the entered plan horizon.
+    // The old guided setup is gone; reopen the same synthetic short-horizon input.
     await openPlan(0);
-    await activate(page.getByRole("button", { name: "Back to household" }));
-    await activate(
-      page.getByRole("link", { name: "Edit About you", exact: true }),
+    const horizonInput = JSON.parse(
+      readFileSync(
+        new URL("packages/app/fixtures/answers-working-61.json", root),
+        "utf8",
+      ),
     );
-    await page.getByLabel("Plan to age", { exact: true }).fill("65");
-    await activate(planning.getByRole("button", { name: "Plan", exact: true }));
+    horizonInput.household.persons[0].plan_end_age = 65;
+    const horizonPath = join(temp, "short-horizon.json");
+    writeFileSync(horizonPath, JSON.stringify(horizonInput));
+    const horizonExport = native("export", horizonPath);
+    await activate(
+      planning.getByRole("button", { name: "Export", exact: true }),
+    );
+    const chooser = page.waitForEvent("filechooser");
+    await activate(
+      page.getByRole("button", { name: "Open a plan file", exact: true }),
+    );
+    await (
+      await chooser
+    ).setFiles({
+      name: "synthetic-short-horizon.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(horizonExport),
+    });
     await expect(page.getByText("Calculating…", { exact: true })).toHaveCount(
       0,
     );

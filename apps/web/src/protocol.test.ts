@@ -5,6 +5,7 @@ it("dispatches every operation unchanged and preserves IDs and canonical bytes",
   const json = '{"code":"EXAMPLE","message":"Example","status":"invalid"}';
   const stub = () => vi.fn(() => json);
   const engine: Engine = {
+    plan_from_answers: stub(),
     run: stub(),
     scenario: stub(),
     compare: stub(),
@@ -15,6 +16,7 @@ it("dispatches every operation unchanged and preserves IDs and canonical bytes",
     input_impact: stub(),
   };
   const requests: Request[] = [
+    { id: 9, op: "plan_from_answers", args: ["answers"] },
     { id: 1, op: "run", args: ["fixture"] },
     { id: 2, op: "scenario", args: ["fixture", "changes"] },
     { id: 3, op: "compare", args: ["baseline", "scenario"] },

@@ -142,7 +142,9 @@ it.each(["scenario", "compare", "sustainable_spending"] as const)(
     });
     expect(copies!.items[0].error).toEqual(error);
     const view = show(copies!.items[0]);
-    expect(screen.getByRole("heading", { name: "Unsupported" })).toBeTruthy();
+    expect(
+      screen.getByRole("heading", { name: "Horizon can't plan for this yet" }),
+    ).toBeTruthy();
     expect(screen.getByText(error.message)).toBeTruthy();
     expect(screen.getByRole("button", { name: "Back to plan" })).toBeTruthy();
     expect(view.container.querySelector("svg, table")).toBeNull();
@@ -211,7 +213,9 @@ it("keeps unequal omissions separate and renders null ledger sides as dashes", (
   } as unknown as Comparison;
   const view = show({ ...fresh(), comparison });
   expect(
-    screen.getByText("The baseline is Partial; the copy is Supported."),
+    screen.getByText(
+      "Baseline: Leaves out 5 things; copy: Covers your situation.",
+    ),
   ).toBeTruthy();
   expect(
     view.container.querySelector(".compare-status details")!.textContent,
@@ -283,7 +287,9 @@ it("keeps valid copies reachable when another copy fails", () => {
   );
   expect(screen.queryByText(error.message)).toBeNull();
   expect(
-    screen.getByText("Both results are Partial and leave out the same things."),
+    screen.getByText(
+      "Both results: Leaves out 5 things; they leave out the same things.",
+    ),
   ).toBeTruthy();
   expect(view.container.querySelector("svg")).toBeTruthy();
 });

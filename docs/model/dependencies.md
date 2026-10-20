@@ -4,7 +4,7 @@ Generated from `cargo metadata --format-version 1 --locked` using Cargo.lock.
 All 115 external packages are listed, including dev, build and target-specific
 transitives. Registry license expressions are verified by `cargo deny check licenses`.
 
-0003-W1 and 0002-W4–W5 add no dependency; Cargo.lock is unchanged.
+0003-W1 and 0002-W4–W6 add no dependency; Cargo.lock is unchanged.
 The answers intake, schema generation, CLI and browser export reuse the existing
 serde, serde_json, schemars and wasm-bindgen packages, with the same licenses.
 

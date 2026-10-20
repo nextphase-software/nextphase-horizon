@@ -16,11 +16,11 @@ describe("engine presentation", () => {
     expect(formatDollars(-12000)).toBe("-$12,000");
   });
   it("spells out status and omission count", () => {
-    expect(statusWord("complete")).toBe("Supported");
-    expect(statusWord("partial")).toBe("Partial");
-    expect(statusWord("partial", 0)).toBe("Partial (0 omissions)");
-    expect(statusWord("partial", 7)).toBe("Partial (7 omissions)");
-    expect(statusWord("unsupported")).toBe("Unsupported");
+    expect(statusWord("complete")).toBe("Covers your situation");
+    expect(statusWord("partial")).toBe("Leaves out 0 things");
+    expect(statusWord("partial", 0)).toBe("Leaves out 0 things");
+    expect(statusWord("partial", 7)).toBe("Leaves out 7 things");
+    expect(statusWord("unsupported")).toBe("Horizon can't plan for this yet");
     expect(statusWord("invalid")).toBe("Invalid");
   });
   it("spells out both spending flags", () => {
@@ -86,7 +86,9 @@ it("derives the intro from statuses and names the single unsupported sample", ()
   ).toBe(
     "The engine gives a full result for zero of these two sample households, a partial one for zero, and none for two.",
   );
-  expect(sampleIntroduction([{ label: "Supported", result: complete }])).toBe(
+  expect(
+    sampleIntroduction([{ label: "Covers your situation", result: complete }]),
+  ).toBe(
     "The engine gives a full result for one of these one sample households, a partial one for zero, and none for zero.",
   );
 });

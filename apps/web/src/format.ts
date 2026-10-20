@@ -48,13 +48,11 @@ export function sampleIntroduction(
 export function statusWord(status: string, omissions?: number): string {
   switch (status) {
     case "complete":
-      return "Supported";
+      return "Covers your situation";
     case "partial":
-      return omissions === undefined
-        ? "Partial"
-        : `Partial (${omissions} omissions)`;
+      return `Leaves out ${omissions ?? 0} things`;
     case "unsupported":
-      return "Unsupported";
+      return "Horizon can't plan for this yet";
     default:
       return "Invalid";
   }

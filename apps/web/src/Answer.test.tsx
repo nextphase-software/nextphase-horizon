@@ -34,7 +34,9 @@ it("renders an error with its message and no figures", () => {
       }}
     />,
   );
-  expect(screen.getByRole("heading", { name: "Unsupported" })).toBeTruthy();
+  expect(
+    screen.getByRole("heading", { name: "Horizon can't plan for this yet" }),
+  ).toBeTruthy();
   expect(screen.getByText("Only one person is supported.")).toBeTruthy();
   expect(screen.queryByTestId("spending")).toBeNull();
 });

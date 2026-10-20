@@ -2,14 +2,12 @@
 import { useEffect, useRef, useState } from "react";
 import { engine } from "./engine";
 import { samples } from "./fixtures";
-import { flagWords, sampleIntroduction, statusWord } from "./format";
+import { statusWord } from "./format";
 import type { Result } from "./Answer";
-import { Setup } from "./GuidedSetup";
-import { createDraft, fieldErrors, serializeDraft, type Draft } from "./setup";
+import { createDraft, serializeDraft, type Draft } from "./setup";
 import { InputCheck } from "./InputCheck";
 import { Plan } from "./Plan";
 import { Export } from "./Export";
-import type { PlanCache } from "./plan-results";
 import { Compare } from "./Compare";
 import { CopyPanel } from "./CopyPanel";
 import {
@@ -18,7 +16,20 @@ import {
   type Baseline,
   type Copies,
 } from "./plan-copies";
+import type { PlanCache } from "./plan-results";
 import type { Lever } from "./generated/types/levers.v1";
+import type { AnswersPlanV2 } from "./generated/types/answers-plan.v2";
+import { Intake } from "./Intake";
+import { IntakeHead } from "./IntakeHead";
+import { buildAnswers, newFields, type Place } from "./intake-fields";
+import {
+  loadIntake,
+  saveIntake,
+  forgetIntake,
+  savedNotice,
+  corruptNotice,
+  type SavedIntake,
+} from "./intake-storage";
 export { Answer } from "./Answer";
 export function Status({ result }: { result: Result }) {
   return (
@@ -39,98 +50,51 @@ export function Status({ result }: { result: Result }) {
     </span>
   );
 }
-function SampleNote({ result }: { result: Result }) {
-  return "code" in result ? (
-    <small>{result.message}</small>
-  ) : result.flag ? (
-    <small>{flagWords(result.flag)}</small>
-  ) : null;
-}
+type View =
+  "welcome" | "examples" | "intake" | "check" | "plan" | "compare" | "export";
 export function App() {
+  const [view, setView] = useState<View>("welcome");
   const [selected, setSelected] = useState(samples[0].name);
   const [question, setQuestion] = useState("retire");
-  const [results, setResults] = useState<Record<string, Result>>({});
-  const [failure, setFailure] = useState<string | null>(null);
   const [draft, setDraft] = useState<Draft | null>(null);
-  const [inSetup, setInSetup] = useState(false);
-  const [inCheck, setInCheck] = useState(false);
-  const [inPlan, setInPlan] = useState(false);
-  const [inCompare, setInCompare] = useState(false);
-  const [inExport, setInExport] = useState(false);
+  const [saved, setSaved] = useState<SavedIntake | null>(null);
+  const [own, setOwn] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [unavailable, setUnavailable] = useState(false);
+  const [corrupt, setCorrupt] = useState(false);
+  const [failure, setFailure] = useState<string | null>(null);
   const [openedFile, setOpenedFile] = useState(false);
-  const [planCache] = useState<PlanCache>(() => new Map());
+  const [answerResult, setAnswerResult] = useState<AnswersPlanV2 | null>(null);
+  const [results, setResults] = useState<Record<string, Result>>({});
   const [copies, setCopies] = useState<Copies | null>(null);
   const [currentCopy, setCurrentCopy] = useState("");
   const [panel, setPanel] = useState<Baseline | null>(null);
-  const [copiesRemoved, setCopiesRemoved] = useState(false);
-  const panelTrigger = useRef<HTMLElement | null>(null);
-  // An unparseable entry also ceases to represent the copies' serialized input.
-  if (copies) {
-    let input: string | null = null;
-    try {
-      input = draft && serializeDraft(draft);
-    } catch {
-      /* Setup reports entry syntax. */
-    }
-    if (input !== copies.input) {
-      setCopies(null);
-      setPanel(null);
-      setInCompare(false);
-      setCopiesRemoved(true);
-    }
-  }
-  function showCopyPanel(baseline: Baseline) {
-    panelTrigger.current = document.activeElement as HTMLElement | null;
-    setPanel(baseline);
-  }
-  function cancelCopyPanel() {
-    setPanel(null);
-    requestAnimationFrame(() => panelTrigger.current?.focus());
-  }
-  function makeCopy(lever: Lever) {
-    if (
-      !draft ||
-      !panel ||
-      copies?.items.some((copy) => copy.lever.id === lever.id)
-    )
-      return;
-    const input = serializeDraft(draft);
-    const baseline = copies?.baseline ?? panel;
-    const copy = { lever, ...copyLabels(lever, baseline.run) };
-    setCopies((previous) => ({
-      input,
-      baseline,
-      items: [...(previous?.items ?? []), copy],
-    }));
-    setCopiesRemoved(false);
-    setCurrentCopy(lever.id);
-    setPanel(null);
-    setInCompare(true);
-    setInPlan(false);
-    void calculateCopy(input, baseline, copy, setCopies);
-  }
-  function openCompare() {
-    setInExport(false);
-    if (!copies?.items.length) return;
-    setInSetup(false);
-    setInCheck(false);
-    setInPlan(false);
-    setPanel(null);
-    setInCompare(true);
-  }
-  const [setupTarget, setSetupTarget] = useState<{
-    step: number;
-    path?: string;
-    id: number;
-  }>({ step: 0, id: 0 });
+  const [planCache] = useState<PlanCache>(() => new Map());
+  const trigger = useRef<HTMLElement | null>(null);
   const [theme, setTheme] = useState<"light" | "dark" | null>(null);
-  const questionRef = useRef<HTMLInputElement>(null);
-  const householdRef = useRef<HTMLInputElement>(null);
+  const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     if (theme) document.documentElement.dataset.theme = theme;
   }, [theme]);
   useEffect(() => {
+    heading.current?.focus();
+  }, [view]);
+  useEffect(() => {
     let active = true;
+    loadIntake((json) => engine.call("plan_from_answers", json))
+      .then((value) => {
+        if (!active) return;
+        setSaved(value.saved);
+        setUnavailable(!!value.unavailable);
+        setCorrupt(!!value.corrupt);
+        setLoaded(true);
+      })
+      .catch((error: Error) => {
+        if (active) {
+          setFailure(error.message);
+          setLoaded(true);
+        }
+      });
     Promise.all(
       samples.map(
         async (sample) =>
@@ -152,180 +116,277 @@ export function App() {
       active = false;
     };
   }, []);
-  function toggleTheme() {
-    const current =
-      theme ??
-      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    setTheme(current === "dark" ? "light" : "dark");
+  const answersJson = saved ? JSON.stringify(saved.answers) : "";
+  useEffect(() => {
+    if (!own || view !== "plan") return;
+    let active = true;
+    engine
+      .call("plan_from_answers", answersJson)
+      .then((json) => {
+        if (!active) return;
+        const result = JSON.parse(json) as AnswersPlanV2;
+        setAnswerResult(result);
+        if (result.household_input) {
+          const next = createDraft(JSON.stringify(result.household_input));
+          next.visited = [0, 1, 2, 3, 4, 5];
+          setDraft(next);
+        } else setDraft(null);
+        requestAnimationFrame(() =>
+          document
+            .querySelector<HTMLElement>('[data-testid="intake-headline"]')
+            ?.focus(),
+        );
+      })
+      .catch((error: Error) => {
+        if (active) setFailure(error.message);
+      });
+    return () => {
+      active = false;
+    };
+  }, [own, view, answersJson]);
+  function update(value: SavedIntake) {
+    if (JSON.stringify(value.answers) !== answersJson) {
+      setCopies(null);
+      planCache.clear();
+    }
+    setSaved(value);
+    if (!saveIntake(value)) setUnavailable(true);
   }
-  function chooseHousehold(name: string) {
-    if (name === selected && !openedFile) return;
+  function forget() {
     if (
-      draft?.dirty &&
       !window.confirm(
-        "Choosing a different household will discard your edited answers, added accounts and Rough marks. Continue?",
+        "Forget your answers on this device? This can't be undone.",
       )
     )
       return;
-    setOpenedFile(false);
-    planCache.clear();
-    setSelected(name);
+    forgetIntake();
+    setSaved(null);
     setDraft(null);
-  }
-  function openStart(part: "question" | "household") {
-    setInExport(false);
-    setInCompare(false);
+    setAnswerResult(null);
+    setOwn(false);
+    setCopies(null);
     setPanel(null);
-    setInSetup(false);
-    setInCheck(false);
-    setInPlan(false);
-    // Focus after React has restored the Start screen.
-    requestAnimationFrame(() =>
-      (part === "question" ? questionRef : householdRef).current?.focus(),
-    );
+    planCache.clear();
+    setView("welcome");
   }
-  function openSetup(step: number, path?: string) {
-    setInExport(false);
-    setInCompare(false);
+  function welcome() {
+    setView("welcome");
     setPanel(null);
-    setSetupTarget((previous) => ({ step, path, id: previous.id + 1 }));
-    setInCheck(false);
-    setInPlan(false);
-    setInSetup(true);
   }
-  function openResults(plan = false) {
-    setInExport(false);
-    setInCompare(false);
+  function change(place: Place = "review") {
+    if (!saved) return;
+    setAnswerResult(null);
     setPanel(null);
-    if (!draft) return;
-    for (let step = 0; step < 5; step++) {
-      const errors = fieldErrors(draft, step);
-      if (Object.keys(errors).length) {
-        openSetup(step, Object.keys(errors)[0]);
-        return;
-      }
+    update({ ...saved, place });
+    setView("intake");
+  }
+  function showPlan(value = saved) {
+    setFailure(null);
+    if (own && value) {
+      update({ ...value, place: "results" });
+      setAnswerResult(null);
     }
-    setInSetup(false);
-    setInCheck(!plan);
-    setInPlan(plan);
-  }
-  const openInputCheck = () => openResults();
-  const openPlan = () => openResults(true);
-  function openExport() {
-    if (draft) {
-      for (let step = 0; step < 5; step++) {
-        const errors = fieldErrors(draft, step);
-        if (Object.keys(errors).length) {
-          openSetup(step, Object.keys(errors)[0]);
-          return;
-        }
-      }
-    }
-    setInSetup(false);
-    setInCheck(false);
-    setInPlan(false);
-    setInCompare(false);
     setPanel(null);
-    setInExport(true);
+    setView("plan");
+  }
+  function start() {
+    setOwn(true);
+    setOpenedFile(false);
+    setCopies(null);
+    setDraft(null);
+    setFailure(null);
+    if (saved) {
+      setView(saved.place === "results" ? "plan" : "intake");
+    } else {
+      const next: SavedIntake = {
+        format: "horizon-saved-intake",
+        version: 1,
+        answers: buildAnswers(newFields()),
+        style: "one_question",
+        place: "1",
+      };
+      update(next);
+      setView("intake");
+    }
+  }
+  function example() {
+    const next = createDraft(samples.find((s) => s.name === selected)!.json);
+    next.visited = [0, 1, 2, 3, 4, 5];
+    setDraft(next);
+    setOwn(false);
+    setOpenedFile(false);
+    setCopies(null);
+    setPanel(null);
+    planCache.clear();
+    setView("plan");
   }
   function openFile(input: string) {
     const next = createDraft(input);
     next.visited = [0, 1, 2, 3, 4, 5];
     setDraft(next);
+    setOwn(false);
     setOpenedFile(true);
     setCopies(null);
-    setCopiesRemoved(false);
-    setCurrentCopy("");
     setPanel(null);
     planCache.clear();
-    setInExport(false);
-    setInSetup(false);
-    setInCheck(false);
-    setInCompare(false);
-    setInPlan(true);
+    setView("plan");
   }
-  const sample = openedFile
-    ? { label: "Opened plan file", name: "opened", json: "" }
-    : samples.find((sample) => sample.name === selected)!;
-  const result = results[selected];
-  const allResults = Object.values(results);
-  const metadata =
-    result && "run" in result
-      ? result.run.metadata
-      : allResults.find((result) => "run" in result)?.run.metadata;
+  function showPanel(baseline: Baseline) {
+    trigger.current = document.activeElement as HTMLElement;
+    setPanel(baseline);
+  }
+  function makeCopy(lever: Lever) {
+    if (
+      !draft ||
+      !panel ||
+      copies?.items.some((copy) => copy.lever.id === lever.id)
+    )
+      return;
+    const input = serializeDraft(draft),
+      baseline = copies?.baseline ?? panel,
+      copy = { lever, ...copyLabels(lever, baseline.run) };
+    setCopies((previous) => ({
+      input,
+      baseline,
+      items: [...(previous?.items ?? []), copy],
+    }));
+    setCurrentCopy(lever.id);
+    setPanel(null);
+    setView("compare");
+    void calculateCopy(input, baseline, copy, setCopies);
+  }
+  const sample = own
+    ? { label: "Your figures", name: "own", json: "" }
+    : openedFile
+      ? { label: "Opened plan file", name: "opened", json: "" }
+      : samples.find((s) => s.name === selected)!;
+  const metadata = Object.values(results).find((result) => "run" in result)?.run
+    .metadata;
+  const steps = own
+    ? ["Your answers", "Plan", "Compare", "Export"]
+    : ["Check", "Plan", "Compare", "Export"];
+  function step(name: string) {
+    if (name === "Your answers") change();
+    else if (name === "Check") setView("check");
+    else if (name === "Plan") showPlan();
+    else setView(name.toLowerCase() as View);
+  }
   return (
     <>
       <header>
-        <strong className="brand">
-          <span className="brand-mark" aria-hidden="true">
-            ☰
-          </span>
+        <button
+          className="brand brand-button"
+          onClick={welcome}
+          aria-label="Horizon welcome"
+        >
+          <span className="brand-mark" aria-hidden="true" />
           <span>
             Horizon<small>NextPhase</small>
           </span>
-        </strong>
-        <nav aria-label="Planning steps">
-          <ol className="planning-steps">
-            <li
-              aria-current={
-                !inSetup && !inCheck && !inPlan && !inCompare && !inExport
-                  ? "step"
-                  : undefined
-              }
-            >
-              <button onClick={() => openStart("question")}>
-                <span aria-hidden="true">1</span> Question
-              </button>
-            </li>
-            <li aria-current={inSetup ? "step" : undefined}>
-              <button onClick={() => openStart("household")}>
-                <span aria-hidden="true">2</span> Household
-              </button>
-            </li>
-            <li aria-current={inCheck ? "step" : undefined}>
-              {draft?.visited.includes(5) ? (
-                <button onClick={openInputCheck}>
-                  <span aria-hidden="true">3</span> Check
-                </button>
-              ) : (
-                <span>
-                  3 Check<small>Not available yet</small>
-                </span>
-              )}
-            </li>
-            <li aria-current={inPlan ? "step" : undefined}>
-              {draft?.visited.includes(5) ? (
-                <button onClick={openPlan}>
-                  <span aria-hidden="true">4</span> Plan
-                </button>
-              ) : (
-                <span>
-                  4 Plan<small>Not available yet</small>
-                </span>
-              )}
-            </li>
-            <li aria-current={inCompare ? "step" : undefined}>
-              {copies?.items.length ? (
-                <button onClick={openCompare}>
-                  <span aria-hidden="true">5</span> Compare
-                </button>
-              ) : (
-                <span>
-                  5 Compare<small>Not available yet</small>
-                </span>
-              )}
-            </li>
-            <li aria-current={inExport ? "step" : undefined}>
-              <button onClick={openExport}>
-                <span aria-hidden="true">6</span> Export
-              </button>
-            </li>
-          </ol>
-        </nav>
-        <button onClick={toggleTheme}>Toggle theme</button>
+        </button>
+        {["check", "plan", "compare", "export"].includes(view) && (
+          <nav aria-label="Planning steps">
+            <ol className="planning-steps">
+              {steps.map((name) => (
+                <li
+                  key={name}
+                  aria-current={
+                    view === name.toLowerCase() ? "step" : undefined
+                  }
+                >
+                  <button
+                    disabled={
+                      name === "Compare"
+                        ? !copies?.items.length
+                        : (name === "Check" || name === "Plan") &&
+                          !draft &&
+                          !own
+                    }
+                    onClick={() => step(name)}
+                  >
+                    {name}
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
+        <button
+          aria-label="Toggle theme"
+          onClick={() => {
+            const current =
+              theme ??
+              (matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light");
+            setTheme(current === "dark" ? "light" : "dark");
+          }}
+        >
+          Theme
+        </button>
       </header>
       <main>
-        {inExport ? (
+        {view === "intake" && saved ? (
+          <Intake
+            saved={saved}
+            update={update}
+            forget={forget}
+            unavailable={unavailable}
+            plan={showPlan}
+          />
+        ) : view === "plan" ? (
+          <>
+            {own &&
+              (failure ? (
+                <section role="alert">
+                  <h1>Calculation unavailable</h1>
+                  <p>{failure}</p>
+                </section>
+              ) : answerResult && saved ? (
+                <IntakeHead
+                  result={answerResult}
+                  answers={saved.answers}
+                  change={change}
+                />
+              ) : (
+                <h1 role="status">Working out your plan…</h1>
+              ))}
+            {draft && (!own || answerResult?.household_input) && (
+              <Plan
+                key={serializeDraft(draft)}
+                sample={sample}
+                draft={draft}
+                back={own ? () => change() : welcome}
+                tryChange={showPanel}
+                exportPlan={() => setView("export")}
+                cache={planCache}
+                intake={own}
+              />
+            )}
+            {own && (
+              <button onClick={() => change()}>Back to my answers</button>
+            )}
+          </>
+        ) : view === "check" && draft ? (
+          <InputCheck
+            sample={sample}
+            draft={draft}
+            back={welcome}
+            refine={welcome}
+            plan={() => showPlan()}
+          />
+        ) : view === "compare" && copies ? (
+          <Compare
+            key={currentCopy}
+            sample={sample}
+            copies={copies}
+            copy={copies.items.find((c) => c.lever.id === currentCopy)!}
+            select={setCurrentCopy}
+            newCopy={() => showPanel(copies.baseline)}
+            back={() => showPlan()}
+            exportPlan={() => setView("export")}
+          />
+        ) : view === "export" ? (
           <Export
             sample={sample}
             draft={draft}
@@ -333,195 +394,112 @@ export function App() {
             cache={planCache}
             opened={openFile}
           />
-        ) : inCompare && copies ? (
-          <Compare
-            key={currentCopy}
-            sample={sample}
-            copies={copies}
-            copy={copies.items.find((copy) => copy.lever.id === currentCopy)!}
-            select={(id) => {
-              setPanel(null);
-              setCurrentCopy(id);
-            }}
-            newCopy={() => showCopyPanel(copies.baseline)}
-            back={openPlan}
-            exportPlan={openExport}
-          />
-        ) : inPlan && draft ? (
-          <>
-            {copiesRemoved && (
-              <p role="status">
-                Your copies were removed because the household changed.
-              </p>
-            )}
-            <Plan
-              sample={sample}
-              draft={draft}
-              back={() => openSetup(5)}
-              tryChange={showCopyPanel}
-              exportPlan={openExport}
-              cache={planCache}
-            />
-          </>
-        ) : inCheck && draft ? (
-          <InputCheck
-            sample={sample}
-            draft={draft}
-            back={() => openSetup(5)}
-            refine={openSetup}
-            plan={openPlan}
-          />
-        ) : inSetup && draft ? (
-          <Setup
-            key={setupTarget.id}
-            initialStep={setupTarget.step}
-            focusPath={setupTarget.path}
-            openInputCheck={openInputCheck}
-            sample={sample}
-            draft={draft}
-            setDraft={setDraft}
-            backToStart={() => openStart("household")}
-          />
+        ) : view === "examples" ? (
+          <div className="intake">
+            <h1 ref={heading} tabIndex={-1}>
+              Try an example household
+            </h1>
+            <p className="sample">◇ Example household — invented figures</p>
+            <fieldset className="card choices">
+              <legend>Choose an example household</legend>
+              {samples.map((item) => (
+                <label className="choice" key={item.name}>
+                  <input
+                    type="radio"
+                    name="household"
+                    checked={selected === item.name}
+                    onChange={() => setSelected(item.name)}
+                  />
+                  <strong>{item.label}</strong>
+                </label>
+              ))}
+            </fieldset>
+            <button className="primary" onClick={example}>
+              Open example plan
+            </button>
+            <button onClick={welcome}>Back</button>
+          </div>
         ) : (
-          <>
-            <h1>What would you like to find out?</h1>
-            <div aria-live="polite">
-              {failure ? (
-                <section>
-                  <h2>Calculation unavailable</h2>
-                  <p>{failure}</p>
-                </section>
-              ) : allResults.length === samples.length ? (
-                <p className="lede" data-testid="intro">
-                  {sampleIntroduction(
-                    samples.map((sample) => ({
-                      label: sample.label,
-                      result: results[sample.name],
-                    })),
-                  )}
-                </p>
-              ) : (
-                <p role="status">Calculating sample households…</p>
-              )}
-            </div>
-            <p className="sample">
-              <span aria-hidden="true">◇</span> Sample household — invented data
-            </p>
-            <div className="start-grid">
-              <fieldset className="card choices">
-                <legend>Your question</legend>
-                {[
-                  {
-                    id: "retire",
-                    label: "Can I afford to retire when I want to?",
-                  },
-                  { id: "spend", label: "How much can I spend each year?" },
-                  {
-                    id: "claim",
-                    label: "When should I claim Social Security?",
-                  },
-                ].map((item, i) => (
-                  <label className="choice" key={item.id}>
-                    <input
-                      ref={question === item.id ? questionRef : undefined}
-                      type="radio"
-                      name="question"
-                      value={item.id}
-                      checked={question === item.id}
-                      disabled={i === 2}
-                      onChange={() => setQuestion(item.id)}
-                      aria-label={item.label}
-                    />
-                    <span>
-                      <strong>{item.label}</strong>
-                      {i === 2 && (
-                        <small>Claiming-age rules are not modelled.</small>
-                      )}
-                    </span>
-                    {i === 2 ? (
-                      <span className="muted">Not available yet</span>
-                    ) : (
-                      <span className="status complete">
-                        <span aria-hidden="true">✓</span> Supported
-                      </span>
-                    )}
-                  </label>
-                ))}
-              </fieldset>
-              <fieldset className="card choices">
-                <legend>Start from a sample household</legend>
-                {samples.map((item) => (
-                  <label className="choice" key={item.name}>
-                    <input
-                      ref={selected === item.name ? householdRef : undefined}
-                      type="radio"
-                      name="household"
-                      value={item.name}
-                      checked={selected === item.name}
-                      onChange={() => chooseHousehold(item.name)}
-                      aria-label={item.label}
-                    />
-                    <span>
-                      <strong>{item.label}</strong>
-                      {results[item.name] && (
-                        <SampleNote result={results[item.name]} />
-                      )}
-                    </span>
-                    {results[item.name] && (
-                      <Status result={results[item.name]} />
-                    )}
-                  </label>
-                ))}
-              </fieldset>
-            </div>
-            <details className="card">
-              <summary>What the statuses mean</summary>
+          <div className="intake welcome">
+            <section className="card">
+              <p className="eyebrow">Horizon</p>
+              <h1 ref={heading} tabIndex={-1}>
+                See whether your savings can carry your retirement
+              </h1>
               <p>
-                ✓ Supported: a full result within the engine's declared
-                coverage.
+                Answer a few questions about your age, income, savings and
+                spending. Horizon works out, year by year, whether your money
+                lasts, and shows what would change the answer.
               </p>
-              <p>△ Partial: a result with the named omissions.</p>
-              <p>! Unsupported: no result is produced.</p>
-            </details>
-            <details className="card">
-              <summary>What the selected household's result leaves out</summary>
-              {result ? (
-                "run" in result ? (
-                  result.run.omissions.length ? (
-                    <ul>
-                      {result.run.omissions.map((omission) => (
-                        <li key={omission}>{omission}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No omissions reported.</p>
-                  )
-                ) : (
-                  <p>{result.message}</p>
-                )
-              ) : (
-                <p>Waiting for the engine.</p>
-              )}
-            </details>
-            <div className="actions">
-              <button
-                className="primary"
-                disabled={!result || "code" in result || !!failure}
-                onClick={() => {
-                  if (!draft) setDraft(createDraft(sample.json));
-                  openSetup(0);
-                }}
-              >
-                Continue
-              </button>
+              <p className="muted">
+                It takes about 10 minutes. Rough figures are fine; you can mark
+                anything you're unsure of, give a range, or add it later.
+              </p>
+              <div className="actions">
+                <button className="primary" disabled={!loaded} onClick={start}>
+                  {saved
+                    ? "Continue with my answers"
+                    : "Start with my own figures"}
+                </button>
+                <button
+                  onClick={() => {
+                    setView("examples");
+                    setOwn(false);
+                  }}
+                >
+                  Try an example household
+                </button>
+              </div>
               <p className="help">
-                Setup goes step by step and ends with a review of every answer.
+                {savedNotice}{" "}
+                <button className="link-button" onClick={forget}>
+                  Forget my answers
+                </button>
               </p>
-            </div>
-            {result && "code" in result && (
-              <p role="status">Horizon plans for one person only.</p>
-            )}
-          </>
+              {corrupt && <p role="status">{corruptNotice}</p>}
+              {failure && (
+                <p role="alert">Calculation unavailable: {failure}</p>
+              )}
+            </section>
+            <fieldset className="card choices">
+              <legend>What would you like to find out?</legend>
+              {[
+                {
+                  id: "retire",
+                  label: "Can I afford to retire when I want to?",
+                },
+                { id: "spend", label: "How much can I spend each year?" },
+                { id: "claim", label: "When should I claim Social Security?" },
+              ].map((item) => (
+                <label className="choice" key={item.id}>
+                  <input
+                    type="radio"
+                    name="question"
+                    aria-label={item.label}
+                    checked={question === item.id}
+                    disabled={item.id === "claim"}
+                    onChange={() => setQuestion(item.id)}
+                  />
+                  <span>
+                    {item.label}
+                    {item.id === "claim" && (
+                      <small>Claiming-age rules are not modelled.</small>
+                    )}
+                  </span>
+                </label>
+              ))}
+            </fieldset>
+            <button
+              className="link-button"
+              onClick={() => {
+                setOwn(false);
+                setDraft(null);
+                setView("export");
+              }}
+            >
+              Open a plan file
+            </button>
+          </div>
         )}
         {panel && (
           <CopyPanel
@@ -529,16 +507,19 @@ export function App() {
             baseline={panel}
             copies={copies?.items ?? []}
             make={makeCopy}
-            cancel={cancelCopyPanel}
+            cancel={() => {
+              setPanel(null);
+              requestAnimationFrame(() => trigger.current?.focus());
+            }}
           />
         )}
       </main>
       <footer>
-        Your answers stay in this page only. Reload or close it and they're
-        gone.
         <p className="reference-footer">
-          Open source (AGPL-3.0-only) · Sample data only; nothing you enter is
-          stored
+          Open source (AGPL-3.0-only) · Your answers stay on this device.{" "}
+          <button className="link-button" onClick={forget}>
+            Forget my answers
+          </button>
           {metadata && (
             <>
               {" "}

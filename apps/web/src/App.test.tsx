@@ -1,303 +1,63 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import { afterEach, expect, it, vi } from "vitest";
-import {
-  cleanup,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import raw from "../../../packages/parity/golden/answers-working-61.spend.json?raw";
-vi.mock("./engine", () => ({ engine: { call: vi.fn() } }));
-import { engine } from "./engine";
 import { App } from "./App";
-import { samples } from "./fixtures";
+import { engine } from "./engine";
+vi.mock("./engine", () => ({ engine: { call: vi.fn() } }));
 afterEach(() => {
   cleanup();
+  localStorage.clear();
   vi.resetAllMocks();
 });
-function stub() {
-  vi.mocked(engine.call).mockImplementation(async (...args) => {
-    const json = args[1];
-    const input = JSON.parse(json as string);
-    if (input.household.persons.length > 1)
-      return JSON.stringify({
-        status: "unsupported",
-        code: "MULTIPLE_PERSONS_UNSUPPORTED",
-        message: "Only one person is supported.",
-      });
-    if (input.household.persons[0].id === "synthetic-person") {
-      const result = JSON.parse(raw);
-      result.status = "complete";
-      return JSON.stringify(result);
-    }
-    return raw;
-  });
-}
-it("loads each status exactly once, derives the introduction and prevents unsupported choices", async () => {
-  stub();
+it("welcomes own figures without coverage labels and starts the first question", async () => {
+  vi.mocked(engine.call).mockResolvedValue(raw);
   render(<App />);
-  expect((await screen.findByTestId("intro")).textContent).toContain(
-    "The engine gives a full result for two of these five sample households, a partial one for two, and none for the couple (only one person is supported).",
-  );
-  expect(engine.call).toHaveBeenCalledTimes(5);
-  expect(
-    (
-      screen.getByRole("radio", {
-        name: "When should I claim Social Security?",
-      }) as HTMLInputElement
-    ).disabled,
-  ).toBe(true);
-  const group = screen.getByRole("group", {
-    name: "Start from a sample household",
+  const start = await screen.findByRole("button", {
+    name: "Start with my own figures",
   });
-  expect(group.querySelectorAll('input[type="radio"]')).toHaveLength(5);
-  fireEvent.click(screen.getByRole("radio", { name: samples[0].label }));
-  expect(engine.call).toHaveBeenCalledTimes(5);
-  fireEvent.click(screen.getByRole("radio", { name: "Couple" }));
+  await vi.waitFor(() =>
+    expect((start as HTMLButtonElement).disabled).toBe(false),
+  );
+  expect(screen.queryByText("Supported")).toBeNull();
   expect(
-    (
-      screen.getByRole("button", {
-        name: "Continue",
-      }) as HTMLButtonElement
-    ).disabled,
-  ).toBe(true);
-  expect(screen.getByText("Horizon plans for one person only.")).toBeTruthy();
-  for (const name of ["Check", "Plan", "Compare"])
-    expect(screen.queryByRole("button", { name })).toBeNull();
+    screen.getByRole("radio", { name: "When should I claim Social Security?" }),
+  ).toHaveProperty("disabled", true);
+  fireEvent.click(start);
+  expect(
+    screen.getByRole("heading", {
+      name: "Are you planning alone or with a partner?",
+    }),
+  ).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+  expect(
+    screen.getByRole("heading", { name: "When were you born?" }),
+  ).toBeTruthy();
 });
-it("checks the edited household, retains rough marks and requires confirmation before discarding edits", async () => {
-  stub();
+it("ignores an obsolete answers reply after returning to review", async () => {
+  vi.mocked(engine.call).mockResolvedValue(raw);
   render(<App />);
-  await screen.findByTestId("intro");
-  fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  const next = () =>
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  next();
-  next();
-  const account = screen.getByRole("group", {
-    name: "Workplace plan Tax-deferred",
+  const start = await screen.findByRole("button", {
+    name: "Start with my own figures",
   });
-  fireEvent.change(account.querySelector('input[type="text"]')!, {
-    target: { value: "600,000" },
-  });
-  fireEvent.click(account.querySelector("button[aria-pressed]")!);
-  next();
-  next();
-  fireEvent.change(screen.getByLabelText("Inflation percent per year"), {
-    target: { value: "3" },
-  });
-  next();
-  expect(screen.getByText("$600,000")).toBeTruthy();
-  expect(screen.getByText("≈ Rough value")).toBeTruthy();
-  fireEvent.click(screen.getByRole("button", { name: "Check this household" }));
-  await screen.findByTestId("spending");
-  const sent = JSON.parse(
-    vi.mocked(engine.call).mock.calls.at(-1)![1] as string,
+  await vi.waitFor(() =>
+    expect((start as HTMLButtonElement).disabled).toBe(false),
   );
-  expect(sent.household.accounts[2].opening_balance_cents).toBe(60000000);
-  expect(
-    sent.assumptions.find(
-      (item: { identifier: string }) => item.identifier === "inflation",
-    ).value,
-  ).toBe("0.03");
-  fireEvent.click(screen.getByRole("button", { name: "Household" }));
-  fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  fireEvent.click(screen.getByRole("button", { name: "Review your answers" }));
-  expect(screen.getByText("$600,000")).toBeTruthy();
-  expect(screen.getByText("≈ Rough value")).toBeTruthy();
-  fireEvent.click(screen.getByRole("button", { name: "Household" }));
-  const confirm = vi.spyOn(window, "confirm").mockReturnValue(false);
-  fireEvent.click(screen.getByRole("radio", { name: samples[1].label }));
-  expect(confirm).toHaveBeenCalledWith(
-    expect.stringContaining("edited answers, added accounts and Rough marks"),
-  );
-  expect(
-    (screen.getByRole("radio", { name: samples[0].label }) as HTMLInputElement)
-      .checked,
-  ).toBe(true);
-  confirm.mockReturnValue(true);
-  fireEvent.click(screen.getByRole("radio", { name: samples[1].label }));
-  expect(
-    (screen.getByRole("radio", { name: samples[1].label }) as HTMLInputElement)
-      .checked,
-  ).toBe(true);
-});
-it("blocks malformed entries, but sends meaningful validation to the engine", async () => {
-  stub();
-  render(<App />);
-  await screen.findByTestId("intro");
-  fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  fireEvent.change(screen.getByLabelText("Plan to age"), {
-    target: { value: "95.5" },
-  });
-  fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  expect(screen.getByRole("alert").textContent).toContain("whole number");
-  expect(screen.getByRole("heading", { name: "About you" })).toBeTruthy();
-  fireEvent.change(screen.getByLabelText("Plan to age"), {
-    target: { value: "95" },
-  });
-  fireEvent.change(screen.getByLabelText("Retirement date"), {
-    target: { value: "2025-06-01" },
-  });
-  for (let i = 0; i < 5; i++)
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  vi.mocked(engine.call).mockResolvedValueOnce(
-    '{"status":"invalid","code":"END_BEFORE_START","message":"Wage end date precedes its start date."}',
-  );
-  fireEvent.click(screen.getByRole("button", { name: "Check this household" }));
-  await screen.findByText("Wage end date precedes its start date.");
-  expect(screen.queryByTestId("spending")).toBeNull();
-  expect(screen.getAllByRole("link", { name: /^Edit / })).toHaveLength(5);
-  await waitFor(() => expect(engine.call).toHaveBeenCalledTimes(6));
-});
-it("ignores a completed check after navigation and reports worker failure without figures", async () => {
-  stub();
-  render(<App />);
-  await screen.findByTestId("intro");
-  for (let index = 0; index < 6; index++)
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  let resolve!: (json: string) => void;
+  fireEvent.click(start);
+  fireEvent.click(screen.getByRole("button", { name: "Review my answers" }));
+  let resolve!: (value: string) => void;
   vi.mocked(engine.call).mockImplementationOnce(
     () =>
-      new Promise<string>((done) => {
+      new Promise((done) => {
         resolve = done;
       }),
   );
-  const checkButton = screen.getByRole("button", {
-    name: "Check this household",
-  });
-  checkButton.focus();
-  fireEvent.click(checkButton);
-  await screen.findByText("Checking this household…");
-  expect(document.activeElement).toBe(checkButton);
-  expect(checkButton.getAttribute("aria-disabled")).toBe("true");
-  fireEvent.click(checkButton);
-  expect(engine.call).toHaveBeenCalledTimes(6);
-  fireEvent.click(screen.getByRole("link", { name: "Edit About you" }));
-  resolve(raw);
-  fireEvent.click(screen.getByRole("button", { name: "Review your answers" }));
-  expect(screen.queryByTestId("spending")).toBeNull();
-  vi.mocked(engine.call).mockRejectedValueOnce(
-    new Error("Worker initialization failed"),
-  );
-  fireEvent.click(screen.getByRole("button", { name: "Check this household" }));
-  await screen.findByText("Calculation unavailable");
-  expect(screen.queryByTestId("spending")).toBeNull();
-});
-it("disables setup when initial worker requests fail", async () => {
-  vi.mocked(engine.call).mockRejectedValue(
-    new Error("Worker initialization failed"),
-  );
-  render(<App />);
-  await screen.findByText("Calculation unavailable");
+  fireEvent.click(screen.getByRole("button", { name: "See my plan" }));
+  expect(screen.getByText("Working out your plan…")).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Back to my answers" }));
+  resolve('{"status":"incomplete","needed":["birth_date"]}');
   expect(
-    (screen.getByRole("button", { name: "Continue" }) as HTMLButtonElement)
-      .disabled,
-  ).toBe(true);
-  expect(screen.queryByTestId("spending")).toBeNull();
-});
-it("uses fetched run metadata for the reference footer on Start and Setup, including an unsupported selection", async () => {
-  const result = JSON.parse(raw);
-  result.run.metadata.model_version = "horizon-synthetic-footer-9";
-  result.run.metadata.rule_set_year = 2042;
-  vi.mocked(engine.call).mockImplementation(async (...args) =>
-    JSON.parse(args[1]).household.persons.length > 1
-      ? '{"status":"unsupported","code":"MULTIPLE_PERSONS_UNSUPPORTED","message":"Only one person is supported."}'
-      : JSON.stringify(result),
-  );
-  render(<App />);
-  await screen.findByTestId("intro");
-  const expected =
-    "Open source (AGPL-3.0-only) · Sample data only; nothing you enter is stored · Model horizon-synthetic-footer-9 · Federal tax law 2042, projected after";
-  expect(screen.getByText(expected)).toBeTruthy();
-  fireEvent.click(screen.getByRole("radio", { name: "Couple" }));
-  expect(screen.getByText(expected)).toBeTruthy();
-  fireEvent.click(screen.getByRole("radio", { name: samples[0].label }));
-  fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  expect(screen.getByText(expected)).toBeTruthy();
-  expect(
-    screen.getByText(
-      "Your answers stay in this page only. Reload or close it and they're gone.",
-    ),
+    screen.getByRole("heading", { name: "Here's what you told us" }),
   ).toBeTruthy();
-  expect(engine.call).toHaveBeenCalledTimes(5);
-});
-it("uses readable account headings and review labels after additions, type changes and plan-kind changes", async () => {
-  stub();
-  render(<App />);
-  await screen.findByTestId("intro");
-  const next = () =>
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  next();
-  next();
-  next();
-  expect(screen.getByRole("group", { name: "Cash savings Cash" })).toBeTruthy();
-  expect(
-    screen.getByRole("group", {
-      name: "Brokerage account Brokerage (taxable)",
-    }),
-  ).toBeTruthy();
-  expect(screen.getByRole("group", { name: "Roth IRA Roth" })).toBeTruthy();
-  fireEvent.click(screen.getByRole("button", { name: "+ Add an account" }));
-  fireEvent.click(screen.getByRole("button", { name: "+ Add an account" }));
-  expect(
-    screen.getByRole("group", { name: "Cash savings 2 Cash" }),
-  ).toBeTruthy();
-  expect(
-    screen.getByRole("group", { name: "Cash savings 3 Cash" }),
-  ).toBeTruthy();
-  const cash = screen.getByRole("group", { name: "Cash savings Cash" });
-  fireEvent.click(cash.querySelector("button")!);
-  fireEvent.change(cash.querySelector("select")!, {
-    target: { value: "tax_deferred" },
-  });
-  expect(
-    screen.getByRole("group", { name: "Workplace plan Tax-deferred" }),
-  ).toBeTruthy();
-  expect(
-    screen.getByRole("group", { name: "Workplace plan 2 Tax-deferred" }),
-  ).toBeTruthy();
-  fireEvent.change(
-    screen
-      .getByRole("group", { name: "Workplace plan Tax-deferred" })
-      .querySelectorAll("select")[1],
-    { target: { value: "traditional_ira" } },
-  );
-  expect(
-    screen.getByRole("group", { name: "Traditional IRA Tax-deferred" }),
-  ).toBeTruthy();
-  expect(
-    screen.getByRole("group", { name: "Workplace plan Tax-deferred" }),
-  ).toBeTruthy();
-  expect(
-    screen.getByRole("group", { name: "Cash savings 2 Cash" }),
-  ).toBeTruthy();
-  next();
-  next();
-  next();
-  expect(screen.getByText("Traditional IRA: Account type")).toBeTruthy();
-  expect(screen.getByText("Workplace plan: Balance today")).toBeTruthy();
-  expect(screen.getByText("Cash savings 2: Balance today")).toBeTruthy();
-  expect(screen.queryByText(/401k:|roth-ira:|account-[0-9]+:/)).toBeNull();
-});
-it("renders a separate visual dollar prefix for every amount without changing its value or label", async () => {
-  stub();
-  render(<App />);
-  await screen.findByTestId("intro");
-  fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  for (const count of [0, 3, 5, 2, 0]) {
-    const wrappers = document.querySelectorAll(".dollar-field");
-    expect(wrappers).toHaveLength(count);
-    for (const wrapper of wrappers) {
-      const prefix = wrapper.querySelector("span")!;
-      const input = wrapper.querySelector("input")!;
-      expect(prefix.textContent).toBe("$");
-      expect(prefix.getAttribute("aria-hidden")).toBe("true");
-      expect(input.value).not.toMatch(/^\$/);
-      expect(input.labels?.length).toBe(1);
-      expect(input.labels?.[0].textContent).not.toContain("$");
-    }
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  }
+  expect(screen.queryByText("We need your age first.")).toBeNull();
 });

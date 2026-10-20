@@ -3,6 +3,7 @@ import { expect, type Locator } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { spawnSync } from "node:child_process";
 import { test } from "./fixtures";
+import { storageTrap } from "./privacy";
 import { keyboardTo as reachByKeyboard } from "./keyboard";
 import type { Request, Response } from "../src/protocol";
 import type { Run } from "../src/generated/types/run-output.v2";
@@ -73,6 +74,7 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
       offOrigin.push(request.url());
   });
   page.on("pageerror", (error) => errors.push(error.message));
+  await storageTrap(page);
   await page.addInitScript(() => {
     const probe = window as unknown as {
       requests: Request[];
@@ -82,18 +84,6 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
     probe.requests = [];
     probe.replies = {};
     probe.writes = [];
-    const deny = (name: string) => () => {
-      probe.writes.push(name);
-      throw new Error(`Forbidden storage: ${name}`);
-    };
-    for (const name of ["setItem", "removeItem", "clear"] as const)
-      Storage.prototype[name] = deny(name);
-    indexedDB.open = deny("indexedDB.open");
-    indexedDB.deleteDatabase = deny("indexedDB.deleteDatabase");
-    Object.defineProperty(document, "cookie", {
-      get: () => "",
-      set: deny("cookie"),
-    });
     const NativeWorker = Worker;
     window.Worker = class extends NativeWorker {
       constructor(url: string | URL, options?: WorkerOptions) {
@@ -123,7 +113,6 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
     ).toBe("3px");
     await page.keyboard.press("Enter");
   }
-  const planning = page.getByRole("navigation", { name: "Planning steps" });
   async function evidence(name: string) {
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
     expect(
@@ -154,28 +143,22 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
     }).format(cents / 100);
   for (const sample of samples) {
     await page.goto("/");
-    await expect(page.getByTestId("intro")).toBeVisible();
-    await page.getByRole("radio", { name: sample.label, exact: true }).check();
-    for (let i = 0; i < 6; i++)
-      await activate(
-        page.getByRole("button", { name: "Continue", exact: true }),
-      );
     await expect(
-      planning.getByRole("button", { name: "Plan", exact: true }),
-    ).toBeEnabled();
-    await expect(planning.getByText("Not available yet")).toHaveCount(1);
+      page.getByRole("button", {
+        name: "Try an example household",
+        exact: true,
+      }),
+    ).toBeVisible();
     await activate(
-      page.getByRole("button", { name: "Continue to the input check" }),
+      page.getByRole("button", {
+        name: "Try an example household",
+        exact: true,
+      }),
     );
-    await expect(
-      page.getByRole("heading", { name: "No entries are marked rough." }),
-    ).toBeVisible();
-    await expect(
-      page.getByText("Five groups of entries", { exact: true }),
-    ).toBeVisible();
+    await page.getByRole("radio", { name: sample.label, exact: true }).check();
     const before = (await probe()).requests.length;
     await activate(
-      page.getByRole("button", { name: "See the plan", exact: true }),
+      page.getByRole("button", { name: "Open example plan", exact: true }),
     );
     await expect(
       page.getByRole("heading", { name: sample.headline, exact: true }),
@@ -229,8 +212,8 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
     }
     await expect(page.locator(".plan-status .status")).toHaveText(
       run.status === "partial"
-        ? `△ Partial (${run.omissions.length} omissions)`
-        : "✓ Supported",
+        ? `△ Leaves out ${run.omissions.length} things`
+        : "✓ Covers your situation",
     );
     const details = page.locator(".plan-detail");
     await expect(details.locator(".detail-title")).toHaveText(
@@ -465,70 +448,11 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
       ).toBe(true);
     await activate(page.getByRole("button", { name: "Back to household" }));
     await expect(
-      page.getByRole("heading", { name: "Review your answers" }),
+      page.getByRole("heading", {
+        name: "See whether your savings can carry your retirement",
+      }),
     ).toBeFocused();
   }
-  // Edit the household, enter via the step bar, and compare all actual replies.
-  await page.goto("/");
-  await expect(page.getByTestId("intro")).toBeVisible();
-  for (let i = 0; i < 6; i++)
-    await activate(page.getByRole("button", { name: "Continue", exact: true }));
-  await activate(
-    page.getByRole("link", { name: "Edit Accounts", exact: true }),
-  );
-  await page
-    .getByRole("group", { name: "Workplace plan Tax-deferred", exact: true })
-    .getByRole("textbox", {
-      name: "Balance today today's dollars",
-      exact: true,
-    })
-    .fill("600,000");
-  await activate(
-    page.getByRole("button", { name: "Assumptions", exact: true }),
-  );
-  await page.getByLabel("Inflation percent per year").fill("3");
-  const before = (await probe()).requests.length;
-  await activate(planning.getByRole("button", { name: "Plan", exact: true }));
-  await expect(page.getByText("$64,654", { exact: true })).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: "See the levers" }),
-  ).toBeVisible();
-  const edited = await probe();
-  expect(edited.requests.slice(before)).toHaveLength(3);
-  for (const request of edited.requests.slice(before))
-    expect(edited.replies[request.id]).toBe(
-      native(
-        request.op === "sustainable_spending" ? "spend" : request.op,
-        "packages/app/test-data/web-edited-working-61.json",
-      ),
-    );
-  await activate(
-    page.locator(".plan-detail summary").filter({ hasText: "Assumptions" }),
-  );
-  await expect(
-    page
-      .getByRole("rowheader", { name: "Inflation", exact: true })
-      .locator("..")
-      .locator("th, td"),
-  ).toHaveText(["Inflation", "3%", "Changed by you", "2026"]);
-  await evidence("plan-edited-household");
-  await activate(page.getByRole("button", { name: "Back to household" }));
-  await activate(
-    page.getByRole("link", { name: "Edit About you", exact: true }),
-  );
-  await page.getByLabel("Retirement date", { exact: true }).fill("2025-06-01");
-  await page.keyboard.press("Escape");
-  await activate(planning.getByRole("button", { name: "Plan", exact: true }));
-  await expect(
-    page.getByRole("heading", { name: "Invalid", exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByText("Wage end date precedes its start date."),
-  ).toBeVisible();
-  await expect(
-    page.locator(".plan-screen svg, .plan-screen table, .plan-answers"),
-  ).toHaveCount(0);
-  await evidence("plan-engine-error");
   expect(offOrigin).toEqual([]);
   expect(errors).toEqual([]);
   expect(

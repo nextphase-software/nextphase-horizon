@@ -149,7 +149,7 @@ it.each(["run", "sustainable_spending", "levers", "export_run"])(
     );
     const view = show();
     await screen.findByText("Synthetic failure");
-    expect(screen.getByText("Unsupported")).toBeTruthy();
+    expect(screen.getByText("Horizon can't plan for this yet")).toBeTruthy();
     expect(
       view.container.querySelector(
         ".plan-summary, .export-story, .file-details",
@@ -235,8 +235,10 @@ it("rejects non-JSON before calling the worker", async () => {
 it("opens the exact imported input, clears copies/rough marks and permits setup and export", async () => {
   stub();
   render(<App />);
-  await screen.findByTestId("intro");
-  fireEvent.click(screen.getByRole("button", { name: "Export" }));
+  await screen.findByRole("heading", {
+    name: "See whether your savings can carry your retirement",
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Open a plan file" }));
   expect(
     screen.getByText("Set up a household first to share or keep a plan."),
   ).toBeTruthy();
@@ -294,6 +296,6 @@ it("preserves unedited cents in opened files even after another field is edited"
 
 it("states that a supported summary has no omissions", () => {
   expect(summaryStatus({ ...run, status: "complete", omissions: [] })).toBe(
-    "Supported. No omissions are listed.",
+    "Covers your situation. No omissions are listed.",
   );
 });

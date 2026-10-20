@@ -18,12 +18,17 @@ export const endAge = (run: Run) => run.years.at(-1)!.age_on_december_31;
 export function yearAtDate(run: Run, date: string) {
   return run.years.find((year) => String(year.year) === date.slice(0, 4));
 }
-export function planHeadline(run: Run): string {
-  const short = firstShortfall(run);
-  if (!short) return `Savings last to ${endAge(run)}.`;
-  const age = short.age_on_december_31;
+export function planHeadline(
+  run: Run | { first_shortfall_age: number | null; plan_end_age: number },
+): string {
+  const age =
+    "years" in run
+      ? firstShortfall(run)?.age_on_december_31
+      : run.first_shortfall_age;
+  const end = "years" in run ? endAge(run) : run.plan_end_age;
+  if (age == null) return `Savings last to ${end}.`;
   // The brief explicitly defines the headline's age interval; no money is derived.
-  const remaining = endAge(run) - age;
+  const remaining = end - age;
   return remaining === 0
     ? `Savings run short at ${age}, in the plan's last year.`
     : `Savings run short at ${age}, ${countWord(remaining)} ${remaining === 1 ? "year" : "years"} before the plan ends.`;

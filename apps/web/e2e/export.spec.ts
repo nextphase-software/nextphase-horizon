@@ -4,6 +4,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { test } from "./fixtures";
+import { storageTrap } from "./privacy";
 import { keyboardTo } from "./keyboard";
 import type { Request, Response } from "../src/protocol";
 const root = new URL("../../../", import.meta.url);
@@ -22,28 +23,28 @@ const cases = [
     "answers-working-61",
     "Single, 61, still working, plans to retire at 66",
     "Retiring at 66, savings run short at 93; spending $64,994 a year in today's dollars would make them last to 95.",
-    "Partial (5 omissions)",
+    "Leaves out 5 things",
     "0.65 MB (645,501 bytes)",
   ],
   [
     "synthetic-retired",
     "Single, 70, retired",
     "Savings last to 95; you could spend up to $87,061 a year in today's dollars.",
-    "Supported",
+    "Covers your situation",
     "0.47 MB (473,538 bytes)",
   ],
   [
     "A-drawdown",
     "Single, 73, retired, small savings",
     "Savings run short at 76; spending $43,690 a year in today's dollars would make them last to 78.",
-    "Supported",
+    "Covers your situation",
     "0.11 MB (112,373 bytes)",
   ],
   [
     "answers-underfunded",
     "Single, 61, spending more than income",
     "Savings run short at 61, even with no retirement spending.",
-    "Partial (5 omissions)",
+    "Leaves out 5 things",
     "0.64 MB (641,635 bytes)",
   ],
 ];
@@ -68,6 +69,7 @@ test("export: keyboard download/import, exact references, rough entries, copies,
       offOrigin.push(request.url());
   });
   page.on("pageerror", (error) => errors.push(error.message));
+  await storageTrap(page);
   await page.addInitScript(() => {
     const probe = window as unknown as {
       requests: Request[];
@@ -82,21 +84,6 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     window.print = () => {
       probe.prints++;
     };
-    Storage.prototype.setItem = () => {
-      probe.writes.push("storage");
-    };
-    Storage.prototype.removeItem = () => {
-      probe.writes.push("storage");
-    };
-    Storage.prototype.clear = () => {
-      probe.writes.push("storage");
-    };
-    Object.defineProperty(document, "cookie", {
-      get: () => "",
-      set: () => {
-        probe.writes.push("cookie");
-      },
-    });
     const NativeWorker = Worker;
     window.Worker = class extends NativeWorker {
       constructor(url: string | URL, options?: WorkerOptions) {
@@ -147,9 +134,20 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     });
   }
   const planning = page.getByRole("navigation", { name: "Planning steps" });
-  async function setup(index = 0, rough = false) {
+  async function setup(index = 0) {
     await page.goto("/");
-    await expect(page.getByTestId("intro")).toBeVisible();
+    await expect(
+      page.getByRole("button", {
+        name: "Try an example household",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await activate(
+      page.getByRole("button", {
+        name: "Try an example household",
+        exact: true,
+      }),
+    );
     await keyboardTo(
       page,
       page.getByRole("radio", { name: cases[0][1], exact: true }),
@@ -159,34 +157,9 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     await expect(
       page.getByRole("radio", { name: cases[index][1], exact: true }),
     ).toBeChecked();
-    await activate(page.getByRole("button", { name: "Continue", exact: true }));
-    for (let step = 0; step < 5; step++) {
-      if (rough && step === 1)
-        await activate(
-          page.getByRole("button", {
-            name: "Mark Social Security per year as rough",
-            exact: true,
-          }),
-        );
-      if (rough && step === 2)
-        await activate(
-          page.getByRole("button", {
-            name: "Mark Cost basis, Brokerage account, as rough",
-            exact: true,
-          }),
-        );
-      if (rough && step === 3)
-        await activate(
-          page.getByRole("button", {
-            name: "Mark Spending per year before retirement as rough",
-            exact: true,
-          }),
-        );
-      await activate(
-        page.getByRole("button", { name: "Continue", exact: true }),
-      );
-    }
-    await activate(planning.getByRole("button", { name: "Plan", exact: true }));
+    await activate(
+      page.getByRole("button", { name: "Open example plan", exact: true }),
+    );
     await expect(
       page.getByRole("button", { name: "Try a change" }),
     ).toBeEnabled();
@@ -229,8 +202,18 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     });
   }
   await page.goto("/");
-  await expect(page.getByTestId("intro")).toBeVisible();
-  await activate(planning.getByRole("button", { name: "Export", exact: true }));
+  await expect(
+    page.getByRole("button", { name: "Try an example household", exact: true }),
+  ).toBeVisible();
+  await activate(
+    page.getByRole("button", { name: "Try an example household", exact: true }),
+  );
+  await page
+    .getByRole("button", { name: "Horizon welcome", exact: true })
+    .click();
+  await activate(
+    page.getByRole("button", { name: "Open a plan file", exact: true }),
+  );
   await expect(
     page.getByText("Set up a household first to share or keep a plan."),
   ).toBeVisible();
@@ -315,13 +298,13 @@ test("export: keyboard download/import, exact references, rough entries, copies,
       original = nativeText;
       const summary = page.locator(".plan-detail .plan-summary");
       await expect(summary.locator(":scope > .help").first()).toHaveText(
-        "Sample household · Single, 61, still working, plans to retire at 66 · values as of 2026-01-01 · horizon-engine-0.4.0",
+        "Example household · Single, 61, still working, plans to retire at 66 · values as of 2026-01-01 · horizon-engine-0.4.0",
       );
       for (const text of [
         "Not at $67,000 a year: savings run short at age 93 (2058).",
         "$64,994 a year in today's dollars lasts to 95: $2,006 less than you plan to spend.",
         "Investment returns, then spending, then the retirement date.",
-        "Partial (5 omissions). What this result does not include: state tax not modeled; alternative minimum tax not modeled; taxable-account dividends and interest not modeled; itemized deductions and credits not modeled; contributions not modeled.",
+        "Leaves out 5 things. What this result does not include: state tax not modeled; alternative minimum tax not modeled; taxable-account dividends and interest not modeled; itemized deductions and credits not modeled; contributions not modeled.",
         "No entries are marked rough.",
       ])
         await expect(summary.getByText(text, { exact: true })).toBeVisible();
@@ -343,15 +326,17 @@ test("export: keyboard download/import, exact references, rough entries, copies,
   // Edit both outside-plan cases through setup; assert the shared answers on both screens.
   for (const index of [0, 3]) {
     await setup(index);
-    await activate(page.getByRole("button", { name: "Back to household" }));
-    await activate(
-      page.getByRole("link", { name: "Edit About you", exact: true }),
+    const horizonInput = JSON.parse(
+      readFileSync(
+        new URL(`packages/app/fixtures/${cases[index][0]}.json`, root),
+        "utf8",
+      ),
     );
-    const end = page.getByRole("textbox", { name: "Plan to age", exact: true });
-    await keyboardTo(page, end, traversal);
-    await page.keyboard.press("ControlOrMeta+A");
-    await page.keyboard.type("65");
-    await activate(planning.getByRole("button", { name: "Plan", exact: true }));
+    horizonInput.household.persons[0].plan_end_age = 65;
+    const horizonPath = info.outputPath(`short-horizon-${index}.json`);
+    writeFileSync(horizonPath, JSON.stringify(horizonInput));
+    await exportFromPlan();
+    await open(native("export", horizonPath));
     await expect(page.locator(".plan-answers h2").first()).toHaveText(
       "Do your savings last?",
     );
@@ -375,7 +360,7 @@ test("export: keyboard download/import, exact references, rough entries, copies,
         : "Savings run short at 61; retirement falls after the plan ends.",
     );
     await expect(page.locator(".export-screen .status")).toHaveText(
-      "△ Partial (5 omissions)",
+      "△ Leaves out 5 things",
     );
     await activate(page.locator(".plan-detail").first().locator("summary"));
     const summary = page.locator(".plan-detail .plan-summary");
@@ -390,7 +375,7 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     await capture(`export-retirement-after-plan-${cases[index][0]}`);
   }
   // All six copies and the three reference marks are included only in the summary.
-  await setup(0, true);
+  await setup(0);
   const changes = [
     "Retire a year later, at 67",
     "Retire a year earlier, at 65",
@@ -425,17 +410,8 @@ test("export: keyboard download/import, exact references, rough entries, copies,
   ).toBeEnabled();
   await activate(page.locator(".plan-detail").first().locator("summary"));
   const summary = page.locator(".plan-detail .plan-summary");
-  await expect(summary.locator(".summary-rough li")).toHaveText([
-    "≈ Rough value Social Security benefit: could change your headroom by up to $2,305 a year (matters)",
-    "≈ Rough value Spending until you retire: could change your headroom by up to $1,624 a year (matters)",
-    "≈ Rough value Brokerage account cost basis: could change your headroom by up to $8 a year (barely matters)",
-  ]);
-  await expect(
-    summary.getByText(
-      "An entry matters when it could change headroom by at least 1% of $64,994 a year.",
-      { exact: true },
-    ),
-  ).toBeVisible();
+  await expect(summary.locator(".summary-rough li")).toHaveCount(0);
+
   await expect(
     summary.getByText(
       "Retiring at 67: savings last to 95 instead of running short at 93.",
@@ -453,9 +429,9 @@ test("export: keyboard download/import, exact references, rough entries, copies,
   await expect(summary.locator(":scope > div > p")).toHaveText(copyLines);
   await expect(
     summary.locator(".rough-label > [aria-hidden='true']"),
-  ).toHaveText(["≈", "≈", "≈"]);
+  ).toHaveCount(0);
   expect((await download()).text).toBe(original);
-  await capture("export-six-copies-three-rough");
+  await capture("export-six-copies");
   await activate(page.getByRole("button", { name: "Print or save as PDF" }));
   expect(
     await page.evaluate(() => (window as unknown as { prints: number }).prints),
@@ -573,11 +549,7 @@ test("export: keyboard download/import, exact references, rough entries, copies,
   await expect(page.locator('[role="alert"] [role="alert"]')).toHaveCount(0);
   expect((await download()).text).toBe(original);
   await expect(summary.locator(":scope > div > p")).toHaveText(copyLines);
-  await expect(summary.locator(".summary-rough li")).toHaveText([
-    "≈ Rough value Social Security benefit: could change your headroom by up to $2,305 a year (matters)",
-    "≈ Rough value Spending until you retire: could change your headroom by up to $1,624 a year (matters)",
-    "≈ Rough value Brokerage account cost basis: could change your headroom by up to $8 a year (barely matters)",
-  ]);
+  await expect(summary.locator(".summary-rough li")).toHaveCount(0);
   await capture("export-rejected-non-json-with-household");
   await open(original);
   await expect(
@@ -620,7 +592,10 @@ test("export: keyboard download/import, exact references, rough entries, copies,
   await activate(page.getByRole("button", { name: "Cancel", exact: true }));
   await activate(page.getByRole("button", { name: "Back to household" }));
   await expect(
-    page.getByRole("heading", { name: "Review your answers", exact: true }),
+    page.getByRole("heading", {
+      name: "See whether your savings can carry your retirement",
+      exact: true,
+    }),
   ).toBeVisible();
   await capture("export-reopened-setup");
   expect(offOrigin).toEqual([]);

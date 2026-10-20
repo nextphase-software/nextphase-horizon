@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 export type Engine = {
+  plan_from_answers: (answers: string) => string;
   run: (fixture: string) => string;
   scenario: (fixture: string, changes: string) => string;
   compare: (baseline: string, scenario: string) => string;
@@ -17,6 +18,9 @@ export type Response = { id: number; json: string };
 export function dispatch(engine: Engine, request: Request): Response {
   let json: string;
   switch (request.op) {
+    case "plan_from_answers":
+      json = engine.plan_from_answers(...request.args);
+      break;
     case "scenario":
       json = engine.scenario(...request.args);
       break;

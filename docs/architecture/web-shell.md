@@ -8,9 +8,9 @@ It bundles five existing synthetic fixtures. There is no server API or database.
 ## Module and transport
 
 `packages/wasm` builds the unpublished `horizon-wasm` cdylib. Its only dependencies
-are horizon-app and wasm-bindgen =0.2.129 (already resolved). Eight exports take
+are horizon-app and wasm-bindgen =0.2.129 (already resolved). Nine exports take
 JSON strings and return canonical JSON strings: run, scenario, compare,
-export_run, import_run, sustainable_spending, levers and input_impact. They call
+export_run, import_run, sustainable_spending, levers, input_impact and plan_from_answers. They call
 the corresponding application operations; run uses run_fixture to retain the
 fixture's tax pass limit. Shared parsing and canonical envelope serialization
 in horizon-app's `json` module reuse existing dependencies. No calculation rule
@@ -28,19 +28,17 @@ imports/initializes WebAssembly. `protocol.ts` defines the discriminated request
 union `{id, op, args}` and reply `{id, json}`. Argument tuples are specific to
 each operation. The client correlates replies by ID, preserving canonical bytes.
 Worker initialization failure rejects requests and shows Calculation unavailable;
-no figures are presented as a successful result. Start caches its sample status
-replies; edited checks clear their previous answer, announce loading and ignore
-late replies after navigation or newer edits.
+no figures are presented as a successful result. Sample metadata is fetched once. Intake calculations announce loading and ignore
+late replies after navigation or newer answers.
 
 ## Page and tokens
 
-The foundation page has a product header, a theme button and a native
-sample-household radio group with a fieldset and legend. Supported/Partial/Unsupported status labels include
-icons and words. Partial includes the returned omission count. Three figures
-come directly from sustainable_spending, entered and headroom, formatted as
-whole dollars; each says "today's dollars, per year". Flags are written in words,
-and omissions remain exactly as returned. Errors show their status and message
-with no figures. Every household is explicitly labeled Sample household.
+Welcome offers own figures and five invented example households. Examples open
+on the plan screen, with Check, Plan, Compare and Export navigation. Own figures
+use Your answers, Plan, Compare and Export. Coverage appears only after a result:
+"✓ Covers your situation", "△ Leaves out N things" or "! Horizon can't plan for
+this yet". Invented figures say "Example household — invented figures". Error
+results show their reason without successful figures.
 
 `tokens.css` maps every DESIGN.md v1 color to the same CSS custom property name,
 with separate light/dark values. Typography uses text-*, leading-*, weight-*
@@ -53,7 +51,7 @@ The operating-system preference applies until the button sets an in-memory
 light/dark choice on the document. Explicit choice wins over preference changes;
 a reload clears it. Layout is one column below 560px and uses a two-column
 label/value layout from 900px. Controls fit 320px and keyboard focus has a 3px
-accent outline with 2px offset. There are no charts or animations.
+accent outline with 2px offset. Charts have compact drawings and table alternatives. Motion respects the system preference.
 
 ## Security and development
 
@@ -64,7 +62,7 @@ default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font
 ```
 
 All resources, including fonts and the worker/WASM assets, are served locally.
-There is no analytics, storage API, cookie write or external request in the app.
+There is no analytics, cookie write or external request in the app. The only stored item is the own-answers intake described below.
 The engine remains a pure local calculation module. No hosted authorization
 surface is introduced. Existing household financial data is never used.
 
@@ -76,12 +74,12 @@ the module/types, typechecks and emits the static site to ignored `dist/`.
 
 ## Test layers and outstanding gates
 
-- Native horizon-wasm tests compare all eight export results with the typed
+- Native horizon-wasm tests compare all nine export results with the typed
   application operations for valid/error inputs and check malformed arguments.
 - Vitest/jsdom/Testing Library prove number/status/flag formatting, figures and
   omissions, error presentation, all protocol dispatch operations, out-of-order
   correlation and worker failure handling against stubs.
-- Playwright serves the built site in Chromium, Firefox and WebKit at 375×812
+- Playwright serves the built site in Chromium and WebKit at 375×812
   and 1280×800 in both color schemes. Each project selects all five households
   with keyboard events, checks focus/theme precedence/reload behavior, runs axe,
   observes origin requests, traps storage/cookie writes and inspects stored state.
@@ -103,79 +101,67 @@ The full browser sequence is documented in README and AGENTS. The implementation
 record states actual validation; harness code does not establish a browser pass.
 The harness checks the exact CSP meta tag; it does not treat axe's own injected
 audit styles as application CSP failures. Designed screens, charts, deployment,
-hosting, persistence and HTTP/agent access stay excluded by the brief.
+hosting and HTTP/agent access stay excluded.
 
-### macOS 27 browser harness
+## Question-led intake — 0002-W6 v1.2
 
-The native household radio group starts with its first option checked. Focus
-traversal reaches the theme button, then the checked radio; ArrowDown selects and
-focuses each next household without mouse input. Focus traversal uses Alt+Tab
-for WebKit on macOS and Tab for Chromium, Firefox and other platforms. All
-existing focus, golden/reference, axe, privacy, overflow and theme assertions
-remain in place. Labels wrap within a fieldset whose minimum inline size is zero,
-and radios retain the visible accent focus ring.
+The welcome screen replaces Start and the guided household setup. The fifteen
+questions use `answers.v2`, with date parts or age, exact text-to-cents parsing
+(including k/m suffixes), monthly or yearly money, ranges, uncertainty and later
+answers. Hidden questions are omitted. `assumptions` and `not_sure` are always
+present; money carries its stated `per`. No monthly/yearly conversion or
+calculation rule lives in the interface. The local date at the first start is
+retained as `valuation_date`.
 
-On macOS 27, Firefox 155 can fail with "Could not find profile folder" while
-resolving its shared app-data directory. See
-[Playwright issue 42768](https://github.com/microsoft/playwright/issues/42768),
-retrieved 2026-10-18. The worker-scoped launch-options fixture in `e2e/fixtures.ts`
-sets `launchOptions.env.CFFIXED_USER_HOME` only for Firefox projects when
-`process.platform === "darwin"`. It creates a fresh empty temporary directory
-for each worker's browser launch, including replacement/retry workers, preserves
-the other environment variables and deletes that directory after the browser
-fixture shuts down. Cleanup retries transient directory-removal failures up to
-10 times with a 200 ms retry delay to allow late Firefox writes to finish. The setting is never applied to Chromium, WebKit or other
-platforms and never changes the host process's environment.
+One-question, conversation and guided-page styles share one control state.
+Switching styles keeps the question and entered answers. Review lists later and
+uncertain answers separately, names exclusions, and permits changing only the
+rates the person supplies. See my plan always remains available there. The worker
+calls `plan_from_answers`; the results head uses `answers-plan.v2` for needed,
+unsupported, invalid, worked-out and range outcomes. A plain result reuses
+`planHeadline` word for word. The original plan body, comparison and export run
+on the returned household input. What-if controls remain excluded (0002-W7).
 
-## Start and guided setup — 0002-W2 v1
+### Device storage — decision 0018
 
-Start now calls `sustainable_spending` once for each of the five samples and
-uses those replies for the introduction, radio-card statuses, flags and selected
-omissions. Question and Household are active step-bar controls; the other four
-steps are text marked Not available yet. The claiming-age question and the
-couple's Continue control are disabled with their reasons.
+Exactly one local-storage item, `horizon.intake.v1`, contains exactly `format`
+(`horizon-saved-intake`), `version` (1), `answers` (version 2), `style`
+(`one_question`, `conversation`, `guided_page`) and `place` ("1"–"15", "review",
+"results"). It contains no result, generated input, copy, export, timestamp or
+identifier. Confirmed answers and navigation/style changes save it. A reload
+returns to Welcome with Continue with my answers, which resumes the saved place.
+Examples do not save or overwrite it. There are no cookies, session storage,
+IndexedDB writes, analytics, or requests carrying answers. The CSP is unchanged.
 
-The selected sample opens About you, Income, Accounts, Spending, Assumptions
-and Review your answers. `setup.ts` describes each field with its input path;
-assumptions are keyed by identifier in the in-memory draft and restored to the
-original array shape for the worker. The draft retains raw entry strings,
-rough paths, wage-date linkage and account additions. Changing households after
-editing requires confirmation; Back preserves the draft and Start choices.
-Account type changes clear incompatible fields and rough marks. New cash
-accounts use the first free `account-N` identifier and the sample person's owner.
-Withdrawal order and all unexposed sample values are preserved.
+Welcome and Review say: "Your answers are saved on this device only. They are
+never sent anywhere." Forget my answers asks once, deletes the item immediately
+and returns to Welcome. Unavailable/full storage leaves intake working in memory,
+with the required review notice. A loaded envelope must match exactly; its
+answers are sent through `plan_from_answers`. Malformed input or an unknown saved
+version is deleted with the unreadable-answers notice. Meaningful invalid,
+incomplete and unsupported results are valid saved documents. Worker failure
+preserves the stored item and reports calculation unavailability.
 
-`entry.ts` parses dollar and whole-number entries with BigInt and shifts percent
-decimals with strings. JSON serialization preserves exact integer tokens even
-beyond JavaScript's safe integer range, leaving their meaning to the engine.
-Only entry syntax blocks step navigation. The retirement-linked wage end date
-tracks the current retirement answer, including dates the engine will reject.
-Check sends the edited fixture to `sustainable_spending`; successful figures and
-omissions use the existing answer view. Error envelopes show their status and
-message without result figures, alongside the review's Edit links. An obsolete
-or unmounted check cannot replace a newer result. No financial rule, persistence,
-worker operation, CSP change or dependency is added.
+### Browser and reference coverage
 
-While checking, the button uses aria-disabled and aria-busy and rejects repeat
-activation in its handler. It retains keyboard focus throughout the worker
-request: disabling the focused native button caused WebKit to leave focus on
-the body and stop subsequent traversal. Unit tests cover pending focus and
-duplicate prevention; the browser flow reaches a review Edit link by keyboard
-after the result arrives.
+Playwright runs Chromium and WebKit at 375×812 and 1280×800, in light and dark:
+eight projects. Firefox is neither installed nor run. Keyboard traversal uses
+Alt+Tab for WebKit on macOS, Tab elsewhere. Every captured screen gets axe and
+horizontal-overflow checks. The storage trap permits only the named local key,
+after entering own figures; other storage and cookie writes fail. Native/worker
+byte comparisons, plan and comparison figures, file download/import, print,
+coverage words and off-origin checks remain covered. Removed guided-setup tests
+are replaced by intake flows; inaccessible rough-entry setup checks remain in
+component tests. Existing outside-plan browser references reopen the same
+synthetic input through the plan-file flow.
 
-The browser harness checks every sample's Start card and unchanged run bytes,
-all six setup steps, the edited-working reference result, the linked-date error,
-all four supported sample result views, cancellation/confirmation and reload.
-It uses keyboard traversal for the complete working-sample edit/check path,
-runs axe and overflow checks on every captured screen, and retains the existing
-privacy, theme and CSP checks. All 12 browser/size/theme projects capture full
-page screenshots and attach them to the HTML report. `HORIZON_EVIDENCE_DIR`
-optionally directs screenshots, HTML and JSON reports outside the repository;
-without it the existing ignored output directories are used.
+All 24 version 2 head references are rendered in unit tests. Twenty explicit
+control states build answers whose native engine output matches each case byte
+for byte. Earlier engine schemas, tests, fixtures, reference files and goldens
+are unchanged. `types` generates both version 2 answer contracts from the
+committed schemas. No dependency is added.
 
-The six committed design HTML/PNG references and their README already satisfy
-the reference deliverable. Only Start and Setup are implemented. Brief-required
-controls, basis labels, rough checkboxes, plan-kind fields and unavailable-step
-labels extend the illustrative drawings. Setup's opening sentence describes the
-editing task; it does not invent an engine answer before Check. Later input
-check, plan, comparison, export, printed summaries and charts remain excluded.
+Full-page screenshots and reports use `HORIZON_EVIDENCE_DIR` when supplied,
+otherwise the existing ignored output directories. Validation commands remain
+in README and AGENTS; the implementation record reports the actual passes,
+versions, counts and exclusions.

@@ -13,7 +13,6 @@ import rough from "../../../packages/app/test-data/web-input-check-rough.json?ra
 vi.mock("./engine", () => ({ engine: { call: vi.fn() } }));
 import { engine } from "./engine";
 import { InputCheck } from "./InputCheck";
-import { App } from "./App";
 import { createDraft } from "./setup";
 const sample = { label: "Working sample" };
 const result = {
@@ -138,90 +137,13 @@ it("shows engine or transport failure without figures and allows returning", asy
       ),
     ).toBeTruthy();
     if (message === "envelope")
-      expect(screen.getByRole("heading", { name: "Unsupported" })).toBeTruthy();
+      expect(
+        screen.getByRole("heading", {
+          name: "Horizon can't plan for this yet",
+        }),
+      ).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Back to household" }));
     view.unmount();
   }
   expect(back).toHaveBeenCalledTimes(2);
-});
-it("activates Check after Review, focuses Refine's field, and re-runs after returning", async () => {
-  vi.mocked(engine.call).mockImplementation(async (...args) =>
-    args[0] === "input_impact" ? JSON.stringify(result) : spending,
-  );
-  render(<App />);
-  await screen.findByTestId("intro");
-  const next = () =>
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  next();
-  next();
-  const toggle = screen.getByRole("button", {
-    name: "Mark Social Security per year as rough",
-  });
-  expect(toggle.getAttribute("aria-pressed")).toBe("false");
-  fireEvent.click(toggle);
-  expect(toggle.getAttribute("aria-pressed")).toBe("true");
-  expect(
-    screen
-      .getByLabelText("Social Security per year today's dollars")
-      .closest(".field-row")!
-      .classList.contains("rough"),
-  ).toBe(true);
-  next();
-  next();
-  next();
-  next();
-  expect(screen.getByRole("button", { name: "Check" })).toBeTruthy();
-  fireEvent.click(
-    screen.getByRole("button", { name: "Continue to the input check" }),
-  );
-  await screen.findByText("Three entries are rough. Two of them matter.");
-  fireEvent.click(screen.getAllByRole("button", { name: "Refine" })[0]);
-  const field = screen.getByLabelText(
-    "Social Security per year today's dollars",
-  );
-  expect(document.activeElement).toBe(field);
-  fireEvent.change(field, { target: { value: "27,000" } });
-  fireEvent.click(screen.getByRole("button", { name: "Review your answers" }));
-  fireEvent.click(
-    screen.getByRole("button", { name: "Continue to the input check" }),
-  );
-  await screen.findByText("Three entries are rough. Two of them matter.");
-  const calls = vi
-    .mocked(engine.call)
-    .mock.calls.filter(([op]) => op === "input_impact");
-  expect(calls).toHaveLength(2);
-  expect(
-    JSON.parse(calls[1][1]).household.income.social_security.amount.cents,
-  ).toBe(2700000);
-  fireEvent.click(screen.getByRole("button", { name: "Back to household" }));
-  expect(screen.getByRole("heading", { name: "Review your answers" })).toBe(
-    document.activeElement,
-  );
-});
-
-it("blocks Check navigation on malformed entries and focuses the field with its message", async () => {
-  vi.mocked(engine.call).mockResolvedValue(spending);
-  render(<App />);
-  await screen.findByTestId("intro");
-  for (let i = 0; i < 6; i++)
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-  fireEvent.click(screen.getByRole("link", { name: "Edit Spending" }));
-  fireEvent.change(
-    screen.getByLabelText(
-      "Spending per year before retirement today's dollars",
-    ),
-    { target: { value: "1.50" } },
-  );
-  fireEvent.click(screen.getByRole("button", { name: "Check" }));
-  expect(screen.getByRole("alert").textContent).toContain(
-    "whole-dollar amount",
-  );
-  expect(
-    screen.getByLabelText(
-      "Spending per year before retirement today's dollars",
-    ),
-  ).toBe(document.activeElement);
-  expect(
-    vi.mocked(engine.call).mock.calls.filter(([op]) => op === "input_impact"),
-  ).toHaveLength(0);
 });
