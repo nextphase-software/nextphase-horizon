@@ -675,7 +675,11 @@ function PlanResult({
                       <td>
                         {rate.value ===
                         draft.input.assumptions[rate.identifier].value
-                          ? "Example household"
+                          ? intake
+                            ? "Your figures"
+                            : sample.label === "Opened plan file"
+                              ? "Opened plan file"
+                              : "Example household"
                           : "Changed by you"}
                       </td>
                       <td>{rate.effective_year}</td>

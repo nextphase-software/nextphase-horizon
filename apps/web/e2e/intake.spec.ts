@@ -507,6 +507,13 @@ test("intake: result cases, saved validation, resumption and example isolation",
       await expect(
         page.getByRole("link", { name: "Download plan file", exact: true }),
       ).toBeVisible();
+      await page.locator(".plan-detail").first().locator("summary").click();
+      await expect(
+        page.locator(".plan-detail .plan-summary > .help").first(),
+      ).toContainText("Your figures");
+      await expect(
+        page.locator(".plan-detail .plan-summary > .help").first(),
+      ).not.toContainText("Example household");
       await capture(page, info, "own-figures-export");
     }
   }
