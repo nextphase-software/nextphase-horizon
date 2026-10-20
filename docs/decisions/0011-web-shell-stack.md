@@ -1,6 +1,6 @@
 # 0011 — Web shell stack (React 19 on Vite as a static single-page app in `apps/web`; the engine in the browser through a `horizon-wasm` crate in a Web Worker; TypeScript 6.0, pnpm, Vitest, Playwright with axe; hand-built SVG charts; self-hosted fonts; static hosting)
 
-- Status: Accepted (amendments accepted 2026-10-18 and 2026-10-20)
+- Status: Accepted (amendments accepted 2026-10-18 and 2026-10-20; browser amendment accepted 2026-10-20)
 - Date: 2026-10-17
 - Related: [0007](0007-rust-core-typescript-shell.md) — the TypeScript interface calling the WebAssembly module through a thin generated binding; [0010](0010-comparison-export-and-command-line-conventions.md) — WebAssembly parity under Node.js 24.22.0, and the contracts the interface displays; [0012](0012-application-operations-for-answers.md) — the operations the interface calls.
 
@@ -78,3 +78,7 @@ A4. **This replaces** item 10's sentence allowing MPL-2.0 only for test-only `ax
 ## Amendment — 2026-10-20: answers kept on the device
 
 Item 8 is amended by [decision 0018](0018-answers-kept-on-the-device.md) for one item only: the intake's own answers, question style and place, kept under `horizon.intake.v1` in local storage, with Forget. Everything else in item 8 stands.
+
+## Amendment — 2026-10-20: browsers in the end-to-end tests
+
+The end-to-end suite runs in **Chromium and WebKit** only, at 375 × 812 and 1280 × 800, in light and dark: 8 projects instead of 12. Over the seven web milestones so far (0002-W1 to 0005-W2), WebKit found keyboard behaviour that differed from Chromium twice, while Firefox's failures came only from the test harness, never from the application. Each project adds several minutes to every run. Firefox may still be checked by hand before a release. `playwright install` installs Chromium and WebKit only.

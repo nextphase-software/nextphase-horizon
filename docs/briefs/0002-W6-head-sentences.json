@@ -1,0 +1,169 @@
+{
+ "cases": {
+  "v2-age-instead-of-date": [
+   "H: Savings run short at 94, 1 year before the plan ends.",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   START: Your birthday is counted as 1 January.",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-age-leap-valuation": [
+   "H: Savings run short at 93, 2 years before the plan ends.",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   START: Your birthday is counted as 28 February.",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-age-too-young": [
+   "H: Something in your answers needs another look.",
+   "   (ANSWERS_AGE_RANGE)"
+  ],
+  "v2-needed-birth": [
+   "H: We need your age first.",
+   "   - Your date of birth, or just your age"
+  ],
+  "v2-needed-retirement-without-pay": [
+   "H: We need to know when you plan to retire.",
+   "   - When you plan to retire",
+   "   Or tell us your pay, and Horizon works out the earliest age you could retire."
+  ],
+  "v2-needed-three": [
+   "H: Horizon can work out one of these for you.",
+   "   Give any of these, and Horizon works out the last one:",
+   "   - When you plan to retire",
+   "   - Your savings",
+   "   - Your spending in retirement"
+  ],
+  "v2-needed-two": [
+   "H: Horizon can work out one of these for you.",
+   "   Give any of these, and Horizon works out the last one:",
+   "   - Your savings",
+   "   - Your spending in retirement"
+  ],
+  "v2-partner": [
+   "H: Horizon can't plan for this yet.",
+   "   ! Horizon can't plan for this yet. Horizon plans for one person so far, and you're planning with a partner."
+  ],
+  "v2-range-nothing-solved": [
+   "H: Savings last to somewhere between 84 and 95.",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   RANGE: Some of your answers are ranges: your spending in retirement and the balance of your workplace plan account. Narrowing your spending in retirement would narrow the result most.",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-solve-retirement": [
+   "H: The earliest you could retire is 67.",
+   "   With spending of $67,000 a year in retirement, your savings would last to 95.",
+   "   [Worked out for you]",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-solve-retirement-unreachable": [
+   "H: Your savings wouldn't last to 95 at any retirement age before 95.",
+   "   [Worked out for you]",
+   "   △ Leaves out 7 things  [details: What this result leaves out]",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-solve-retirement-with-range": [
+   "H: The earliest you could retire is 67.",
+   "   With spending of $67,000 a year in retirement, your savings would last to 95.",
+   "   [Worked out for you]",
+   "   Given your ranges, somewhere between 65 and 69.",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   RANGE: Some of your answers are ranges: your spending in retirement. Narrowing your spending in retirement would narrow the result most.",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-solve-savings": [
+   "H: You'd need about $721,826 saved to retire at 66.",
+   "   With spending of $67,000 a year in retirement, that would last to 95.",
+   "   [Worked out for you]",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   START: Your savings are counted as a brokerage account with no gain to tax, so the plan may be too optimistic.",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-solve-savings-none-needed": [
+   "H: You don't need savings for this plan: your income covers your spending to 95.",
+   "   [Worked out for you]",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   START: Your savings are counted as a brokerage account with no gain to tax, so the plan may be too optimistic.",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-solve-savings-retired": [
+   "H: You'd need about $117,933 saved.",
+   "   With spending of $50,000 a year in retirement, that would last to 95.",
+   "   [Worked out for you]",
+   "   ✓ Covers your situation  [details: What Horizon doesn't count: 4]",
+   "   START: Your savings are counted as a brokerage account with no gain to tax, so the plan may be too optimistic.",
+   "   START: Investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-solve-savings-unreachable": [
+   "H: No amount of savings up to $100,000,000 would last to 95 with this spending.",
+   "   [Worked out for you]",
+   "   △ Leaves out 6 things  [details: What this result leaves out]",
+   "   START: Your savings are counted as a brokerage account with no gain to tax, so the plan may be too optimistic.",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-solve-savings-with-range": [
+   "H: You'd need about $721,826 saved to retire at 66.",
+   "   With spending of $67,000 a year in retirement, that would last to 95.",
+   "   [Worked out for you]",
+   "   Given your ranges, somewhere between $590,837 and $852,550.",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   RANGE: Some of your answers are ranges: your spending in retirement. Narrowing your spending in retirement would narrow the result most.",
+   "   START: Your savings are counted as a brokerage account with no gain to tax, so the plan may be too optimistic.",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-solve-spending": [
+   "H: You could spend up to $64,994 a year in retirement.",
+   "   Your savings would then last to 95, the end of the plan.",
+   "   [Worked out for you]",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-solve-spending-same-as-now-missing": [
+   "H: You could spend up to $80,447 a year in retirement.",
+   "   Your savings would then last to 95, the end of the plan.",
+   "   [Worked out for you]",
+   "   △ Leaves out 6 things  [details: What this result leaves out]",
+   "   GAP: This plan doesn't include your spending before you retire yet, so it may be too optimistic.",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-solve-spending-shortfall-at-zero": [
+   "H: Your savings run short before you retire, at 61, even with no spending in retirement.",
+   "   [Worked out for you]",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-what-if-savings-total": [
+   "H: Your savings last to 95, the end of the plan.",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-what-if-savings-total-fills-savings": [
+   "H: Savings run short at 84, 11 years before the plan ends.",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   START: Your savings are counted as a brokerage account with no gain to tax, so the plan may be too optimistic.",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-what-if-total-with-range": [
+   "H: Savings run short at 87, 8 years before the plan ends.",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ],
+  "v2-working-complete": [
+   "H: Savings run short at 93, 2 years before the plan ends.",
+   "   △ Leaves out 5 things  [details: What this result leaves out]",
+   "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
+  ]
+ },
+ "derived": "2026-10-20",
+ "format": "horizon-0002-W6-head-sentences",
+ "legend": {
+  "   ": "line under the headline, in order",
+  "   - ": "list item",
+  "   GAP: ": "left-out line",
+  "   RANGE: ": "range card text",
+  "   START: ": "starting value list item",
+  "   [Worked out for you]": "tag",
+  "H: ": "headline (h1)"
+ },
+ "source": "0002-W5 reference values (version 2 cases), rendered by the rules of brief 0002-W6 deliverable 7",
+ "version": 1
+}
