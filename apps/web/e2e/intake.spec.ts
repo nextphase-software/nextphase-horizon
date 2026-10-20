@@ -95,8 +95,16 @@ for (const style of ["one_question", "conversation", "guided_page"] as const) {
         group.getByRole("radio", { checked: true }),
         traversal,
       );
+      const backwards = await radio.evaluate(
+        (target) =>
+          !!document.activeElement &&
+          !!(
+            target.compareDocumentPosition(document.activeElement) &
+            Node.DOCUMENT_POSITION_FOLLOWING
+          ),
+      );
       for (let i = 0; i < 6 && !(await radio.isChecked()); i++)
-        await page.keyboard.press("ArrowDown");
+        await page.keyboard.press(backwards ? "ArrowUp" : "ArrowDown");
       await expect(radio).toBeChecked();
     }
     async function choose(name: string) {
