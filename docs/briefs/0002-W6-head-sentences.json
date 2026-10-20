@@ -1,13 +1,13 @@
 {
  "cases": {
   "v2-age-instead-of-date": [
-   "H: Savings run short at 94, 1 year before the plan ends.",
+   "H: Savings run short at 94, one year before the plan ends.",
    "   △ Leaves out 5 things  [details: What this result leaves out]",
    "   START: Your birthday is counted as 1 January.",
    "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
   ],
   "v2-age-leap-valuation": [
-   "H: Savings run short at 93, 2 years before the plan ends.",
+   "H: Savings run short at 93, two years before the plan ends.",
    "   △ Leaves out 5 things  [details: What this result leaves out]",
    "   START: Your birthday is counted as 28 February.",
    "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
@@ -132,7 +132,7 @@
    "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
   ],
   "v2-what-if-savings-total": [
-   "H: Your savings last to 95, the end of the plan.",
+   "H: Savings last to 95.",
    "   △ Leaves out 5 things  [details: What this result leaves out]",
    "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
   ],
@@ -143,12 +143,12 @@
    "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
   ],
   "v2-what-if-total-with-range": [
-   "H: Savings run short at 87, 8 years before the plan ends.",
+   "H: Savings run short at 87, eight years before the plan ends.",
    "   △ Leaves out 5 things  [details: What this result leaves out]",
    "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
   ],
   "v2-working-complete": [
-   "H: Savings run short at 93, 2 years before the plan ends.",
+   "H: Savings run short at 93, two years before the plan ends.",
    "   △ Leaves out 5 things  [details: What this result leaves out]",
    "   START: Prices rise 2.5% a year; investments grow 5% a year; cash earns 2%; tax thresholds rise 2.5% a year."
   ]
@@ -164,6 +164,6 @@
   "   [Worked out for you]": "tag",
   "H: ": "headline (h1)"
  },
- "source": "0002-W5 reference values (version 2 cases), rendered by the rules of brief 0002-W6 deliverable 7",
+ "source": "0002-W5 reference values (version 2 cases), rendered by the rules of brief 0002-W6 v1.2 deliverable 7 (today's plan headline for a plain result)",
  "version": 1
 }

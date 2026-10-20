@@ -1,4 +1,4 @@
-BRIEF VERSION: 0002-W6 v1.1 (2026-10-20)
+BRIEF VERSION: 0002-W6 v1.2 (2026-10-20)
 
 # 0002-W6 — Intake screens: your own figures, in your own words
 
@@ -81,9 +81,9 @@ The status words of decision 0016 replace "Supported" and "Partial" everywhere. 
      - `solved` retirement: "The earliest you could retire is R." and "With spending of $S a year in retirement, your savings would last to E."; `unreachable` → "Your savings wouldn't last to E at any retirement age before E."
      - Any `solved`: the tag "Worked out for you"; with `bounds` and `ordered`, "Given your ranges, somewhere between L and H." (L and H the two bound values in increasing order; when one bound is null, "Given your ranges, from L; at the other end, none works."); with `bounds` not ordered, "Your ranges pull this in different directions, so Horizon shows the middle of each range."
      - Nothing solved, with `bounds` ordered: worse bound lasts → "Your savings last to E, the end of the plan, at both ends of your ranges."; better bound lasts → "Savings last to somewhere between W and E."; both short at the same age → "Savings run short at W at both ends of your ranges."; otherwise "Savings run short somewhere between W and B." (W and B the bounds' first shortfall ages). Not ordered: today's plan headline for the central run, then "Your ranges pull the result in different directions, so this uses the middle of each range."
-     - Nothing solved, no bounds: today's plan headline (`plan-display.ts`) for the central run.
+     - Nothing solved, no bounds: today's plan headline (`planHeadline` in `plan-display.ts`) for the central run, word for word ("Savings last to 95.", "two years"). **(v1.2:** the head sentences now use it too.**)**
 
-     In these, $X, $S are the engine's cents shown as whole dollars with today's money formatter; E is the plan end age from the household input; S is its spending in retirement.
+     In these, $X, $S are the engine's cents shown as whole dollars with today's `centsDollars` (half away from zero); E is the plan end age from the household input; S is its spending in retirement.
    - **Status statement** (decision 0016): `complete` → "✓ Covers your situation", with "What Horizon doesn't count" listing the central omissions when there are any; `partial` → "△ Leaves out N things", N being the central omissions plus the left-out answers, with "What this result leaves out" listing the left-out answers' texts and then the omissions.
    - **One line per left-out answer:** "This plan doesn't include your Social Security yet, so it is likely too pessimistic." (`social_security`), likewise "your pension", "your pay before you retire" and "your spending before you retire" ("so it may be too optimistic" for `too_optimistic`); `pay_and_spending_now` → "This plan doesn't include your pay or spending before you retire yet; it assumes your pay covers your spending until you retire." Each has **Add it for a better result**.
    - **Why this is a range** (when `bounds`): "Some of your answers are ranges: A and B." and "Narrowing A would narrow the result most. **Narrow it**", in the engine's `ranked` order, with the names "your pay", "your spending now", "your spending in retirement", "your Social Security", "your pension" and "the balance of your <kind> account" (bank or cash, brokerage, workplace plan, traditional IRA, Roth).
