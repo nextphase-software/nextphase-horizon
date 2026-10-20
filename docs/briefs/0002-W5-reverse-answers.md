@@ -1,4 +1,4 @@
-BRIEF VERSION: 0002-W5 v1 (2026-10-20)
+BRIEF VERSION: 0002-W5 v1.1 (2026-10-20)
 
 # 0002-W5 — Reverse answers and what-if (engine)
 
@@ -7,6 +7,8 @@ BRIEF VERSION: 0002-W5 v1 (2026-10-20)
 A person who does not know their savings, their spending in retirement or when they will retire still gets a plan. The engine works out the one they left for later instead of refusing: the savings they would need, what they could spend, or the earliest age they could retire. An age is enough in place of a date of birth. A what-if is a changed copy of the answers, so every figure a later screen shows comes from the engine, including a new total for savings shared among the person's accounts.
 
 Version 1 answers keep their rules and results exactly. The engine core and the plan file are unchanged. No screen changes in this milestone.
+
+Version 1.1 changes only Done when 8: one earlier unit test used version 2 as its example of an unsupported version, which this brief makes valid.
 
 ## Deliverables
 
@@ -42,7 +44,7 @@ Version 1 answers keep their rules and results exactly. The engine core and the 
 5. **Contracts:** both version 2 schemas are generated with `schemars`, published under `docs/model/schemas/`, and covered by drift tests; every version 2 result validates against `answers-plan.v2`.
 6. **Command line:** `horizon intake` over every reference case of both milestones prints output byte-identical to the operation, with the stated exit code.
 7. **WebAssembly parity:** the reference cases of both milestones pass on `wasm32-unknown-unknown` under Node.js 24.22.0, byte-identical to native; `intake_v2_timing` runs and its figures are recorded.
-8. **Earlier guarantees hold:** every earlier test, reference file, golden and schema is unchanged; no floating-point or unchecked integer arithmetic; the engine uses no host facilities; the license checks pass; the web app's tests, build and end-to-end suite pass unchanged.
+8. **Earlier guarantees hold:** every earlier test, reference file, golden and schema is unchanged, with one exception **(v1.1)**: in the unit test `intake_structural_and_arithmetic_errors_keep_one_result_shape`, the unsupported `version` input changes from `2` to `3`, and nothing else in that test changes; no floating-point or unchecked integer arithmetic; the engine uses no host facilities; the license checks pass; the web app's tests, build and end-to-end suite pass unchanged.
 
 ## Reference values
 
