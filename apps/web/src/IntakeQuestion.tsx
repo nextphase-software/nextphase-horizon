@@ -52,8 +52,13 @@ export function DateFields({
         <input
           id={`${id}-day`}
           inputMode="numeric"
-          value={day}
-          onChange={(event) => part(2, event.target.value.padStart(2, "0"))}
+          value={day.replace(/^0(?=\d)/, "")}
+          onChange={(event) =>
+            part(
+              2,
+              event.target.value ? event.target.value.padStart(2, "0") : "",
+            )
+          }
         />
       </label>
       <label htmlFor={`${id}-year`}>

@@ -34,7 +34,11 @@ test("intake: dates, add later, brokerage ranges, assumptions and Forget cancell
     page.getByRole("button", { name: "Continue", exact: true }).click();
   async function date(month: string, day: string, year: string) {
     await page.getByLabel("Month", { exact: true }).selectOption(month);
-    await page.getByLabel("Day", { exact: true }).fill(day);
+    const dayField = page.getByLabel("Day", { exact: true });
+    await dayField.fill("");
+    // Real digit entry catches zero-padding that would turn typing 10 into 010.
+    await dayField.pressSequentially(day);
+    await expect(dayField).toHaveValue(String(Number(day)));
     await page.getByLabel("Year", { exact: true }).fill(year);
   }
   const saved = () =>
