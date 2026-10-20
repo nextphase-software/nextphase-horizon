@@ -52,3 +52,18 @@ pub fn answers_plan_schema() -> Value {
         1,
     )
 }
+
+pub fn answers_schema_v2() -> Value {
+    named(
+        schemars::schema_for!(crate::intake::v2::AnswersV2),
+        "answers",
+        2,
+    )
+}
+pub fn answers_plan_schema_v2() -> Value {
+    named(
+        schemars::schema_for!(crate::intake::v2::AnswersPlanV2),
+        "answers-plan",
+        2,
+    )
+}

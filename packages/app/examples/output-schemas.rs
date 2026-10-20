@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 fn main() {
     for (name, version, schema) in [
+        ("answers", 2, horizon_app::schemas::answers_schema_v2()),
+        (
+            "answers-plan",
+            2,
+            horizon_app::schemas::answers_plan_schema_v2(),
+        ),
         ("answers", 1, horizon_app::schemas::answers_schema()),
         (
             "answers-plan",

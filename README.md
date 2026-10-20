@@ -48,7 +48,7 @@ Expected versions are `v24.22.0` and `wasm-bindgen-test-runner 0.2.129`.
 The runner version must equal `wasm-bindgen` in Cargo.lock. Node also builds and tests the self-contained web adapter in `apps/web/`;
 there is no new top-level tool configuration.
 
-Run the full cumulative 0001-W1–W4, 0003-W1 and 0002-W4 validation sequence in order from the workspace root:
+Run the full cumulative 0001-W1–W4, 0003-W1 and 0002-W4–W5 validation sequence in order from the workspace root:
 
 ```sh
 cargo test -p horizon-app intake
@@ -72,8 +72,12 @@ cargo clippy --workspace --all-targets -- -D warnings
 cargo fmt --all --check
 cargo test --workspace --release
 cargo build --workspace --release
+node --version
 cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown
+node --version
 CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner cargo test -p horizon-parity --target wasm32-unknown-unknown
+node --version
+CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner cargo test --release -p horizon-parity --target wasm32-unknown-unknown intake_v2_timing -- --nocapture
 cargo deny check licenses
 cargo run --release -p horizon-cli -- levers answers-working-61
 cargo run -p horizon-cli -- intake <answers.json>
@@ -90,7 +94,10 @@ cargo run -p horizon-cli -- dev-run <name>
 Expand the command placeholders over all fixtures and reference cases in
 [the answer guide](docs/model/answers.md#fixtures-and-validation) and
 [the scenario/export fixture guide](docs/model/scenario-diff-and-export.md#fixtures-and-command-checks).
-Run intake over all 29 answers documents in the [intake reference values](docs/briefs/0002-W4-reference-values.json), extracted to separate JSON files. Intake also exits 4 incomplete.
+Run intake over all 29 answers documents in the [version 1 intake reference values](docs/briefs/0002-W4-reference-values.json) and all 25 documents in the [reverse-answer reference values](docs/briefs/0002-W5-reference-values.json), extracted to separate JSON files.
+The intake reference and WebAssembly parity commands cover both milestones.
+Record all five means printed by the release `intake_v2_timing` test (ten runs
+per case). Intake also exits 4 incomplete.
 Supported commands exit 0 complete, 3 partial, 1 invalid or 2 unsupported;
 `dev-run` retains exit 0 for partial. Each prints canonical JSON and one newline.
 For exports, status is the embedded `run.status`; import prints the restored run.
@@ -101,6 +108,7 @@ seconds; its expected exit is 3 (partial). Measure the WebAssembly levers test
 separately, using the same Node PATH and runner:
 
 ```sh
+node --version
 CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner cargo test -p horizon-parity --target wasm32-unknown-unknown answers_levers_reference_and_golden
 ```
 
@@ -121,6 +129,7 @@ the fixtures/reference cases in both linked guides. Then, from the workspace roo
 
 ```sh
 cargo test -p horizon-wasm
+node --version
 cargo build -p horizon-wasm --target wasm32-unknown-unknown --release
 ```
 

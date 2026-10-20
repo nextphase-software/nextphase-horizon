@@ -117,3 +117,23 @@ mod tests {
         assert_eq!(scenario(VALID, "{}"), encode(app::json::changes("{}")));
     }
 }
+
+#[cfg(test)]
+mod intake_v2_tests {
+    #[test]
+    fn intake_v2_browser_export_matches_application_bytes() {
+        let base = r#"{"format":"horizon-answers","version":2,"valuation_date":"2026-01-01","planning":"alone","birth_date":{"age":60},"retired":true,"savings":{"none":true},"social_security":{"expects":"no"},"pension":{"expects":"no"},"spending_in_retirement":{"cents":0}}"#;
+        for text in [
+            base.to_string(),
+            base.replace("alone", "partner"),
+            base.replace(r#"{"age":60}"#, r#"{"later":true}"#),
+            base.replace(r#""cents":0"#, r#""cents":-1"#),
+            base.replace(r#"{"none":true}"#, r#"{"later":true}"#),
+        ] {
+            assert_eq!(
+                super::plan_from_answers(&text),
+                horizon_app::json::encode(Ok(horizon_app::plan_from_answers_json(&text)))
+            );
+        }
+    }
+}

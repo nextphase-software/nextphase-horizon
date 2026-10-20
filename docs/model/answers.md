@@ -248,3 +248,78 @@ The `horizon-wasm::plan_from_answers` binding returns identical canonical bytes.
 Native, CLI and Node WebAssembly tests compare every reference result, including
 complete generated inputs. Record Node v24.22.0 for each WebAssembly command.
 No screen or web worker protocol changes are part of this operation.
+
+
+## Reverse answers and what-if — 0002-W5 v1.1
+
+`plan_from_answers` also accepts [answers.v2](schemas/answers.v2.schema.json)
+(`intake::v2::AnswersV2` for typed Rust callers) and returns
+[answers-plan.v2](schemas/answers-plan.v2.schema.json). Version 1 keeps its
+original types, schemas, rules and canonical results. Both versions use the
+same engine 0.4.0, federal tax rules and unchanged household/export formats.
+The JSON entry point, CLI intake and browser export dispatch in the application
+layer; adapters contain no financial rules. Regenerate both new schemas with
+`cargo run -p horizon-app --example output-schemas`.
+
+Version 2 requires birth date first. If it is known, two or more of retirement,
+savings and retirement spending left for later give `incomplete`, listing those
+answers in that order. One missing answer is worked out; retirement also needs
+pay to be given. Already-retired inputs ignore retirement/pay as before.
+`same_as_now` counts as retirement spending left for later when already retired
+or spending now is unknown. Partner planning is unsupported before these checks.
+Used ranges are checked before negative amounts, then birth age, then retirement
+date. An age is a whole number from 18 through 110: the assumed date of birth is
+the valuation date that many years earlier, clamping 29 February to 28 February.
+It appears in starting values after the version 1 starting values.
+
+The new `solved` field is null or `{answer, value, unit, flag}`. Spending and
+savings are **integer USD cents**, spending annually in valuation-year dollars,
+savings at valuation; retirement is a whole birthday age. Searches use checked
+whole dollars internally and retain the engine's exact cent rounding:
+
+- Retirement spending starts at zero and reuses the existing sustainable-spending
+  operation, including its $10,000,000 cap and both flags. The returned input and
+  summary use the worked-out spending.
+- Savings uses one `taxable-1` account owned by `person`, with basis equal to its
+  balance. No shortfall at zero gives `none_needed`; a shortfall at $100,000,000
+  gives null and `unreachable`. Otherwise integer bisection returns the smallest
+  whole-dollar balance with zero shortfall in every projected year. The account
+  kind is an explicit starting value, "a brokerage account with no gain to tax",
+  with direction `too_optimistic`.
+- Retirement tries each birthday after valuation through `plan_end_age - 1` in
+  order, returning the first age with no yearly shortfall. Pay follows that date
+  unless its end was explicitly given. No feasible age gives null and
+  `unreachable`. For unreachable savings/retirement, input and summary describe
+  the search limit, exposing its shortfall rather than claiming the plan lasts.
+
+With a worked-out answer, each range is measured in that answer, with other
+ranges at their middle. Lower spending, higher savings, later retirement and
+null are worse; ties take the low end. Ranked entries report `value_at_low`,
+`value_at_high`, `spread` (absolute difference, null if either value is null) and
+`worse_end`, sorted by descending spread, null first, then answer name. Bounds
+solve with all ranges at their worse/better ends and add `{value, flag}` under
+`solved` to the version 1 summary fields. `ordered` requires all three values
+and a central value between the bounds. With nothing solved, version 1's
+headroom bounds apply exactly. Status still comes from the entered run, raised
+to partial for left-out answers; these are estimates under the stated assumptions.
+
+Optional `what_if: {savings_total_cents?: integer}` is echoed exactly when given,
+otherwise null, alongside `solved` in every v2 result. A total replaces savings
+left for later, or is shared across existing accounts in answer order using
+balance middles as weights. Each share is floored to cents; leftover cents go
+to largest remainders, ties to earlier accounts. These balances replace ranges;
+known taxable basis remains given, unknown basis follows the new balance.
+No accounts or zero total balances use the single taxable account and starting
+value above. Starting values order is v1's, birth date from age, then savings.
+No what-if or answers storage or screen is introduced.
+
+The 25 [W5 reference cases](../briefs/0002-W5-reference-values.json), including
+one unchanged v1 case, join the 29 W4 cases in native, CLI and WebAssembly
+checks. Run intake on each extracted answers document. The cumulative commands
+in README and AGENTS include schema drift and output validation, all reference
+bytes, the savings dollar boundary and injected-run bounds checks. Under Node
+24.22.0, the release `intake_v2_timing` WebAssembly test measures ten typed
+`plan_from_answers` calls per case for working-complete, solved spending,
+solved savings, solved retirement and savings with a range. It prints each
+mean in milliseconds using the test harness's clock; no host facility enters
+the application or engine. The implementation record reports measured times.

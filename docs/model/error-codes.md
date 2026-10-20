@@ -57,9 +57,10 @@ has status `partial` and exits 3 in supported commands, or 0 in legacy
 | `SPENDING_SEARCH_NOT_MONOTONIC` | invalid | Verification failed: the result has a shortfall or the next whole dollar does not. |
 | `IMPACT_RANGE_REQUIRED` | invalid | A rough path without a default needs an explicit low and high range. |
 
-## Answers intake — 0002-W4 v2
+## Answers intake — 0002-W4 v2 / 0002-W5 v1.1
 
-Intake uses the `answers-plan.v1` shape for all answers outcomes. `incomplete`
+Intake uses `answers-plan.v1` or `answers-plan.v2`, matching the answers version,
+for all answers outcomes. `incomplete`
 is not an error: it has no code, lists needed answers, makes no run and exits 4.
 An invalid or unsupported intake result has no run and exits 1 or 2 respectively.
 Existing structural, date, money and engine codes remain applicable.
@@ -70,3 +71,4 @@ Existing structural, date, money and engine codes remain applicable.
 | `ANSWERS_RANGE_ORDER` | invalid | A ranged answer has low cents above high cents. |
 | `ANSWERS_NEGATIVE_AMOUNT` | invalid | An entered amount, range endpoint, balance or cost basis is negative. |
 | `ANSWERS_RETIREMENT_NOT_AFTER_VALUATION` | invalid | A person who is not retired supplied a retirement age/date at or before valuation. |
+| `ANSWERS_AGE_RANGE` | invalid | Version 2 birth age is below 18 or above 110; checked after amount signs and before the retirement date. |

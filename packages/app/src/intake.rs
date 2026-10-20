@@ -288,15 +288,64 @@ fn overflow() -> Error {
     )
 }
 
-/// Parse failures and calculation failures retain the same answers-plan.v1 envelope.
-pub fn plan_from_answers_json(text: &str) -> AnswersPlan {
-    match serde_json::from_str::<Answers>(text) {
-        Ok(answers) => plan_from_answers(&answers),
-        Err(_) => AnswersPlan::error(malformed(), &[]),
+pub mod v2;
+
+/// Typed documents retain their version's result type and serialization contract.
+pub trait AnswerDocument {
+    type Plan: Serialize;
+    fn plan(&self) -> Self::Plan;
+}
+impl AnswerDocument for Answers {
+    type Plan = AnswersPlan;
+    fn plan(&self) -> Self::Plan {
+        plan_with(self, summarize)
     }
 }
-pub fn plan_from_answers(answers: &Answers) -> AnswersPlan {
-    plan_with(answers, summarize)
+pub fn plan_from_answers<A: AnswerDocument>(answers: &A) -> A::Plan {
+    answers.plan()
+}
+#[derive(Debug, Serialize)]
+#[serde(untagged)]
+pub enum VersionedPlan {
+    V1(AnswersPlan),
+    V2(v2::AnswersPlanV2),
+}
+/// A transport envelope with a status accessor shared by the thin adapters.
+#[derive(Debug, Serialize)]
+pub struct AnswersPlanDocument {
+    #[serde(skip)]
+    pub status: &'static str,
+    #[serde(flatten)]
+    pub result: VersionedPlan,
+}
+pub fn plan_from_answers_json(text: &str) -> AnswersPlanDocument {
+    let value = serde_json::from_str::<Value>(text).ok();
+    if value.as_ref().is_some_and(|v| v["version"] == 2) {
+        let out = match serde_json::from_str::<v2::AnswersV2>(text) {
+            Ok(a) => plan_from_answers(&a),
+            Err(_) => {
+                let mut out = v2::AnswersPlanV2::from_error(malformed());
+                out.what_if = value
+                    .as_ref()
+                    .and_then(|v| v.get("what_if"))
+                    .and_then(|v| serde_json::from_value(v.clone()).ok());
+                out
+            }
+        };
+        AnswersPlanDocument {
+            status: out.status,
+            result: VersionedPlan::V2(out),
+        }
+    } else {
+        let out = match serde_json::from_str::<Answers>(text) {
+            Ok(a) => plan_from_answers(&a),
+            Err(_) => AnswersPlan::error(malformed(), &[]),
+        };
+        AnswersPlanDocument {
+            status: out.status,
+            result: VersionedPlan::V1(out),
+        }
+    }
 }
 fn plan_with<F>(a: &Answers, mut calculate: F) -> AnswersPlan
 where
@@ -430,8 +479,11 @@ fn summarize(input: &Fixture) -> Result<PlanSummary> {
     })
 }
 fn validate_amounts(a: &Answers) -> Result<BTreeMap<String, CentRange>> {
+    validate_amounts_with(a, &[])
+}
+fn validate_amounts_with(a: &Answers, extra: &[i64]) -> Result<BTreeMap<String, CentRange>> {
     let mut ranges = BTreeMap::new();
-    let mut amounts = Vec::new();
+    let mut amounts = extra.to_vec();
     let mut monthly_ranges = Vec::new();
     fn money(
         name: &str,
@@ -1116,7 +1168,7 @@ mod tests {
         let base = serde_json::to_value(case("working-complete")).unwrap();
         for (key, value) in [
             ("format", json!("other")),
-            ("version", json!(2)),
+            ("version", json!(3)),
             ("unknown", json!(true)),
             ("birth_date", json!({"later":false})),
             ("pay", json!({"cents":0,"later":true})),
