@@ -1,6 +1,6 @@
 # 0017 — Incomplete answers and ranges (an application operation turns a person's answers, each a figure, a range or "not yet", into an engine run: it reports what is still needed, runs without optional answers and says which way the result leans, uses stated starting values, and returns ranges as bounds; the engine core stays strict)
 
-- Status: Accepted (amendments 1 and 2 accepted 2026-10-19)
+- Status: Accepted (amendments 1 and 2 accepted 2026-10-19; amendment 3, 2026-10-20)
 - Date: 2026-10-19
 - Related:
   - [0007](0007-rust-core-typescript-shell.md), item 4 — no adapter contains a calculation rule. Turning answers into an engine input is a rule, so it belongs in the Rust application layer and reaches the browser through `horizon-wasm`.
@@ -101,3 +101,7 @@ The first implementation of brief 0002-W4 matched every reference case, but a ch
 - **B3 — Check order.** One person only (`unsupported`), then the answers needed for any plan (`incomplete`), then, on the answers the plan uses, every range's order (`ANSWERS_RANGE_ORDER`), then every amount's sign (`ANSWERS_NEGATIVE_AMOUNT`), then the retirement date (`ANSWERS_RETIREMENT_NOT_AFTER_VALUATION`). The first failing check decides the result.
 - **B4 — A pension left out** (amount "later") is a zero pension, nominal, at 65, exactly like a "no", whatever start age and rise with prices were given; it adds no starting value. It is still reported as left out, likely too pessimistic.
 - **B5 — Answers marked "not sure"** are returned as given, in the person's order.
+
+## Amendment 3 — 2026-10-20: version 2 of the answers
+
+[Decision 0019](0019-reverse-answers-and-what-if.md) adds version 2 of the answers document and the result. In version 2, only the date of birth (or an age) is needed for any plan, and one of retirement, savings and spending in retirement left for later is worked out. Version 1 keeps item 4 and every rule of this record unchanged.
