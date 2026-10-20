@@ -279,7 +279,11 @@ where
         _ => unreachable!(),
     }
     let mut metadata = AnswersPlan::empty("incomplete", &copy.not_sure);
-    let mut input = build(&copy, ends, &mut metadata)?;
+    // A solved retirement's limit can precede valuation when there are no
+    // future birthdays before end age. The brief still requires that limit's
+    // input/run; only a supplied retirement answer gets the v1 date check.
+    let mut input =
+        build_with_retirement_check(&copy, ends, &mut metadata, answer != "retirement")?;
     let result = match answer {
         "spending_in_retirement" => {
             let spending = sustainable_spending_with(&input, &mut *calculate)?;
@@ -849,5 +853,24 @@ mod tests {
             quality(Some(2), Some(1), "spending_in_retirement"),
             Ordering::Less
         );
+    }
+}
+
+#[cfg(test)]
+mod retirement_limit_tests {
+    use super::*;
+    #[test]
+    fn intake_v2_no_candidate_birthday_returns_unreachable_at_limit() {
+        let text = r#"{"format":"horizon-answers","version":2,"valuation_date":"2026-01-01","planning":"alone","birth_date":{"age":94},"retired":false,"retirement":{"later":true},"plan_end_age":95,"pay":{"cents":0},"spending_now":{"cents":0},"savings":{"none":true},"social_security":{"expects":"no"},"pension":{"expects":"no"},"spending_in_retirement":{"cents":0}}"#;
+        let answers: AnswersV2 = serde_json::from_str(text).unwrap();
+        let result = plan_from_answers(&answers);
+        assert!(result.code.is_none());
+        let solved = result.solved.unwrap();
+        assert_eq!(solved.result.value, None);
+        assert_eq!(solved.result.flag, Some("unreachable"));
+        let input = result.household_input.unwrap();
+        assert_eq!(input.household.persons[0].retirement_date.0, "2026-01-01");
+        assert_eq!(input.household.income.wages[0].end_date.0, "2026-01-01");
+        assert!(no_shortfall(&run_fixture(&input).unwrap()));
     }
 }

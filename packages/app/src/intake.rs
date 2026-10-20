@@ -641,6 +641,14 @@ fn amount(cents: i64, dollar_basis: DollarBasis) -> Amount {
     }
 }
 fn build(a: &Answers, ends: &BTreeMap<String, i64>, out: &mut AnswersPlan) -> Result<Fixture> {
+    build_with_retirement_check(a, ends, out, true)
+}
+fn build_with_retirement_check(
+    a: &Answers,
+    ends: &BTreeMap<String, i64>,
+    out: &mut AnswersPlan,
+    check_answered_retirement: bool,
+) -> Result<Fixture> {
     a.valuation_date.validate()?;
     let BirthAnswer::Date { date: birth } = &a.birth_date else {
         return Err(malformed());
@@ -669,7 +677,7 @@ fn build(a: &Answers, ends: &BTreeMap<String, i64>, out: &mut AnswersPlan) -> Re
             _ => return Err(malformed()),
         }
     };
-    if !a.retired && retirement <= a.valuation_date {
+    if check_answered_retirement && !a.retired && retirement <= a.valuation_date {
         return Err(Error::invalid(
             "ANSWERS_RETIREMENT_NOT_AFTER_VALUATION",
             "Retirement must follow valuation when not retired.",
