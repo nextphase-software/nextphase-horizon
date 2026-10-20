@@ -160,6 +160,8 @@ alone does not prove they ran. Browser launches require an environment that
 permits their OS processes. The e2e suite serves the production build locally
 and checks 12 browser/size/theme projects, with every sample in every project.
 
+**Engine-only briefs.** When a brief changes nothing under `apps/web/`, its Validation section may exclude the end-to-end browser suite: `corepack pnpm exec playwright install …` and `corepack pnpm run e2e`. Every other command in this section still runs, including the web unit tests, typecheck, lint, build and license checks.
+
 The license command checks the production and full dependency closures separately.
 Production keeps the strict allow-list and named font exception. Only exact
 build/test package-version-license exceptions in decision 0011's 2026-10-18
