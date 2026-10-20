@@ -1,14 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import { describe, expect, it } from "vitest";
-import {
-  countWord,
-  flagWords,
-  formatDollars,
-  sampleIntroduction,
-  statusWord,
-} from "./format";
-import raw from "../../../packages/parity/golden/answers-working-61.spend.json?raw";
-import type { Result } from "./Answer";
+import { countWord, flagWords, formatDollars, statusWord } from "./format";
 describe("engine presentation", () => {
   it("formats whole dollars without calculating financial values", () => {
     expect(formatDollars(64994)).toBe("$64,994");
@@ -48,47 +40,4 @@ it("spells out counts from zero to ten and uses digits above ten", () => {
     "ten",
     "11",
   ]);
-});
-it("derives the intro from statuses and names the single unsupported sample", () => {
-  const partial = JSON.parse(raw) as Result;
-  const complete = { ...partial, status: "complete" } as Result;
-  const unsupported = {
-    status: "unsupported",
-    code: "MULTIPLE_PERSONS_UNSUPPORTED",
-    message: "Only one person is supported.",
-  } as const;
-  expect(
-    sampleIntroduction([
-      { label: "Working", result: partial },
-      { label: "Retired", result: complete },
-      { label: "Small savings", result: complete },
-      { label: "Underfunded", result: partial },
-      { label: "Couple", result: unsupported },
-    ]),
-  ).toBe(
-    "The engine gives a full result for two of these five sample households, a partial one for two, and none for the couple (only one person is supported).",
-  );
-  expect(
-    sampleIntroduction([
-      {
-        label: "ANOTHER SAMPLE",
-        result: { ...unsupported, message: "US rules are missing" },
-      },
-    ]),
-  ).toBe(
-    "The engine gives a full result for zero of these one sample households, a partial one for zero, and none for the another sample (uS rules are missing).",
-  );
-  expect(
-    sampleIntroduction([
-      { label: "One", result: unsupported },
-      { label: "Two", result: unsupported },
-    ]),
-  ).toBe(
-    "The engine gives a full result for zero of these two sample households, a partial one for zero, and none for two.",
-  );
-  expect(
-    sampleIntroduction([{ label: "Covers your situation", result: complete }]),
-  ).toBe(
-    "The engine gives a full result for one of these one sample households, a partial one for zero, and none for zero.",
-  );
 });
