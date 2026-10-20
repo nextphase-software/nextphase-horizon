@@ -77,7 +77,7 @@ Light and dark are designed separately; dark is not light inverted. Text pairs m
 ### Financial content
 
 - **Results come first:** plain answers lead; the year-by-year ledger is one level deeper.
-- **Status words:** every result, comparison and export says in plain words, with an icon, whether it covers the person's situation: "✓ Covers your situation", "△ Leaves out N things" (the list one click away, under "What this result leaves out"), or "! Horizon can't plan for this yet" with the reason. Other labels: "Your estimate", "not sure" for an answer the person marked "I'm not sure of this", and "Example household — invented figures" for invented data. Engine terms such as "supported", "partial", "omission" and "rough" never appear on screen.
+- **Status words:** every result, comparison and export says in plain words, with an icon, whether it covers the person's situation: "✓ Covers your situation", "△ Leaves out N things" (the list one click away, under "What this result leaves out"), or "! Horizon can't plan for this yet" with the reason. Other labels: "Your estimate", "not sure" for an answer the person marked "I'm not sure of this", and "Example household — invented figures" for invented data. Engine terms such as "complete", "partial", "omission" and "rough" never appear on screen.
 - **Gaps before a result:** no coverage label appears before there is a result. Each gap is said once, in one plain line, at the question it concerns, and the review page lists what Horizon doesn't count yet.
 - **Answers marked "not sure":** shown with a dashed `color-estimate-text` outline wherever they appear.
 - **Amounts:**

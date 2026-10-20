@@ -1,0 +1,3823 @@
+{
+ "cases": {
+  "already-retired": {
+   "answers": {
+    "assumptions": {
+     "inflation": "0"
+    },
+    "birth_date": {
+     "date": "1956-12-31"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pension": {
+     "amount": {
+      "cents": 1200000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "rises_with_prices": "no",
+     "start_age": 65
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": true,
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2500000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 18000000
+       },
+       "cost_basis": {
+        "cents": 12000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 45000000
+       },
+       "kind": "traditional_ira"
+      },
+      {
+       "balance": {
+        "cents": 8000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 3000000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 5000000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": {
+     "first_shortfall_age": null,
+     "headroom": 37061,
+     "lasts_to_plan_end": true,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled"
+     ],
+     "run_status": "complete",
+     "sustainable_spending": 87061
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": true,
+       "value": "0"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [
+       {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash-1",
+        "opening_balance_cents": 2500000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "taxable",
+        "cost_basis_cents": 12000000,
+        "id": "taxable-1",
+        "opening_balance_cents": 18000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "traditional-ira-1",
+        "opening_balance_cents": 45000000,
+        "owner": "person",
+        "tax_deferred_kind": "traditional_ira"
+       },
+       {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth-1",
+        "opening_balance_cents": 8000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       }
+      ],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 1200000,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 3000000,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": []
+      },
+      "persons": [
+       {
+        "birth_date": "1956-12-31",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2026-01-01"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 5000000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 5000000,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "complete"
+   }
+  },
+  "invalid-range-order": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "per": "year",
+     "range": {
+      "high_cents": 7000000,
+      "low_cents": 9000000
+     }
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": null,
+    "code": "ANSWERS_RANGE_ORDER",
+    "household_input": null,
+    "left_out": [],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [],
+    "status": "invalid"
+   }
+  },
+  "invalid-retirement-not-after-valuation": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 60
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": null,
+    "code": "ANSWERS_RETIREMENT_NOT_AFTER_VALUATION",
+    "household_input": null,
+    "left_out": [],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [],
+    "status": "invalid"
+   }
+  },
+  "left-out-pay": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "later": true
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": {
+     "first_shortfall_age": 78,
+     "headroom": -20307,
+     "lasts_to_plan_end": false,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled"
+     ],
+     "run_status": "complete",
+     "sustainable_spending": 46693
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [
+       {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash-1",
+        "opening_balance_cents": 2000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "taxable",
+        "cost_basis_cents": 11000000,
+        "id": "taxable-1",
+        "opening_balance_cents": 15000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "employer-plan-1",
+        "opening_balance_cents": 52000000,
+        "owner": "person",
+        "tax_deferred_kind": "employer_plan"
+       },
+       {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth-1",
+        "opening_balance_cents": 6000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       }
+      ],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 0,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 2600000,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": []
+      },
+      "persons": [
+       {
+        "birth_date": "1965-03-10",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2031-03-10"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 6700000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 6200000,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [
+     {
+      "answer": "pay",
+      "direction": "too_pessimistic",
+      "omission": "Pay before retirement not given yet"
+     }
+    ],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.inflation",
+      "value": "0.025"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "partial"
+   }
+  },
+  "left-out-pay-and-spending-now": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "later": true
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "later": true
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": {
+     "first_shortfall_age": 90,
+     "headroom": -5519,
+     "lasts_to_plan_end": false,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled"
+     ],
+     "run_status": "complete",
+     "sustainable_spending": 61481
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [
+       {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash-1",
+        "opening_balance_cents": 2000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "taxable",
+        "cost_basis_cents": 11000000,
+        "id": "taxable-1",
+        "opening_balance_cents": 15000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "employer-plan-1",
+        "opening_balance_cents": 52000000,
+        "owner": "person",
+        "tax_deferred_kind": "employer_plan"
+       },
+       {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth-1",
+        "opening_balance_cents": 6000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       }
+      ],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 0,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 2600000,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": []
+      },
+      "persons": [
+       {
+        "birth_date": "1965-03-10",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2031-03-10"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 6700000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 0,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [
+     {
+      "answer": "pay_and_spending_now",
+      "direction": "not_stated",
+      "omission": "Pay and spending before retirement not given yet; the plan assumes your pay covers your spending until you retire"
+     }
+    ],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.inflation",
+      "value": "0.025"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "partial"
+   }
+  },
+  "left-out-pension": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "amount": {
+      "later": true
+     },
+     "expects": "yes"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": {
+     "first_shortfall_age": 93,
+     "headroom": -2006,
+     "lasts_to_plan_end": false,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled",
+      "contributions not modeled"
+     ],
+     "run_status": "partial",
+     "sustainable_spending": 64994
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [
+       {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash-1",
+        "opening_balance_cents": 2000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "taxable",
+        "cost_basis_cents": 11000000,
+        "id": "taxable-1",
+        "opening_balance_cents": 15000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "employer-plan-1",
+        "opening_balance_cents": 52000000,
+        "owner": "person",
+        "tax_deferred_kind": "employer_plan"
+       },
+       {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth-1",
+        "opening_balance_cents": 6000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       }
+      ],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 0,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 2600000,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": [
+        {
+         "amount": {
+          "cents": 8500000,
+          "dollar_basis": "today"
+         },
+         "end_date": "2031-03-10",
+         "start_date": "2026-01-01"
+        }
+       ]
+      },
+      "persons": [
+       {
+        "birth_date": "1965-03-10",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2031-03-10"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 6700000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 6200000,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [
+     {
+      "answer": "pension",
+      "direction": "too_pessimistic",
+      "omission": "Pension not given yet"
+     }
+    ],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.inflation",
+      "value": "0.025"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "partial"
+   }
+  },
+  "left-out-social-security": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "later": true
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": {
+     "first_shortfall_age": 81,
+     "headroom": -25076,
+     "lasts_to_plan_end": false,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled",
+      "contributions not modeled"
+     ],
+     "run_status": "partial",
+     "sustainable_spending": 41924
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [
+       {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash-1",
+        "opening_balance_cents": 2000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "taxable",
+        "cost_basis_cents": 11000000,
+        "id": "taxable-1",
+        "opening_balance_cents": 15000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "employer-plan-1",
+        "opening_balance_cents": 52000000,
+        "owner": "person",
+        "tax_deferred_kind": "employer_plan"
+       },
+       {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth-1",
+        "opening_balance_cents": 6000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       }
+      ],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 0,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 0,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": [
+        {
+         "amount": {
+          "cents": 8500000,
+          "dollar_basis": "today"
+         },
+         "end_date": "2031-03-10",
+         "start_date": "2026-01-01"
+        }
+       ]
+      },
+      "persons": [
+       {
+        "birth_date": "1965-03-10",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2031-03-10"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 6700000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 6200000,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [
+     {
+      "answer": "social_security",
+      "direction": "too_pessimistic",
+      "omission": "Social Security not given yet"
+     }
+    ],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.inflation",
+      "value": "0.025"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "partial"
+   }
+  },
+  "left-out-spending-now": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "later": true
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": {
+     "first_shortfall_age": null,
+     "headroom": 13447,
+     "lasts_to_plan_end": true,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled",
+      "contributions not modeled"
+     ],
+     "run_status": "partial",
+     "sustainable_spending": 80447
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [
+       {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash-1",
+        "opening_balance_cents": 2000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "taxable",
+        "cost_basis_cents": 11000000,
+        "id": "taxable-1",
+        "opening_balance_cents": 15000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "employer-plan-1",
+        "opening_balance_cents": 52000000,
+        "owner": "person",
+        "tax_deferred_kind": "employer_plan"
+       },
+       {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth-1",
+        "opening_balance_cents": 6000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       }
+      ],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 0,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 2600000,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": [
+        {
+         "amount": {
+          "cents": 8500000,
+          "dollar_basis": "today"
+         },
+         "end_date": "2031-03-10",
+         "start_date": "2026-01-01"
+        }
+       ]
+      },
+      "persons": [
+       {
+        "birth_date": "1965-03-10",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2031-03-10"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 6700000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 0,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [
+     {
+      "answer": "spending_now",
+      "direction": "too_optimistic",
+      "omission": "Spending before retirement not given yet"
+     }
+    ],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.inflation",
+      "value": "0.025"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "partial"
+   }
+  },
+  "monthly-and-leap-birthday": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1964-02-29"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 700000,
+     "per": "month"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 63
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "same_as_now": true
+    },
+    "spending_now": {
+     "cents": 500000,
+     "per": "month"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": {
+     "first_shortfall_age": 87,
+     "headroom": -6048,
+     "lasts_to_plan_end": false,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled",
+      "contributions not modeled"
+     ],
+     "run_status": "partial",
+     "sustainable_spending": 53952
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [
+       {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash-1",
+        "opening_balance_cents": 2000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "taxable",
+        "cost_basis_cents": 11000000,
+        "id": "taxable-1",
+        "opening_balance_cents": 15000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "employer-plan-1",
+        "opening_balance_cents": 52000000,
+        "owner": "person",
+        "tax_deferred_kind": "employer_plan"
+       },
+       {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth-1",
+        "opening_balance_cents": 6000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       }
+      ],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 0,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 2600000,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": [
+        {
+         "amount": {
+          "cents": 8400000,
+          "dollar_basis": "today"
+         },
+         "end_date": "2027-02-28",
+         "start_date": "2026-01-01"
+        }
+       ]
+      },
+      "persons": [
+       {
+        "birth_date": "1964-02-29",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2027-02-28"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 6000000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 6000000,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.inflation",
+      "value": "0.025"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "partial"
+   }
+  },
+  "needed-all-four": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "later": true
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "later": true
+    },
+    "savings": {
+     "later": true
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "later": true
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": null,
+    "code": null,
+    "household_input": null,
+    "left_out": [],
+    "needed": [
+     "birth_date",
+     "retirement",
+     "savings",
+     "spending_in_retirement"
+    ],
+    "not_sure": [],
+    "starting_values": [],
+    "status": "incomplete"
+   }
+  },
+  "needed-birth-date": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "later": true
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": null,
+    "code": null,
+    "household_input": null,
+    "left_out": [],
+    "needed": [
+     "birth_date"
+    ],
+    "not_sure": [],
+    "starting_values": [],
+    "status": "incomplete"
+   }
+  },
+  "needed-retirement": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "later": true
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": null,
+    "code": null,
+    "household_input": null,
+    "left_out": [],
+    "needed": [
+     "retirement"
+    ],
+    "not_sure": [],
+    "starting_values": [],
+    "status": "incomplete"
+   }
+  },
+  "needed-same-as-now-without-now": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "same_as_now": true
+    },
+    "spending_now": {
+     "later": true
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": null,
+    "code": null,
+    "household_input": null,
+    "left_out": [],
+    "needed": [
+     "spending_in_retirement"
+    ],
+    "not_sure": [],
+    "starting_values": [],
+    "status": "incomplete"
+   }
+  },
+  "needed-savings": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "later": true
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": null,
+    "code": null,
+    "household_input": null,
+    "left_out": [],
+    "needed": [
+     "savings"
+    ],
+    "not_sure": [],
+    "starting_values": [],
+    "status": "incomplete"
+   }
+  },
+  "needed-spending-in-retirement": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "later": true
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": null,
+    "code": null,
+    "household_input": null,
+    "left_out": [],
+    "needed": [
+     "spending_in_retirement"
+    ],
+    "not_sure": [],
+    "starting_values": [],
+    "status": "incomplete"
+   }
+  },
+  "no-savings": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "none": true
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": {
+     "first_shortfall_age": 67,
+     "headroom": -38768,
+     "lasts_to_plan_end": false,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled",
+      "contributions not modeled"
+     ],
+     "run_status": "partial",
+     "sustainable_spending": 28232
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 0,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 2600000,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": [
+        {
+         "amount": {
+          "cents": 8500000,
+          "dollar_basis": "today"
+         },
+         "end_date": "2031-03-10",
+         "start_date": "2026-01-01"
+        }
+       ]
+      },
+      "persons": [
+       {
+        "birth_date": "1965-03-10",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2031-03-10"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 6700000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 6200000,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.inflation",
+      "value": "0.025"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "partial"
+   }
+  },
+  "partner": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "partner",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": null,
+    "code": "ANSWERS_ONE_PERSON_ONLY",
+    "household_input": null,
+    "left_out": [],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [],
+    "status": "unsupported"
+   }
+  },
+  "range-one-savings": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [
+     "savings"
+    ],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "range": {
+         "high_cents": 64000000,
+         "low_cents": 40000000
+        }
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": {
+     "better": {
+      "first_shortfall_age": null,
+      "headroom": 3348,
+      "lasts_to_plan_end": true,
+      "omissions": [
+       "state tax not modeled",
+       "alternative minimum tax not modeled",
+       "taxable-account dividends and interest not modeled",
+       "itemized deductions and credits not modeled",
+       "contributions not modeled"
+      ],
+      "run_status": "partial",
+      "sustainable_spending": 70348
+     },
+     "ordered": true,
+     "ranked": [
+      {
+       "answer": "savings.accounts.2.balance",
+       "headroom_at_high": 3348,
+       "headroom_at_low": -7712,
+       "spread": 11060,
+       "worse_end": "low"
+      }
+     ],
+     "worse": {
+      "first_shortfall_age": 88,
+      "headroom": -7712,
+      "lasts_to_plan_end": false,
+      "omissions": [
+       "state tax not modeled",
+       "alternative minimum tax not modeled",
+       "taxable-account dividends and interest not modeled",
+       "itemized deductions and credits not modeled",
+       "contributions not modeled"
+      ],
+      "run_status": "partial",
+      "sustainable_spending": 59288
+     }
+    },
+    "central": {
+     "first_shortfall_age": 93,
+     "headroom": -2006,
+     "lasts_to_plan_end": false,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled",
+      "contributions not modeled"
+     ],
+     "run_status": "partial",
+     "sustainable_spending": 64994
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [
+       {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash-1",
+        "opening_balance_cents": 2000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "taxable",
+        "cost_basis_cents": 11000000,
+        "id": "taxable-1",
+        "opening_balance_cents": 15000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "employer-plan-1",
+        "opening_balance_cents": 52000000,
+        "owner": "person",
+        "tax_deferred_kind": "employer_plan"
+       },
+       {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth-1",
+        "opening_balance_cents": 6000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       }
+      ],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 0,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 2600000,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": [
+        {
+         "amount": {
+          "cents": 8500000,
+          "dollar_basis": "today"
+         },
+         "end_date": "2031-03-10",
+         "start_date": "2026-01-01"
+        }
+       ]
+      },
+      "persons": [
+       {
+        "birth_date": "1965-03-10",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2031-03-10"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 6700000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 6200000,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [],
+    "needed": [],
+    "not_sure": [
+     "savings"
+    ],
+    "starting_values": [
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.inflation",
+      "value": "0.025"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "partial"
+   }
+  },
+  "range-same-as-now": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [
+     "spending_now"
+    ],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "same_as_now": true
+    },
+    "spending_now": {
+     "per": "year",
+     "range": {
+      "high_cents": 6900000,
+      "low_cents": 5500000
+     }
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": {
+     "better": {
+      "first_shortfall_age": null,
+      "headroom": 11775,
+      "lasts_to_plan_end": true,
+      "omissions": [
+       "state tax not modeled",
+       "alternative minimum tax not modeled",
+       "taxable-account dividends and interest not modeled",
+       "itemized deductions and credits not modeled",
+       "contributions not modeled"
+      ],
+      "run_status": "partial",
+      "sustainable_spending": 66775
+     },
+     "ordered": true,
+     "ranked": [
+      {
+       "answer": "spending_now",
+       "headroom_at_high": -5822,
+       "headroom_at_low": 11775,
+       "spread": 17597,
+       "worse_end": "high"
+      }
+     ],
+     "worse": {
+      "first_shortfall_age": 90,
+      "headroom": -5822,
+      "lasts_to_plan_end": false,
+      "omissions": [
+       "state tax not modeled",
+       "alternative minimum tax not modeled",
+       "taxable-account dividends and interest not modeled",
+       "itemized deductions and credits not modeled",
+       "contributions not modeled"
+      ],
+      "run_status": "partial",
+      "sustainable_spending": 63178
+     }
+    },
+    "central": {
+     "first_shortfall_age": null,
+     "headroom": 2994,
+     "lasts_to_plan_end": true,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled",
+      "contributions not modeled"
+     ],
+     "run_status": "partial",
+     "sustainable_spending": 64994
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [
+       {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash-1",
+        "opening_balance_cents": 2000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "taxable",
+        "cost_basis_cents": 11000000,
+        "id": "taxable-1",
+        "opening_balance_cents": 15000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "employer-plan-1",
+        "opening_balance_cents": 52000000,
+        "owner": "person",
+        "tax_deferred_kind": "employer_plan"
+       },
+       {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth-1",
+        "opening_balance_cents": 6000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       }
+      ],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 0,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 2600000,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": [
+        {
+         "amount": {
+          "cents": 8500000,
+          "dollar_basis": "today"
+         },
+         "end_date": "2031-03-10",
+         "start_date": "2026-01-01"
+        }
+       ]
+      },
+      "persons": [
+       {
+        "birth_date": "1965-03-10",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2031-03-10"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 6200000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 6200000,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [],
+    "needed": [],
+    "not_sure": [
+     "spending_now"
+    ],
+    "starting_values": [
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.inflation",
+      "value": "0.025"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "partial"
+   }
+  },
+  "range-two": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [
+     "savings",
+     "spending_in_retirement"
+    ],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "range": {
+         "high_cents": 64000000,
+         "low_cents": 40000000
+        }
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "per": "year",
+     "range": {
+      "high_cents": 7400000,
+      "low_cents": 6000000
+     }
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": {
+     "better": {
+      "first_shortfall_age": null,
+      "headroom": 10348,
+      "lasts_to_plan_end": true,
+      "omissions": [
+       "state tax not modeled",
+       "alternative minimum tax not modeled",
+       "taxable-account dividends and interest not modeled",
+       "itemized deductions and credits not modeled",
+       "contributions not modeled"
+      ],
+      "run_status": "partial",
+      "sustainable_spending": 70348
+     },
+     "ordered": true,
+     "ranked": [
+      {
+       "answer": "spending_in_retirement",
+       "headroom_at_high": -9006,
+       "headroom_at_low": 4994,
+       "spread": 14000,
+       "worse_end": "high"
+      },
+      {
+       "answer": "savings.accounts.2.balance",
+       "headroom_at_high": 3348,
+       "headroom_at_low": -7712,
+       "spread": 11060,
+       "worse_end": "low"
+      }
+     ],
+     "worse": {
+      "first_shortfall_age": 84,
+      "headroom": -14712,
+      "lasts_to_plan_end": false,
+      "omissions": [
+       "state tax not modeled",
+       "alternative minimum tax not modeled",
+       "taxable-account dividends and interest not modeled",
+       "itemized deductions and credits not modeled",
+       "contributions not modeled"
+      ],
+      "run_status": "partial",
+      "sustainable_spending": 59288
+     }
+    },
+    "central": {
+     "first_shortfall_age": 93,
+     "headroom": -2006,
+     "lasts_to_plan_end": false,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled",
+      "contributions not modeled"
+     ],
+     "run_status": "partial",
+     "sustainable_spending": 64994
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [
+       {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash-1",
+        "opening_balance_cents": 2000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "taxable",
+        "cost_basis_cents": 11000000,
+        "id": "taxable-1",
+        "opening_balance_cents": 15000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "employer-plan-1",
+        "opening_balance_cents": 52000000,
+        "owner": "person",
+        "tax_deferred_kind": "employer_plan"
+       },
+       {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth-1",
+        "opening_balance_cents": 6000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       }
+      ],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 0,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 2600000,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": [
+        {
+         "amount": {
+          "cents": 8500000,
+          "dollar_basis": "today"
+         },
+         "end_date": "2031-03-10",
+         "start_date": "2026-01-01"
+        }
+       ]
+      },
+      "persons": [
+       {
+        "birth_date": "1965-03-10",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2031-03-10"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 6700000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 6200000,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [],
+    "needed": [],
+    "not_sure": [
+     "savings",
+     "spending_in_retirement"
+    ],
+    "starting_values": [
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.inflation",
+      "value": "0.025"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "partial"
+   }
+  },
+  "starting-values": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "amount": {
+      "cents": 600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "rises_with_prices": "not_sure",
+     "start_age": 65
+    },
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 30000000
+       },
+       "kind": "traditional_ira"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "not_sure"
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": {
+     "first_shortfall_age": 83,
+     "headroom": -12622,
+     "lasts_to_plan_end": false,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled",
+      "contributions not modeled"
+     ],
+     "run_status": "partial",
+     "sustainable_spending": 54378
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [
+       {
+        "account_type": "taxable",
+        "cost_basis_cents": 15000000,
+        "id": "taxable-1",
+        "opening_balance_cents": 15000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "traditional-ira-1",
+        "opening_balance_cents": 30000000,
+        "owner": "person",
+        "tax_deferred_kind": "traditional_ira"
+       }
+      ],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 600000,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 2600000,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": [
+        {
+         "amount": {
+          "cents": 8500000,
+          "dollar_basis": "today"
+         },
+         "end_date": "2031-03-10",
+         "start_date": "2026-01-01"
+        }
+       ]
+      },
+      "persons": [
+       {
+        "birth_date": "1965-03-10",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2031-03-10"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 6700000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 6200000,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [
+     {
+      "answer": "plan_end_age",
+      "value": 95
+     },
+     {
+      "answer": "social_security.start_age",
+      "value": 67
+     },
+     {
+      "answer": "pension.rises_with_prices",
+      "direction": "too_pessimistic",
+      "value": "no"
+     },
+     {
+      "answer": "savings.accounts.0.cost_basis",
+      "direction": "too_optimistic",
+      "value": "equal to the balance"
+     },
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.inflation",
+      "value": "0.025"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "partial"
+   }
+  },
+  "working-complete": {
+   "answers": {
+    "assumptions": {},
+    "birth_date": {
+     "date": "1965-03-10"
+    },
+    "format": "horizon-answers",
+    "not_sure": [],
+    "pay": {
+     "cents": 8500000,
+     "per": "year"
+    },
+    "pay_ends": {
+     "at_retirement": true
+    },
+    "pension": {
+     "expects": "no"
+    },
+    "plan_end_age": 95,
+    "planning": "alone",
+    "retired": false,
+    "retirement": {
+     "age": 66
+    },
+    "savings": {
+     "accounts": [
+      {
+       "balance": {
+        "cents": 2000000
+       },
+       "kind": "cash"
+      },
+      {
+       "balance": {
+        "cents": 15000000
+       },
+       "cost_basis": {
+        "cents": 11000000
+       },
+       "kind": "taxable"
+      },
+      {
+       "balance": {
+        "cents": 52000000
+       },
+       "kind": "employer_plan"
+      },
+      {
+       "balance": {
+        "cents": 6000000
+       },
+       "kind": "roth"
+      }
+     ]
+    },
+    "social_security": {
+     "amount": {
+      "cents": 2600000,
+      "per": "year"
+     },
+     "expects": "yes",
+     "start_age": 67
+    },
+    "spending_in_retirement": {
+     "cents": 6700000,
+     "per": "year"
+    },
+    "spending_now": {
+     "cents": 6200000,
+     "per": "year"
+    },
+    "valuation_date": "2026-01-01",
+    "version": 1
+   },
+   "result": {
+    "bounds": null,
+    "central": {
+     "first_shortfall_age": 93,
+     "headroom": -2006,
+     "lasts_to_plan_end": false,
+     "omissions": [
+      "state tax not modeled",
+      "alternative minimum tax not modeled",
+      "taxable-account dividends and interest not modeled",
+      "itemized deductions and credits not modeled",
+      "contributions not modeled"
+     ],
+     "run_status": "partial",
+     "sustainable_spending": 64994
+    },
+    "code": null,
+    "household_input": {
+     "assumptions": [
+      {
+       "effective_year": 2026,
+       "identifier": "cash_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.02"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "inflation",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "investment_return",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.05"
+      },
+      {
+       "effective_year": 2026,
+       "identifier": "tax_indexing",
+       "source": "user",
+       "unit": "decimal_fraction_per_year",
+       "user_overrode_default": false,
+       "value": "0.025"
+      }
+     ],
+     "household": {
+      "accounts": [
+       {
+        "account_type": "cash",
+        "cost_basis_cents": null,
+        "id": "cash-1",
+        "opening_balance_cents": 2000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "taxable",
+        "cost_basis_cents": 11000000,
+        "id": "taxable-1",
+        "opening_balance_cents": 15000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       },
+       {
+        "account_type": "tax_deferred",
+        "cost_basis_cents": null,
+        "id": "employer-plan-1",
+        "opening_balance_cents": 52000000,
+        "owner": "person",
+        "tax_deferred_kind": "employer_plan"
+       },
+       {
+        "account_type": "roth",
+        "cost_basis_cents": null,
+        "id": "roth-1",
+        "opening_balance_cents": 6000000,
+        "owner": "person",
+        "tax_deferred_kind": null
+       }
+      ],
+      "income": {
+       "pension": {
+        "amount": {
+         "cents": 0,
+         "dollar_basis": "nominal"
+        },
+        "start_age": 65
+       },
+       "social_security": {
+        "amount": {
+         "cents": 2600000,
+         "dollar_basis": "today"
+        },
+        "start_age": 67
+       },
+       "wages": [
+        {
+         "amount": {
+          "cents": 8500000,
+          "dollar_basis": "today"
+         },
+         "end_date": "2031-03-10",
+         "start_date": "2026-01-01"
+        }
+       ]
+      },
+      "persons": [
+       {
+        "birth_date": "1965-03-10",
+        "id": "person",
+        "plan_end_age": 95,
+        "retirement_date": "2031-03-10"
+       }
+      ],
+      "spending": {
+       "after_retirement": {
+        "cents": 6700000,
+        "dollar_basis": "today"
+       },
+       "before_retirement": {
+        "cents": 6200000,
+        "dollar_basis": "today"
+       }
+      },
+      "valuation_date": "2026-01-01"
+     }
+    },
+    "left_out": [],
+    "needed": [],
+    "not_sure": [],
+    "starting_values": [
+     {
+      "answer": "assumptions.cash_return",
+      "value": "0.02"
+     },
+     {
+      "answer": "assumptions.inflation",
+      "value": "0.025"
+     },
+     {
+      "answer": "assumptions.investment_return",
+      "value": "0.05"
+     },
+     {
+      "answer": "assumptions.tax_indexing",
+      "value": "0.025"
+     }
+    ],
+    "status": "partial"
+   }
+  }
+ },
+ "derived": "2026-10-19",
+ "engine": "horizon-engine-0.4.0 (horizon run, horizon spend)",
+ "format": "horizon-0002-W4-reference-values",
+ "rules": "decision 0017 with its 2026-10-19 amendment",
+ "version": 1
+}

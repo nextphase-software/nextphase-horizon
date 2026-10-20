@@ -15,15 +15,19 @@ The guardrail in `DESIGN.md` stays: label assumptions, estimates, missing data a
 ## Decision
 
 1. **Say coverage only once there is a result.** Before a result, each gap is said once, in one plain line, at the question it concerns, and the review page lists what Horizon doesn't count yet.
-2. **Use plain statements on a result, comparison or export.** Engine `supported` is shown as "✓ Covers your situation"; `partial` as "△ Leaves out N things", with the list one click away under "What this result leaves out"; `unsupported` as "! Horizon can't plan for this yet", followed by the reason. "Covers your situation" is preferred over "Complete" because the engine reports only the gaps it knows of.
+2. **Use plain statements on a result, comparison or export.** Engine `complete` is shown as "✓ Covers your situation"; `partial` as "△ Leaves out N things", with the list one click away under "What this result leaves out"; `unsupported` as "! Horizon can't plan for this yet", followed by the reason. "Covers your situation" is preferred over "Complete" because the engine reports only the gaps it knows of.
 3. **Mark uncertain answers "not sure".** A person marks an answer "I'm not sure of this"; it then carries a "not sure" tag wherever it appears. This replaces "Rough value".
 4. **Label invented data "Example household — invented figures".** This replaces "Sample household".
 5. **Keep "Your estimate"** for a figure the person estimated.
 6. **Keep the colours, icons and token names.** Only the tokens' descriptions change. Status is never shown by colour alone.
-7. **Keep engine terms off the screen.** "Supported", "partial", "omission" and "rough" remain in the engine's data, the plan file and the model documentation.
+7. **Keep engine terms off the screen.** "complete", "partial", "omission" and "rough" remain in the engine's data, the plan file and the model documentation; the old screen word "Supported" is retired.
 
 ## Consequences
 
 - The web app's words change on every screen that shows a status, and the end-to-end tests that assert them change with it, in a later brief.
 - The engine, schemas, plan file, status logic, colours and token names do not change.
 - Each statement keeps its icon and its words, so screen readers read the words, never the icon alone.
+
+## Amendment — 2026-10-19: the engine's word is `complete`
+
+Item 2 named the engine's status `supported`; the run output's status is `complete`. Corrected above; nothing else changes.
