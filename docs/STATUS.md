@@ -28,6 +28,7 @@ This page lists what works today and what is being built now. It is not a promis
 | Comparison and export | Compares a changed copy with its baseline and exports a versioned file that reproduces the result. | [0001-W4](briefs/0001-W4-scenario-diff-and-export.md) · `a0a9769` |
 | Answer operations | Finds sustainable spending, ranks one-change levers and rough inputs, and reports today's dollars. | [0003-W1](briefs/0003-W1-answer-operations.md) · `85f4c2e` |
 | Incomplete answers and ranges | Builds a plan from answers that are a figure, a range or not known yet, says what is still needed or left out, and shows how far a range can move the result. | [0002-W4](briefs/0002-W4-answers-to-plan.md) · `ccf0e4c` |
+| Worked-out answers and what-if | When savings, spending in retirement or a retirement age is not known yet, works out the one that is missing, accepts an age instead of a date of birth, and recalculates the plan for any changed answer. | [0002-W5](briefs/0002-W5-reverse-answers.md) · `f3d9f44` |
 
 Generated 2026-10-19 from the merged history of this repository.
 
