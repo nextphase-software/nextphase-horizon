@@ -313,6 +313,13 @@ for (const style of ["one_question", "conversation", "guided_page"] as const) {
       page.getByRole("textbox", { name: "Account balance", exact: true }),
       "750k",
     );
+    const savingsMark = page.getByRole("checkbox", {
+      name: "I'm not sure of this",
+      exact: true,
+    });
+    await keyboardTo(page, savingsMark, traversal);
+    await page.keyboard.press("Space");
+    await expect(page.locator(".money-control").first()).toHaveClass(/rough/);
     await capture(page, info, `${style}-13-savings-unadded`);
     await next();
     // Continue keeps an account that has been typed but has not been added.
@@ -368,7 +375,7 @@ for (const style of ["one_question", "conversation", "guided_page"] as const) {
       spending_now: { cents: 500000, per: "month" },
       spending_in_retirement: { later: true },
       assumptions: {},
-      not_sure: ["pay", "social_security"],
+      not_sure: ["pay", "social_security", "savings"],
     };
     expect(await value()).toEqual({
       format: "horizon-saved-intake",

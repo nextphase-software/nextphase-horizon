@@ -415,7 +415,10 @@ export function IntakeQuestion({
           {q === 13 ? (
             <>
               {f.accounts.map((account, index) => (
-                <div className="saved-account" key={index}>
+                <div
+                  className={`saved-account${money.notSure ? " rough" : ""}`}
+                  key={index}
+                >
                   <strong>{kinds[account.kind]}</strong>
                   <p>
                     {(() => {
@@ -484,7 +487,7 @@ export function IntakeQuestion({
               </label>
               <MoneyControl
                 label="Account balance"
-                field={f.account.balance}
+                field={{ ...f.account.balance, notSure: money.notSure }}
                 balance
                 change={(balance) =>
                   update({
