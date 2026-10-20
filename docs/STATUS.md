@@ -27,6 +27,7 @@ This page lists what works today and what is being built now. It is not a promis
 | Federal income tax | Computes federal income tax for a single filer, citing the rule and tax year for every line. | [0001-W3](briefs/0001-W3-federal-tax.md) · `1a25f73` |
 | Comparison and export | Compares a changed copy with its baseline and exports a versioned file that reproduces the result. | [0001-W4](briefs/0001-W4-scenario-diff-and-export.md) · `a0a9769` |
 | Answer operations | Finds sustainable spending, ranks one-change levers and rough inputs, and reports today's dollars. | [0003-W1](briefs/0003-W1-answer-operations.md) · `85f4c2e` |
+| Incomplete answers and ranges | Builds a plan from answers that are a figure, a range or not known yet, says what is still needed or left out, and shows how far a range can move the result. | [0002-W4](briefs/0002-W4-answers-to-plan.md) · `ccf0e4c` |
 
 Generated 2026-10-19 from the merged history of this repository.
 
