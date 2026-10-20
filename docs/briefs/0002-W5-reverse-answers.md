@@ -1,4 +1,4 @@
-BRIEF VERSION: 0002-W5 v1.1 (2026-10-20)
+BRIEF VERSION: 0002-W5 v1.2 (2026-10-20)
 
 # 0002-W5 — Reverse answers and what-if (engine)
 
@@ -8,13 +8,13 @@ A person who does not know their savings, their spending in retirement or when t
 
 Version 1 answers keep their rules and results exactly. The engine core and the plan file are unchanged. No screen changes in this milestone.
 
-Version 1.1 changes only Done when 8: one earlier unit test used version 2 as its example of an unsupported version, which this brief makes valid.
+Version 1.1 changes only Done when 8: one earlier unit test used version 2 as its example of an unsupported version, which this brief makes valid. Version 1.2 bounds the what-if total and says what a malformed version 2 document returns (deliverables 1 and 3).
 
 ## Deliverables
 
 1. **`answers.v2`,** with a published schema: `answers.v1` with `version` `2` and two additions (decision 0019 items 1, 2 and 10):
    - `birth_date` may also be `{"age": n}`, a whole number;
-   - an optional `what_if` object with one optional field, `savings_total_cents` (a whole number of cents).
+   - an optional `what_if` object with one optional field, `savings_total_cents` (a whole number of cents). **(v1.2)** It must lie within ±9,007,199,254,740,991, the exact-integer limit of canonical JSON, and the schema states that range; a value outside it does not match `answers.v2`.
 2. **`plan_from_answers` accepts version 1 and version 2.** A version 1 document follows brief 0002-W4 v2 and decision 0017 exactly and returns `answers-plan.v1`, byte for byte as today. A version 2 document follows these rules, in this order:
    1. **Unsupported:** `planning: "partner"`, as in version 1.
    2. **Needed:** if `birth_date` is later, `needed` is `["birth_date"]`. Otherwise list, in this order, the answers left for later among `retirement` (when not retired), `savings` and `spending_in_retirement` (later, or "same as now" while retired or with `spending_now` later). `savings` is not left for later when `what_if.savings_total_cents` is given. The result is `incomplete` with that list as `needed` when it has two or more entries, or when it is `["retirement"]` and `pay` is also later or absent.
@@ -30,6 +30,7 @@ Version 1.1 changes only Done when 8: one earlier unit test used version 2 as it
    8. **Ranges with a worked-out answer** (decision 0019 item 8): for each ranged answer in name order, with the others at their middle, work out the value at its low and at its high end. The worse end gives the worse value: lower spending, higher savings, a later age, and null is worse than any value; a tie takes the low end. `spread` is the absolute difference, or null when either is null. Work it out with every ranged answer at its worse end and at its better end. Each bound reports the version 1 bound fields plus `solved` (`value`, `flag`). `ordered` is true only when all three values are present and the central value is neither worse than the worse bound nor better than the better bound. `ranked` entries are `answer`, `worse_end`, `value_at_low`, `value_at_high`, `spread`, ranked by spread, largest first (null first), then answer name.
    9. **Status** is the run's, raised to `partial` when anything is left out, as in version 1. Starting values are version 1's in their order, then `birth_date` (from an age), then `savings` (from a worked-out answer or a what-if total).
 3. **`answers-plan.v2`,** with a published schema: every `answers-plan.v1` field, plus `solved` (null or as above) and `what_if` (echoed as given, or null), in every result whatever its status. Field names and shapes as in the reference values.
+   - **Malformed documents (v1.2):** a document whose `version` is `2` but which does not match `answers.v2` returns an `answers-plan.v2` result with status `invalid`, code `MALFORMED_INPUT`, `needed`, `left_out`, `starting_values` and `not_sure` empty, and every other field null, including `what_if`: nothing from a malformed document is echoed. Any other document that cannot be read keeps today's version 1 malformed result.
 4. **Command line and browser module:** `horizon intake` and the `horizon-wasm` export take either version and print or return the same bytes; exit codes as today (0 complete, 3 partial, 4 incomplete, 1 invalid, 2 unsupported). Neither contains a rule.
 5. **Error code:** `ANSWERS_AGE_RANGE` in `docs/model/error-codes.md`.
 6. **Browser timing** (decision 0019 item 14): a WebAssembly test `intake_v2_timing` that runs `plan_from_answers` ten times on each of `v2-working-complete`, `v2-solve-spending`, `v2-solve-savings`, `v2-solve-retirement` and `v2-solve-savings-with-range`, and prints each case's mean time in milliseconds. Record its output, run with `--release` under Node.js 24.22.0, in the implementation record.
