@@ -55,7 +55,7 @@ export function IntakeHead({
             {line}
           </p>
         ))}
-      {result.status === "invalid" && <p className="help">{result.code}</p>}
+      {result.status === "invalid" && <p className="help">({result.code})</p>}
       {result.status === "incomplete" && (
         <section className="card still-to-add">
           <ul>
@@ -83,7 +83,7 @@ export function IntakeHead({
       {result.status === "unsupported" && (
         <div className="card">
           <span className="status unsupported">
-            ! Horizon can't plan for this yet
+            ! Horizon can't plan for this yet.
           </span>
           <p>
             Horizon plans for one person so far, and you're planning with a

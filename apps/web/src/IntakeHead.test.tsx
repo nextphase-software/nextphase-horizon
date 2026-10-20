@@ -32,10 +32,10 @@ it.each(Object.entries(sentences.cases))(
         actual.push(`   ${text(container.querySelector(".still-to-add > p"))}`);
     } else if (result.status === "unsupported")
       actual.push(
-        `   ${text(container.querySelector(".status"))}. ${text(container.querySelector(".card > p"))}`,
+        `   ${text(container.querySelector(".status"))} ${text(container.querySelector(".card > p"))}`,
       );
     else if (result.status === "invalid")
-      actual.push(`   (${text(container.querySelector(".help"))})`);
+      actual.push(`   ${text(container.querySelector(".help"))}`);
     else {
       const bound = under.filter(
         (line) =>
