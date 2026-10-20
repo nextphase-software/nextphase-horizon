@@ -1,6 +1,6 @@
 # 0017 — Incomplete answers and ranges (an application operation turns a person's answers, each a figure, a range or "not yet", into an engine run: it reports what is still needed, runs without optional answers and says which way the result leans, uses stated starting values, and returns ranges as bounds; the engine core stays strict)
 
-- Status: Accepted (amendment accepted 2026-10-19)
+- Status: Accepted (amendments 1 and 2 accepted 2026-10-19)
 - Date: 2026-10-19
 - Related:
   - [0007](0007-rust-core-typescript-shell.md), item 4 — no adapter contains a calculation rule. Turning answers into an engine input is a rule, so it belongs in the Rust application layer and reaches the browser through `horizon-wasm`.
@@ -91,3 +91,13 @@ Settled while deriving the reference values for brief [0002-W4](../briefs/0002-W
 - **A7b — One result shape.** Every result has the same fields: `status`, `code`, `needed`, `household_input`, `central`, `bounds`, `left_out`, `starting_values` and `not_sure`; those that do not apply are null or empty. Left-out answers are reported in `left_out`, beside the run's own omissions in `central`, rather than inside them.
 - **A8 — Generated identifiers.** The person is `person`; accounts are `<kind>-<n>` in answer order (`cash-1`, `taxable-1`, `employer-plan-1`, `traditional-ira-1`, `roth-1`).
 - **A9 — A range's middle** is (low + high) / 2, rounded half away from zero to the cent. "About the same as now" with a ranged spending-now answer moves both spending figures together, as one ranged answer.
+
+## Amendment 2 — 2026-10-19: rules settled after the first implementation
+
+The first implementation of brief 0002-W4 matched every reference case, but a check of random answer sets against an independent model of this record showed five places where the text allowed two readings. They are settled here, and brief 0002-W4 v2 adds seven [reference cases](../briefs/0002-W4-reference-values.json) for them (29 in all; the 22 earlier cases are unchanged).
+
+- **B1 — A monthly range** is turned into yearly amounts first: each end is multiplied by twelve, and the middle, the worse end and the better end are taken from those yearly ends. The middle is then exact (six times the sum of the monthly ends), so no rounding is needed: $1.00–$1.01 a month is $12.00–$12.12 a year, middle $12.06. A9 still governs yearly ranges.
+- **B2 — An answer the plan does not use is ignored:** never checked, never run as a range and never listed. These are the Social Security amount and start age when the person expects no Social Security, and pay, spending now, the end of pay and the retirement age or date when the person is already retired. A cost basis on an account other than a taxable one remains malformed input.
+- **B3 — Check order.** One person only (`unsupported`), then the answers needed for any plan (`incomplete`), then, on the answers the plan uses, every range's order (`ANSWERS_RANGE_ORDER`), then every amount's sign (`ANSWERS_NEGATIVE_AMOUNT`), then the retirement date (`ANSWERS_RETIREMENT_NOT_AFTER_VALUATION`). The first failing check decides the result.
+- **B4 — A pension left out** (amount "later") is a zero pension, nominal, at 65, exactly like a "no", whatever start age and rise with prices were given; it adds no starting value. It is still reported as left out, likely too pessimistic.
+- **B5 — Answers marked "not sure"** are returned as given, in the person's order.

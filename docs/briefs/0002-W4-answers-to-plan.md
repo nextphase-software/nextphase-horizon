@@ -1,4 +1,4 @@
-BRIEF VERSION: 0002-W4 v1 (2026-10-19)
+BRIEF VERSION: 0002-W4 v2 (2026-10-19)
 
 # 0002-W4 — Answers to plan: incomplete answers and ranges
 
@@ -11,6 +11,8 @@ A person can answer Horizon's questions with a figure, a range, or "not yet", an
 - turns ranges into a central result with a worse and a better bound.
 
 The engine core is unchanged and still runs only on a complete input, which the operation also returns, so every result stays reproducible. The command line and the browser module return identical results. No screen changes in this milestone.
+
+Version 2 settles five rules that version 1 left open (decision 0017, amendment 2: B1–B5) and adds seven reference cases. Each is marked **(v2)** below; everything else is unchanged.
 
 ## Deliverables
 
@@ -36,23 +38,24 @@ The engine core is unchanged and still runs only on a complete input, which the 
 
    - **A money answer** is `{"cents": n, "per": "year" | "month"}`, `{"range": {"low_cents": n, "high_cents": n}, "per": …}` or `{"later": true}`; `per` defaults to `"year"`.
    - **An account** is `{"kind": "cash" | "taxable" | "employer_plan" | "traditional_ira" | "roth", "balance": {"cents": n} | {"range": {…}}, "cost_basis"?: {"cents": n} | {"later": true}}`; `cost_basis` applies to `taxable` only.
-2. **The operation `plan_from_answers(answers)`** in `horizon-app` (decision 0017 items 1, 3–9, and amendment A1–A9). In order:
+2. **The operation `plan_from_answers(answers)`** in `horizon-app` (decision 0017 items 1, 3–9, amendment 1 A1–A9 and amendment 2 B1–B5). In order:
    1. **Unsupported:** `planning: "partner"` returns `unsupported` with `ANSWERS_ONE_PERSON_ONLY`; no run.
    2. **Needed for any plan** (item 4): if `birth_date` is later; or `retired` is false and `retirement` is later or absent; or `savings` is later; or `spending_in_retirement` is later, or is "same as now" while the person is retired or `spending_now` is later. The result is `incomplete`, with `needed` listing `birth_date`, `retirement`, `savings`, `spending_in_retirement` in that order, as they apply; no run.
-   3. **Invalid answers:** a range whose low is above its high, `ANSWERS_RANGE_ORDER`; a negative amount, `ANSWERS_NEGATIVE_AMOUNT`; a retirement date not after `valuation_date` while `retired` is false, `ANSWERS_RETIREMENT_NOT_AFTER_VALUATION`. All `invalid`.
+   3. **Invalid answers,** checked only on answers the plan uses (see "Unused answers" in step 4) and in this order **(v2, B3)**: first any range whose low is above its high, `ANSWERS_RANGE_ORDER`; then any negative amount or range end, `ANSWERS_NEGATIVE_AMOUNT`; then a retirement date not after `valuation_date` while `retired` is false, `ANSWERS_RETIREMENT_NOT_AFTER_VALUATION`. All `invalid`. A pension with a given amount must also give `start_age` and `rises_with_prices`, and a cost basis is allowed only on a `taxable` account; otherwise the existing `MALFORMED_INPUT`.
    4. **Build the household input** exactly as these rules say:
+      - **Unused answers (v2, B2):** an answer the plan does not use is ignored: never checked, never run as a range and never listed. These are the Social Security `amount` and `start_age` when `expects` is "no", and `pay`, `spending_now`, `pay_ends` and `retirement` when `retired` is true.
       - **Person:** id `person`; `retirement_date` is `valuation_date` when retired, else the birthday in the year of `retirement.age`, with 29 February becoming 28 February in a non-leap year, or `retirement.date`; `plan_end_age` as given, else 95 (a starting value).
-      - **Money:** a monthly amount is twelve times its cents; a range's middle is (low + high) / 2, rounded half away from zero to the cent; every pay, spending and Social Security amount is in today's dollars.
+      - **Money:** a monthly amount is twelve times its cents. A range's middle is (low + high) / 2, rounded half away from zero to the cent. **(v2, B1)** For a monthly range, each end is multiplied by twelve first, and the middle and the worse and better ends are taken from those yearly ends, so the middle is exact: $1.00–$1.01 a month is $12.00–$12.12 a year, middle $12.06. Every pay, spending and Social Security amount is in today's dollars.
       - **Pay:** one wage from `valuation_date` to the retirement date (or `pay_ends.date`), in today's dollars; none when retired or left out.
       - **Spending:** before retirement from `spending_now`; in retirement from `spending_in_retirement`, or the same answer as `spending_now` (one answer, so a range moves both); when retired, before-retirement spending equals spending in retirement.
       - **Social Security:** `expects: "no"` gives $0 at 67. Otherwise the amount, in today's dollars, from `start_age`, else 67 (a starting value); `not_sure` counts as yes.
-      - **Pension:** `expects: "no"` gives $0, nominal, at 65. Otherwise the amount from `start_age`, in today's dollars when it rises with prices, nominal when it does not or when "not sure" (a starting value, likely too pessimistic).
+      - **Pension:** `expects: "no"` gives $0, nominal, at 65. **(v2, B4)** So does an amount that is "later", whatever its `start_age` and `rises_with_prices`, and it adds no starting value. Otherwise the amount from `start_age`, in today's dollars when it rises with prices, nominal when it does not or when "not sure" (a starting value, likely too pessimistic).
       - **Accounts:** in answer order, ids `<kind>-<n>` with kinds `cash`, `taxable`, `employer-plan`, `traditional-ira`, `roth`; owner `person`; `employer_plan` and `traditional_ira` are tax-deferred with that plan kind. A taxable account with no cost basis uses its balance (it follows a ranged balance): a starting value, may be too optimistic. `savings: {"none": true}` gives no accounts.
       - **Assumptions:** each of the four identifiers, sorted, with `effective_year` the valuation year, unit `decimal_fraction_per_year`, source `user`, and `user_overrode_default` true only when overridden. Defaults: cash return 0.02, inflation 0.025, investment return 0.05, tax-threshold indexing 0.025 (starting values when not overridden).
    5. **Left out, with direction** (item 5): Social Security amount later (too pessimistic); pension amount later (too pessimistic); pay later with spending now given (no wage; too pessimistic); spending now later with pay given (before-retirement spending $0; too optimistic); both later (neither; `pay_and_spending_now`, direction not stated). Omission texts exactly as in the reference values.
    6. **Run** the household input with the existing run and sustainable-spending operations. The status is the run's, raised to `partial` when anything is left out.
    7. **Ranges** (amendment A5): for each ranged answer, with the others at their middle, compute headroom at its low and at its high; the worse end has the lower headroom (a tie takes the low end); spread = |headroom at high − headroom at low|. Run every ranged answer at its worse end, and at its better end. Each bound reports headroom, sustainable spending, first shortfall age (or null) and whether savings last to the plan's end. `ordered` is true only when the central headroom lies between the two bounds. Ranked by spread, largest first, then answer name.
-3. **The result, `answers-plan.v1`,** with a published schema: `status`; `needed`; `code` (for unsupported and invalid); `household_input` (the complete generated input); `central` (run status, omissions, first shortfall age, lasts to the plan's end, headroom, sustainable spending); `bounds` (null without ranges); `left_out`; `starting_values`; `not_sure`. Field names and shapes as in the reference values.
+3. **The result, `answers-plan.v1`,** with a published schema: `status`; `needed`; `code` (for unsupported and invalid); `household_input` (the complete generated input); `central` (run status, omissions, first shortfall age, lasts to the plan's end, headroom, sustainable spending); `bounds` (null without ranges); `left_out`; `starting_values`; `not_sure`, as given, in the person's order **(v2, B5)**. Field names and shapes as in the reference values.
 4. **Command line:** `horizon intake <answers.json>` prints the result as canonical JSON and a newline. Exit codes: 0 complete, 3 partial, 4 incomplete, 1 invalid, 2 unsupported. The command line contains no rule.
 5. **Browser module:** `horizon-wasm` exposes `plan_from_answers`, returning the same bytes as native.
 6. **Error codes:** the four new codes in `docs/model/error-codes.md`.
@@ -60,9 +63,9 @@ The engine core is unchanged and still runs only on a complete input, which the 
 
 ## Done when
 
-1. **Every reference case matches exactly:** for each of the 22 cases in `docs/briefs/0002-W4-reference-values.json`, `plan_from_answers` on its `answers` returns its `result`, field for field, including the generated `household_input`, `central`, `bounds`, `left_out`, `starting_values` and `needed`.
+1. **Every reference case matches exactly:** for each of the 29 cases (22 from v1, unchanged, and 7 added in v2) in `docs/briefs/0002-W4-reference-values.json`, `plan_from_answers` on its `answers` returns its `result`, field for field, including the generated `household_input`, `central`, `bounds`, `left_out`, `starting_values` and `needed`.
 2. **Samples reproduced:** answers describing `answers-working-61` and `synthetic-retired` give the same headroom, sustainable spending, first shortfall age and run status as those samples (cases `working-complete` and `already-retired`).
-3. **Rules:** the 29 February rule, monthly amounts, "same as now" with a value and with a range, no savings, missing cost basis and a "not sure" pension each have a unit test.
+3. **Rules:** the 29 February rule, monthly amounts, "same as now" with a value and with a range, no savings, missing cost basis and a "not sure" pension each have a unit test; so does each v2 rule: a monthly range with an odd sum (B1), each unused answer (B2), the check order (B3), a pension left out with each `rises_with_prices` value (B4) and `not_sure` order (B5).
 4. **Bounds:** a test with a replaceable run function in which the central headroom falls outside the bounds gives `ordered: false`.
 5. **Contracts:** both schemas are generated with `schemars`, published under `docs/model/schemas/`, and covered by drift tests; every result validates against `answers-plan.v1`.
 6. **Command line:** `horizon intake` over every reference case prints output byte-identical to the operation, with the stated exit code.
@@ -71,7 +74,7 @@ The engine core is unchanged and still runs only on a complete input, which the 
 
 ## Reference values
 
-Derived independently from decision 0017 and its amendment: a separate program builds each household input from the answers by the rules above and runs the existing, reviewed `horizon run` and `horizon spend` on it. As a cross-check, answers describing `answers-working-61` and `synthetic-retired` reproduce those samples' results exactly, and every stated direction was confirmed by comparing the result with and without the answer.
+Derived independently from decision 0017 and its two amendments: a separate program builds each household input from the answers by the rules above and runs the existing, reviewed `horizon run` and `horizon spend` on it. As a cross-check, answers describing `answers-working-61` and `synthetic-retired` reproduce those samples' results exactly, and every stated direction was confirmed by comparing the result with and without the answer.
 
 Commit the values exactly as given. If a value seems wrong, escalate; do not change it.
 
@@ -110,4 +113,4 @@ Record `node --version`, `corepack pnpm --version`, the Playwright browser versi
 
 ## Implementation record
 
-Appended by the implementer before handoff: branch, the source/test revision the validation ran against, each validation command with its exit status and counts, tool and browser versions, new dependencies (none expected), and every exclusion with its reason. The record is committed after that revision and does not name its own commit; the final branch tip is reported in the handoff message.
+Appended by the implementer before handoff, as **Implementation record — v2**, replacing any earlier record: branch, the source/test revision the validation ran against, each validation command with its exit status and counts, tool and browser versions, new dependencies (none expected), and every exclusion with its reason. The record is committed after that revision and does not name its own commit; the final branch tip is reported in the handoff message.
