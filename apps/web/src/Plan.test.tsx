@@ -118,9 +118,7 @@ it.each(["run", "sustainable_spending", "levers"])(
     expect(
       screen.getByRole("heading", { name: "Horizon can't plan for this yet" }),
     ).toBeTruthy();
-    expect(
-      view.container.querySelector("svg, table, .plan-answer"),
-    ).toBeNull();
+    expect(view.container.querySelector("svg, table, .plan-answer")).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Back to household" }));
     expect(back).toHaveBeenCalledOnce();
   },
