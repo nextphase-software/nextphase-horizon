@@ -83,12 +83,12 @@ Light and dark are designed separately; dark is not light inverted. Text pairs m
 - **Amounts:**
   - right-aligned in tables;
   - whole dollars in summaries;
-  - every amount that could be read either way is labeled "today's dollars" or "nominal";
-  - totals that add dollars from different years are labeled "nominal, summed across years".
+  - plain screens show money only in today's dollars, stated once per screen with the base year;
+  - the dollars of each year, and totals that add dollars from different years, appear only in "Details for experts", labeled "dollars of each year" (decision 0021).
 - **Charts:**
   - the baseline is a solid `color-series-baseline` line and a scenario a dashed `color-series-scenario` line, so the difference never relies on color;
   - every chart is labeled directly and offers the same data as a table.
-- **Input completeness:** shown apart from results, and never as a probability or score.
+- **Input completeness:** shown in its own section, never as a probability or score.
 
 ### Principles for screens
 

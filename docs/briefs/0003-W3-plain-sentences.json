@@ -1,0 +1,923 @@
+{
+ "cases": {
+  "0002-W4/already-retired": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "You could spend up to $87,061 a year, $37,061 more than the $50,000 you plan to spend.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns.",
+   "why_short": null
+  },
+  "0002-W4/left-out-pay": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $46,693 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns, then the retirement date.",
+   "why_short": "In 2043, at 78, your savings run out: $36,935 of that year's spending isn't covered."
+  },
+  "0002-W4/left-out-pay-and-spending-now": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $61,481 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns, then the retirement date.",
+   "why_short": "In 2055, at 90, your savings run out: $21,007 of that year's spending isn't covered."
+  },
+  "0002-W4/left-out-pension": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $64,994 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2058, at 93, your savings run out: $5,567 of that year's spending isn't covered."
+  },
+  "0002-W4/left-out-social-security": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $41,924 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2046, at 81, your savings run out: $7,556 of that year's spending isn't covered."
+  },
+  "0002-W4/left-out-spending-now": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "You could spend up to $80,447 a year, $13,447 more than the $67,000 you plan to spend.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then the retirement date, then spending.",
+   "why_short": null
+  },
+  "0002-W4/monthly-and-leap-birthday": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $53,952 a year instead of $60,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns, then the retirement date.",
+   "why_short": "In 2051, at 87, your savings run out: $4,186 of that year's spending isn't covered."
+  },
+  "0002-W4/monthly-range-odd": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": [
+    "Your spending now (a range) could change how much you're short or have to spare by as much as $2,057 a year between its low and high ends. Narrow it",
+    "You weren't sure of your pay. A closer figure would make the plan more certain."
+   ],
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "At the middle of your ranges, to make them last to 95, spend $63,935 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns, then the retirement date.",
+   "why_short": "In 2057, at 92, your savings run out: $5,935 of that year's spending isn't covered."
+  },
+  "0002-W4/no-savings": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $28,232 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: spending, then the retirement date, then investment returns.",
+   "why_short": "In 2032, at 67, your savings run out: $26,650 of that year's spending isn't covered."
+  },
+  "0002-W4/pension-later-rises-not-sure": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $64,994 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2058, at 93, your savings run out: $5,567 of that year's spending isn't covered."
+  },
+  "0002-W4/pension-later-rises-yes": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $64,994 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2058, at 93, your savings run out: $5,567 of that year's spending isn't covered."
+  },
+  "0002-W4/range-one-savings": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": [
+    "The balance of your workplace plan account (a range) could change how much you're short or have to spare by as much as $11,060 a year between its low and high ends. Narrow it"
+   ],
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "At the middle of your ranges, to make them last to 95, spend $64,994 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2058, at 93, your savings run out: $5,567 of that year's spending isn't covered."
+  },
+  "0002-W4/range-same-as-now": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": [
+    "Your spending now (a range) could change how much you're short or have to spare by as much as $17,597 a year between its low and high ends. Narrow it"
+   ],
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "At the middle of your ranges, you could spend up to $64,994 a year, $2,994 more than the $62,000 you plan to spend.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": null
+  },
+  "0002-W4/range-two": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": [
+    "Your spending in retirement (a range) could change how much you're short or have to spare by as much as $14,000 a year between its low and high ends. Narrow it",
+    "The balance of your workplace plan account (a range) could change how much you're short or have to spare by as much as $11,060 a year between its low and high ends. Narrow it"
+   ],
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "At the middle of your ranges, to make them last to 95, spend $64,994 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2058, at 93, your savings run out: $5,567 of that year's spending isn't covered."
+  },
+  "0002-W4/starting-values": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $54,378 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns, then the retirement date.",
+   "why_short": "In 2048, at 83, your savings run out: $15,761 of that year's spending isn't covered."
+  },
+  "0002-W4/unused-pay-when-retired": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "You could spend up to $87,061 a year, $37,061 more than the $50,000 you plan to spend.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns.",
+   "why_short": null
+  },
+  "0002-W4/unused-social-security-amount": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $41,924 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2046, at 81, your savings run out: $7,556 of that year's spending isn't covered."
+  },
+  "0002-W4/working-complete": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $64,994 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2058, at 93, your savings run out: $5,567 of that year's spending isn't covered."
+  },
+  "0002-W5/v1-working-complete-unchanged": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $64,994 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2058, at 93, your savings run out: $5,567 of that year's spending isn't covered."
+  },
+  "0002-W5/v2-age-instead-of-date": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $66,003 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2060, at 94, your savings run out: $4,019 of that year's spending isn't covered."
+  },
+  "0002-W5/v2-age-leap-valuation": {
+   "amounts_note": "Amounts are in today's dollars (2028 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 29 FEBRUARY 2028",
+   "export_summary_date": "figures as of 29 February 2028 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $64,862 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2060, at 93, your savings run out: $10,053 of that year's spending isn't covered."
+  },
+  "0002-W5/v2-range-nothing-solved": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": [
+    "Your spending in retirement (a range) could change how much you're short or have to spare by as much as $14,000 a year between its low and high ends. Narrow it",
+    "The balance of your workplace plan account (a range) could change how much you're short or have to spare by as much as $11,060 a year between its low and high ends. Narrow it"
+   ],
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "At the middle of your ranges, to make them last to 95, spend $64,994 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2058, at 93, your savings run out: $5,567 of that year's spending isn't covered."
+  },
+  "0002-W5/v2-solve-retirement": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": null,
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": null
+  },
+  "0002-W5/v2-solve-retirement-unreachable": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": null,
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added.",
+    "Required withdrawals aren't delayed while you still work.",
+    "The 3.8% tax on investment income isn't counted."
+   ],
+   "moves_most": "What moves it most: the retirement date, then spending, then investment returns.",
+   "why_short": null
+  },
+  "0002-W5/v2-solve-retirement-with-range": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": [
+    "Your spending in retirement (a range) could change the earliest age by as much as 4 years between its low and high ends. Narrow it"
+   ],
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": null,
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": null
+  },
+  "0002-W5/v2-solve-savings": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": null,
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": null
+  },
+  "0002-W5/v2-solve-savings-none-needed": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": null,
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: the retirement date, then spending, then investment returns.",
+   "why_short": null
+  },
+  "0002-W5/v2-solve-savings-retired": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": null,
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns.",
+   "why_short": null
+  },
+  "0002-W5/v2-solve-savings-unreachable": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": null,
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added.",
+    "The 3.8% tax on investment income isn't counted."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns, then the retirement date.",
+   "why_short": null
+  },
+  "0002-W5/v2-solve-savings-with-range": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": [
+    "Your spending in retirement (a range) could change the savings needed by as much as $261,713 between its low and high ends. Narrow it"
+   ],
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": null,
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": null
+  },
+  "0002-W5/v2-solve-spending": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": null,
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": null
+  },
+  "0002-W5/v2-solve-spending-same-as-now-missing": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": null,
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": null
+  },
+  "0002-W5/v2-solve-spending-shortfall-at-zero": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": null,
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: the retirement date, then spending, then investment returns.",
+   "why_short": "In 2026, at 61, before you retire, your savings run out: $31,420 of that year's spending isn't covered."
+  },
+  "0002-W5/v2-what-if-savings-total": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "You could spend up to $76,477 a year, $9,477 more than the $67,000 you plan to spend.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": null
+  },
+  "0002-W5/v2-what-if-savings-total-fills-savings": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $55,156 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns, then the retirement date.",
+   "why_short": "In 2049, at 84, your savings run out: $661 of that year's spending isn't covered."
+  },
+  "0002-W5/v2-what-if-total-with-range": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $57,603 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns, then the retirement date.",
+   "why_short": "In 2052, at 87, your savings run out: $38,838 of that year's spending isn't covered."
+  },
+  "0002-W5/v2-working-complete": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $64,994 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2058, at 93, your savings run out: $5,567 of that year's spending isn't covered."
+  },
+  "0002-W7/growth-6-prices-3": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "You could spend up to $67,723 a year, $723 more than the $67,000 you plan to spend.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": null
+  },
+  "0002-W7/ranged-spending-70000": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": [
+    "The balance of your workplace plan account (a range) could change how much you're short or have to spare by as much as $11,060 a year between its low and high ends. Narrow it"
+   ],
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "At the middle of your ranges, to make them last to 95, spend $64,994 a year instead of $70,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns, then the retirement date.",
+   "why_short": "In 2056, at 91, your savings run out: $38,066 of that year's spending isn't covered."
+  },
+  "0002-W7/retire-at-70": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "You could spend up to $80,466 a year, $13,466 more than the $67,000 you plan to spend.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": null
+  },
+  "0002-W7/savings-total-1000000": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "You could spend up to $76,477 a year, $9,477 more than the $67,000 you plan to spend.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": null
+  },
+  "0002-W7/social-security-70-33000": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $66,754 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns, then the retirement date.",
+   "why_short": "In 2060, at 95, your savings run out: $10,637 of that year's spending isn't covered."
+  },
+  "0002-W7/spending-80000": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $64,994 a year instead of $80,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns, then the retirement date.",
+   "why_short": "In 2049, at 84, your savings run out: $4,782 of that year's spending isn't covered."
+  },
+  "0002-W7/start": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $64,994 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "why_short": "In 2058, at 93, your savings run out: $5,567 of that year's spending isn't covered."
+  },
+  "0002-W7/worked-out-savings-then-total-600000": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "answers_could_change": null,
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $60,489 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns, then the retirement date.",
+   "why_short": "In 2054, at 89, your savings run out: $15,936 of that year's spending isn't covered."
+  },
+  "compare/answers-working-61-vs-retire-later": {
+   "differences": [
+    [
+     "Savings",
+     "run short at 93",
+     "last to 95"
+    ],
+    [
+     "Most you could spend",
+     "$64,994",
+     "$68,616"
+    ],
+    [
+     "Against your planned spending",
+     "$2,006 short",
+     "$1,616 to spare",
+     "+$3,622"
+    ],
+    [
+     "Left at 95",
+     "less than $1",
+     "$75,045"
+    ]
+   ],
+   "differences_hint": "4 measures · today's dollars",
+   "every_line": "550 lines differ, in years 2031 to 2060; each shows both values and the difference. The Dollars column says which kind each line is.",
+   "every_line_of_each_year": 471,
+   "every_line_today": 79,
+   "totals_across_years": [
+    [
+     "Money short",
+     "$197,809",
+     "$0",
+     "−$197,809"
+    ],
+    [
+     "Federal tax",
+     "$230,814",
+     "$267,784",
+     "+$36,970"
+    ]
+   ],
+   "what_changed": "What changed: Retire at 67 instead of 66."
+  },
+  "example/A-drawdown": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_lines": [
+    "Savings run short at 76, two years before the plan ends.",
+    "To make them last to 78, spend $43,690 a year instead of $60,000."
+   ],
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 78, spend $43,690 a year instead of $60,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "headline": "Savings run short at 76, two years before the plan ends.",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns.",
+   "status": "✓ Covers your situation",
+   "why_short": "In 2029, at 76, your savings run out: $31,231 of that year's spending isn't covered."
+  },
+  "example/answers-underfunded": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_lines": [
+    "Savings run short at 61, 34 years before the plan ends.",
+    "Savings run short before you retire, so spending less in retirement can't fix this on its own."
+   ],
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "Savings run short before you retire, so spending less in retirement can't fix this on its own.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "headline": "Savings run short at 61, 34 years before the plan ends.",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: spending, then the retirement date, then investment returns.",
+   "status": "△ Leaves out 5 things",
+   "why_short": "In 2026, at 61, before you retire, your savings run out: $53,826 of that year's spending isn't covered."
+  },
+  "example/answers-working-61": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_lines": [
+    "Savings run short at 93, two years before the plan ends.",
+    "To make them last to 95, spend $64,994 a year instead of $67,000."
+   ],
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "To make them last to 95, spend $64,994 a year instead of $67,000.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "headline": "Savings run short at 93, two years before the plan ends.",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted.",
+    "New savings while you work aren't added."
+   ],
+   "moves_most": "What moves it most: investment returns, then spending, then the retirement date.",
+   "status": "△ Leaves out 5 things",
+   "why_short": "In 2058, at 93, your savings run out: $5,567 of that year's spending isn't covered."
+  },
+  "example/synthetic-retired": {
+   "amounts_note": "Amounts are in today's dollars (2026 dollars).",
+   "export_date": "FIGURES AS OF 1 JANUARY 2026",
+   "export_lines": [
+    "Savings last to 95.",
+    "You could spend up to $87,061 a year, $37,061 more than the $50,000 you plan to spend."
+   ],
+   "export_summary_date": "figures as of 1 January 2026 · amounts in today's dollars",
+   "follow_on": "You could spend up to $87,061 a year, $37,061 more than the $50,000 you plan to spend.",
+   "footer": "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+   "headline": "Savings last to 95.",
+   "left_out": [
+    "State income tax isn't counted.",
+    "The alternative minimum tax isn't counted.",
+    "Dividends and interest in a brokerage account aren't taxed each year.",
+    "Itemized deductions and tax credits aren't counted."
+   ],
+   "moves_most": "What moves it most: spending, then investment returns.",
+   "status": "✓ Covers your situation",
+   "why_short": null
+  },
+  "example/two-person": {
+   "status": "! Horizon can't plan for this yet"
+  }
+ },
+ "derived": "2026-10-21",
+ "format": "horizon-0003-W3-plain-sentences",
+ "source": "horizon run, spend, levers and compare (horizon-engine-0.4.0) on the example households and the household inputs of the 0002-W4, 0002-W5 and 0002-W7 reference results; rules of brief 0003-W3 v1 (with the stage-1 sweep fixes)",
+ "version": 1
+}

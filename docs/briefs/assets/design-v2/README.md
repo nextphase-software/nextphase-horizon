@@ -19,5 +19,10 @@ Figures are output of `horizon-engine-0.4.0` (`horizon intake`) for synthetic an
 | 11 Results: Horizon can't plan for this yet | [11-results-cant-plan.png](11-results-cant-plan.png) |
 | 12 What if: the panel as it opens | [12-what-if-start.png](12-what-if-start.png) |
 | 13 What if: spending changed to $80,000 | [13-what-if-changed.png](13-what-if-changed.png), [13-what-if-changed-phone-light.png](13-what-if-changed-phone-light.png), [13-what-if-changed-desktop-dark.png](13-what-if-changed-desktop-dark.png) |
+| 14 Plain results: the plan | [14-plan.png](14-plan.png), [14-plan-phone-light.png](14-plan-phone-light.png), [14-plan-desktop-dark.png](14-plan-desktop-dark.png); details for experts open: [14-plan-experts.png](14-plan-experts.png) |
+| 15 Plain results: compare | [15-compare.png](15-compare.png), [15-compare-phone-light.png](15-compare-phone-light.png), [15-compare-desktop-dark.png](15-compare-desktop-dark.png); details for experts open: [15-compare-experts.png](15-compare-experts.png) |
+| 16 Plain results: export | [16-export.png](16-export.png); details for experts open: [16-export-experts.png](16-export-experts.png) |
+| 17 Plain results: your own figures with ranges | [17-own-ranges.png](17-own-ranges.png), [17-own-ranges-phone-light.png](17-own-ranges-phone-light.png), [17-own-ranges-desktop-dark.png](17-own-ranges-desktop-dark.png) |
+| 18 Plain results: navigation and footer | [18-nav.png](18-nav.png), [18-footer.png](18-footer.png) |
 
-A screen's brief is the requirement; these references show the intended design. Where they differ, the brief wins and the difference is reported. Screens 1–11 are implemented by brief 0002-W6 and screens 12–13 by brief 0002-W7 (the what-if panel). Not shown: "Show all questions on one page".
+A screen's brief is the requirement; these references show the intended design. Where they differ, the brief wins and the difference is reported. Screens 1–11 are implemented by brief 0002-W6, screens 12–13 by brief 0002-W7 (the what-if panel) and screens 14–18 by brief 0003-W3 (plain results). Not shown: "Show all questions on one page".
