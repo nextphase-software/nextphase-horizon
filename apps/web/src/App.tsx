@@ -50,8 +50,7 @@ export function Status({ result }: { result: Result }) {
     </span>
   );
 }
-type View =
-  "welcome" | "examples" | "intake" | "plan" | "compare" | "export";
+type View = "welcome" | "examples" | "intake" | "plan" | "compare" | "export";
 export function App() {
   const [view, setView] = useState<View>("welcome");
   const [selected, setSelected] = useState(samples[0].name);
@@ -64,7 +63,8 @@ export function App() {
   const [corrupt, setCorrupt] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
   const [openedFile, setOpenedFile] = useState(false);
-  const [exportAnswerResult, setExportAnswerResult] = useState<AnswersPlanV2 | null>(null);
+  const [exportAnswerResult, setExportAnswerResult] =
+    useState<AnswersPlanV2 | null>(null);
   const [answerResult, setAnswerResult] = useState<AnswersPlanV2 | null>(null);
   const [results, setResults] = useState<Record<string, Result>>({});
   const [copies, setCopies] = useState<Copies | null>(null);
@@ -300,9 +300,7 @@ export function App() {
                     disabled={
                       name === "Compare"
                         ? !copies?.items.length
-                        : name === "Plan" &&
-                          !draft &&
-                          !own
+                        : name === "Plan" && !draft && !own
                     }
                     onClick={() => step(name)}
                   >
@@ -412,7 +410,11 @@ export function App() {
             cache={planCache}
             opened={openFile}
             answers={own ? saved?.answers : undefined}
-            answerResult={own ? exportAnswerResult ?? answerResult ?? undefined : undefined}
+            answerResult={
+              own
+                ? (exportAnswerResult ?? answerResult ?? undefined)
+                : undefined
+            }
           />
         ) : view === "examples" ? (
           <div className="intake">

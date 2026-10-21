@@ -75,7 +75,7 @@ it("formats the declared file-size rounding boundaries", () => {
 it("uses the brief's story precedence, including before-retirement shortfall and the cap", () => {
   const date = "2031-03-10";
   expect(exportStory(run, spending, date)).toBe(
-    "Retiring at 66, savings run short at 93; spending $64,994 a year in today's dollars would make them last to 95.",
+    "Savings run short at 93, two years before the plan ends. To make them last to 95, spend $64,994 a year instead of $67,000.",
   );
   expect(
     exportStory(run, { ...spending, flag: "at_or_above_cap" }, date),
@@ -86,7 +86,9 @@ it("uses the brief's story precedence, including before-retirement shortfall and
       { ...spending, flag: "shortfall_with_no_retirement_spending" },
       "2100-01-01",
     ),
-  ).toBe("Savings run short at 93; retirement falls after the plan ends.");
+  ).toBe(
+    "Savings run short at 93, two years before the plan ends. Your retirement falls after the plan ends, so there is no retirement spending to test.",
+  );
   const under = JSON.parse(read("answers-underfunded", "run"));
   expect(
     exportStory(
@@ -94,7 +96,9 @@ it("uses the brief's story precedence, including before-retirement shortfall and
       { ...spending, flag: "shortfall_with_no_retirement_spending" },
       date,
     ),
-  ).toBe("Savings run short at 61, even with no retirement spending.");
+  ).toBe(
+    "Savings run short at 61, 34 years before the plan ends. Savings run short before you retire, so spending less in retirement can't fix this on its own.",
+  );
 });
 it("reuses plan calls, downloads exact engine bytes, releases the blob and opens native print", async () => {
   stub();
@@ -107,7 +111,7 @@ it("reuses plan calls, downloads exact engine bytes, releases the blob and opens
       cache={cache}
     />,
   );
-  await screen.findByText("$64,994");
+  await screen.findByText(/spend \$64,994 a year/);
   plan.unmount();
   const print = vi.spyOn(window, "print").mockImplementation(() => {});
   const view = show(undefined, cache);
@@ -128,7 +132,7 @@ it("reuses plan calls, downloads exact engine bytes, releases the blob and opens
     )?.textContent,
   ).toBe("Horizon plan summary");
   const details = view.container.querySelectorAll("details");
-  expect(details).toHaveLength(3);
+  expect(details).toHaveLength(2);
   for (const detail of details) expect(detail.open).toBe(false);
   fireEvent.click(screen.getByRole("button", { name: "Print or save as PDF" }));
   expect(print).toHaveBeenCalledOnce();
@@ -276,7 +280,7 @@ it("opens the exact imported input, clears copies/rough marks and permits setup 
   );
   await screen.findByRole("link", { name: "Download plan file" });
   expect(document.querySelector(".plan-summary")!.textContent).toContain(
-    "No entries are marked rough.",
+    "None were marked as not sure.",
   );
 });
 it("preserves unedited cents in opened files even after another field is edited", () => {
@@ -296,6 +300,6 @@ it("preserves unedited cents in opened files even after another field is edited"
 
 it("states that a supported summary has no omissions", () => {
   expect(summaryStatus({ ...run, status: "complete", omissions: [] })).toBe(
-    "Covers your situation. No omissions are listed.",
+    "Nothing is left out.",
   );
 });

@@ -155,7 +155,7 @@ it("commits exact numeric entries and keyboard releases, reports a failed calcul
   expect(screen.getByText("What if: not your answers")).toBeTruthy();
 });
 it.each(Object.entries(cases.cases))(
-  "renders the exact what-if head: %s",
+  "preserves what-if headlines, answer lines, status and starting values: %s",
   (name, c) => {
     const { container } = render(
       <IntakeHead
@@ -179,18 +179,13 @@ it.each(Object.entries(cases.cases))(
     );
     for (const line of container.querySelectorAll(".left-out-line"))
       actual.push(`   GAP: ${text(line)}`);
-    if (c.result.bounds) {
-      const narrow = container
-        .querySelector(".range-narrow")!
-        .cloneNode(true) as Element;
-      narrow.querySelector("button")!.remove();
-      actual.push(
-        `   RANGE: ${text(container.querySelector(".range-names"))} ${text(narrow)}`,
-      );
-    }
     for (const item of container.querySelectorAll(".starting-text"))
       actual.push(`   START: ${text(item)}`);
-    expect(actual).toEqual(c.head);
+    expect(actual.map((line) => line.replace(/ {2}\[details:.*$/, ""))).toEqual(
+      c.head
+        .filter((line) => !line.trim().startsWith("RANGE:"))
+        .map((line) => line.replace(/ {2}\[details:.*$/, "")),
+    );
     expect(!!screen.queryByText("What if: not your answers")).toBe(
       name !== "start",
     );

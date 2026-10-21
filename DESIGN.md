@@ -88,7 +88,7 @@ Light and dark are designed separately; dark is not light inverted. Text pairs m
 - **Charts:**
   - the baseline is a solid `color-series-baseline` line and a scenario a dashed `color-series-scenario` line, so the difference never relies on color;
   - every chart is labeled directly and offers the same data as a table.
-- **Input completeness:** shown in its own section, never as a probability or score.
+- **Input completeness:** a plan from a person’s own figures has its own "Answers that could change this" section: ranges in the engine’s ranking, then answers marked "not sure". Never present it as a probability or score.
 
 ### Principles for screens
 

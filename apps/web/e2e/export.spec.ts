@@ -6,6 +6,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { test } from "./fixtures";
 import { storageTrap } from "./privacy";
 import { keyboardTo } from "./keyboard";
+import plainSentences from "../../../docs/briefs/0003-W3-plain-sentences.json" with { type: "json" };
 import type { Request, Response } from "../src/protocol";
 const root = new URL("../../../", import.meta.url);
 function native(...args: string[]) {
@@ -48,7 +49,7 @@ const cases = [
     "0.64 MB (641,635 bytes)",
   ],
 ];
-test("export: keyboard download/import, exact references, rough entries, copies, print, accessibility and privacy", async ({
+test("export: keyboard download/import, exact references, not-sure answers, copies, print, accessibility and privacy", async ({
   page,
   context,
   browser,
@@ -234,7 +235,7 @@ test("export: keyboard download/import, exact references, rough entries, copies,
   await capture("export-non-json");
   let original = "";
   for (let index = 0; index < cases.length; index++) {
-    const [name, label, story, status, size] = cases[index];
+    const [name, label, , status, size] = cases[index];
     await setup(index);
     const before = await probe();
     await exportFromPlan();
@@ -249,7 +250,7 @@ test("export: keyboard download/import, exact references, rough entries, copies,
       ).length,
     );
     await expect(page.locator(".eyebrow")).toHaveText(
-      `EXPORT · ${label.toUpperCase()} · VALUES AS OF 2026-01-01`,
+      `EXPORT · ${label.toUpperCase()} · FIGURES AS OF 1 JANUARY 2026`,
     );
     await expect(page.locator("h1")).toHaveText("Take your plan with you");
     await expect(
@@ -260,12 +261,17 @@ test("export: keyboard download/import, exact references, rough entries, copies,
         .getByRole("button", { name: "Print or save as PDF" })
         .evaluate((element) => getComputedStyle(element).backgroundColor),
     );
-    await expect(page.locator(".export-story")).toHaveText(story);
-    await expect(page.locator(".export-screen .status")).toHaveText(
+    await expect(
+      page.locator(".export-story > p:not(.amounts-note)"),
+    ).toHaveText(
+      plainSentences.cases[`example/${name}` as "example/answers-working-61"]
+        .export_lines,
+    );
+    await expect(page.locator(".export-screen .status").first()).toHaveText(
       new RegExp(status.replace(/[()]/g, "\\$&")),
     );
     const details = page.locator(".export-screen > .plan-detail");
-    await expect(details).toHaveCount(3);
+    await expect(details).toHaveCount(2);
     for (const detail of await details.all())
       await expect(detail).not.toHaveAttribute("open");
     await capture(`export-${name}-collapsed`);
@@ -298,14 +304,14 @@ test("export: keyboard download/import, exact references, rough entries, copies,
       original = nativeText;
       const summary = page.locator(".plan-detail .plan-summary");
       await expect(summary.locator(":scope > .help").first()).toHaveText(
-        "Example household · Single, 61, still working, plans to retire at 66 · values as of 2026-01-01 · horizon-engine-0.4.0",
+        "Example household · Single, 61, still working, plans to retire at 66 · figures as of 1 January 2026 · amounts in today's dollars",
       );
       for (const text of [
-        "Not at $67,000 a year: savings run short at age 93 (2058).",
-        "$64,994 a year in today's dollars lasts to 95: $2,006 less than you plan to spend.",
-        "Investment returns, then spending, then the retirement date.",
-        "Leaves out 5 things. What this result does not include: state tax not modeled; alternative minimum tax not modeled; taxable-account dividends and interest not modeled; itemized deductions and credits not modeled; contributions not modeled.",
-        "No entries are marked rough.",
+        "Savings run short at 93, two years before the plan ends.",
+        "To make them last to 95, spend $64,994 a year instead of $67,000.",
+        "What moves it most: investment returns, then spending, then the retirement date.",
+        "State income tax isn't counted. The alternative minimum tax isn't counted. Dividends and interest in a brokerage account aren't taxed each year. Itemized deductions and tax credits aren't counted. New savings while you work aren't added.",
+        "None were marked as not sure.",
       ])
         await expect(summary.getByText(text, { exact: true })).toBeVisible();
       expect(payload.hashes.export_content_hash).toBe(
@@ -315,15 +321,15 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     if (index === 3) {
       const summary = page.locator(".plan-detail .plan-summary");
       await expect(summary.locator(":scope > p").nth(1)).toHaveText(
-        "No: savings run short at age 61 (2026), before you retire.",
+        "Savings run short at 61, 34 years before the plan ends.",
       );
       await expect(summary.locator(":scope > p").nth(2)).toHaveText(
-        "Savings run short even with no retirement spending.",
+        "Savings run short before you retire, so spending less in retirement can't fix this on its own.",
       );
     }
     await capture(`export-${name}-expanded`);
   }
-  // Edit both outside-plan cases through setup; assert the shared answers on both screens.
+  // Reopen both outside-plan cases; assert the shared answers on both screens.
   for (const index of [0, 3]) {
     await setup(index);
     const horizonInput = JSON.parse(
@@ -337,29 +343,20 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     writeFileSync(horizonPath, JSON.stringify(horizonInput));
     await exportFromPlan();
     await open(native("export", horizonPath));
-    await expect(page.locator(".plan-answers h2").first()).toHaveText(
-      "Do your savings last?",
-    );
     const answers = [
       index === 0
-        ? "Retirement falls after the plan ends: savings last to 65."
-        : "Retirement falls after the plan ends: savings run short at age 61 (2026).",
-      "Retirement falls after the plan ends, so the plan has no retirement spending to test.",
+        ? "Savings last to 65."
+        : "Savings run short at 61, four years before the plan ends.",
+      "Your retirement falls after the plan ends, so there is no retirement spending to test.",
     ];
-    await expect(page.locator(".plan-answers > div > p").nth(0)).toHaveText(
-      answers[0],
-    );
-    await expect(page.locator(".plan-answers > div > p").nth(1)).toHaveText(
-      answers[1],
-    );
+    await expect(page.locator(".plan-screen h1")).toHaveText(answers[0]);
+    await expect(page.locator(".follow-on")).toHaveText(answers[1]);
     await capture(`plan-retirement-after-plan-${cases[index][0]}`);
     await exportFromPlan();
-    await expect(page.locator(".export-story")).toHaveText(
-      index === 0
-        ? "Savings last to 65; retirement falls after the plan ends."
-        : "Savings run short at 61; retirement falls after the plan ends.",
-    );
-    await expect(page.locator(".export-screen .status")).toHaveText(
+    await expect(
+      page.locator(".export-story > p:not(.amounts-note)"),
+    ).toHaveText(answers);
+    await expect(page.locator(".export-screen .status").first()).toHaveText(
       "△ Leaves out 5 things",
     );
     await activate(page.locator(".plan-detail").first().locator("summary"));
@@ -374,15 +371,15 @@ test("export: keyboard download/import, exact references, rough entries, copies,
     }
     await capture(`export-retirement-after-plan-${cases[index][0]}`);
   }
-  // All six copies and the three reference marks are included only in the summary.
+  // All six copies are included only in the summary.
   await setup(0);
   const changes = [
     "Retire a year later, at 67",
     "Retire a year earlier, at 65",
     "Spend 10% less in retirement ($60,300 a year)",
     "Spend 10% more in retirement ($73,700 a year)",
-    "Investment returns 1 point lower (4%)",
-    "Investment returns 1 point higher (6%)",
+    "Returns 1% lower (4% a year)",
+    "Returns 1% higher (6% a year)",
   ];
   for (let i = 0; i < changes.length; i++) {
     await activate(
@@ -574,10 +571,10 @@ test("export: keyboard download/import, exact references, rough entries, copies,
   await expect(
     page.locator(".plan-detail .plan-summary > .help").first(),
   ).toHaveText(
-    "Opened plan file · values as of 2026-01-01 · horizon-engine-0.4.0",
+    "Opened plan file · figures as of 1 January 2026 · amounts in today's dollars",
   );
   await expect(page.locator(".plan-detail .plan-summary")).toContainText(
-    "No entries are marked rough.",
+    "None were marked as not sure.",
   );
   await expect(page.locator(".plan-detail .plan-summary")).not.toContainText(
     "Retiring at 67:",

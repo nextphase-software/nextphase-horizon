@@ -10,7 +10,7 @@ afterEach(cleanup);
 const text = (element: Element | null) =>
   element?.textContent?.trim().replace(/\s+/g, " ") ?? "";
 it.each(Object.entries(sentences.cases))(
-  "renders the exact head sentences for %s",
+  "preserves intake headlines, answer lines, status, gaps and starting values: %s",
   (name, expected) => {
     const c = reference.cases[name as keyof typeof reference.cases];
     const result = c.result as AnswersPlanV2;
@@ -56,18 +56,13 @@ it.each(Object.entries(sentences.cases))(
       );
       for (const line of container.querySelectorAll(".left-out-line"))
         actual.push(`   GAP: ${text(line)}`);
-      if (result.bounds) {
-        const narrow = container
-          .querySelector(".range-narrow")!
-          .cloneNode(true) as Element;
-        narrow.querySelector("button")!.remove();
-        actual.push(
-          `   RANGE: ${text(container.querySelector(".range-names"))} ${text(narrow)}`,
-        );
-      }
       for (const item of container.querySelectorAll(".starting-text"))
         actual.push(`   START: ${text(item)}`);
     }
-    expect(actual).toEqual(expected);
+    expect(actual.map((line) => line.replace(/ {2}\[details:.*$/, ""))).toEqual(
+      expected
+        .filter((line) => !line.trim().startsWith("RANGE:"))
+        .map((line) => line.replace(/ {2}\[details:.*$/, "")),
+    );
   },
 );

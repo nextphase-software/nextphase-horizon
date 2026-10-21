@@ -34,7 +34,7 @@ late replies after navigation or newer answers.
 ## Page and tokens
 
 Welcome offers own figures and five invented example households. Examples open
-on the plan screen, with Check, Plan, Compare and Export navigation. Own figures
+on the plan screen, with Plan, Compare and Export navigation. Own figures
 use Your answers, Plan, Compare and Export. Coverage appears only after a result:
 "✓ Covers your situation", "△ Leaves out N things" or "! Horizon can't plan for
 this yet". Invented figures say "Example household — invented figures". Error
@@ -100,8 +100,7 @@ the module/types, typechecks and emits the static site to ignored `dist/`.
 The full browser sequence is documented in README and AGENTS. The implementation
 record states actual validation; harness code does not establish a browser pass.
 The harness checks the exact CSP meta tag; it does not treat axe's own injected
-audit styles as application CSP failures. Designed screens, charts, deployment,
-hosting and HTTP/agent access stay excluded.
+audit styles as application CSP failures. Deployment, hosting and HTTP/agent access stay excluded.
 
 ## Question-led intake — 0002-W6 v1.2
 
@@ -150,9 +149,7 @@ Alt+Tab for WebKit on macOS, Tab elsewhere. Every captured screen gets axe and
 horizontal-overflow checks. The storage trap permits only the named local key,
 after entering own figures; other storage and cookie writes fail. Native/worker
 byte comparisons, plan and comparison figures, file download/import, print,
-coverage words and off-origin checks remain covered. Removed guided-setup tests
-are replaced by intake flows; inaccessible rough-entry setup checks remain in
-component tests. Existing outside-plan browser references reopen the same
+coverage words and off-origin checks remain covered. Removed guided-setup tests are replaced by intake flows. Existing outside-plan browser references reopen the same
 synthetic input through the plan-file flow.
 
 All 24 version 2 head references are rendered in unit tests. Twenty explicit
@@ -198,3 +195,35 @@ The one exact sum allowed by decision 0011 adds returned account balances with
 integer cents to initialize Savings today. The UI does not share that total
 among accounts or calculate any financial outcome; the engine does both. Rates
 use the existing decimal-text conversions. No dependencies or CSP changes.
+
+
+## Plain results — 0003-W3 v1.1
+
+Plan, Compare and Export use today’s dollars, with the valuation year stated.
+The plan opens with its factual headline and one follow-on from sustainable
+spending, then what moves it most. Worked-out answers retain the intake head
+and have no spending follow-on. Ranged plans introduce the central follow-on
+with “At the middle of your ranges”. The plain shortfall explanation names
+only the first shortfall year and its returned `shortfall_today` value; an
+unreachable worked-out answer keeps that explanation inside the experts layer.
+
+Each screen has one closed, keyboard-operable “Details for experts” section.
+The plan keeps its yearly chart/table, shortfall arithmetic and assumptions
+there, labelling figures in “dollars of each year”. Compare keeps totals added
+across years and every differing line there; each line’s returned monetary
+value supplies its own dollar-basis label. Four headline measures remain on
+the plain comparison. Export keeps file details and the opening checks there.
+Every displayed financial figure comes from the engine; no financial values
+are derived by the interface. Dates use day, month name and year. Comparison
+retirement ages reuse the what-if whole-year age conversion, including leap
+birthdays and retirement dates beyond the plan’s end.
+
+The Check screen, navigation step and interface input-impact calls are removed.
+The engine operation, binding, protocol dispatch and CLI command remain.
+Own-figure plans show “Answers that could change this”: the returned ranked
+ranges and then saved not-sure answers, excluding changed what-if answers and
+answers already represented by ranges. Each range links to its intake question.
+The intake head supplies the only plan coverage chip and left-out list. The
+export summary lists saved not-sure answers, uses the plan’s headline and
+follow-on, and keeps tried copies in the summary rather than the plan file.
+No export format, engine, schema, reference, golden, dependency or CSP changes.

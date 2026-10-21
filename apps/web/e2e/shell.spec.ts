@@ -27,7 +27,7 @@ const samples = [
   ),
 }));
 import type { Request, Response } from "../src/protocol";
-test("shell: welcome, all five examples, input check, theme, worker bytes and privacy", async ({
+test("shell: welcome, all five examples, navigation, theme, worker bytes and privacy", async ({
   page,
   context,
   browser,
@@ -141,17 +141,15 @@ test("shell: welcome, all five examples, input check, theme, worker bytes and pr
           "utf8",
         ).trimEnd(),
       );
+    await expect(page.locator("footer")).toHaveText(
+      "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for 2026, with tax brackets rising each year after · Horizon engine 0.4.0",
+    );
     await capture(`example-${sample.name}`);
-    if (sample.name !== "two-person") {
-      await page
+    await expect(
+      page
         .getByRole("navigation", { name: "Planning steps" })
-        .getByRole("button", { name: "Check", exact: true })
-        .click();
-      await expect(
-        page.getByRole("heading", { name: "No entries are marked rough." }),
-      ).toBeVisible();
-      await capture(`check-${sample.name}`);
-    }
+        .getByRole("button"),
+    ).toHaveText(["Plan", "Compare", "Export"]);
     await page.getByRole("button", { name: "Horizon welcome" }).click();
     await page
       .getByRole("button", { name: "Try an example household", exact: true })

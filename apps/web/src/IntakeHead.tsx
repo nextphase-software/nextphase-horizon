@@ -109,9 +109,7 @@ export function IntakeHead({
           </span>
           {count > 0 && (
             <details>
-              <summary>
-                What this result doesn't count
-              </summary>
+              <summary>What this result doesn't count</summary>
               <ul>
                 {result.left_out.map((item) => (
                   <li key={item.answer}>{leftOutText(item)}</li>
@@ -136,11 +134,29 @@ export function IntakeHead({
           </button>
         </section>
       ))}
-      {(uncertainty.ranges.length > 0 || uncertainty.notSure) && <section className="card answers-could-change">
-        <h2>Answers that could change this</h2>
-        {uncertainty.ranges.length > 0 && <ul>{uncertainty.ranges.map((item) => <li key={item.answer}><span>{item.text}</span>{" "}<button className="link-button" onClick={() => change(answerQuestion(item.answer) as Place)}>Narrow it</button></li>)}</ul>}
-        {uncertainty.notSure && <p className="not-sure-line">{uncertainty.notSure}</p>}
-      </section>}
+      {(uncertainty.ranges.length > 0 || uncertainty.notSure) && (
+        <section className="card answers-could-change">
+          <h2>Answers that could change this</h2>
+          {uncertainty.ranges.length > 0 && (
+            <ul>
+              {uncertainty.ranges.map((item) => (
+                <li key={item.answer}>
+                  <span>{item.text}</span>{" "}
+                  <button
+                    className="link-button"
+                    onClick={() => change(answerQuestion(item.answer) as Place)}
+                  >
+                    Narrow it
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          {uncertainty.notSure && (
+            <p className="not-sure-line">{uncertainty.notSure}</p>
+          )}
+        </section>
+      )}
       {!!starting.length && (
         <section className="card starting-values">
           <h2>Starting values Horizon used</h2>

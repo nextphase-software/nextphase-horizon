@@ -78,9 +78,9 @@ it("compares whole displayed dollars, including negative zero and half-away roun
   expect(amountChange(49, 1, true, "shortfall")).toBe("Same");
   expect(amountChange(50, 1, true, "shortfall")).toBe("▼ Lower, better");
   expect(amountChange(0, 50, true, "tax")).toBe("▲ Higher");
-  expect(signedCents(-49)).toBe("$0");
-  expect(signedCents(-50)).toBe("−$1");
-  expect(signedCents(50)).toBe("+$1");
+  expect(signedCents(-49)).toBe("−less than $1");
+  expect(signedCents(-50)).toBe("−less than $1");
+  expect(signedCents(50)).toBe("+less than $1");
 });
 it("covers all five factual headline branches with engine ages", () => {
   const short = baseline.run;
@@ -213,19 +213,14 @@ it("keeps unequal omissions separate and renders null ledger sides as dashes", (
   } as unknown as Comparison;
   const view = show({ ...fresh(), comparison });
   expect(
-    screen.getByText(
-      "Baseline: Leaves out 5 things; copy: Covers your situation.",
-    ),
-  ).toBeTruthy();
-  expect(
     view.container.querySelector(".compare-status details")!.textContent,
-  ).toContain("Baseline");
+  ).toContain("Your plan");
   expect(screen.getByText("Synthetic omission")).toBeTruthy();
   expect(
     [...view.container.querySelectorAll(".line-differences tbody tr > *")].map(
       (cell) => cell.textContent,
     ),
-  ).toEqual(["2031", "synthetic/line", "—", "$1", "—"]);
+  ).toEqual(["2031", "synthetic/line", "of each year", "—", "$1", "—"]);
 });
 
 it("uses Baseline when retirement has no projected year", () => {
@@ -242,7 +237,7 @@ it("uses Baseline when retirement has no projected year", () => {
   const tabs = within(screen.getByRole("group", { name: "Plans" }));
   expect(
     tabs.getAllByRole("button").map((button) => button.textContent),
-  ).toEqual(["Baseline", "Retire at 65", "+ New copy"]);
+  ).toEqual(["Your plan", "Retire at 65", "+ New copy"]);
 });
 it("keeps valid copies reachable when another copy fails", () => {
   const valid = {
@@ -286,11 +281,7 @@ it("keeps valid copies reachable when another copy fails", () => {
     }),
   );
   expect(screen.queryByText(error.message)).toBeNull();
-  expect(
-    screen.getByText(
-      "Both results: Leaves out 5 things; they leave out the same things.",
-    ),
-  ).toBeTruthy();
+  expect(screen.getByText("Both leave out the same 5 things.")).toBeTruthy();
   expect(view.container.querySelector("svg")).toBeTruthy();
 });
 
@@ -311,7 +302,7 @@ it.each([false, true])(
     expect(markers).toHaveLength(2);
     const labels = markers.map((marker) => marker.nextElementSibling!);
     expect(labels.map((label) => label.textContent)).toEqual([
-      "Baseline: Runs short at 93",
+      "Your plan: Runs short at 93",
       "Copy: Runs short at 61",
     ]);
     expect(labels.map((label) => label.getAttribute("text-anchor"))).toEqual([

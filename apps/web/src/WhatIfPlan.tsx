@@ -271,7 +271,16 @@ export function WhatIfPlan({
           change={change}
           whatIf={active}
           savedAnswers={answers}
-          changed={Object.keys(changes).map((id) => ({ retire: "retirement", spending: "spending_in_retirement", social_security_from: "social_security", investments_grow: "assumptions.investment_return", prices_rise: "assumptions.inflation" })[id as "retire"] ?? id)}
+          changed={Object.keys(changes).map(
+            (id) =>
+              ({
+                retire: "retirement",
+                spending: "spending_in_retirement",
+                social_security_from: "social_security",
+                investments_grow: "assumptions.investment_return",
+                prices_rise: "assumptions.inflation",
+              })[id as "retire"] ?? id,
+          )}
         />
       )}
       {!!sliders.length &&

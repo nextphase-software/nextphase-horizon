@@ -336,3 +336,100 @@ test("what-if: native drag release, every slider and box by keyboard, validation
   expect(outside).toEqual([]);
   expect(await context.cookies()).toEqual([]);
 });
+
+test("plain results: ranked ranges, not-sure answers, keyboard narrowing and export", async ({
+  page,
+  context,
+  browser,
+  browserName,
+}, info) => {
+  info.annotations.push({
+    type: "browser-version",
+    description: browser.version(),
+  });
+  const outside: string[] = [];
+  context.on("request", (request) => {
+    if (new URL(request.url()).origin !== "http://127.0.0.1:4173")
+      outside.push(request.url());
+  });
+  await prepare(page);
+  const answers = structuredClone(w5["v2-range-nothing-solved"].answers);
+  answers.not_sure = ["savings", "spending_in_retirement", "pay"];
+  await load(page, answers);
+  const section = page.locator(".answers-could-change");
+  await expect(section.locator("li")).toHaveText([
+    "Your spending in retirement (a range) could change how much you're short or have to spare by as much as $14,000 a year between its low and high ends. Narrow it",
+    "The balance of your workplace plan account (a range) could change how much you're short or have to spare by as much as $11,060 a year between its low and high ends. Narrow it",
+  ]);
+  await expect(section.locator(".not-sure-line")).toHaveText(
+    "You weren't sure of your pay. A closer figure would make the plan more certain.",
+  );
+  await expect(page.locator(".plan-screen .status")).toHaveCount(0);
+  await capture(page, info, "plain-own-ranges");
+  await page.locator("#what-if-number-spending").fill("70000");
+  await page.locator("#what-if-number-spending").press("Enter");
+  await expect(section.locator("li")).toHaveCount(1);
+  await expect(section.locator(".not-sure-line")).toHaveText(
+    "You weren't sure of your pay. A closer figure would make the plan more certain.",
+  );
+  await capture(page, info, "plain-own-changed-range");
+  const traversal =
+    process.platform === "darwin" && browserName === "webkit"
+      ? "Alt+Tab"
+      : "Tab";
+  await keyboardTo(
+    page,
+    section.getByRole("button", { name: "Narrow it", exact: true }),
+    traversal,
+  );
+  await page.keyboard.press("Enter");
+  await expect(
+    page.getByRole("heading", {
+      name: "Where do you keep your savings?",
+      exact: true,
+    }),
+  ).toBeVisible();
+  const questionPath = info.outputPath("plain-narrow-answer.png");
+  await page.screenshot({ path: questionPath, fullPage: true });
+  await info.attach("plain-narrow-answer", {
+    path: questionPath,
+    contentType: "image/png",
+  });
+  await load(page, answers);
+  const exportButton = page
+    .locator(".plan-screen")
+    .getByRole("button", { name: "Export", exact: true });
+  await expect(exportButton).toBeEnabled();
+  await keyboardTo(page, exportButton, traversal);
+  await page.keyboard.press("Enter");
+  await expect(
+    page.getByRole("link", { name: "Download plan file" }),
+  ).toBeVisible();
+  const summary = page.locator(
+    ".export-screen > .plan-detail:not(.experts) > summary",
+  );
+  await keyboardTo(page, summary, traversal);
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".plan-detail .summary-not-sure li")).toHaveText([
+    "your savings",
+    "your spending in retirement",
+    "your pay",
+  ]);
+  const experts = page.locator(".experts > summary");
+  await keyboardTo(page, experts, traversal);
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".file-details")).toBeVisible();
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  const path = info.outputPath("plain-own-export-experts.png");
+  await page.screenshot({ path, fullPage: true });
+  await info.attach("plain-own-export-experts", {
+    path,
+    contentType: "image/png",
+  });
+  expect(outside).toEqual([]);
+});

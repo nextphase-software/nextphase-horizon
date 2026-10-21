@@ -6,6 +6,8 @@ import { test } from "./fixtures";
 import { storageTrap } from "./privacy";
 import { keyboardTo as reachByKeyboard } from "./keyboard";
 import type { Request, Response } from "../src/protocol";
+import plainSentences from "../../../docs/briefs/0003-W3-plain-sentences.json" with { type: "json" };
+import { plainLeftOut } from "../src/plain-results";
 import type { Run } from "../src/generated/types/run-output.v2";
 const root = new URL("../../../", import.meta.url);
 const samples = [
@@ -164,36 +166,23 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
       page.getByRole("heading", { name: sample.headline, exact: true }),
     ).toBeFocused();
     await expect(
-      page.getByRole("link", { name: "See the levers" }),
+      page.getByRole("link", { name: "See what would help" }),
     ).toBeVisible();
-    await expect(
-      page.locator(".plan-answers > div").nth(0).locator("h2"),
-    ).toHaveText(
-      sample.name === "answers-working-61" ||
-        sample.name === "answers-underfunded"
-        ? "Can you retire at 66?"
-        : "Do your savings last?",
+    const expectedPlain =
+      plainSentences.cases[
+        `example/${sample.name}` as "example/answers-working-61"
+      ];
+    await expect(page.locator(".follow-on")).toHaveText(
+      expectedPlain.follow_on,
+    );
+    await expect(page.locator(".moves-most")).toHaveText(
+      `${expectedPlain.moves_most} See what would help`,
     );
     await expect(
-      page.locator(".plan-answers > div").nth(0).locator("p"),
-    ).toHaveText(sample.answer1);
-    await expect(
-      page.locator(".plan-answers > div").nth(1).locator("p"),
-    ).toHaveText(sample.answer2);
-    if (sample.answer3)
-      await expect(
-        page.locator(".plan-answers > div").nth(2).locator("p"),
-      ).toHaveText(`${sample.answer3} See the levers`);
-    await expect(
-      page.getByText("Results are modeled annual amounts, not predictions."),
+      page.getByText(
+        "These are estimates from the figures and starting values shown, not predictions.",
+      ),
     ).toBeVisible();
-    if (
-      sample.name !== "answers-working-61" &&
-      sample.name !== "answers-underfunded"
-    )
-      await expect(
-        page.getByRole("heading", { name: "Do your savings last?" }),
-      ).toBeVisible();
     const actual = await probe();
     const requests = actual.requests.slice(before);
     expect(requests.map((request) => request.op)).toEqual([
@@ -216,11 +205,10 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
         : "✓ Covers your situation",
     );
     const details = page.locator(".plan-detail");
-    await expect(details.locator(".detail-title")).toHaveText(
-      run.years.some((year) => year.ledger.shortfall.cents > 0)
-        ? ["Levers", "Why savings run short", "Year by year", "Assumptions"]
-        : ["Levers", "Year by year", "Assumptions"],
-    );
+    await expect(details.locator(".detail-title")).toHaveText([
+      "What would help",
+      "Details for experts",
+    ]);
     for (const detail of await details.all())
       await expect(detail).not.toHaveAttribute("open");
     await expect(
@@ -243,19 +231,21 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
         `${sample.label.toUpperCase()} · RETIRED`,
       );
       await expect(page.locator("#plan-levers summary .help")).toHaveText(
-        "What moves the answer most · 4 changes, ranked",
+        "One change at a time · 4 changes, ranked",
       );
     }
     await evidence(`plan-${sample.name}-collapsed`);
     await activate(page.locator(".plan-status summary"));
     for (const omission of run.omissions)
-      await expect(page.getByText(omission, { exact: true })).toBeVisible();
+      await expect(
+        page.getByText(plainLeftOut(omission), { exact: true }),
+      ).toBeVisible();
     await evidence(`plan-${sample.name}-omissions`);
-    await activate(page.getByRole("link", { name: "See the levers" }));
+    await activate(page.getByRole("link", { name: "See what would help" }));
     await expect(page.locator("#plan-levers summary")).toBeFocused();
     await expect(
       page
-        .getByRole("group", { name: "Levers view" })
+        .getByRole("group", { name: "What would help view" })
         .getByRole("button", { name: "Chart" }),
     ).toHaveAttribute("aria-pressed", "true");
     for (const detail of await details.all())
@@ -274,31 +264,31 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
         .getByRole("button", { name: "Chart" }),
     ).toHaveAttribute("aria-pressed", "true");
     if (sample.name === "answers-working-61") {
-      const why = details.filter({
-        has: page.locator(".detail-title", {
-          hasText: "Why savings run short",
+      const why = page.locator(".expert-section").filter({
+        has: page.getByRole("heading", {
+          name: "Why savings run short: the arithmetic",
+          exact: true,
         }),
       });
       await expect(why.locator("p")).toHaveText([
-        "After retiring, spending of $67,000 a year in today's dollars grows with inflation (2.5%) to $147,652 by 2058 (nominal). That year income brings in $57,298 and savings supply $78,085, leaving $12,269 not covered.",
-        "Required distributions from age 75 don't add money; they move it out of the tax-deferred account earlier, and it is taxed.",
-        "Rules used: 2026 federal tax law for a single filer, projected after 2026 with tax-threshold indexing · Withdrawal order: cash and taxable accounts first, then tax-deferred, then Roth.",
+        "After retiring, spending of $67,000 a year in today's dollars rises with prices (2.5% a year) to $147,652 in 2058 dollars. That year income brings in $57,298 and savings supply $78,085, leaving $12,269 not covered, all in 2058 dollars.",
+        "Required withdrawals from age 75 don't add money; they move it out of the tax-deferred account earlier, and it is taxed.",
       ]);
       await expect(page.locator(".lever-row > span")).toHaveText([
-        "Investment returns 1 point higher (6%)",
+        "Returns 1% higher (6% a year)",
         "Spend 10% less in retirement ($60,300 a year)",
         "Spend 10% more in retirement ($73,700 a year)",
-        "Investment returns 1 point lower (4%)",
+        "Returns 1% lower (4% a year)",
         "Retire a year later, at 67",
         "Retire a year earlier, at 65",
       ]);
       await expect(page.locator(".lever-row strong")).toHaveText([
-        "▲ Better +$6,749",
-        "▲ Better +$6,700",
-        "▼ Worse −$6,700",
-        "▼ Worse −$6,336",
-        "▲ Better +$3,622",
-        "▼ Worse −$3,556",
+        "▲ $6,749 a year more you could spend",
+        "▲ $6,700 a year more you could spend",
+        "▼ $6,700 a year less you could spend",
+        "▼ $6,336 a year less you could spend",
+        "▲ $3,622 a year more you could spend",
+        "▼ $3,556 a year less you could spend",
       ]);
       await expect(page.locator(".ledger-events")).toHaveText(
         "Retires at 66 · Distributions from 75 · Runs short 2058 (age 93)",
@@ -313,20 +303,22 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
     await expect(page.locator("#plan-levers .help li")).toHaveCount(0);
     if (sample.name === "answers-underfunded")
       await expect(
-        details
+        page
+          .locator(".expert-section")
           .filter({
-            has: page.locator(".detail-title", {
-              hasText: "Why savings run short",
+            has: page.getByRole("heading", {
+              name: "Why savings run short: the arithmetic",
+              exact: true,
             }),
           })
           .locator("p")
           .first(),
       ).toHaveText(
-        "In 2026, before retiring, spending is $120,000 (nominal). That year income brings in $30,000 and savings supply $40,000, leaving $53,826 not covered.",
+        "In 2026, before retiring, spending is $120,000 in 2026 dollars. That year income brings in $30,000 and savings supply $40,000, leaving $53,826 not covered, all in 2026 dollars.",
       );
     await evidence(`plan-${sample.name}-all-charts`);
     await activate(page.locator(".savings-table summary"));
-    for (const name of ["Levers", "Year by year"])
+    for (const name of ["What would help", "Year by year"])
       await activate(
         page
           .getByRole("group", { name: `${name} view` })

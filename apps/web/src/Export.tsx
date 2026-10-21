@@ -11,24 +11,50 @@ import type { Export as PlanExport } from "./generated/types/export.v2";
 import { Calculating, Detail } from "./Plan";
 import { usePlanResults, type PlanCache } from "./plan-results";
 import { followOn, movesMost } from "./plan-answers";
-import { plainDate, plainLeftOut, amountsNote, answerName } from "./plain-results";
+import {
+  plainDate,
+  plainLeftOut,
+  amountsNote,
+  answerName,
+} from "./plain-results";
 import { headText, leftOutText } from "./intake-head";
 import { planHeadline } from "./plan-display";
 import { compareHeadline } from "./compare-display";
 import { statusWord } from "./format";
 import { serializeDraft, type Draft } from "./setup";
 import type { Copies } from "./plan-copies";
-export function exportLines(run: Run, spending: SustainableSpending, date: string, result?: AnswersPlanV2, answers?: AnswersV2) {
-  const head = result && answers ? headText(result, answers) : { headline: planHeadline(run), lines: [] };
-  return [head.headline, ...head.lines, followOn(run, spending, date, result)].filter((line): line is string => !!line);
+export function exportLines(
+  run: Run,
+  spending: SustainableSpending,
+  date: string,
+  result?: AnswersPlanV2,
+  answers?: AnswersV2,
+) {
+  const head =
+    result && answers
+      ? headText(result, answers)
+      : { headline: planHeadline(run), lines: [] };
+  return [
+    head.headline,
+    ...head.lines,
+    followOn(run, spending, date, result),
+  ].filter((line): line is string => !!line);
 }
-export function exportStory(run: Run, spending: SustainableSpending, date: string) { return exportLines(run, spending, date).join(" "); }
+export function exportStory(
+  run: Run,
+  spending: SustainableSpending,
+  date: string,
+) {
+  return exportLines(run, spending, date).join(" ");
+}
 export function fileSize(bytes: number) {
   const hundredths = (BigInt(bytes) + 5000n) / 10000n;
   return `${hundredths / 100n}.${String(hundredths % 100n).padStart(2, "0")} MB (${bytes.toLocaleString("en-US")} bytes)`;
 }
 export function summaryStatus(run: Run) {
-  return run.omissions.length ? run.omissions.map(plainLeftOut).join(" ") : "Nothing is left out.";
+  return run.omissions.length
+    ? run.omissions.map(plainLeftOut).join(" ")
+    : "Nothing is left out.";
 }
 export const importCheck = (code: string) =>
   ({
@@ -261,15 +287,33 @@ function ExportResult({
             : sample.label === "Your figures"
               ? "Your figures"
               : `Example household · ${sample.label}`}{" "}
-          · figures as of {plainDate(run?.valuation_date ?? draft.input.household.valuation_date)} · amounts in today's dollars
+          · figures as of{" "}
+          {plainDate(
+            run?.valuation_date ?? draft.input.household.valuation_date,
+          )}{" "}
+          · amounts in today's dollars
         </p>
         <h2>Answers</h2>
         {run && spending ? (
           <>
-            {exportLines(run, spending, retirementDate, answerResult, answers).map((line, i) => <p key={i}>{line}</p>)}
+            {exportLines(
+              run,
+              spending,
+              retirementDate,
+              answerResult,
+              answers,
+            ).map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </>
-        ) : <Calculating />}
-        {levers ? movesMost(levers) && <p>{movesMost(levers)}</p> : <Calculating />}
+        ) : (
+          <Calculating />
+        )}
+        {levers ? (
+          movesMost(levers) && <p>{movesMost(levers)}</p>
+        ) : (
+          <Calculating />
+        )}
         {items.map((copy) => (
           <div key={copy.lever.id}>
             {copy.error || copy.transport ? (
@@ -287,10 +331,47 @@ function ExportResult({
             )}
           </div>
         ))}
+        {run && (
+          <p>
+            <span className={`status ${answerResult?.status ?? run.status}`}>
+              {(answerResult?.status ?? run.status) === "complete" ? "✓" : "△"}{" "}
+              {statusWord(
+                answerResult?.status ?? run.status,
+                answerResult
+                  ? (answerResult.central?.omissions.length ?? 0) +
+                      answerResult.left_out.length
+                  : run.omissions.length,
+              )}
+            </span>
+          </p>
+        )}
         <h2>What this result doesn't count</h2>
-        {answerResult?.central ? <ul>{answerResult.left_out.map((item) => <li key={item.answer}>{leftOutText(item)}</li>)}{answerResult.central.omissions.map((text) => <li key={text}>{plainLeftOut(text)}</li>)}</ul> : run ? <p>{summaryStatus(run)}</p> : <Calculating />}
+        {answerResult?.central ? (
+          <ul>
+            {answerResult.left_out.map((item) => (
+              <li key={item.answer}>{leftOutText(item)}</li>
+            ))}
+            {answerResult.central.omissions.map((text) => (
+              <li key={text}>{plainLeftOut(text)}</li>
+            ))}
+          </ul>
+        ) : run ? (
+          <p>{summaryStatus(run)}</p>
+        ) : (
+          <Calculating />
+        )}
         <h2>Answers you weren't sure of</h2>
-        {answers?.not_sure?.length && answerResult ? <ul className="summary-not-sure">{answers.not_sure.map((answer) => <li key={answer} className="rough">{answerName(answer, answerResult)}</li>)}</ul> : <p>None were marked as not sure.</p>}
+        {answers?.not_sure?.length && answerResult ? (
+          <ul className="summary-not-sure">
+            {answers.not_sure.map((answer) => (
+              <li key={answer} className="rough">
+                {answerName(answer, answerResult)}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>None were marked as not sure.</p>
+        )}
         <p className="help">The summary fits one printed page.</p>
       </article>
     );
@@ -299,7 +380,20 @@ function ExportResult({
     <>
       <div aria-live="polite">
         {run && spending ? (
-          <div className="lede export-story">{exportLines(run, spending, retirementDate, answerResult, answers).map((line, i) => <p key={i}>{line}</p>)}<p className="help amounts-note">{amountsNote(run.valuation_date)}</p></div>
+          <div className="lede export-story">
+            {exportLines(
+              run,
+              spending,
+              retirementDate,
+              answerResult,
+              answers,
+            ).map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
+            <p className="help amounts-note">
+              {amountsNote(run.valuation_date)}
+            </p>
+          </div>
         ) : (
           <Calculating />
         )}
@@ -307,9 +401,17 @@ function ExportResult({
           <p>
             <span className={`status ${answerResult?.status ?? run.status}`}>
               <span aria-hidden="true">
-                {(answerResult?.status ?? run.status) === "complete" ? "✓" : "△"}
+                {(answerResult?.status ?? run.status) === "complete"
+                  ? "✓"
+                  : "△"}
               </span>{" "}
-              {statusWord(answerResult?.status ?? run.status, answerResult ? (answerResult.central?.omissions.length ?? 0) + answerResult.left_out.length : run.omissions.length)}
+              {statusWord(
+                answerResult?.status ?? run.status,
+                answerResult
+                  ? (answerResult.central?.omissions.length ?? 0) +
+                      answerResult.left_out.length
+                  : run.omissions.length,
+              )}
             </span>
           </p>
         ) : (
@@ -320,7 +422,8 @@ function ExportResult({
         <section className="card">
           <h2>Share a summary</h2>
           <p>
-            A one-page summary of the answers, what's left out and any answers you weren't sure of.
+            A one-page summary of the answers, what's left out and any answers
+            you weren't sure of.
           </p>
           <button
             className="primary"
@@ -356,52 +459,58 @@ function ExportResult({
       >
         {summary()}
       </Detail>
-      <Detail title="Details for experts" hint="File format, engine, fingerprint and how opening works">
-      <section className="expert-section"><h2>File details</h2>
-        {file ? (
-          <>
-            <dl className="file-details">
-              <dt>Format</dt>
-              <dd>
-                Horizon plan file, format {file.data.export_format_version}{" "}
-                (JSON)
-              </dd>
-              <dt>Engine</dt>
-              <dd>{file.data.model_version}</dd>
-              <dt>Tax law</dt>
-              <dd>
-                {file.data.rule_set_identifier}, {file.data.rule_set_year}
-              </dd>
-              <dt>Size</dt>
-              <dd>{fileSize(new TextEncoder().encode(file.text).length)}</dd>
-              <dt>Fingerprint</dt>
-              <dd>
-                {file.data.hashes.export_content_hash}
-                <small>SHA-256</small>
-              </dd>
-            </dl>
-            <p className="help">
-              The fingerprint shows whether the file was changed after it was
-              saved. It does not show who made it.
-            </p>
-          </>
-        ) : (
-          <Calculating />
-        )}
-      </section>
-      <section className="expert-section"><h2>How opening a file works</h2>
-        <ol>
-          <li>Checks the file format.</li>
-          <li>Checks the fingerprint.</li>
-          <li>Checks the engine version.</li>
-          <li>
-            Reruns the plan and confirms the results match the file exactly.
-          </li>
-        </ol>
-        <p>
-          If any check fails, Horizon says which one and does not open the plan.
-        </p>
-      </section>
+      <Detail
+        title="Details for experts"
+        hint="File format, engine, fingerprint and how opening works"
+      >
+        <section className="expert-section">
+          <h2>File details</h2>
+          {file ? (
+            <>
+              <dl className="file-details">
+                <dt>Format</dt>
+                <dd>
+                  Horizon plan file, format {file.data.export_format_version}{" "}
+                  (JSON)
+                </dd>
+                <dt>Engine</dt>
+                <dd>{file.data.model_version}</dd>
+                <dt>Tax law</dt>
+                <dd>
+                  {file.data.rule_set_identifier}, {file.data.rule_set_year}
+                </dd>
+                <dt>Size</dt>
+                <dd>{fileSize(new TextEncoder().encode(file.text).length)}</dd>
+                <dt>Fingerprint</dt>
+                <dd>
+                  {file.data.hashes.export_content_hash}
+                  <small>SHA-256</small>
+                </dd>
+              </dl>
+              <p className="help">
+                The fingerprint shows whether the file was changed after it was
+                saved. It does not show who made it.
+              </p>
+            </>
+          ) : (
+            <Calculating />
+          )}
+        </section>
+        <section className="expert-section">
+          <h2>How opening a file works</h2>
+          <ol>
+            <li>Checks the file format.</li>
+            <li>Checks the fingerprint.</li>
+            <li>Checks the engine version.</li>
+            <li>
+              Reruns the plan and confirms the results match the file exactly.
+            </li>
+          </ol>
+          <p>
+            If any check fails, Horizon says which one and does not open the
+            plan.
+          </p>
+        </section>
       </Detail>
       <div className="print-summary">{summary(true)}</div>
     </>

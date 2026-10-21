@@ -188,18 +188,24 @@ export function Compare({
           },
           {
             label: `Left at ${endAge(comparison.scenario)}`,
-                        before: compareAmount(b.ending_total_today.cents, true),
+            before: compareAmount(b.ending_total_today.cents, true),
             after: compareAmount(c.ending_total_today.cents, true),
-            change: amountChange(
-              b.ending_total_today.cents,
-              c.ending_total_today.cents,
-              true,
-            ),
+            change:
+              compareAmount(b.ending_total_today.cents, true) ===
+              compareAmount(c.ending_total_today.cents, true)
+                ? "Same"
+                : amountChange(
+                    b.ending_total_today.cents,
+                    c.ending_total_today.cents,
+                    true,
+                  ),
             difference: "—",
           },
         ]
       : null;
-  const totals = comparison && b && c && difference ? [
+  const totals =
+    comparison && b && c && difference
+      ? [
           {
             label: "Money short",
             unit: "dollars of each year, added up",
@@ -226,7 +232,8 @@ export function Compare({
             ),
             difference: signedCents(difference.total_federal_tax_paid.cents),
           },
-  ] : null;
+        ]
+      : null;
   return (
     <div className="plan-screen compare-screen">
       <p className="eyebrow">
@@ -248,7 +255,13 @@ export function Compare({
             <RunStatus run={comparison.baseline} name="Your plan" />
             <RunStatus run={comparison.scenario} name={name} />
           </div>
-          {sameOmissions && <p className="status-sentence">{comparison.baseline.omissions.length ? `Both leave out the same ${comparison.baseline.omissions.length} things.` : "Both cover your situation."}</p>}
+          {sameOmissions && (
+            <p className="status-sentence">
+              {comparison.baseline.omissions.length
+                ? `Both leave out the same ${comparison.baseline.omissions.length} things.`
+                : "Both cover your situation."}
+            </p>
+          )}
           <details>
             <summary>What these results don't count</summary>
             {sameOmissions ? (
@@ -262,16 +275,20 @@ export function Compare({
               </>
             )}
           </details>
-          <p className="help">
-            {estimatesNote}
-          </p>
+          <p className="help">{estimatesNote}</p>
         </div>
       ) : (
         <Calculating />
       )}
       <div className="changed-inputs">
         {comparison ? (
-          <p>{changedInputs(comparison, copyRetirementDate)}</p>
+          <p>
+            {changedInputs(
+              comparison,
+              copyRetirementDate,
+              input.household.persons[0].birth_date,
+            )}
+          </p>
         ) : (
           <Calculating />
         )}
@@ -296,16 +313,15 @@ export function Compare({
                 compact
               />
               <figcaption>
-                Total savings at the end of each year. Solid line: your plan. Dashed line: {name}.
+                Total savings at the end of each year. Solid line: your plan.
+                Dashed line: {name}.
               </figcaption>
             </figure>
             <details className="savings-table">
               <summary>Show as a table</summary>
               <ScrollTable label="Savings by age">
                 <table>
-                  <caption>
-                    Savings by age
-                  </caption>
+                  <caption>Savings by age</caption>
                   <thead>
                     <tr>
                       <th>Age</th>
@@ -382,72 +398,111 @@ export function Compare({
               </table>
             </ScrollTable>
             <p className="help">
-              {amountsNote(baseline.valuation_date)} Rows measure different things, so there is no chart here; the savings chart above is the picture. A dash means no single difference is shown.
+              {amountsNote(baseline.valuation_date)} Rows measure different
+              things, so there is no chart here; the savings chart above is the
+              picture. A dash means no single difference is shown.
             </p>
           </>
         ) : (
           <Calculating />
         )}
       </Detail>
-      <Detail title="Details for experts" hint="Totals across years and every line that differs">
+      <Detail
+        title="Details for experts"
+        hint="Totals across years and every line that differs"
+      >
         <h2>Totals across all years</h2>
-        <ScrollTable label="Totals across all years"><table><caption>Totals across all years · dollars of each year, added up</caption>
-        <thead><tr><th>Measure</th><th>Your plan</th><th>{name}</th><th>Change</th><th>Difference</th></tr></thead>
-        <tbody>{totals?.map((row) => <tr key={row.label}><th scope="row">{row.label}</th><td className="amount">{row.before}</td><td className="amount">{row.after}</td><td>{row.change}</td><td className="amount">{row.difference}</td></tr>)}</tbody></table></ScrollTable>
-      <section className="expert-section"><h2>Every line that differs</h2>
-        {lines ? (
-          <>
-            <p>
-              {lines.length
-                ? `${lines.length} lines differ, in years ${Math.min(...lines.map((line) => line.year))} to ${Math.max(...lines.map((line) => line.year))}; each shows both values and the difference. The Dollars column says which kind each line is.`
-                : "0 lines differ."}
-            </p>
-            <ScrollTable label="Every line that differs">
-              <table className="line-differences">
-                <caption>Every line that differs</caption>
-                <thead>
-                  <tr>
-                    <th>Year</th>
-                    <th>Line</th>
-                    <th>Dollars</th>
-                    <th className="amount">Your plan</th>
-                    <th className="amount">{name}</th>
-                    <th className="amount">Difference</th>
+        {totals ? (
+          <ScrollTable label="Totals across all years">
+            <table>
+              <caption>
+                Totals across all years · dollars of each year, added up
+              </caption>
+              <thead>
+                <tr>
+                  <th>Measure</th>
+                  <th>Your plan</th>
+                  <th>{name}</th>
+                  <th>Change</th>
+                  <th>Difference</th>
+                </tr>
+              </thead>
+              <tbody>
+                {totals?.map((row) => (
+                  <tr key={row.label}>
+                    <th scope="row">{row.label}</th>
+                    <td className="amount">{row.before}</td>
+                    <td className="amount">{row.after}</td>
+                    <td>{row.change}</td>
+                    <td className="amount">{row.difference}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {lines.map((line) => (
-                    <tr key={`${line.year}:${line.path}`}>
-                      <th scope="row">{line.year}</th>
-                      <td>
-                        <code>{line.path.slice(1)}</code>
-                      </td>
-                      <td>{line.dollar_basis === "today" ? "today's" : "of each year"}</td>
-                      <td className="amount">
-                        {line.baseline
-                          ? centsDollars(line.baseline.cents)
-                          : "—"}
-                      </td>
-                      <td className="amount">
-                        {line.scenario
-                          ? centsDollars(line.scenario.cents)
-                          : "—"}
-                      </td>
-                      <td className="amount">
-                        {line.difference
-                          ? signedCents(line.difference.cents)
-                          : "—"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </ScrollTable>
-          </>
+                ))}
+              </tbody>
+            </table>
+          </ScrollTable>
         ) : (
           <Calculating />
         )}
-      </section>
+        <section className="expert-section">
+          <h2>Every line that differs</h2>
+          {lines ? (
+            <>
+              <p>
+                {lines.length
+                  ? `${lines.length} lines differ, in years ${Math.min(...lines.map((line) => line.year))} to ${Math.max(...lines.map((line) => line.year))}; each shows both values and the difference. The Dollars column says which kind each line is.`
+                  : "0 lines differ."}
+              </p>
+              <ScrollTable label="Every line that differs">
+                <table className="line-differences">
+                  <caption>Every line that differs</caption>
+                  <thead>
+                    <tr>
+                      <th>Year</th>
+                      <th>Line</th>
+                      <th>Dollars</th>
+                      <th className="amount">Your plan</th>
+                      <th className="amount">{name}</th>
+                      <th className="amount">Difference</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {lines.map((line) => (
+                      <tr key={`${line.year}:${line.path}`}>
+                        <th scope="row">{line.year}</th>
+                        <td>
+                          <code>{line.path.slice(1)}</code>
+                        </td>
+                        <td>
+                          {(line.difference ?? line.scenario ?? line.baseline)!
+                            .dollar_basis === "today"
+                            ? "today's"
+                            : "of each year"}
+                        </td>
+                        <td className="amount">
+                          {line.baseline
+                            ? centsDollars(line.baseline.cents)
+                            : "—"}
+                        </td>
+                        <td className="amount">
+                          {line.scenario
+                            ? centsDollars(line.scenario.cents)
+                            : "—"}
+                        </td>
+                        <td className="amount">
+                          {line.difference
+                            ? signedCents(line.difference.cents)
+                            : "—"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </ScrollTable>
+            </>
+          ) : (
+            <Calculating />
+          )}
+        </section>
       </Detail>
       <div className="actions">
         <div>

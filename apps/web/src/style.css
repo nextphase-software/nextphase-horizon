@@ -39,7 +39,7 @@ h1,
 h2,
 h3,
 strong {
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
 }
 button {
   font: inherit;
@@ -103,7 +103,7 @@ dd {
   margin: var(--space-2) 0 0;
   font-size: var(--text-figure);
   line-height: var(--leading-figure);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
 }
 ul {
   padding-left: var(--space-5);
@@ -215,7 +215,7 @@ fieldset.account {
 }
 .card legend,
 .account legend {
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
 }
 .choices {
   display: grid;
@@ -247,7 +247,7 @@ fieldset.account {
   margin: 0;
 }
 .status {
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
 }
 .muted,
 .help {
@@ -267,7 +267,7 @@ a,
   cursor: pointer;
 }
 summary {
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
 }
 .actions,
 .section-heading {
@@ -292,7 +292,7 @@ h3 {
   background: var(--color-accent);
   color: var(--color-on-accent);
   border-color: var(--color-accent);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
 }
 button:disabled,
 button[aria-disabled="true"] {
@@ -328,7 +328,7 @@ button[aria-disabled="true"] {
 }
 .field-label > label {
   display: block;
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
   margin-bottom: var(--space-2);
 }
 .field-row input:not([type="checkbox"]),
@@ -454,97 +454,6 @@ select,
   margin: var(--space-4) 0 0;
 }
 
-/* Input check and the field-label rough toggle, reference screen 3. */
-.field-label {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-bottom: var(--space-2);
-  font-weight: var(--weight-semibold);
-}
-.rough-toggle {
-  display: inline-flex;
-  margin: 0;
-  padding: var(--space-1) var(--space-2);
-  border: 0;
-  color: var(--color-muted);
-  background: transparent;
-  font-size: var(--text-sm);
-  font-weight: var(--weight-body);
-}
-.rough-toggle[aria-pressed="true"] {
-  color: var(--color-estimate-text);
-}
-.check-item {
-  display: grid;
-  align-items: start;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--space-2) var(--space-4);
-}
-.check-title h2 {
-  font-size: var(--text-base);
-  line-height: var(--leading-base);
-  margin: 0;
-}
-.check-title > span {
-  font-size: var(--text-sm);
-}
-.check-item > .rough-label {
-  justify-self: start;
-}
-.check-impact,
-.check-actions {
-  grid-column: 1 / -1;
-}
-.check-impact p,
-.check-actions {
-  margin: 0;
-}
-.check-actions .link {
-  background: transparent;
-}
-.impact-bar {
-  display: block;
-  width: 100%;
-  max-width: 520px;
-  height: 45px;
-  margin-top: var(--space-2);
-  overflow: visible;
-}
-.bar-track {
-  fill: var(--color-sunken);
-}
-.bar-matters {
-  fill: var(--color-series-scenario);
-}
-.bar-barely {
-  fill: var(--color-series-baseline);
-}
-.bar-marker {
-  stroke: var(--color-ink);
-  stroke-width: 2;
-}
-.impact-bar text {
-  fill: var(--color-ink);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-semibold);
-}
-.check-detail summary {
-  color: var(--color-ink);
-}
-.check-detail summary small {
-  display: inline-block;
-  margin-left: var(--space-3);
-  font-weight: var(--weight-body);
-}
-@media (max-width: 559px) {
-  .check-item {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
 /* Plan, reference screen 4. */
 .plan-status {
   border-inline-start: 4px solid var(--color-muted);
@@ -560,9 +469,11 @@ select,
 }
 .plan-answer .follow-on {
   font-size: var(--text-lg);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
 }
-.plan-answer p { margin: var(--space-2) 0; }
+.plan-answer p {
+  margin: var(--space-2) 0;
+}
 .plan-screen figure {
   margin: 0;
 }
@@ -770,7 +681,7 @@ select,
 }
 .copy-tabs button {
   font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
   border-color: var(--color-line);
   border-radius: var(--radius-md) var(--radius-md) 0 0;
   border-bottom: 3px solid var(--color-line);
@@ -803,7 +714,7 @@ select,
 }
 .plan-screen svg .series-label {
   fill: var(--color-ink);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
 }
 .headline-differences {
   min-width: 800px;
@@ -817,7 +728,7 @@ select,
 }
 .change-word {
   white-space: nowrap;
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
 }
 .compare-screen .table-scroll:has(.line-differences) {
   max-block-size: 70vh;
@@ -877,7 +788,7 @@ select,
 }
 .link-button {
   color: var(--color-accent-text);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
   border: 0;
   padding: 0;
   background: transparent;
@@ -900,11 +811,11 @@ select,
 .plan-summary p {
   max-width: 70ch;
 }
-.summary-rough {
+.summary-not-sure {
   list-style: none;
   padding: 0;
 }
-.summary-rough li {
+.summary-not-sure li {
   margin-bottom: var(--space-3);
 }
 .print-summary {
@@ -943,7 +854,7 @@ select,
   }
   .plan-summary .summary-title {
     font-size: var(--text-lg);
-    font-weight: var(--weight-semibold);
+    font-weight: var(--weight-heading);
     margin: 0 0 var(--space-2);
   }
   .plan-summary h2 {
@@ -954,10 +865,10 @@ select,
     margin: var(--space-2) 0;
     max-width: none;
   }
-  .summary-rough {
+  .summary-not-sure {
     margin: var(--space-2) 0;
   }
-  .summary-rough li {
+  .summary-not-sure li {
     margin-bottom: var(--space-2);
   }
   .plan-summary .rough-label {
@@ -1232,7 +1143,7 @@ progress::-webkit-progress-value {
   }
 }
 .brand-button {
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
 }
 .brand-button small {
   font-weight: var(--weight-body);
@@ -1281,7 +1192,7 @@ header:has(.brand-button) > button:last-child {
   align-items: baseline;
   gap: var(--space-2);
   font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-heading);
 }
 .what-if-label strong {
   white-space: nowrap;
@@ -1333,4 +1244,6 @@ header:has(.brand-button) > button:last-child {
   }
 }
 
-.expert-section + .expert-section { margin-top: var(--space-6); }
+.expert-section + .expert-section {
+  margin-top: var(--space-6);
+}

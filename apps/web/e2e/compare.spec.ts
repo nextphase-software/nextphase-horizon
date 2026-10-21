@@ -22,6 +22,7 @@ const samples = [
 ];
 import type { Request, Response } from "../src/protocol";
 import type { Comparison } from "../src/generated/types/comparison.v2";
+import { plainLeftOut } from "../src/plain-results";
 import type { Levers } from "../src/generated/types/levers.v1";
 const root = new URL("../../../", import.meta.url);
 function native(...args: string[]) {
@@ -43,7 +44,9 @@ const dollars = (cents: number) => {
   return `${n < 0n && rounded !== 0n ? "−" : ""}$${rounded.toLocaleString("en-US")}`;
 };
 const signed = (cents: number) =>
-  `${cents > 0 && dollars(cents) !== "$0" ? "+" : ""}${dollars(cents)}`;
+  cents === 0
+    ? "Same"
+    : `${cents > 0 ? "+" : "−"}${Math.abs(cents) < 100 ? "less than $1" : dollars(Math.abs(cents))}`;
 const cases = [
   {
     sample: 0,
@@ -83,13 +86,13 @@ const cases = [
   {
     sample: 0,
     id: "return_lower",
-    label: "Investment returns 1 point lower (4%)",
+    label: "Returns 1% lower (4% a year)",
     name: "Returns at 4%",
   },
   {
     sample: 0,
     id: "return_higher",
-    label: "Investment returns 1 point higher (6%)",
+    label: "Returns 1% higher (6% a year)",
     name: "Returns at 6%",
   },
   {
@@ -314,8 +317,8 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
           "Retire a year later, at 67",
           "Spend 10% less in retirement ($60,300 a year)",
           "Spend 10% more in retirement ($73,700 a year)",
-          "Investment returns 1 point lower (4%)",
-          "Investment returns 1 point higher (6%)",
+          "Returns 1% lower (4% a year)",
+          "Returns 1% higher (6% a year)",
         ]);
       for (const id of created)
         await expect(
@@ -370,12 +373,8 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       );
       expect(actual.replies[calls[2].id]).toBe(native("spend", file));
       expect(JSON.stringify(comparison.baseline)).toBe(originalRun);
-      const word =
-        item.sample === 0 || item.sample === 3
-          ? "Leaves out 5 things"
-          : "Covers your situation";
       await expect(page.locator(".status-sentence")).toHaveText(
-        `Both results: ${word}; they leave out the same things.`,
+        `Both leave out the same ${comparison.baseline.omissions.length} things.`,
       );
       await expect(page.locator(".compare-status .status")).toHaveText(
         [comparison.baseline, comparison.scenario].map((run) =>
@@ -385,13 +384,13 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         ),
       );
       await expect(page.locator(".eyebrow")).toHaveText(
-        `Compare · ${sample.label} · the baseline is protected`,
+        `Compare · ${sample.label} · your plan stays as it is`,
       );
       const tabs = page.getByRole("group", { name: "Plans", exact: true });
       await expect(tabs.getByRole("button").first()).toHaveText(
         item.sample === 1 || item.sample === 2
-          ? "Baseline · retired"
-          : "Baseline · retire at 66",
+          ? "Your plan · retired"
+          : "Your plan · retire at 66",
       );
       await expect(
         tabs.getByRole("button", { name: item.name, exact: true }),
@@ -405,7 +404,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       );
       await expect(headlineTable.locator("thead th")).toHaveText([
         "Measure",
-        "Baseline",
+        "Your plan",
         item.name,
         "Change",
         "Difference",
@@ -426,44 +425,24 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
           native("spend", "answers-working-61-retire-later"),
         );
         await expect(tabs.getByRole("button")).toHaveText([
-          "Baseline · retire at 66",
+          "Your plan · retire at 66",
           "Retire at 67",
           "+ New copy",
         ]);
         await expect(page.locator(".changed-inputs p")).toHaveText(
-          "What changed: wages end 2031-03-10 → 2032-03-10 (follows the retirement date); retirement date 2031-03-10 → 2032-03-10",
+          "What changed: Retire at 67 instead of 66.",
         );
         const expected = [
           ["Savings", "run short at 93", "last to 95", "▲ Better", "—"],
+          ["Most you could spenda year", "$64,994", "$68,616", "▲ Better", "—"],
           [
-            "Spending the plan can carrytoday's dollars a year",
-            "$64,994",
-            "$68,616",
-            "▲ Better",
-            "—",
-          ],
-          [
-            "Headroomtoday's dollars a year",
-            "−$2,006",
-            "$1,616",
+            "Against your planned spendinga year",
+            "$2,006 short",
+            "$1,616 to spare",
             "▲ Better",
             "+$3,622",
           ],
-          ["Left at 95today's dollars", "$1", "$75,045", "▲ Better", "—"],
-          [
-            "Shortfallnominal, summed across years",
-            "$197,809",
-            "$0",
-            "▼ Lower, better",
-            "−$197,809",
-          ],
-          [
-            "Federal taxnominal, summed across years",
-            "$230,814",
-            "$267,784",
-            "▲ Higher",
-            "+$36,970",
-          ],
+          ["Left at 95", "less than $1", "$75,045", "▲ Better", "—"],
         ];
         expect(
           await headlineTable
@@ -479,7 +458,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         const leftHeader = headlineTable.getByRole("rowheader", {
           name: /^Left at 78/,
         });
-        await expect(leftHeader).toHaveText("Left at 78today's dollars");
+        await expect(leftHeader).toHaveText("Left at 78");
         await expect(leftHeader.locator("..").locator("td")).toHaveText([
           "$0",
           "$0",
@@ -528,7 +507,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
             );
           });
         expect(geometry.map((label) => label.text)).toEqual([
-          "Baseline: Runs short at 93",
+          "Your plan: Runs short at 93",
           "Retire at 65: Runs short at 90",
         ]);
         for (const label of geometry) {
@@ -544,7 +523,9 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       await activate(page.locator(".savings-table summary"));
       await activate(page.locator(".plan-detail").last().locator("summary"));
       for (const omission of comparison.baseline.omissions)
-        await expect(page.getByText(omission, { exact: true })).toBeVisible();
+        await expect(
+          page.getByText(plainLeftOut(omission), { exact: true }),
+        ).toBeVisible();
       const lines = page.locator(".line-differences tbody tr");
       await expect(lines).toHaveCount(
         item.lines ?? comparison.line_differences.length,
@@ -557,6 +538,10 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         comparison.line_differences.map((line) => [
           String(line.year),
           line.path.slice(1),
+          (line.difference ?? line.scenario ?? line.baseline)!.dollar_basis ===
+          "today"
+            ? "today's"
+            : "of each year",
           line.baseline ? dollars(line.baseline.cents) : "—",
           line.scenario ? dollars(line.scenario.cents) : "—",
           line.difference ? signed(line.difference.cents) : "—",
@@ -564,18 +549,18 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       );
       const years = comparison.line_differences.map((line) => line.year);
       await expect(
-        page.locator(".plan-detail").last().locator(".detail-body > p"),
+        page.locator(".plan-detail").last().locator(".expert-section > p"),
       ).toHaveText(
-        `${years.length} ledger lines differ, in years ${Math.min(...years)} to ${Math.max(...years)}. All are nominal dollars, each with both values and the difference.`,
+        `${years.length} lines differ, in years ${Math.min(...years)} to ${Math.max(...years)}; each shows both values and the difference. The Dollars column says which kind each line is.`,
       );
       if (item.sample === 0 && item.id === "retire_later") {
         await expect(
           page.locator(".plan-detail").last().locator("summary .help"),
-        ).toHaveText("550 lines · nominal dollars");
+        ).toHaveText("Totals across years and every line that differs");
         await expect(
-          page.locator(".plan-detail").last().locator(".detail-body > p"),
+          page.locator(".plan-detail").last().locator(".expert-section > p"),
         ).toHaveText(
-          "550 ledger lines differ, in years 2031 to 2060. All are nominal dollars, each with both values and the difference.",
+          "550 lines differ, in years 2031 to 2060; each shows both values and the difference. The Dollars column says which kind each line is.",
         );
         expect(
           await lines.evaluateAll((rows) =>
@@ -587,6 +572,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
           [
             "2031",
             "accounts/brokerage/basis_removed",
+            "of each year",
             "$23,095",
             "$0",
             "−$23,095",
@@ -594,6 +580,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
           [
             "2031",
             "accounts/brokerage/closing",
+            "of each year",
             "$247,243",
             "$298,503",
             "+$51,260",
@@ -601,6 +588,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
           [
             "2031",
             "accounts/brokerage/closing_basis",
+            "of each year",
             "$155,932",
             "$194,285",
             "+$38,353",
@@ -729,7 +717,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     ).toHaveCount(0);
     const errorTabs = page.getByRole("group", { name: "Plans", exact: true });
     await expect(errorTabs.getByRole("button")).toHaveText([
-      "Baseline · retire at 66",
+      "Your plan · retire at 66",
       "Retire at 67",
       "Retire at 65",
       "+ New copy",
@@ -842,7 +830,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     ).toHaveCount(0);
     const horizonTabs = page.getByRole("group", { name: "Plans", exact: true });
     await expect(horizonTabs.getByRole("button")).toHaveText([
-      "Baseline",
+      "Your plan",
       "Retire at 65",
       "+ New copy",
     ]);

@@ -89,14 +89,18 @@ it("loads each section independently and sends the exact edited input to all thr
   expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(
     "Savings run short at 93, two years before the plan ends.",
   );
-  expect(screen.queryByText("$64,994")).toBeNull();
+  expect(screen.queryByText(/spend \$64,994 a year/)).toBeNull();
   await act(async () =>
     pending.sustainable_spending(read(samples[0].name, "spend")),
   );
-  expect(screen.getByText("$64,994")).toBeTruthy();
-  expect(screen.queryByRole("link", { name: "See the levers" })).toBeNull();
+  expect(screen.getByText(/spend \$64,994 a year/)).toBeTruthy();
+  expect(
+    screen.queryByRole("link", { name: "See what would help" }),
+  ).toBeNull();
   await act(async () => pending.levers(read(samples[0].name, "levers")));
-  expect(screen.getByRole("link", { name: "See the levers" })).toBeTruthy();
+  expect(
+    screen.getByRole("link", { name: "See what would help" }),
+  ).toBeTruthy();
 });
 it.each(["run", "sustainable_spending", "levers"])(
   "removes all figures on an error from %s, including late success replies",
@@ -124,7 +128,7 @@ it.each(["run", "sustainable_spending", "levers"])(
 it("clears old figures and ignores obsolete requests when input changes", async () => {
   stub();
   const view = show();
-  await screen.findByText("$64,994");
+  await screen.findByText(/spend \$64,994 a year/);
   const pending: ((json: string) => void)[] = [];
   vi.mocked(engine.call).mockImplementation(
     () => new Promise((resolve) => pending.push(resolve)),
@@ -136,7 +140,7 @@ it("clears old figures and ignores obsolete requests when input changes", async 
       back={back}
     />,
   );
-  expect(screen.queryByText("$64,994")).toBeNull();
+  expect(screen.queryByText(/spend \$64,994 a year/)).toBeNull();
   stub("synthetic-retired");
   view.rerender(
     <Plan
@@ -145,13 +149,13 @@ it("clears old figures and ignores obsolete requests when input changes", async 
       back={back}
     />,
   );
-  await screen.findByText("$87,061");
+  await screen.findByText(/spend up to \$87,061 a year/);
   await act(async () => {
     for (const resolve of pending)
       resolve('{"status":"invalid","code":"OLD","message":"Obsolete failure"}');
   });
   expect(screen.queryByText("Obsolete failure")).toBeNull();
-  expect(screen.getByText("$87,061")).toBeTruthy();
+  expect(screen.getByText(/spend up to \$87,061 a year/)).toBeTruthy();
 });
 it("reports transport failure and suppresses figures", async () => {
   vi.mocked(engine.call).mockRejectedValue(new Error("Worker unavailable"));
@@ -165,7 +169,9 @@ it("reports transport failure and suppresses figures", async () => {
 it("opens and focuses Levers, switches to its table and preserves engine ranking and savings outcomes", async () => {
   stub();
   const view = show();
-  fireEvent.click(await screen.findByRole("link", { name: "See the levers" }));
+  fireEvent.click(
+    await screen.findByRole("link", { name: "See what would help" }),
+  );
   const detail = view.container.querySelector("#plan-levers details")!;
   expect(detail.hasAttribute("open")).toBe(true);
   expect(document.activeElement).toBe(detail.querySelector("summary"));
@@ -196,9 +202,12 @@ it("opens and focuses Levers, switches to its table and preserves engine ranking
 it.each([
   [
     "at_or_above_cap",
-    "At least $10,000,000 a year in today's dollars; the search stops there.",
+    "You could spend at least $10,000,000 a year and savings would still last to 95.",
   ],
-  [null, "exactly what you plan to spend."],
+  [
+    null,
+    "$67,000 a year is exactly what you could spend for savings to last to 95.",
+  ],
 ])("renders the spending edge case %s", async (flag, text) => {
   vi.mocked(engine.call).mockImplementation(async (...args) => {
     const json = read(
@@ -238,7 +247,9 @@ it("renders a zero-effect lever as No change with no amount or bar in either vie
     return JSON.stringify(levers);
   });
   const view = show();
-  fireEvent.click(await screen.findByRole("link", { name: "See the levers" }));
+  fireEvent.click(
+    await screen.findByRole("link", { name: "See what would help" }),
+  );
   const chartRow = view.container.querySelector(".lever-row")!;
   expect(chartRow.querySelector("strong")!.textContent).toBe("No change");
   expect(chartRow.querySelector(".lever-bar")).toBeNull();
