@@ -15,10 +15,12 @@ export function IntakeHead({
   result,
   answers,
   change,
+  whatIf = false,
 }: {
   result: AnswersPlanV2;
   answers: AnswersV2;
   change: (place: Place) => void;
+  whatIf?: boolean;
 }) {
   const { headline, lines } = headText(result, answers);
   const count =
@@ -29,6 +31,11 @@ export function IntakeHead({
   return (
     <div className="intake-head">
       <p className="eyebrow">Your plan</p>
+      {whatIf && (
+        <span className="rough-label what-if-tag">
+          What if: not your answers
+        </span>
+      )}
       <h1 tabIndex={-1} data-testid="intake-headline">
         {headline}
       </h1>

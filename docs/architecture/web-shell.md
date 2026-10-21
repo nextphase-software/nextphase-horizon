@@ -120,7 +120,7 @@ rates the person supplies. See my plan always remains available there. The worke
 calls `plan_from_answers`; the results head uses `answers-plan.v2` for needed,
 unsupported, invalid, worked-out and range outcomes. A plain result reuses
 `planHeadline` word for word. The original plan body, comparison and export run
-on the returned household input. What-if controls remain excluded (0002-W7).
+on the returned household input. The what-if panel below adds temporary changes (0002-W7).
 
 ### Device storage — decision 0018
 
@@ -165,3 +165,36 @@ Full-page screenshots and reports use `HORIZON_EVIDENCE_DIR` when supplied,
 otherwise the existing ignored output directories. Validation commands remain
 in README and AGENTS; the implementation record reports the actual passes,
 versions, counts and exclusions.
+
+
+## What-if panel — 0002-W7 v1.2
+
+Own-figure results with a household input and a successful result show native
+sliders and number boxes below Starting values Horizon used. They cover
+retirement age (unless already retired), annual retirement spending, savings,
+Social Security amount and start age (unless expecting none), pension amount
+(when answered), investment growth and price rises. Starting values and their
+answer, range, worked-out or Horizon-used labels come from the answers and the
+returned input. Unreachable searches use the input at the search limit and say
+that no age or amount works. Ranges have bands; other values have marks except
+null worked-out values. Out-of-range starting values extend the track.
+
+A slider sends only on pointer or key release; a number box sends on Enter or
+blur after range validation. Every changed control is applied together to a copy
+of the answers and sent to `plan_from_answers`. The head announces Working out
+your plan, then uses the existing intake head and the returned household input
+for the plan body. Obsolete replies are ignored, including after reset or leaving
+the screen. An active change says What if: not your answers.
+
+Reset restores the original controls and result. Keep writes changed answers,
+removes their uncertainty marks, and saves through the existing device-storage
+path. Savings balances are copied from the returned accounts in answer order,
+preserving answered cost bases. When no accounts existed or all balances were
+zero, the generated taxable account replaces them with its returned balance and
+basis. What-if documents, results and intermediate control values are never
+stored; only Keep changes the saved answers. Examples retain their existing flow.
+
+The one exact sum allowed by decision 0011 adds returned account balances with
+integer cents to initialize Savings today. The UI does not share that total
+among accounts or calculate any financial outcome; the engine does both. Rates
+use the existing decimal-text conversions. No dependencies or CSP changes.

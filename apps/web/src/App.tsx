@@ -20,7 +20,7 @@ import type { PlanCache } from "./plan-results";
 import type { Lever } from "./generated/types/levers.v1";
 import type { AnswersPlanV2 } from "./generated/types/answers-plan.v2";
 import { Intake } from "./Intake";
-import { IntakeHead } from "./IntakeHead";
+import { WhatIfPlan } from "./WhatIfPlan";
 import { buildAnswers, newFields, type Place } from "./intake-fields";
 import {
   loadIntake,
@@ -343,15 +343,37 @@ export function App() {
                   <p>{failure}</p>
                 </section>
               ) : answerResult && saved ? (
-                <IntakeHead
+                <WhatIfPlan
+                  key={answersJson}
                   result={answerResult}
                   answers={saved.answers}
                   change={change}
-                />
+                  keep={(answers) => {
+                    setAnswerResult(null);
+                    update({ ...saved, answers });
+                  }}
+                  onInput={(input) => {
+                    setCopies(null);
+                    setDraft(input ? createDraft(JSON.stringify(input)) : null);
+                  }}
+                >
+                  {(input) => (
+                    <Plan
+                      key={JSON.stringify(input)}
+                      sample={sample}
+                      draft={createDraft(JSON.stringify(input))}
+                      back={() => change()}
+                      tryChange={showPanel}
+                      exportPlan={() => setView("export")}
+                      cache={planCache}
+                      intake
+                    />
+                  )}
+                </WhatIfPlan>
               ) : (
                 <h1 role="status">Working out your plan…</h1>
               ))}
-            {draft && (!own || answerResult?.household_input) && (
+            {draft && !own && (
               <Plan
                 key={serializeDraft(draft)}
                 sample={sample}
