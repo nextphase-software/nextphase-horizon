@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import { execFileSync, spawnSync } from "node:child_process";
-import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join } from "node:path";
 
@@ -38,8 +38,17 @@ export function releaseBytes(commit, projection) {
 
 export function writeStage(dist, destination, release) {
   rmSync(destination, { recursive: true, force: true });
-  mkdirSync(destination, { recursive: true });
-  cpSync(dist, destination, { recursive: true });
+  // Only paths and bytes are release inputs; no source metadata is copied.
+  const copy = (source, target) => {
+    mkdirSync(target, { recursive: true });
+    for (const entry of readdirSync(source, { withFileTypes: true })) {
+      const from = join(source, entry.name);
+      const to = join(target, entry.name);
+      if (entry.isDirectory()) copy(from, to);
+      else writeFileSync(to, readFileSync(from));
+    }
+  };
+  copy(dist, destination);
   writeFileSync(join(destination, "_headers"), headersBytes);
   writeFileSync(join(destination, "release.json"), release);
 }
