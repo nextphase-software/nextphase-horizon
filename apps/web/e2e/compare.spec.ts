@@ -460,8 +460,8 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         });
         await expect(leftHeader).toHaveText("Left at 78");
         await expect(leftHeader.locator("..").locator("td")).toHaveText([
-          "$0",
-          "$0",
+          "less than $1",
+          "less than $1",
           "Same",
           "—",
         ]);
