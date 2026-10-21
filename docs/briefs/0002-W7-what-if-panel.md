@@ -1,4 +1,4 @@
-BRIEF VERSION: 0002-W7 v1 (2026-10-20)
+BRIEF VERSION: 0002-W7 v1.1 (2026-10-20)
 
 # 0002-W7 — What if: change any answer and see the plan again
 
@@ -15,7 +15,7 @@ On the results of a person's own figures, a "What if…" panel lets them change 
 
    | Label | Shown when | Range and step | Starts at | Sends |
    | --- | --- | --- | --- | --- |
-   | Retire at | not retired | age 50 (or the first whole age after the valuation date, if higher) to 80, step 1 | the answered age; the worked-out age when `solved.answer` is `retirement`; for a date answer, the person's age in whole years on that date | `retirement: {"age": n}` |
+   | Retire at | not retired | age 50 (or the first whole age after the valuation date, if higher) to 80, step 1 | the answered age; the worked-out age when `solved.answer` is `retirement`; for a date answer, the person's age in whole years on that date; when the worked-out age is null (flag `unreachable`), the person's age in whole years on the household input's retirement date, the search limit **(v1.1)**. Ages count a 29 February birthday as 28 February in common years (decision 0017 item 3) | `retirement: {"age": n}` |
    | Spending in retirement, a year | always | $0–$200,000, step $1,000 | the household input's `spending.after_retirement` cents | `spending_in_retirement: {"cents": c, "per": "year"}` |
    | Savings today | always | $0–$3,000,000, step $5,000 | the exact sum of the household input's account balances (decision 0011, amendment "one exact sum") | `what_if: {"savings_total_cents": c}` |
    | Social Security, a year | `expects` is not `no` | $0–$60,000, step $500 | the household input's Social Security amount cents | `social_security.amount: {"cents": c, "per": "year"}`, keeping `expects` and setting `start_age` to the household input's |
@@ -25,7 +25,13 @@ On the results of a person's own figures, a "What if…" panel lets them change 
    | Prices rise, a year | always | 0–5%, step 0.25 | the household input's `inflation`, likewise | `assumptions.inflation` |
 
    - **Ranges:** when a starting value lies outside its range, the range extends to include it, to the next step.
-   - **Display:** the value shows in plain words beside the label ("$80,000", "age 66", "2.5%"), with an accessible value text such as "$80,000 a year". Under each slider is the person's answer: "Your answer: …"; "Your range: … to …", with the range drawn as a band under the track; or "Worked out: …" for a worked-out answer. A mark under the track shows that value. A slider changed from its start shows the tag "what if".
+   - **Display:** the value shows in plain words beside the label ("$80,000", "age 66", "2.5%"), with an accessible value text such as "$80,000 a year". A slider changed from its start shows the tag "what if".
+   - **The line under each slider (v1.1)** says where its starting value came from, using the 0002-W6 conversions (whole dollars, half up):
+     - "Your answer: …" when the person gave that value: a figure; an age or a date for retirement; savings given as a figure for every account (the exact sum), or "none" ($0); a rate given in `assumptions`.
+     - "Your range: … to …" when the answer is a range (spending in retirement, a Social Security amount), with the range drawn as a band under the track.
+     - "Worked out: …" for the worked-out answer; when its value is null (`unreachable`), "Worked out: no age works" (retirement) or "Worked out: no amount up to $100,000,000 works" (savings).
+     - "Horizon used: …" for anything else: a value the person did not give (a rate not in `assumptions`, a Social Security start age not answered), spending "about the same as now", savings where any account is a range, or an amount left for later.
+     - A mark under the track shows the value on that line; a range shows its band instead; a null worked-out value shows neither.
    - **Number box:** a typed value outside the range is not sent and says why under the box.
 3. **Sending:**
    - **What is sent:** a what-if is the person's answers document with every changed slider's value applied, all changes at once (decision 0019 item 9). It is sent to `plan_from_answers` when a slider is released (pointer up, or a key released) or a number box is committed, never during a drag.
@@ -52,7 +58,7 @@ On the results of a person's own figures, a "What if…" panel lets them change 
 
 ## Done when
 
-1. **Starting values:** for each case of [the what-if cases](0002-W7-what-if-cases.json), the sliders' starting values computed from the `start` case's result are those in the table: retire 66, spending $67,000, savings $750,000, Social Security $26,000 from 67, investments 5%, prices 2.5%. For `worked-out-savings-then-total-600000`, the starting point is the result of its answers without the `what_if`.
+1. **Starting values:** for each case of [the what-if cases](0002-W7-what-if-cases.json), the sliders' starting values computed from the `start` case's result are those in the table: retire 66, spending $67,000, savings $750,000, Social Security $26,000 from 67, investments 5%, prices 2.5%. For `worked-out-savings-then-total-600000`, the starting point is the result of its answers without the `what_if`. **(v1.1)** For each of the 34 cases in [the slider starts](0002-W7-slider-starts.json) (every 0002-W4 and 0002-W5 reference case whose result shows the panel), the sliders shown, their starting values and the line under each equal that file.
 2. **What-if documents:** for each case other than `start`, moving the named slider from the starting values produces that case's `answers` exactly. The case names give the change: spending $80,000; retire at 70; savings $1,000,000; Social Security $33,000 from 70; investments 6% and prices 3%; spending $70,000 on the ranged answers; savings $600,000 after a worked-out savings.
 3. **Head text:** the head rendered from each case's `result` equals its `head`, with the "What if: not your answers" tag for every case but `start`.
 4. **No other arithmetic:** the only computations are the 0002-W6 conversions and the one exact sum; no figure on screen comes from anywhere but a result.
@@ -66,7 +72,7 @@ On the results of a person's own figures, a "What if…" panel lets them change 
 - `DESIGN.md`, `AGENTS.md`, `docs/architecture/web-shell.md`.
 - Decision records `0011-*` (with its amendments), `0018-*` and `0019-*` (items 9–11).
 - Briefs `0002-W5-reverse-answers.md` and `0002-W6-intake-screens.md`.
-- [Design references, version 2](assets/design-v2/README.md), screens 12–13. Illustrative and not to ship: the drawn plan body is a placeholder for today's plan body.
+- [Design references, version 2](assets/design-v2/README.md), screens 12–13. Illustrative and not to ship: the drawn plan body is a placeholder for today's plan body. Under v1.1, the two rate lines drawn as "Your answer: 5%" and "Your answer: 2.5%" read "Horizon used: 5%" and "Horizon used: 2.5%", because that household gave no rates.
 
 ## Guardrails
 

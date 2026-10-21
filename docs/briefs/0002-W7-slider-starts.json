@@ -1,0 +1,1016 @@
+{
+ "cases": {
+  "0002-W4/already-retired": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "pension": {
+    "note": "Your answer: $12,000",
+    "start": 1200000
+   },
+   "prices_rise": {
+    "note": "Your answer: 0%",
+    "start": "0"
+   },
+   "savings": {
+    "note": "Your answer: $735,000",
+    "start": 73500000
+   },
+   "social_security": {
+    "note": "Your answer: $30,000",
+    "start": 3000000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $50,000",
+    "start": 5000000
+   }
+  },
+  "0002-W4/left-out-pay": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/left-out-pay-and-spending-now": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/left-out-pension": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/left-out-social-security": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Horizon used: $0",
+    "start": 0
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/left-out-spending-now": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/monthly-and-leap-birthday": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 63",
+    "start": 63
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Horizon used: $60,000",
+    "start": 6000000
+   }
+  },
+  "0002-W4/monthly-range-odd": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/no-savings": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $0",
+    "start": 0
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/pension-later-rises-not-sure": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/pension-later-rises-yes": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/range-one-savings": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Horizon used: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/range-same-as-now": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Horizon used: $62,000",
+    "start": 6200000
+   }
+  },
+  "0002-W4/range-two": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Horizon used: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your range: $60,000 to $74,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/starting-values": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "pension": {
+    "note": "Your answer: $6,000",
+    "start": 600000
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $450,000",
+    "start": 45000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Horizon used: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/unused-pay-when-retired": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "pension": {
+    "note": "Your answer: $12,000",
+    "start": 1200000
+   },
+   "prices_rise": {
+    "note": "Your answer: 0%",
+    "start": "0"
+   },
+   "savings": {
+    "note": "Your answer: $735,000",
+    "start": 73500000
+   },
+   "social_security": {
+    "note": "Your answer: $30,000",
+    "start": 3000000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $50,000",
+    "start": 5000000
+   }
+  },
+  "0002-W4/unused-social-security-amount": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W4/working-complete": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W5/v1-working-complete-unchanged": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W5/v2-age-instead-of-date": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W5/v2-age-leap-valuation": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W5/v2-range-nothing-solved": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Horizon used: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your range: $60,000 to $74,000",
+    "start": 6700000
+   }
+  },
+  "0002-W5/v2-solve-retirement": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Worked out: age 67",
+    "start": 67
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W5/v2-solve-retirement-unreachable": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Worked out: no age works",
+    "start": 94
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $5,000,000",
+    "start": 500000000
+   }
+  },
+  "0002-W5/v2-solve-retirement-with-range": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Worked out: age 67",
+    "start": 67
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your range: $60,000 to $74,000",
+    "start": 6700000
+   }
+  },
+  "0002-W5/v2-solve-savings": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Worked out: $721,826",
+    "start": 72182600
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  },
+  "0002-W5/v2-solve-savings-none-needed": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Worked out: $0",
+    "start": 0
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $10,000",
+    "start": 1000000
+   }
+  },
+  "0002-W5/v2-solve-savings-retired": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "pension": {
+    "note": "Your answer: $12,000",
+    "start": 1200000
+   },
+   "prices_rise": {
+    "note": "Your answer: 0%",
+    "start": "0"
+   },
+   "savings": {
+    "note": "Worked out: $117,933",
+    "start": 11793300
+   },
+   "social_security": {
+    "note": "Your answer: $30,000",
+    "start": 3000000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $50,000",
+    "start": 5000000
+   }
+  },
+  "0002-W5/v2-solve-savings-unreachable": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Worked out: no amount up to $100,000,000 works",
+    "start": 10000000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $9,000,000",
+    "start": 900000000
+   }
+  },
+  "0002-W5/v2-solve-savings-with-range": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Worked out: $721,826",
+    "start": 72182600
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your range: $60,000 to $74,000",
+    "start": 6700000
+   }
+  },
+  "0002-W5/v2-solve-spending": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Worked out: $64,994",
+    "start": 6499400
+   }
+  },
+  "0002-W5/v2-solve-spending-same-as-now-missing": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Worked out: $80,447",
+    "start": 8044700
+   }
+  },
+  "0002-W5/v2-solve-spending-shortfall-at-zero": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $0",
+    "start": 0
+   },
+   "spending": {
+    "note": "Worked out: $0",
+    "start": 0
+   }
+  },
+  "0002-W5/v2-working-complete": {
+   "investments_grow": {
+    "note": "Horizon used: 5%",
+    "start": "5"
+   },
+   "prices_rise": {
+    "note": "Horizon used: 2.5%",
+    "start": "2.5"
+   },
+   "retire": {
+    "note": "Your answer: age 66",
+    "start": 66
+   },
+   "savings": {
+    "note": "Your answer: $750,000",
+    "start": 75000000
+   },
+   "social_security": {
+    "note": "Your answer: $26,000",
+    "start": 2600000
+   },
+   "social_security_from": {
+    "note": "Your answer: age 67",
+    "start": 67
+   },
+   "spending": {
+    "note": "Your answer: $67,000",
+    "start": 6700000
+   }
+  }
+ },
+ "derived": "2026-10-20",
+ "format": "horizon-0002-W7-slider-starts",
+ "source": "Reference answers and results of 0002-W4 and 0002-W5 whose result shows the what-if panel (a household input, a result that is not incomplete, unsupported or invalid, and answers without a what-if); rules of brief 0002-W7 v1.1 deliverable 2.",
+ "version": 1
+}
