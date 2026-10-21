@@ -1,4 +1,4 @@
-BRIEF VERSION: 0003-W3 v1 (2026-10-21)
+BRIEF VERSION: 0003-W3 v1.1 (2026-10-21)
 
 # 0003-W3 — Plain results: one kind of dollars, plain words, the answer first
 
@@ -52,7 +52,7 @@ Throughout: "plain screen" means everything on the plan, compare and export scre
    - **Export** uses the same headline and follow-on lines.
 6. **Plain dates and the footer.**
    - Dates read "1 January 2026": the export eyebrow "EXPORT · {LABEL} · FIGURES AS OF 1 JANUARY 2026" and the summary "… · figures as of 1 January 2026 · amounts in today's dollars".
-   - **Compare "What changed":** "Retire at 67 instead of 66." (ages from the runs; the pay end that follows retirement is not repeated); "Spend {$X} a year in retirement instead of {$Y}."; "Returns of {r}% a year instead of {q}%."; "Pay stops in {year} instead of {year}."
+   - **Compare "What changed":** "Retire at 67 instead of 66." (each age is the person's age in whole years on that plan's retirement date, counting a 29 February birthday as 28 February in common years, as in brief 0002-W7; this holds when retirement falls after the plan ends; the pay end that follows retirement is not repeated) **(v1.1)**; "Spend {$X} a year in retirement instead of {$Y}."; "Returns of {r}% a year instead of {q}%."; "Pay stops in {year} instead of {year}."
    - **Footer:** "Open source (AGPL-3.0-only) · Your answers stay on this device. Forget my answers · Federal tax rules for {year}, with tax brackets rising each year after · Horizon engine {version}" (version without the `horizon-engine-` prefix).
 7. **Expected text.** For every case of [the plain sentences](0003-W3-plain-sentences.json) the screen's text equals the file's: the four example households, the reference comparison, and every 0002-W4, 0002-W5 and 0002-W7 reference case whose result shows a plan.
 8. **Documentation:** `DESIGN.md` "Amounts" and "Input completeness" as in decision 0021; `docs/architecture/web-shell.md` (screens, the experts layer, Check removed).
