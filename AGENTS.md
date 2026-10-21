@@ -180,3 +180,28 @@ and open http://127.0.0.1:5173. It watches static builds; reload after a rebuild
 This preserves the exact CSP without inline development HMR scripts/styles.
 Restart after engine/schema changes. Architecture, protocol, tokens, security
 and test details are in [web-shell.md](docs/architecture/web-shell.md).
+
+## Deploy tooling — 0002-W8
+
+After the Rust and web shell sequences, run from `infra/cloud/web/` on a clean
+checkout (Node.js 24.22.0, corepack 0.36.0, pnpm 12.9.1):
+
+```sh
+node --version
+corepack pnpm --version
+corepack pnpm install --frozen-lockfile
+corepack pnpm run licenses
+corepack pnpm test
+corepack pnpm run check
+corepack pnpm run check
+```
+
+Preserve the first `staging/` outside the repository before the second check,
+then compare the complete file lists and every file byte for byte. Record both
+checks, comparison counts and exits. Each check stages, records Node's version
+before every WebAssembly build, runs a dry-run deploy, and verifies five local
+responses, all four exact headers, the release commit, SPA navigation fallback
+and `application/wasm`. No Cloudflare login or real deploy is part of validation.
+The tooling's `pnpm-workspace.yaml` declines the `esbuild` and `workerd` install
+scripts; another requested install script requires escalation. Keep the app's
+package, lockfile and license checks unchanged.

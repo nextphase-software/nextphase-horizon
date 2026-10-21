@@ -29,6 +29,7 @@ function request(port, path, navigation = false) {
 }
 
 const commit = stage();
+process.env.WRANGLER_SEND_METRICS = "false";
 run("corepack", ["pnpm", "exec", "wrangler", "deploy", "--dry-run", "--config", "wrangler.jsonc"]);
 const socket = createServer();
 socket.listen(0, "127.0.0.1");
@@ -40,6 +41,7 @@ const child = spawn("corepack", [
   "--local", "--ip", "127.0.0.1", "--port", String(port), "--inspector-port", "0",
 ], {
   cwd: tooling, stdio: ["ignore", "inherit", "inherit"],
+  detached: process.platform !== "win32",
   env: { ...process.env, WRANGLER_SEND_METRICS: "false" },
 });
 let stopped = false;
@@ -79,7 +81,17 @@ try {
   }
   console.log(`Local checks passed (5 responses); release commit ${commit}.`);
 } finally {
-  child.kill("SIGTERM");
-  const timeout = setTimeout(() => child.kill("SIGKILL"), 5000);
+  // Stop pnpm, Wrangler and the simulator together, including on assertion failure.
+  const stop = (signal) => {
+    if (!child.pid) return;
+    try {
+      if (process.platform === "win32") child.kill(signal);
+      else process.kill(-child.pid, signal);
+    } catch (error) {
+      if (error.code !== "ESRCH") throw error;
+    }
+  };
+  stop("SIGTERM");
+  const timeout = setTimeout(() => stop("SIGKILL"), 5000);
   try { await exited; } finally { clearTimeout(timeout); }
 }

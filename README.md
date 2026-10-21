@@ -15,7 +15,7 @@ Everything needed to build, run, verify and modify the software:
 | Path | Holds |
 | --- | --- |
 | `apps/`, `packages/` | Application and calculation-engine source |
-| `infra/`, `scripts/` | Infrastructure templates, migrations and build scripts (empty for now) |
+| `infra/`, `scripts/` | Cloudflare Workers static-asset deploy tooling in `infra/cloud/web/`; infrastructure templates, migrations and build scripts |
 | `docs/briefs/` | One implementation brief per unit of work, with its acceptance criteria and implementation record |
 | `docs/decisions/` | Technical decision records |
 | `docs/architecture/` | The current system overview and contributor-facing contracts |
