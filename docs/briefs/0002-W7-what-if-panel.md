@@ -1,4 +1,4 @@
-BRIEF VERSION: 0002-W7 v1.1 (2026-10-20)
+BRIEF VERSION: 0002-W7 v1.2 (2026-10-20)
 
 # 0002-W7 — What if: change any answer and see the plan again
 
@@ -49,7 +49,7 @@ On the results of a person's own figures, a "What if…" panel lets them change 
      - Social Security amount and start age;
      - the pension amount;
      - the two rates in `assumptions`;
-     - for a savings total, each account's balance is set to the balance the what-if result's household input gives that account, in the same order, replacing ranges and keeping each answered cost basis. When the person had no accounts, the one generated account is kept with its balance and cost basis.
+     - for a savings total, each account's balance is set to the balance the what-if result's household input gives that account, in the same order, replacing ranges and keeping each answered cost basis. When the person had no accounts, or every account was at $0 (decision 0019 item 10), the one generated account replaces them, kept with its balance and cost basis **(v1.2)**.
 
      Every kept answer leaves `not_sure`. The answers are then saved (decision 0018) and the panel starts again from them.
 6. **Not stored:** what-if values never reach the stored item (decision 0018 item 1). The item changes only on **Keep these as my answers**.
