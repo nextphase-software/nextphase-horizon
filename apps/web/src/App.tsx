@@ -18,6 +18,7 @@ import {
 } from "./plan-copies";
 import type { PlanCache } from "./plan-results";
 import type { Lever } from "./generated/types/levers.v1";
+import type { AnswersV2 } from "./generated/types/answers.v2";
 import type { AnswersPlanV2 } from "./generated/types/answers-plan.v2";
 import { Intake } from "./Intake";
 import { WhatIfPlan } from "./WhatIfPlan";
@@ -65,6 +66,7 @@ export function App() {
   const [openedFile, setOpenedFile] = useState(false);
   const [exportAnswerResult, setExportAnswerResult] =
     useState<AnswersPlanV2 | null>(null);
+  const [exportAnswers, setExportAnswers] = useState<AnswersV2 | undefined>();
   const [answerResult, setAnswerResult] = useState<AnswersPlanV2 | null>(null);
   const [results, setResults] = useState<Record<string, Result>>({});
   const [copies, setCopies] = useState<Copies | null>(null);
@@ -128,6 +130,7 @@ export function App() {
         const result = JSON.parse(json) as AnswersPlanV2;
         setAnswerResult(result);
         setExportAnswerResult(result);
+        setExportAnswers(JSON.parse(answersJson) as AnswersV2);
         if (result.household_input) {
           const next = createDraft(JSON.stringify(result.household_input));
           next.visited = [0, 1, 2, 3, 4, 5];
@@ -352,7 +355,8 @@ export function App() {
                     setAnswerResult(null);
                     update({ ...saved, answers });
                   }}
-                  onInput={(input, result) => {
+                  onInput={(input, result, answers) => {
+                    setExportAnswers(answers);
                     setExportAnswerResult(result);
                     setCopies(null);
                     setDraft(input ? createDraft(JSON.stringify(input)) : null);
@@ -410,6 +414,7 @@ export function App() {
             cache={planCache}
             opened={openFile}
             answers={own ? saved?.answers : undefined}
+            headAnswers={own ? (exportAnswers ?? saved?.answers) : undefined}
             answerResult={
               own
                 ? (exportAnswerResult ?? answerResult ?? undefined)

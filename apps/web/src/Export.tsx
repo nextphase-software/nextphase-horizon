@@ -175,6 +175,7 @@ type Props = {
   cache: PlanCache;
   opened: (input: string) => void;
   answers?: AnswersV2;
+  headAnswers?: AnswersV2;
   answerResult?: AnswersPlanV2;
 };
 export function Export(props: Props) {
@@ -216,6 +217,7 @@ function ExportResult({
   opened,
   answers,
   answerResult,
+  headAnswers = answers,
 }: Props & { draft: Draft }) {
   const input = serializeDraft(draft);
   const { results, transport } = usePlanResults(input, cache);
@@ -301,7 +303,7 @@ function ExportResult({
               spending,
               retirementDate,
               answerResult,
-              answers,
+              headAnswers,
             ).map((line, i) => (
               <p key={i}>{line}</p>
             ))}
@@ -386,7 +388,7 @@ function ExportResult({
               spending,
               retirementDate,
               answerResult,
-              answers,
+              headAnswers,
             ).map((line, i) => (
               <p key={i}>{line}</p>
             ))}

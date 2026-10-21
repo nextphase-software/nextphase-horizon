@@ -449,3 +449,55 @@ it("formats comparison boundaries and whole-year retirement ages, including leap
     "An unknown synthetic item",
   );
 });
+
+it("exports the displayed worked-out headline while retaining saved not-sure answers", async () => {
+  const original = structuredClone(
+    w5.cases["v2-solve-savings"].answers,
+  ) as AnswersV2;
+  original.not_sure = ["pay"];
+  const shown = { ...original, retirement: { age: 70 }, not_sure: [] };
+  const dir = mkdtempSync(join(tmpdir(), "horizon-plain-answers-"));
+  const path = join(dir, "answers.json");
+  writeFileSync(path, JSON.stringify(shown));
+  let result: AnswersPlanV2;
+  try {
+    result = JSON.parse(native("intake", path));
+  } finally {
+    rmSync(dir, { recursive: true });
+  }
+  const built = build(result.household_input!);
+  stub(built);
+  const { container } = render(
+    <>
+      <IntakeHead
+        result={result}
+        answers={shown}
+        savedAnswers={original}
+        change={() => {}}
+      />
+      <Export
+        sample={{ label: "Your figures" }}
+        draft={createDraft(JSON.stringify(result.household_input))}
+        copies={null}
+        cache={new Map()}
+        opened={() => {}}
+        answers={original}
+        headAnswers={shown}
+        answerResult={result}
+      />
+    </>,
+  );
+  await vi.waitFor(() =>
+    expect(container.querySelector(".download-button")).toBeTruthy(),
+  );
+  const headline = text(
+    container.querySelector('[data-testid="intake-headline"]'),
+  );
+  expect(headline).toMatch(/ saved to retire at 70\.$/);
+  expect(text(container.querySelector(".export-story > p"))).toBe(headline);
+  expect(
+    [...container.querySelectorAll(".plan-detail .summary-not-sure li")].map(
+      text,
+    ),
+  ).toEqual(["your pay"]);
+}, 60000);

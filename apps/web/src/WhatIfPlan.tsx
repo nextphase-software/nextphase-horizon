@@ -167,7 +167,11 @@ export function WhatIfPlan({
   answers: AnswersV2;
   change: (place: Place) => void;
   keep: (answers: AnswersV2) => void;
-  onInput: (input: Fixture | null, result: AnswersPlanV2) => void;
+  onInput: (
+    input: Fixture | null,
+    result: AnswersPlanV2,
+    answers: AnswersV2,
+  ) => void;
   children: (input: Fixture, result: AnswersPlanV2) => ReactNode;
 }) {
   const sliders = sliderStarts(answers, result);
@@ -212,7 +216,7 @@ export function WhatIfPlan({
     setFailure(null);
     lastSent.current = JSON.stringify(answers);
     setReset((value) => value + 1);
-    onInput(result.household_input ?? null, result);
+    onInput(result.household_input ?? null, result, answers);
   }
   function commit(slider: Slider, value: string) {
     if (sliderError(slider, value)) return;
@@ -244,7 +248,7 @@ export function WhatIfPlan({
         setDocument(changed);
         setWorking(false);
         setSettled(true);
-        onInput(value.household_input ?? null, value);
+        onInput(value.household_input ?? null, value, changed);
       })
       .catch((error: Error) => {
         if (id !== request.current) return;

@@ -431,5 +431,30 @@ test("plain results: ranked ranges, not-sure answers, keyboard narrowing and exp
     path,
     contentType: "image/png",
   });
+  await load(page, w5["v2-solve-savings"].answers);
+  await page.locator("#what-if-number-retire").fill("70");
+  await page.locator("#what-if-number-retire").press("Enter");
+  await expect(page.getByTestId("intake-headline")).toContainText(
+    "saved to retire at 70.",
+  );
+  const displayedHeadline = await page
+    .getByTestId("intake-headline")
+    .textContent();
+  await capture(page, info, "plain-worked-out-what-if-plan");
+  const exportShown = page
+    .locator(".plan-screen")
+    .getByRole("button", { name: "Export", exact: true });
+  await keyboardTo(page, exportShown, traversal);
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".export-story > p").first()).toHaveText(
+    displayedHeadline!,
+  );
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  const shownPath = info.outputPath("plain-worked-out-what-if-export.png");
+  await page.screenshot({ path: shownPath, fullPage: true });
+  await info.attach("plain-worked-out-what-if-export", {
+    path: shownPath,
+    contentType: "image/png",
+  });
   expect(outside).toEqual([]);
 });

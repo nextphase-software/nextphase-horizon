@@ -224,6 +224,6 @@ Own-figure plans show “Answers that could change this”: the returned ranked
 ranges and then saved not-sure answers, excluding changed what-if answers and
 answers already represented by ranges. Each range links to its intake question.
 The intake head supplies the only plan coverage chip and left-out list. The
-export summary lists saved not-sure answers, uses the plan’s headline and
-follow-on, and keeps tried copies in the summary rather than the plan file.
+export summary lists saved not-sure answers, uses the displayed plan’s answers
+for its headline and follow-on, and keeps tried copies in the summary rather than the plan file.
 No export format, engine, schema, reference, golden, dependency or CSP changes.
