@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+{
+  "name": "horizon",
+  "compatibility_date": "2026-10-06",
+  "assets": {
+    "directory": "./staging",
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [
+    { "pattern": "horizon.nextphase.software", "custom_domain": true }
+  ],
+  "workers_dev": true
+}

@@ -1,0 +1,17 @@
+{
+  "name": "horizon-deploy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "packageManager": "pnpm@12.9.1",
+  "engines": { "node": "24.22.0" },
+  "scripts": {
+    "stage": "node scripts/stage.mjs",
+    "deploy": "node scripts/deploy.mjs",
+    "check": "node scripts/check.mjs",
+    "licenses": "node scripts/licenses.mjs",
+    "test": "node --test"
+  },
+  "dependencies": { "wrangler": "4.148.0" }
+}
