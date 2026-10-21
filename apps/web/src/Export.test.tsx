@@ -179,11 +179,23 @@ it("shows loading without old results and ignores replies after unmount", async 
   expect(URL.createObjectURL).not.toHaveBeenCalled();
 });
 it.each([
-  ["EXPORT_FORMAT_UNSUPPORTED", "the file format"],
-  ["EXPORT_HASH_MISMATCH", "the fingerprint"],
-  ["EXPORT_MODEL_VERSION_UNSUPPORTED", "the engine version"],
-  ["EXPORT_RESULT_MISMATCH", "the rerun"],
-])("keeps the household and screen on %s", async (code, check) => {
+  [
+    "EXPORT_FORMAT_UNSUPPORTED",
+    "This isn't a plan file this version of Horizon can read, so Horizon did not open it.",
+  ],
+  [
+    "EXPORT_HASH_MISMATCH",
+    "This file was changed after it was saved, so Horizon did not open it.",
+  ],
+  [
+    "EXPORT_MODEL_VERSION_UNSUPPORTED",
+    "This file was made with a different version of Horizon's engine, so Horizon did not open it.",
+  ],
+  [
+    "EXPORT_RESULT_MISMATCH",
+    "Rerunning this plan didn't give the same results as the file, so Horizon did not open it.",
+  ],
+])("keeps the household and screen on %s", async (code, message) => {
   stub();
   const opened = vi.fn();
   render(
@@ -206,8 +218,9 @@ it.each([
   fireEvent.change(input, {
     target: { files: [{ text: async () => read(samples[0].name, "export") }] },
   });
-  await screen.findByText(
-    `This file did not pass the check of ${check}, so Horizon did not open it.`,
+  await screen.findByText(message);
+  expect(screen.getByRole("alert").textContent).not.toMatch(
+    /fingerprint|JSON|Synthetic rejection/,
   );
   expect(opened).not.toHaveBeenCalled();
   expect(engine.call).toHaveBeenCalledWith(
@@ -229,10 +242,8 @@ it("rejects non-JSON before calling the worker", async () => {
   fireEvent.change(screen.getByLabelText("Choose a plan file"), {
     target: { files: [{ text: async () => "not JSON" }] },
   });
-  await screen.findByText(
-    "This file did not pass the check of the file format, so Horizon did not open it.",
-  );
-  await screen.findByText("The file is not valid JSON.");
+  await screen.findByText("This file couldn't be read as a plan file.");
+  expect(screen.getByRole("alert").textContent).not.toMatch(/fingerprint|JSON/);
   expect(document.querySelector('[role="alert"] [role="alert"]')).toBeNull();
   expect(engine.call).not.toHaveBeenCalled();
 });

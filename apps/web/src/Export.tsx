@@ -56,12 +56,17 @@ export function summaryStatus(run: Run) {
     ? run.omissions.map(plainLeftOut).join(" ")
     : "Nothing is left out.";
 }
-export const importCheck = (code: string) =>
+const importFailure = (code: string) =>
   ({
-    EXPORT_FORMAT_UNSUPPORTED: "the file format",
-    EXPORT_HASH_MISMATCH: "the fingerprint",
-    EXPORT_MODEL_VERSION_UNSUPPORTED: "the engine version",
-  })[code] ?? "the rerun";
+    EXPORT_FORMAT_UNSUPPORTED:
+      "This isn't a plan file this version of Horizon can read, so Horizon did not open it.",
+    EXPORT_HASH_MISMATCH:
+      "This file was changed after it was saved, so Horizon did not open it.",
+    EXPORT_MODEL_VERSION_UNSUPPORTED:
+      "This file was made with a different version of Horizon's engine, so Horizon did not open it.",
+    NOT_JSON: "This file couldn't be read as a plan file.",
+  })[code] ??
+  "Rerunning this plan didn't give the same results as the file, so Horizon did not open it.";
 function ErrorMessage({
   error,
   alert = true,
@@ -84,10 +89,7 @@ function ErrorMessage({
 function OpenFile({ opened }: { opened: (input: string) => void }) {
   const chooser = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
-  const [failure, setFailure] = useState<{
-    check: string;
-    error: Failure | string;
-  } | null>(null);
+  const [failure, setFailure] = useState<string | null>(null);
   const active = useRef(true),
     attempt = useRef(0);
   useEffect(() => {
@@ -107,25 +109,17 @@ function OpenFile({ opened }: { opened: (input: string) => void }) {
         document = JSON.parse(text);
       } catch {
         if (active.current && id === attempt.current)
-          setFailure({
-            check: "the file format",
-            error: {
-              status: "invalid",
-              code: "NOT_JSON",
-              message: "The file is not valid JSON.",
-            },
-          });
+          setFailure(importFailure("NOT_JSON"));
         return;
       }
       const result = JSON.parse(await engine.call("import_run", text)) as
         Run | Failure;
       if (!active.current || id !== attempt.current) return;
-      if ("code" in result)
-        setFailure({ check: importCheck(result.code), error: result });
+      if ("code" in result) setFailure(importFailure(result.code));
       else opened(JSON.stringify(document.input));
-    } catch (error) {
+    } catch {
       if (active.current && id === attempt.current)
-        setFailure({ check: "the rerun", error: (error as Error).message });
+        setFailure(importFailure("RERUN"));
     } finally {
       if (active.current && id === attempt.current) setBusy(false);
     }
@@ -158,11 +152,7 @@ function OpenFile({ opened }: { opened: (input: string) => void }) {
       {busy && <Calculating />}
       {failure && (
         <div role="alert">
-          <p>
-            This file did not pass the check of {failure.check}, so Horizon did
-            not open it.
-          </p>
-          <ErrorMessage error={failure.error} alert={false} />
+          <p>{failure}</p>
         </div>
       )}
     </div>

@@ -2,6 +2,7 @@
 import { expect, type Locator } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { test } from "./fixtures";
 import { storageTrap } from "./privacy";
@@ -222,12 +223,11 @@ test("export: keyboard download/import, exact references, not-sure answers, copi
   await capture("export-no-household");
   await open("not JSON");
   await expect(
-    page.getByText(
-      "This file did not pass the check of the file format, so Horizon did not open it.",
-      { exact: true },
-    ),
+    page.getByText("This file couldn't be read as a plan file.", {
+      exact: true,
+    }),
   ).toBeVisible();
-  await expect(page.getByText("The file is not valid JSON.")).toBeVisible();
+  await expect(page.getByRole("alert")).not.toContainText(/fingerprint|JSON/);
   await expect(page.locator('[role="alert"] [role="alert"]')).toHaveCount(0);
   expect((await probe()).requests.some((r) => r.op === "import_run")).toBe(
     false,
@@ -514,35 +514,53 @@ test("export: keyboard download/import, exact references, not-sure answers, copi
   await capture("export-print-summary");
   await page.emulateMedia({ media: "screen" });
   // Import errors keep the current input and export screen intact.
-  for (const [file, check] of [
-    ["tampered-export.json", "the fingerprint"],
-    ["unknown-format-export.json", "the file format"],
-    ["model-0.3.0.export.json", "the engine version"],
+  for (const [file, message] of [
+    [
+      "tampered-export.json",
+      "This file was changed after it was saved, so Horizon did not open it.",
+    ],
+    [
+      "unknown-format-export.json",
+      "This isn't a plan file this version of Horizon can read, so Horizon did not open it.",
+    ],
+    [
+      "model-0.3.0.export.json",
+      "This file was made with a different version of Horizon's engine, so Horizon did not open it.",
+    ],
   ]) {
     const text = readFileSync(
       new URL(`packages/app/test-data/${file}`, root),
       "utf8",
     );
     await open(text);
-    await expect(
-      page.getByText(
-        `This file did not pass the check of ${check}, so Horizon did not open it.`,
-      ),
-    ).toBeVisible();
+    await expect(page.getByRole("alert")).toHaveText(message);
+    await expect(page.getByRole("alert")).not.toContainText(/fingerprint|JSON/);
     await expect(
       page.getByRole("heading", { name: "Take your plan with you" }),
     ).toBeVisible();
     expect((await download()).text).toBe(original);
     await capture(`export-rejected-${file}`);
   }
+  const changedRun = JSON.parse(original);
+  changedRun.run.status =
+    changedRun.run.status === "complete" ? "partial" : "complete";
+  delete changedRun.hashes.export_content_hash;
+  changedRun.hashes.export_content_hash = createHash("sha256")
+    .update(JSON.stringify(changedRun))
+    .digest("hex");
+  await open(JSON.stringify(changedRun));
+  await expect(page.getByRole("alert")).toHaveText(
+    "Rerunning this plan didn't give the same results as the file, so Horizon did not open it.",
+  );
+  expect((await download()).text).toBe(original);
+  await capture("export-rejected-rerun");
   await open("not JSON");
   await expect(
-    page.getByText(
-      "This file did not pass the check of the file format, so Horizon did not open it.",
-      { exact: true },
-    ),
+    page.getByText("This file couldn't be read as a plan file.", {
+      exact: true,
+    }),
   ).toBeVisible();
-  await expect(page.getByText("The file is not valid JSON.")).toBeVisible();
+  await expect(page.getByRole("alert")).not.toContainText(/fingerprint|JSON/);
   await expect(page.locator('[role="alert"] [role="alert"]')).toHaveCount(0);
   expect((await download()).text).toBe(original);
   await expect(summary.locator(":scope > div > p")).toHaveText(copyLines);
