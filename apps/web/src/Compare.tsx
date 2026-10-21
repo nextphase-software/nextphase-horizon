@@ -5,6 +5,7 @@ import type { Comparison } from "./generated/types/comparison.v2";
 import { Calculating, Detail, ScrollTable } from "./Plan";
 import { CompareDrawing } from "./CompareChart";
 import { centsDollars, endAge, savingsRows, yearAtDate } from "./plan-display";
+import { plainLeftOut, estimatesNote, amountsNote } from "./plain-results";
 import { statusWord } from "./format";
 import {
   amountChange,
@@ -15,7 +16,8 @@ import {
   signedCents,
   signedDollars,
   spendingValue,
-  wholeDollars,
+  compareAmount,
+  plannedSpending,
 } from "./compare-display";
 
 function RunStatus({
@@ -45,11 +47,11 @@ function Omissions({ values }: { values: string[] }) {
   return values.length ? (
     <ul>
       {values.map((value) => (
-        <li key={value}>{value}</li>
+        <li key={value}>{plainLeftOut(value)}</li>
       ))}
     </ul>
   ) : (
-    <p>No omissions reported.</p>
+    <p>Nothing is left out.</p>
   );
 }
 export function Compare({
@@ -83,10 +85,10 @@ export function Compare({
   const retirement = yearAtDate(baseline, retirementDate);
   const baselineName =
     retirementDate <= baseline.valuation_date
-      ? "Baseline · retired"
+      ? "Your plan · retired"
       : retirement
-        ? `Baseline · retire at ${retirement.age_on_december_31}`
-        : "Baseline";
+        ? `Your plan · retire at ${retirement.age_on_december_31}`
+        : "Your plan";
   const exhausted = copies.baseline.levers.levers.every((lever) =>
     copies.items.some((item) => item.lever.id === lever.id),
   );
@@ -163,8 +165,8 @@ export function Compare({
             difference: "—",
           },
           {
-            label: "Spending the plan can carry",
-            unit: "today's dollars a year",
+            label: "Most you could spend",
+            unit: "a year",
             before: spendingValue(baseSpend),
             after: spending && spendingValue(spending),
             change:
@@ -176,19 +178,18 @@ export function Compare({
             difference: "—",
           },
           {
-            label: "Headroom",
-            unit: "today's dollars a year",
-            before: wholeDollars(baseSpend.headroom),
-            after: spending && wholeDollars(spending.headroom),
+            label: "Against your planned spending",
+            unit: "a year",
+            before: plannedSpending(baseSpend.headroom),
+            after: spending && plannedSpending(spending.headroom),
             change:
               spending && amountChange(baseSpend.headroom, spending.headroom),
             difference: signedDollars(copy.lever.effect),
           },
           {
             label: `Left at ${endAge(comparison.scenario)}`,
-            unit: "today's dollars",
-            before: centsDollars(b.ending_total_today.cents),
-            after: centsDollars(c.ending_total_today.cents),
+                        before: compareAmount(b.ending_total_today.cents, true),
+            after: compareAmount(c.ending_total_today.cents, true),
             change: amountChange(
               b.ending_total_today.cents,
               c.ending_total_today.cents,
@@ -196,9 +197,12 @@ export function Compare({
             ),
             difference: "—",
           },
+        ]
+      : null;
+  const totals = comparison && b && c && difference ? [
           {
-            label: "Shortfall",
-            unit: "nominal, summed across years",
+            label: "Money short",
+            unit: "dollars of each year, added up",
             before: centsDollars(b.total_shortfall.cents),
             after: centsDollars(c.total_shortfall.cents),
             change: amountChange(
@@ -211,7 +215,7 @@ export function Compare({
           },
           {
             label: "Federal tax",
-            unit: "nominal, summed across years",
+            unit: "dollars of each year, added up",
             before: centsDollars(b.total_federal_tax_paid.cents),
             after: centsDollars(c.total_federal_tax_paid.cents),
             change: amountChange(
@@ -222,12 +226,11 @@ export function Compare({
             ),
             difference: signedCents(difference.total_federal_tax_paid.cents),
           },
-        ]
-      : null;
+  ] : null;
   return (
     <div className="plan-screen compare-screen">
       <p className="eyebrow">
-        Compare · {sample.label} · the baseline is protected
+        Compare · {sample.label} · your plan stays as it is
       </p>
       <h1 ref={heading} tabIndex={-1} aria-live="polite">
         {comparison
@@ -242,22 +245,17 @@ export function Compare({
       {comparison ? (
         <div className="card plan-status compare-status">
           <div className="compare-status-chips">
-            <RunStatus run={comparison.baseline} name="Baseline" />
+            <RunStatus run={comparison.baseline} name="Your plan" />
             <RunStatus run={comparison.scenario} name={name} />
           </div>
-          <p className="status-sentence">
-            {comparison.baseline.status === comparison.scenario.status &&
-            sameOmissions
-              ? `Both results: ${statusWord(comparison.baseline.status, comparison.baseline.omissions.length)}; they leave out the same things.`
-              : `Baseline: ${statusWord(comparison.baseline.status, comparison.baseline.omissions.length)}; copy: ${statusWord(comparison.scenario.status, comparison.scenario.omissions.length)}.`}
-          </p>
+          {sameOmissions && <p className="status-sentence">{comparison.baseline.omissions.length ? `Both leave out the same ${comparison.baseline.omissions.length} things.` : "Both cover your situation."}</p>}
           <details>
-            <summary>What this result does not include</summary>
+            <summary>What these results don't count</summary>
             {sameOmissions ? (
               <Omissions values={comparison.baseline.omissions} />
             ) : (
               <>
-                <h3>Baseline</h3>
+                <h3>Your plan</h3>
                 <Omissions values={comparison.baseline.omissions} />
                 <h3>Copy</h3>
                 <Omissions values={comparison.scenario.omissions} />
@@ -265,7 +263,7 @@ export function Compare({
             )}
           </details>
           <p className="help">
-            Results are modeled annual amounts, not predictions.
+            {estimatesNote}
           </p>
         </div>
       ) : (
@@ -298,9 +296,7 @@ export function Compare({
                 compact
               />
               <figcaption>
-                Total savings at the end of each year, in today's dollars (
-                {baseline.valuation_date.slice(0, 4)} dollars). Solid line:
-                baseline. Dashed line: {name}.
+                Total savings at the end of each year. Solid line: your plan. Dashed line: {name}.
               </figcaption>
             </figure>
             <details className="savings-table">
@@ -308,14 +304,13 @@ export function Compare({
               <ScrollTable label="Savings by age">
                 <table>
                   <caption>
-                    Savings by age, today's dollars (
-                    {baseline.valuation_date.slice(0, 4)} dollars)
+                    Savings by age
                   </caption>
                   <thead>
                     <tr>
                       <th>Age</th>
                       <th>Year</th>
-                      <th className="amount">Baseline</th>
+                      <th className="amount">Your plan</th>
                       <th className="amount">{name}</th>
                     </tr>
                   </thead>
@@ -349,7 +344,7 @@ export function Compare({
       </section>
       <Detail
         title="Headline differences"
-        hint="6 measures · units labelled on each row"
+        hint="4 measures · today's dollars"
         initiallyOpen
       >
         {measures ? (
@@ -360,7 +355,7 @@ export function Compare({
                 <thead>
                   <tr>
                     <th>Measure</th>
-                    <th className="amount">Baseline</th>
+                    <th className="amount">Your plan</th>
                     <th className="amount">{name}</th>
                     <th>Change</th>
                     <th className="amount">Difference</th>
@@ -387,35 +382,35 @@ export function Compare({
               </table>
             </ScrollTable>
             <p className="help">
-              Rows mix units, so there is no chart here; the savings chart above
-              is the picture. A dash means the difference is not calculated.
+              {amountsNote(baseline.valuation_date)} Rows measure different things, so there is no chart here; the savings chart above is the picture. A dash means no single difference is shown.
             </p>
           </>
         ) : (
           <Calculating />
         )}
       </Detail>
-      <Detail
-        title="Every line that differs"
-        hint={
-          lines ? `${lines.length} lines · nominal dollars` : "Calculating…"
-        }
-      >
+      <Detail title="Details for experts" hint="Totals across years and every line that differs">
+        <h2>Totals across all years</h2>
+        <ScrollTable label="Totals across all years"><table><caption>Totals across all years · dollars of each year, added up</caption>
+        <thead><tr><th>Measure</th><th>Your plan</th><th>{name}</th><th>Change</th><th>Difference</th></tr></thead>
+        <tbody>{totals?.map((row) => <tr key={row.label}><th scope="row">{row.label}</th><td className="amount">{row.before}</td><td className="amount">{row.after}</td><td>{row.change}</td><td className="amount">{row.difference}</td></tr>)}</tbody></table></ScrollTable>
+      <section className="expert-section"><h2>Every line that differs</h2>
         {lines ? (
           <>
             <p>
               {lines.length
-                ? `${lines.length} ledger lines differ, in years ${Math.min(...lines.map((line) => line.year))} to ${Math.max(...lines.map((line) => line.year))}. All are nominal dollars, each with both values and the difference.`
-                : "0 ledger lines differ."}
+                ? `${lines.length} lines differ, in years ${Math.min(...lines.map((line) => line.year))} to ${Math.max(...lines.map((line) => line.year))}; each shows both values and the difference. The Dollars column says which kind each line is.`
+                : "0 lines differ."}
             </p>
             <ScrollTable label="Every line that differs">
               <table className="line-differences">
-                <caption>Every line that differs, nominal dollars</caption>
+                <caption>Every line that differs</caption>
                 <thead>
                   <tr>
                     <th>Year</th>
                     <th>Line</th>
-                    <th className="amount">Baseline</th>
+                    <th>Dollars</th>
+                    <th className="amount">Your plan</th>
                     <th className="amount">{name}</th>
                     <th className="amount">Difference</th>
                   </tr>
@@ -427,6 +422,7 @@ export function Compare({
                       <td>
                         <code>{line.path.slice(1)}</code>
                       </td>
+                      <td>{line.dollar_basis === "today" ? "today's" : "of each year"}</td>
                       <td className="amount">
                         {line.baseline
                           ? centsDollars(line.baseline.cents)
@@ -451,6 +447,7 @@ export function Compare({
         ) : (
           <Calculating />
         )}
+      </section>
       </Detail>
       <div className="actions">
         <div>

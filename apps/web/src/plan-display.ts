@@ -58,7 +58,7 @@ export function leverLabel(lever: Lever, run: Run): string {
   switch (lever.id) {
     case "return_higher":
     case "return_lower":
-      return `Investment returns 1 point ${lever.id === "return_higher" ? "higher" : "lower"} (${percentEntry(String(value))}%)`;
+      return `Returns 1% ${lever.id === "return_higher" ? "higher" : "lower"} (${percentEntry(String(value))}% a year)`;
     case "spend_lower":
     case "spend_higher":
       return `Spend 10% ${lever.id === "spend_lower" ? "less" : "more"} in retirement (${centsDollars(Number(value))} a year)`;
@@ -76,7 +76,7 @@ export const assumptionNames: Record<string, string> = {
   cash_return: "Cash return",
   inflation: "Inflation",
   investment_return: "Investment return",
-  tax_indexing: "Tax-threshold indexing",
+  tax_indexing: "Tax brackets rise",
 };
 export const withdrawalWords: Record<string, string> = {
   taxable_first:

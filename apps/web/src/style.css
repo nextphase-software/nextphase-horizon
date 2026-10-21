@@ -39,7 +39,7 @@ h1,
 h2,
 h3,
 strong {
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
 }
 button {
   font: inherit;
@@ -103,7 +103,7 @@ dd {
   margin: var(--space-2) 0 0;
   font-size: var(--text-figure);
   line-height: var(--leading-figure);
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
 }
 ul {
   padding-left: var(--space-5);
@@ -215,7 +215,7 @@ fieldset.account {
 }
 .card legend,
 .account legend {
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
 }
 .choices {
   display: grid;
@@ -247,7 +247,7 @@ fieldset.account {
   margin: 0;
 }
 .status {
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
 }
 .muted,
 .help {
@@ -267,7 +267,7 @@ a,
   cursor: pointer;
 }
 summary {
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
 }
 .actions,
 .section-heading {
@@ -292,7 +292,7 @@ h3 {
   background: var(--color-accent);
   color: var(--color-on-accent);
   border-color: var(--color-accent);
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
 }
 button:disabled,
 button[aria-disabled="true"] {
@@ -328,7 +328,7 @@ button[aria-disabled="true"] {
 }
 .field-label > label {
   display: block;
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
   margin-bottom: var(--space-2);
 }
 .field-row input:not([type="checkbox"]),
@@ -462,7 +462,7 @@ select,
   flex-wrap: wrap;
   gap: var(--space-2);
   margin-bottom: var(--space-2);
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
 }
 .rough-toggle {
   display: inline-flex;
@@ -529,7 +529,7 @@ select,
 .impact-bar text {
   fill: var(--color-ink);
   font-size: var(--text-xs);
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
 }
 .check-detail summary {
   color: var(--color-ink);
@@ -558,26 +558,11 @@ select,
 .plan-status details {
   margin-top: var(--space-2);
 }
-.plan-answers {
-  display: grid;
-  gap: var(--space-4);
-}
-.plan-answers > div {
-  min-width: 0;
-  border-top: 3px solid var(--color-accent);
-  padding-top: var(--space-3);
-}
-.plan-answers h2 {
-  font-size: var(--text-base);
-  line-height: var(--leading-base);
-  margin-bottom: var(--space-2);
-}
-.plan-answers p {
-  margin: 0;
-}
-.answer-amount {
+.plan-answer .follow-on {
   font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
 }
+.plan-answer p { margin: var(--space-2) 0; }
 .plan-screen figure {
   margin: 0;
 }
@@ -757,9 +742,6 @@ select,
   font-size: var(--text-sm);
 }
 @media (min-width: 900px) {
-  .plan-answers {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
   .lever-row {
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 0.6fr);
   }
@@ -788,7 +770,7 @@ select,
 }
 .copy-tabs button {
   font-size: var(--text-sm);
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
   border-color: var(--color-line);
   border-radius: var(--radius-md) var(--radius-md) 0 0;
   border-bottom: 3px solid var(--color-line);
@@ -821,7 +803,7 @@ select,
 }
 .plan-screen svg .series-label {
   fill: var(--color-ink);
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
 }
 .headline-differences {
   min-width: 800px;
@@ -835,7 +817,7 @@ select,
 }
 .change-word {
   white-space: nowrap;
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
 }
 .compare-screen .table-scroll:has(.line-differences) {
   max-block-size: 70vh;
@@ -895,7 +877,7 @@ select,
 }
 .link-button {
   color: var(--color-accent-text);
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
   border: 0;
   padding: 0;
   background: transparent;
@@ -961,7 +943,7 @@ select,
   }
   .plan-summary .summary-title {
     font-size: var(--text-lg);
-    font-weight: var(--weight-heading);
+    font-weight: var(--weight-semibold);
     margin: 0 0 var(--space-2);
   }
   .plan-summary h2 {
@@ -1250,7 +1232,7 @@ progress::-webkit-progress-value {
   }
 }
 .brand-button {
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
 }
 .brand-button small {
   font-weight: var(--weight-body);
@@ -1299,7 +1281,7 @@ header:has(.brand-button) > button:last-child {
   align-items: baseline;
   gap: var(--space-2);
   font-size: var(--text-sm);
-  font-weight: var(--weight-heading);
+  font-weight: var(--weight-semibold);
 }
 .what-if-label strong {
   white-space: nowrap;
@@ -1350,3 +1332,5 @@ header:has(.brand-button) > button:last-child {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+.expert-section + .expert-section { margin-top: var(--space-6); }

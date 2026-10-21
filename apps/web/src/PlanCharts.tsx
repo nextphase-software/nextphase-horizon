@@ -181,7 +181,7 @@ export function FlowDrawing({
       viewBox={`0 0 ${width} 255`}
     >
       <text x={left} y="15">
-        In | Out · nominal dollars
+        In | Out · dollars of each year
       </text>
       <line
         className="chart-grid"

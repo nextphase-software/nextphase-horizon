@@ -2,10 +2,10 @@
 import { useEffect, useRef, useState } from "react";
 import { engine } from "./engine";
 import { samples } from "./fixtures";
+import { footerRules } from "./plain-results";
 import { statusWord } from "./format";
 import type { Result } from "./Answer";
 import { createDraft, serializeDraft, type Draft } from "./setup";
-import { InputCheck } from "./InputCheck";
 import { Plan } from "./Plan";
 import { Export } from "./Export";
 import { Compare } from "./Compare";
@@ -51,7 +51,7 @@ export function Status({ result }: { result: Result }) {
   );
 }
 type View =
-  "welcome" | "examples" | "intake" | "check" | "plan" | "compare" | "export";
+  "welcome" | "examples" | "intake" | "plan" | "compare" | "export";
 export function App() {
   const [view, setView] = useState<View>("welcome");
   const [selected, setSelected] = useState(samples[0].name);
@@ -64,6 +64,7 @@ export function App() {
   const [corrupt, setCorrupt] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
   const [openedFile, setOpenedFile] = useState(false);
+  const [exportAnswerResult, setExportAnswerResult] = useState<AnswersPlanV2 | null>(null);
   const [answerResult, setAnswerResult] = useState<AnswersPlanV2 | null>(null);
   const [results, setResults] = useState<Record<string, Result>>({});
   const [copies, setCopies] = useState<Copies | null>(null);
@@ -126,6 +127,7 @@ export function App() {
         if (!active) return;
         const result = JSON.parse(json) as AnswersPlanV2;
         setAnswerResult(result);
+        setExportAnswerResult(result);
         if (result.household_input) {
           const next = createDraft(JSON.stringify(result.household_input));
           next.visited = [0, 1, 2, 3, 4, 5];
@@ -176,6 +178,7 @@ export function App() {
   function change(place: Place = "review") {
     if (!saved) return;
     setAnswerResult(null);
+    setExportAnswerResult(null);
     setPanel(null);
     update({ ...saved, place });
     setView("intake");
@@ -264,10 +267,9 @@ export function App() {
     .metadata;
   const steps = own
     ? ["Your answers", "Plan", "Compare", "Export"]
-    : ["Check", "Plan", "Compare", "Export"];
+    : ["Plan", "Compare", "Export"];
   function step(name: string) {
     if (name === "Your answers") change();
-    else if (name === "Check") setView("check");
     else if (name === "Plan") showPlan();
     else setView(name.toLowerCase() as View);
   }
@@ -284,7 +286,7 @@ export function App() {
             Horizon<small>NextPhase</small>
           </span>
         </button>
-        {["check", "plan", "compare", "export"].includes(view) && (
+        {["plan", "compare", "export"].includes(view) && (
           <nav aria-label="Planning steps">
             <ol className="planning-steps">
               {steps.map((name) => (
@@ -298,7 +300,7 @@ export function App() {
                     disabled={
                       name === "Compare"
                         ? !copies?.items.length
-                        : (name === "Check" || name === "Plan") &&
+                        : name === "Plan" &&
                           !draft &&
                           !own
                     }
@@ -352,12 +354,13 @@ export function App() {
                     setAnswerResult(null);
                     update({ ...saved, answers });
                   }}
-                  onInput={(input) => {
+                  onInput={(input, result) => {
+                    setExportAnswerResult(result);
                     setCopies(null);
                     setDraft(input ? createDraft(JSON.stringify(input)) : null);
                   }}
                 >
-                  {(input) => (
+                  {(input, result) => (
                     <Plan
                       key={JSON.stringify(input)}
                       sample={sample}
@@ -367,6 +370,7 @@ export function App() {
                       exportPlan={() => setView("export")}
                       cache={planCache}
                       intake
+                      answerResult={result}
                     />
                   )}
                 </WhatIfPlan>
@@ -389,14 +393,6 @@ export function App() {
               <button onClick={() => change()}>Back to my answers</button>
             )}
           </>
-        ) : view === "check" && draft ? (
-          <InputCheck
-            sample={sample}
-            draft={draft}
-            back={welcome}
-            refine={welcome}
-            plan={() => showPlan()}
-          />
         ) : view === "compare" && copies ? (
           <Compare
             key={currentCopy}
@@ -415,6 +411,8 @@ export function App() {
             copies={copies}
             cache={planCache}
             opened={openFile}
+            answers={own ? saved?.answers : undefined}
+            answerResult={own ? exportAnswerResult ?? answerResult ?? undefined : undefined}
           />
         ) : view === "examples" ? (
           <div className="intake">
@@ -545,8 +543,7 @@ export function App() {
           {metadata && (
             <>
               {" "}
-              · Model {metadata.model_version} · Federal tax law{" "}
-              {metadata.rule_set_year}, projected after
+              · {footerRules(metadata.rule_set_year, metadata.model_version)}
             </>
           )}
         </p>

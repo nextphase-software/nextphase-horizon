@@ -79,7 +79,7 @@ export function CompareDrawing({
                     x(short.year) > (left + right) / 2 ? "end" : "start"
                   }
                 >
-                  {index ? name : "Baseline"}: Runs short at{" "}
+                  {index ? name : "Your plan"}: Runs short at{" "}
                   {short.age_on_december_31}
                 </text>
               </>
@@ -102,7 +102,7 @@ export function CompareDrawing({
               )}
               textAnchor={index ? "end" : "start"}
             >
-              {index ? name : "Baseline"}
+              {index ? name : "Your plan"}
             </text>
           </g>
         );

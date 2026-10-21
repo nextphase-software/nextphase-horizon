@@ -5,55 +5,30 @@ import type { Failure } from "./Answer";
 import type { Run } from "./generated/types/run-output.v2";
 import type { SustainableSpending } from "./generated/types/sustainable-spending.v1";
 import type { Levers } from "./generated/types/levers.v1";
-import type { InputImpact } from "./generated/types/input-impact.v1";
+import type { AnswersPlanV2 } from "./generated/types/answers-plan.v2";
+import type { AnswersV2 } from "./generated/types/answers.v2";
 import type { Export as PlanExport } from "./generated/types/export.v2";
 import { Calculating, Detail } from "./Plan";
 import { usePlanResults, type PlanCache } from "./plan-results";
-import { answerOne, answerTwo, answerThree } from "./plan-answers";
-import { endAge, firstShortfall, yearAtDate } from "./plan-display";
-import { compareHeadline, wholeDollars } from "./compare-display";
+import { followOn, movesMost } from "./plan-answers";
+import { plainDate, plainLeftOut, amountsNote, answerName } from "./plain-results";
+import { headText, leftOutText } from "./intake-head";
+import { planHeadline } from "./plan-display";
+import { compareHeadline } from "./compare-display";
 import { statusWord } from "./format";
-import {
-  entryDescription,
-  matters,
-  roughItems,
-  setupFields,
-} from "./input-check";
 import { serializeDraft, type Draft } from "./setup";
 import type { Copies } from "./plan-copies";
-export function exportStory(
-  run: Run,
-  spending: SustainableSpending,
-  date: string,
-) {
-  const short = firstShortfall(run),
-    retirement = yearAtDate(run, date),
-    future = date > run.valuation_date;
-  const lead =
-    future && retirement && (!short || short.year >= retirement.year)
-      ? `Retiring at ${retirement.age_on_december_31}, s`
-      : "S";
-  const prefix =
-    lead +
-    (short
-      ? `avings run short at ${short.age_on_december_31}`
-      : `avings last to ${endAge(run)}`);
-  if (future && !retirement)
-    return `${prefix}; retirement falls after the plan ends.`;
-  if (spending.flag === "shortfall_with_no_retirement_spending")
-    return `${prefix}, even with no retirement spending.`;
-  if (spending.flag === "at_or_above_cap")
-    return `${prefix}; the plan could carry at least ${wholeDollars(spending.cap)} a year in today's dollars.`;
-  return short
-    ? `${prefix}; spending ${wholeDollars(spending.sustainable_spending)} a year in today's dollars would make them last to ${endAge(run)}.`
-    : `${prefix}; you could spend up to ${wholeDollars(spending.sustainable_spending)} a year in today's dollars.`;
+export function exportLines(run: Run, spending: SustainableSpending, date: string, result?: AnswersPlanV2, answers?: AnswersV2) {
+  const head = result && answers ? headText(result, answers) : { headline: planHeadline(run), lines: [] };
+  return [head.headline, ...head.lines, followOn(run, spending, date, result)].filter((line): line is string => !!line);
 }
+export function exportStory(run: Run, spending: SustainableSpending, date: string) { return exportLines(run, spending, date).join(" "); }
 export function fileSize(bytes: number) {
   const hundredths = (BigInt(bytes) + 5000n) / 10000n;
   return `${hundredths / 100n}.${String(hundredths % 100n).padStart(2, "0")} MB (${bytes.toLocaleString("en-US")} bytes)`;
 }
 export function summaryStatus(run: Run) {
-  return `${statusWord(run.status, run.omissions.length)}. ${run.omissions.length ? `What this result does not include: ${run.omissions.join("; ")}.` : "No omissions are listed."}`;
+  return run.omissions.length ? run.omissions.map(plainLeftOut).join(" ") : "Nothing is left out.";
 }
 export const importCheck = (code: string) =>
   ({
@@ -173,6 +148,8 @@ type Props = {
   copies: Copies | null;
   cache: PlanCache;
   opened: (input: string) => void;
+  answers?: AnswersV2;
+  answerResult?: AnswersPlanV2;
 };
 export function Export(props: Props) {
   const { sample, draft, opened } = props;
@@ -185,8 +162,8 @@ export function Export(props: Props) {
       {draft ? (
         <>
           <p className="eyebrow">
-            EXPORT · {sample.label.toUpperCase()} · VALUES AS OF{" "}
-            {draft.input.household.valuation_date}
+            EXPORT · {sample.label.toUpperCase()} · FIGURES AS OF{" "}
+            {plainDate(draft.input.household.valuation_date).toUpperCase()}
           </p>
           <h1 ref={heading} tabIndex={-1}>
             Take your plan with you
@@ -211,6 +188,8 @@ function ExportResult({
   copies,
   cache,
   opened,
+  answers,
+  answerResult,
 }: Props & { draft: Draft }) {
   const input = serializeDraft(draft);
   const { results, transport } = usePlanResults(input, cache);
@@ -220,9 +199,6 @@ function ExportResult({
     url: string;
   } | null>(null);
   const [error, setError] = useState<Failure | string | null>(null);
-  const [impact, setImpact] = useState<InputImpact | Failure | null>(null);
-  const [impactTransport, setImpactTransport] = useState<string | null>(null);
-  const rough = JSON.stringify(roughItems(draft));
   useEffect(() => {
     let active = true;
     let url: string | undefined;
@@ -247,21 +223,6 @@ function ExportResult({
       if (url) URL.revokeObjectURL(url);
     };
   }, [input]);
-  useEffect(() => {
-    if (rough === "[]") return;
-    let active = true;
-    engine
-      .call("input_impact", input, rough)
-      .then((json) => {
-        if (active) setImpact(JSON.parse(json));
-      })
-      .catch((error: Error) => {
-        if (active) setImpactTransport(error.message);
-      });
-    return () => {
-      active = false;
-    };
-  }, [input, rough]);
   const failure =
     error ??
     transport ??
@@ -277,13 +238,11 @@ function ExportResult({
     spending = results.spending as SustainableSpending | undefined,
     levers = results.levers as Levers | undefined;
   const retirementDate = draft.input.household.persons[0].retirement_date,
-    items = copies?.items ?? [],
-    fields = setupFields(draft);
+    items = copies?.items ?? [];
   const ready =
     run &&
     spending &&
     levers &&
-    (rough === "[]" || impact || impactTransport) &&
     items.every((item) => item.comparison || item.error || item.transport);
   const summary = (printed = false) => {
     const Title = printed ? "p" : "h2";
@@ -302,20 +261,15 @@ function ExportResult({
             : sample.label === "Your figures"
               ? "Your figures"
               : `Example household · ${sample.label}`}{" "}
-          · values as of{" "}
-          {run?.valuation_date ?? draft.input.household.valuation_date} ·{" "}
-          {run?.metadata.model_version ?? "Calculating…"}
+          · figures as of {plainDate(run?.valuation_date ?? draft.input.household.valuation_date)} · amounts in today's dollars
         </p>
         <h2>Answers</h2>
         {run && spending ? (
           <>
-            <p>{answerOne(run, spending, retirementDate)}</p>
-            <p>{answerTwo(run, spending, retirementDate)}</p>
+            {exportLines(run, spending, retirementDate, answerResult, answers).map((line, i) => <p key={i}>{line}</p>)}
           </>
-        ) : (
-          <Calculating />
-        )}
-        {levers ? <p>{answerThree(levers)}</p> : <Calculating />}
+        ) : <Calculating />}
+        {levers ? movesMost(levers) && <p>{movesMost(levers)}</p> : <Calculating />}
         {items.map((copy) => (
           <div key={copy.lever.id}>
             {copy.error || copy.transport ? (
@@ -333,44 +287,10 @@ function ExportResult({
             )}
           </div>
         ))}
-        <h2>Status and what is not included</h2>
-        {run ? <p>{summaryStatus(run)}</p> : <Calculating />}
-        <h2>Rough entries</h2>
-        {rough === "[]" ? (
-          <p>No entries are marked rough.</p>
-        ) : impactTransport || (impact && "code" in impact) ? (
-          <ErrorMessage error={impactTransport ?? (impact as Failure)} />
-        ) : impact && "items" in impact ? (
-          <>
-            <ul className="summary-rough">
-              {impact.items.map((item) => (
-                <li key={item.path}>
-                  <span className="rough-label">
-                    <span aria-hidden="true">≈</span> Rough value
-                  </span>{" "}
-                  {
-                    entryDescription(
-                      draft,
-                      fields.find((field) => field.path === item.path)!,
-                    ).title
-                  }
-                  : could change your headroom by up to{" "}
-                  {wholeDollars(Math.abs(item.impact))} a year (
-                  {matters(impact.baseline.sustainable_spending, item.impact)
-                    ? "matters"
-                    : "barely matters"}
-                  )
-                </li>
-              ))}
-            </ul>
-            <p>
-              An entry matters when it could change headroom by at least 1% of{" "}
-              {wholeDollars(impact.baseline.sustainable_spending)} a year.
-            </p>
-          </>
-        ) : (
-          <Calculating />
-        )}
+        <h2>What this result doesn't count</h2>
+        {answerResult?.central ? <ul>{answerResult.left_out.map((item) => <li key={item.answer}>{leftOutText(item)}</li>)}{answerResult.central.omissions.map((text) => <li key={text}>{plainLeftOut(text)}</li>)}</ul> : run ? <p>{summaryStatus(run)}</p> : <Calculating />}
+        <h2>Answers you weren't sure of</h2>
+        {answers?.not_sure?.length && answerResult ? <ul className="summary-not-sure">{answers.not_sure.map((answer) => <li key={answer} className="rough">{answerName(answer, answerResult)}</li>)}</ul> : <p>None were marked as not sure.</p>}
         <p className="help">The summary fits one printed page.</p>
       </article>
     );
@@ -379,19 +299,17 @@ function ExportResult({
     <>
       <div aria-live="polite">
         {run && spending ? (
-          <p className="lede export-story">
-            {exportStory(run, spending, retirementDate)}
-          </p>
+          <div className="lede export-story">{exportLines(run, spending, retirementDate, answerResult, answers).map((line, i) => <p key={i}>{line}</p>)}<p className="help amounts-note">{amountsNote(run.valuation_date)}</p></div>
         ) : (
           <Calculating />
         )}
         {run ? (
           <p>
-            <span className={`status ${run.status}`}>
+            <span className={`status ${answerResult?.status ?? run.status}`}>
               <span aria-hidden="true">
-                {run.status === "complete" ? "✓" : "△"}
+                {(answerResult?.status ?? run.status) === "complete" ? "✓" : "△"}
               </span>{" "}
-              {statusWord(run.status, run.omissions.length)}
+              {statusWord(answerResult?.status ?? run.status, answerResult ? (answerResult.central?.omissions.length ?? 0) + answerResult.left_out.length : run.omissions.length)}
             </span>
           </p>
         ) : (
@@ -402,8 +320,7 @@ function ExportResult({
         <section className="card">
           <h2>Share a summary</h2>
           <p>
-            A one-page summary of the answers, what's left out and your rough
-            entries.
+            A one-page summary of the answers, what's left out and any answers you weren't sure of.
           </p>
           <button
             className="primary"
@@ -417,8 +334,7 @@ function ExportResult({
           <h2>Keep your plan</h2>
           <p>A file Horizon can reopen exactly as it is.</p>
           <p>
-            Rough marks and copies are not saved in the file; they are in the
-            summary.
+            Copies you tried are not saved in the file; they are in the summary.
           </p>
           {file ? (
             <a
@@ -436,11 +352,12 @@ function ExportResult({
       <OpenFile opened={opened} />
       <Detail
         title="What's in the summary"
-        hint="Answers, status, rough entries"
+        hint="Answers, what's left out, answers you weren't sure of"
       >
         {summary()}
       </Detail>
-      <Detail title="File details" hint="Format, engine, size, fingerprint">
+      <Detail title="Details for experts" hint="File format, engine, fingerprint and how opening works">
+      <section className="expert-section"><h2>File details</h2>
         {file ? (
           <>
             <dl className="file-details">
@@ -471,11 +388,8 @@ function ExportResult({
         ) : (
           <Calculating />
         )}
-      </Detail>
-      <Detail
-        title="How opening a file works"
-        hint="Four checks before anything is shown"
-      >
+      </section>
+      <section className="expert-section"><h2>How opening a file works</h2>
         <ol>
           <li>Checks the file format.</li>
           <li>Checks the fingerprint.</li>
@@ -487,6 +401,7 @@ function ExportResult({
         <p>
           If any check fails, Horizon says which one and does not open the plan.
         </p>
+      </section>
       </Detail>
       <div className="print-summary">{summary(true)}</div>
     </>

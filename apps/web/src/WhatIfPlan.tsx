@@ -167,8 +167,8 @@ export function WhatIfPlan({
   answers: AnswersV2;
   change: (place: Place) => void;
   keep: (answers: AnswersV2) => void;
-  onInput: (input: Fixture | null) => void;
-  children: (input: Fixture) => ReactNode;
+  onInput: (input: Fixture | null, result: AnswersPlanV2) => void;
+  children: (input: Fixture, result: AnswersPlanV2) => ReactNode;
 }) {
   const sliders = sliderStarts(answers, result);
   const [changes, setChanges] = useState<Changes>({});
@@ -212,7 +212,7 @@ export function WhatIfPlan({
     setFailure(null);
     lastSent.current = JSON.stringify(answers);
     setReset((value) => value + 1);
-    onInput(result.household_input ?? null);
+    onInput(result.household_input ?? null, result);
   }
   function commit(slider: Slider, value: string) {
     if (sliderError(slider, value)) return;
@@ -244,7 +244,7 @@ export function WhatIfPlan({
         setDocument(changed);
         setWorking(false);
         setSettled(true);
-        onInput(value.household_input ?? null);
+        onInput(value.household_input ?? null, value);
       })
       .catch((error: Error) => {
         if (id !== request.current) return;
@@ -270,6 +270,8 @@ export function WhatIfPlan({
           answers={document}
           change={change}
           whatIf={active}
+          savedAnswers={answers}
+          changed={Object.keys(changes).map((id) => ({ retire: "retirement", spending: "spending_in_retirement", social_security_from: "social_security", investments_grow: "assumptions.investment_return", prices_rise: "assumptions.inflation" })[id as "retire"] ?? id)}
         />
       )}
       {!!sliders.length &&
@@ -317,7 +319,7 @@ export function WhatIfPlan({
       {!working &&
         !failure &&
         shown.household_input &&
-        children(shown.household_input)}
+        children(shown.household_input, shown)}
     </>
   );
 }

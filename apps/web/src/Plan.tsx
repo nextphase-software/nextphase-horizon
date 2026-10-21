@@ -11,7 +11,9 @@ import type { SustainableSpending } from "./generated/types/sustainable-spending
 import type { Levers } from "./generated/types/levers.v1";
 import type { Failure } from "./Answer";
 import { usePlanResults, type PlanCache } from "./plan-results";
-import { answerOne, answerTwo, answerThree, outsidePlan } from "./plan-answers";
+import { followOn, movesMost } from "./plan-answers";
+import type { AnswersPlanV2 } from "./generated/types/answers-plan.v2";
+import { amountsNote, estimatesNote, plainLeftOut, whyShort } from "./plain-results";
 import { formatDollars, statusWord } from "./format";
 import { percentEntry } from "./entry";
 import { serializeDraft, type Draft } from "./setup";
@@ -53,7 +55,7 @@ export function Detail({
   return (
     <details
       open={open}
-      className="card plan-detail"
+      className={`card plan-detail${title === "Details for experts" ? " experts" : ""}`}
       ref={detailRef}
       onToggle={(event) => setOpen(event.currentTarget.open)}
     >
@@ -127,8 +129,7 @@ function Savings({
         <SavingsDrawing run={run} retirementDate={retirementDate} />
         <SavingsDrawing run={run} retirementDate={retirementDate} compact />
         <figcaption>
-          Total savings at the end of each year, in today's dollars (
-          {run.valuation_date.slice(0, 4)} dollars). Solid line: savings by age.
+          Total savings at the end of each year. Solid line: savings by age.
         </figcaption>
       </figure>
       <details className="savings-table">
@@ -136,8 +137,7 @@ function Savings({
         <ScrollTable label="Savings by age">
           <table>
             <caption>
-              Savings by age, today's dollars ({run.valuation_date.slice(0, 4)}{" "}
-              dollars)
+              Savings by age
             </caption>
             <thead>
               <tr>
@@ -171,11 +171,11 @@ function LeverViews({ levers, run }: { levers: Levers; run: Run }) {
   return (
     <>
       <Views
-        name="Levers"
+        name="What would help"
         chart={
           <div className="lever-chart">
             <p className="help">
-              Change in headroom, today's dollars a year · zero at the center
+              How much more or less you could spend each year after one change
             </p>
             {ranked.map((lever) => {
               const width = (Math.abs(lever.effect) / max) * 145;
@@ -203,7 +203,7 @@ function LeverViews({ levers, run }: { levers: Levers; run: Run }) {
                   <strong>
                     {lever.effect === 0
                       ? "No change"
-                      : `${direction(lever.effect)} ${signedEffect(lever.effect)}`}
+                      : `${lever.effect > 0 ? "▲" : "▼"} ${formatDollars(Math.abs(lever.effect))} a year ${lever.effect > 0 ? "more" : "less"} you could spend`}
                   </strong>
                 </div>
               );
@@ -211,15 +211,15 @@ function LeverViews({ levers, run }: { levers: Levers; run: Run }) {
           </div>
         }
         table={
-          <ScrollTable label="Levers">
+          <ScrollTable label="What would help">
             <table>
-              <caption>Levers, today's dollars a year</caption>
+              <caption>What would help</caption>
               <thead>
                 <tr>
                   <th>Change</th>
                   <th>Savings</th>
                   <th>
-                    Change in headroom <small>today's dollars a year</small>
+                    How much more or less you could spend each year after one change
                   </th>
                   <th>Better/Worse</th>
                 </tr>
@@ -243,8 +243,7 @@ function LeverViews({ levers, run }: { levers: Levers; run: Run }) {
         }
       />
       <p className="help">
-        Claiming Social Security later isn't offered: claiming-age rules are not
-        modeled yet.
+        Claiming Social Security later isn't shown yet: Horizon doesn't include the rules for claiming age.
       </p>
     </>
   );
@@ -258,7 +257,7 @@ function Ledger({ run, retirementDate }: { run: Run; retirementDate: string }) {
       name="Year by year"
       chart={
         <figure>
-          <p>Savings at year end · nominal dollars</p>
+          <p>Savings at year end · dollars of each year</p>
           <SavingsDrawing run={run} retirementDate={retirementDate} nominal />
           <SavingsDrawing
             run={run}
@@ -287,17 +286,14 @@ function Ledger({ run, retirementDate }: { run: Run; retirementDate: string }) {
           <FlowDrawing run={run} />
           <FlowDrawing run={run} compact />
           <figcaption>
-            Nominal dollars (the dollars of each year). Paired columns show
-            money in and out; shortfall years have a sunken fill and a dashed
-            shortfall box. The table lists every amount, required distribution
-            and event.
+            Dollars of each year, not today's dollars. Each pair of columns is the money in and out that year; a dashed box is money short. The table lists every amount.
           </figcaption>
         </figure>
       }
       table={
         <ScrollTable label="Year by year">
           <table className="ledger-table">
-            <caption>Year by year, nominal dollars</caption>
+            <caption>Year by year, dollars of each year</caption>
             <thead>
               <tr>
                 {[
@@ -358,6 +354,7 @@ export function Plan({
   exportPlan,
   cache,
   intake = false,
+  answerResult,
 }: {
   sample: { label: string };
   draft: Draft;
@@ -366,6 +363,7 @@ export function Plan({
   exportPlan?: () => void;
   cache?: PlanCache;
   intake?: boolean;
+  answerResult?: AnswersPlanV2;
 }) {
   return (
     <PlanResult
@@ -377,6 +375,7 @@ export function Plan({
       exportPlan={exportPlan}
       cache={cache}
       intake={intake}
+      answerResult={answerResult}
     />
   );
 }
@@ -388,6 +387,7 @@ function PlanResult({
   exportPlan,
   cache,
   intake = false,
+  answerResult,
 }: {
   sample: { label: string };
   draft: Draft;
@@ -396,6 +396,7 @@ function PlanResult({
   exportPlan?: () => void;
   cache?: PlanCache;
   intake?: boolean;
+  answerResult?: AnswersPlanV2;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
   const leversRef = useRef<HTMLDetailsElement>(null);
@@ -472,18 +473,18 @@ function PlanResult({
                   </span>{" "}
                   {statusWord(run.status, run.omissions.length)}
                 </span>{" "}
-                This result leaves some things out.
+
               </div>
               <details>
-                <summary>What this result does not include</summary>
+                <summary>What this result doesn't count</summary>
                 <ul>
                   {run.omissions.map((omission) => (
-                    <li key={omission}>{omission}</li>
+                    <li key={omission}>{plainLeftOut(omission)}</li>
                   ))}
                 </ul>
               </details>
               <p className="help">
-                Results are modeled annual amounts, not predictions.
+                {estimatesNote}
               </p>
             </div>
           ) : (
@@ -491,67 +492,13 @@ function PlanResult({
           )}
         </>
       )}
-      <div className="card plan-answers">
-        <div>
-          <h2>
-            {isRetired || (run && outsidePlan(run, retirementDate))
-              ? "Do your savings last?"
-              : retirement
-                ? `Can you retire at ${retirement.age_on_december_31}?`
-                : "Can you retire when you want?"}
-          </h2>
-          {run && spending ? (
-            <>
-              <p>{answerOne(run, spending, retirementDate)}</p>
-              <small>Spending in today's dollars</small>
-            </>
-          ) : (
-            <Calculating />
-          )}
-        </div>
-        <div>
-          <h2>What can you spend?</h2>
-          {spending && run ? (
-            <p>
-              {!spending.flag && !outsidePlan(run, retirementDate) ? (
-                <>
-                  <strong className="answer-amount">
-                    {formatDollars(spending.sustainable_spending)}
-                  </strong>
-                  {answerTwo(run, spending, retirementDate).slice(
-                    formatDollars(spending.sustainable_spending).length,
-                  )}
-                </>
-              ) : (
-                answerTwo(run, spending, retirementDate)
-              )}
-            </p>
-          ) : (
-            <Calculating />
-          )}
-        </div>
-        <div>
-          <h2>What moves it most?</h2>
-          {levers ? (
-            <p>
-              {answerThree(levers)}{" "}
-              <a
-                href="#plan-levers"
-                onClick={(event) => {
-                  event.preventDefault();
-                  if (leversRef.current) {
-                    leversRef.current.open = true;
-                    leversRef.current.querySelector("summary")?.focus();
-                  }
-                }}
-              >
-                See the levers
-              </a>
-            </p>
-          ) : (
-            <Calculating />
-          )}
-        </div>
+      <div className="card plan-answer">
+        {run && spending ? (followOn(run, spending, retirementDate, answerResult) && <p className="follow-on">{followOn(run, spending, retirementDate, answerResult)}</p>) : <Calculating />}
+        {levers ? movesMost(levers) && <p className="moves-most">{movesMost(levers)}{" "}<a href="#plan-levers" onClick={(event) => {
+          event.preventDefault();
+          if (leversRef.current) { leversRef.current.open = true; leversRef.current.querySelector("summary")?.focus(); }
+        }}>See what would help</a></p> : <Calculating />}
+        {run && <p className="help amounts-note">{amountsNote(run.valuation_date)}</p>}
       </div>
       {run ? (
         <Savings run={run} retirementDate={retirementDate} />
@@ -563,8 +510,8 @@ function PlanResult({
       )}
       <div id="plan-levers">
         <Detail
-          title="Levers"
-          hint={`What moves the answer most · ${levers ? `${levers.ranking.length} changes, ranked` : "Calculating…"}`}
+          title="What would help"
+          hint={`One change at a time · ${levers ? `${levers.ranking.length} changes, ranked` : "Calculating…"}`}
           detailRef={leversRef}
         >
           {levers && run ? (
@@ -574,68 +521,50 @@ function PlanResult({
           )}
         </Detail>
       </div>
+      {run && whyShort(run, retirementDate, answerResult) && <section className="card why-short"><h2>Why savings run short</h2><p>{whyShort(run, retirementDate, answerResult)}</p></section>}
+      <Detail title="Details for experts" hint="Year by year, the arithmetic and the assumptions · dollars of each year">
+<section className="expert-section"><h2>Year by year</h2>
+        {run ? (
+          <Ledger run={run} retirementDate={retirementDate} />
+        ) : (
+          <Calculating />
+        )}
+      </section>
       {run && short && (
-        <Detail
-          title="Why savings run short"
-          hint={`In ${short.year}, at ${short.age_on_december_31}`}
-        >
+<section className="expert-section"><h2>Why savings run short: the arithmetic</h2>
           {spending ? (
             <p>
               {short.year < Number(retirementDate.slice(0, 4)) ? (
                 <>
                   In {short.year}, before retiring, spending is{" "}
-                  {centsDollars(short.ledger.spending.cents)} (nominal).
+                  {centsDollars(short.ledger.spending.cents)} in {short.year} dollars.
                 </>
               ) : (
                 <>
                   After retiring, spending of {formatDollars(spending.entered)}{" "}
-                  a year in today's dollars grows with inflation (
-                  {percentEntry(inflation!.value)}%) to{" "}
-                  {centsDollars(short.ledger.spending.cents)} by {short.year}{" "}
-                  (nominal).
+                  a year in today's dollars rises with prices (
+                  {percentEntry(inflation!.value)}% a year) to{" "}
+                  {centsDollars(short.ledger.spending.cents)} in {short.year} dollars.
                 </>
               )}{" "}
               That year income brings in{" "}
               {centsDollars(short.ledger.income_total.cents)} and savings supply{" "}
               {centsDollars(short.ledger.withdrawals_total.cents)}, leaving{" "}
-              {centsDollars(short.ledger.shortfall.cents)} not covered.
+              {centsDollars(short.ledger.shortfall.cents)} not covered, all in {short.year} dollars.
             </p>
           ) : (
             <Calculating />
           )}
           {distributions && (
             <p>
-              Required distributions from age {distributions.age_on_december_31}{" "}
+              Required withdrawals from age {distributions.age_on_december_31}{" "}
               don't add money; they move it out of the tax-deferred account
               earlier, and it is taxed.
             </p>
           )}
-          <p className="help">
-            Rules used: {run.metadata.rule_set_year} federal tax law for a
-            single filer, projected after {run.metadata.rule_set_year} with
-            tax-threshold indexing · Withdrawal order:{" "}
-            {withdrawalWords[run.withdrawal_order_used]}.
-          </p>
-        </Detail>
+        </section>
       )}
-      <Detail
-        title="Year by year"
-        hint={`Nominal dollars · ${run ? `${run.years.length} years` : "Calculating…"}`}
-      >
-        {run ? (
-          <Ledger run={run} retirementDate={retirementDate} />
-        ) : (
-          <Calculating />
-        )}
-      </Detail>
-      <Detail
-        title="Assumptions"
-        hint={
-          run
-            ? `${run.assumptions_used.length} rates, each with a source`
-            : "Calculating…"
-        }
-      >
+<section className="expert-section"><h2>Assumptions</h2>
         {run ? (
           <>
             <ScrollTable label="Assumptions">
@@ -648,7 +577,7 @@ function PlanResult({
                       Value <small>percent a year</small>
                     </th>
                     <th>Source</th>
-                    <th>From-year</th>
+                    <th>From</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -696,6 +625,8 @@ function PlanResult({
         ) : (
           <Calculating />
         )}
+      </section>
+      {run && <p className="help">Federal tax rules for {run.metadata.rule_set_year} for one person, with tax brackets rising each year after · Withdrawals come from {withdrawalWords[run.withdrawal_order_used]}.</p>}
       </Detail>
       <div className="actions">
         <div>

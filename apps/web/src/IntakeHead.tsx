@@ -5,10 +5,10 @@ import {
   headText,
   neededLabels,
   leftOutText,
-  rangeName,
   startingText,
   answerQuestion,
 } from "./intake-head";
+import { answersCouldChange, plainLeftOut } from "./plain-results";
 import { statusWord } from "./format";
 import type { Place } from "./intake-fields";
 export function IntakeHead({
@@ -16,18 +16,21 @@ export function IntakeHead({
   answers,
   change,
   whatIf = false,
+  savedAnswers = answers,
+  changed = [],
 }: {
   result: AnswersPlanV2;
   answers: AnswersV2;
   change: (place: Place) => void;
   whatIf?: boolean;
+  savedAnswers?: AnswersV2;
+  changed?: string[];
 }) {
   const { headline, lines } = headText(result, answers);
   const count =
     (result.central?.omissions.length ?? 0) + result.left_out.length;
   const starting = startingText(result);
-  const ranges =
-    result.bounds?.ranked.map((item) => rangeName(item.answer, result)) ?? [];
+  const uncertainty = answersCouldChange(result, savedAnswers, changed);
   return (
     <div className="intake-head">
       <p className="eyebrow">Your plan</p>
@@ -107,16 +110,14 @@ export function IntakeHead({
           {count > 0 && (
             <details>
               <summary>
-                {result.status === "complete"
-                  ? "What Horizon doesn't count"
-                  : "What this result leaves out"}
+                What this result doesn't count
               </summary>
               <ul>
                 {result.left_out.map((item) => (
                   <li key={item.answer}>{leftOutText(item)}</li>
                 ))}
                 {result.central.omissions.map((text) => (
-                  <li key={text}>{text}</li>
+                  <li key={text}>{plainLeftOut(text)}</li>
                 ))}
               </ul>
             </details>
@@ -135,30 +136,11 @@ export function IntakeHead({
           </button>
         </section>
       ))}
-      {result.bounds && (
-        <section className="card">
-          <h2>Why this is a range</h2>
-          <p className="range-names">
-            Some of your answers are ranges:{" "}
-            {new Intl.ListFormat("en", {
-              style: "long",
-              type: "conjunction",
-            }).format(ranges)}
-            .
-          </p>
-          <p className="range-narrow">
-            Narrowing {ranges[0]} would narrow the result most.{" "}
-            <button
-              className="link-button"
-              onClick={() =>
-                change(answerQuestion(result.bounds!.ranked[0].answer) as Place)
-              }
-            >
-              Narrow it
-            </button>
-          </p>
-        </section>
-      )}
+      {(uncertainty.ranges.length > 0 || uncertainty.notSure) && <section className="card answers-could-change">
+        <h2>Answers that could change this</h2>
+        {uncertainty.ranges.length > 0 && <ul>{uncertainty.ranges.map((item) => <li key={item.answer}><span>{item.text}</span>{" "}<button className="link-button" onClick={() => change(answerQuestion(item.answer) as Place)}>Narrow it</button></li>)}</ul>}
+        {uncertainty.notSure && <p className="not-sure-line">{uncertainty.notSure}</p>}
+      </section>}
       {!!starting.length && (
         <section className="card starting-values">
           <h2>Starting values Horizon used</h2>
