@@ -197,7 +197,7 @@ among accounts or calculate any financial outcome; the engine does both. Rates
 use the existing decimal-text conversions. No dependencies or CSP changes.
 
 
-## Plain results — 0003-W3 v1.1
+## Plain results — 0003-W3 v1.2
 
 Plan, Compare and Export use today’s dollars, with the valuation year stated.
 The plan opens with its factual headline and one follow-on from sustainable
@@ -213,6 +213,9 @@ there, labelling figures in “dollars of each year”. Compare keeps totals add
 across years and every differing line there; each line’s returned monetary
 value supplies its own dollar-basis label. Four headline measures remain on
 the plain comparison. Export keeps file details and the opening checks there.
+Rejected files show the brief’s plain sentence for the failed format, content,
+engine-version, rerun or readability check; technical error text is not added
+to that plain message.
 Every displayed financial figure comes from the engine; no financial values
 are derived by the interface. Dates use day, month name and year. Comparison
 retirement ages reuse the what-if whole-year age conversion, including leap
