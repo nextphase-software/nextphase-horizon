@@ -33,3 +33,9 @@ Verified on 2026-10-21 against Cloudflare's documentation and Wrangler 4.148.0:
 - The site stays within the Free plan, because static asset requests are free and unlimited.
 - Staging is reproducible: `release.json` carries no timestamp, so the same commit stages identical files.
 - Automated deploys, and making every deploy match a public commit by rule, are left to later decisions.
+
+## Amendment — 2026-10-21: analytics, cookies and third-party scripts
+
+Accepted 2026-10-21.
+
+Item 6's sentence "There are no analytics, cookies or third-party scripts" is removed, following the amendment to [decision 0011](0011-web-shell-stack.md) of the same date. The headers in item 6 stay as they are. A hosting platform that inserts its own script into served pages, such as an analytics beacon, is blocked by the Content Security Policy until a brief allows it.

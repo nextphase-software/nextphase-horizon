@@ -86,3 +86,9 @@ The end-to-end suite runs in **Chromium and WebKit** only, at 375 × 812 and 128
 ## Amendment — 2026-10-20: one exact sum for the what-if panel
 
 Item 5 stands, with one exception for the what-if panel of decision 0019 (item 9). The interface may add the account balances returned in a result's household input, exactly, in whole cents with integer arithmetic, to place the "Savings today" slider and show its starting total. That sum reaches the engine only as a what-if total the person chooses by moving the slider (decision 0019 item 10). No other figure is computed in the interface.
+
+## Amendment — 2026-10-21: analytics, cookies and third-party scripts allowed case by case
+
+Accepted 2026-10-21.
+
+Item 11's "No analytics, cookies or third-party scripts" is removed. Analytics, cookies and third-party scripts may be added, each by a brief that names it, opens the Content Security Policy for exactly what it needs, and updates the tests that check outgoing requests and storage. Until such a brief, the policy is unchanged, so nothing is added. Any script that runs in the page can read what the page stores, including the answers kept on the device under [decision 0018](0018-answers-kept-on-the-device.md); a brief that adds one says so.
