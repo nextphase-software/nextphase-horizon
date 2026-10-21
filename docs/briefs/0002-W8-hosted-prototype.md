@@ -1,4 +1,4 @@
-BRIEF VERSION: 0002-W8 v1 (2026-10-21)
+BRIEF VERSION: 0002-W8 v1.1 (2026-10-21)
 
 # 0002-W8 — Hosted prototype: deploy tooling for Workers static assets
 
@@ -10,6 +10,7 @@ The production build of the web app can be deployed to Cloudflare Workers static
 
 1. **A separate tooling package, `infra/cloud/web/`:**
    - `package.json` (private, `packageManager` pnpm 12.9.1 as in `apps/web/`, `engines.node` as in `apps/web/`) with one dependency, `wrangler` **4.148.0** exactly (MIT OR Apache-2.0), and its own `pnpm-lock.yaml`.
+   - `pnpm-workspace.yaml` declining every dependency install script that pnpm 12 asks about: `allowBuilds:` with `esbuild: false` and `workerd: false` **(v1.1)**. No install script runs; Wrangler uses the platform binaries its packages publish. With this file, `corepack pnpm install --frozen-lockfile` exits 0; without it, pnpm 12.9.1 stops with `ERR_PNPM_IGNORED_BUILDS`. If a later lockfile resolves another package with an install script, that is escalated, not allowed.
    - `wrangler.jsonc`: name `horizon`; a pinned `compatibility_date` of 2026-10-06; `assets.directory` set to the staging folder of deliverable 3; `assets.not_found_handling` `"single-page-application"`; no `main`, no bindings; the custom domain `horizon.nextphase.software` as a route with `custom_domain: true`; `workers_dev: true`.
    - `README.md`: what the folder is, the commands of deliverables 3–5, and that deploying needs the maintainer's own Cloudflare login (`wrangler login`) and the `nextphase.software` zone on that account.
    - An `.assetsignore` is not needed: the staging folder holds only the files of deliverable 3.
