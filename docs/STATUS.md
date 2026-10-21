@@ -19,6 +19,7 @@ This page lists what works today and what is being built now. It is not a promis
 | Engine in the browser | The calculation engine runs inside your browser, in a background worker. | [0002-W1](briefs/0002-W1-web-shell.md) · `52d8e58` |
 | Answer in your own words | Enter your own figures through plain questions in one of three styles, as a figure, a range or "not sure", leave any for later, and keep your answers on your device until you forget them. | [0002-W6](briefs/0002-W6-intake-screens.md) · `2ae5254` |
 | Try what-ifs on your plan | Move sliders for retirement age, spending, savings, Social Security, pension, investment growth and price rises to see your plan again, then reset or keep the change as your answers. | [0002-W7](briefs/0002-W7-what-if-panel.md) · `fd66f49` |
+| Plain results | The plan, comparison and export speak in today's dollars and plain words, open with one clear answer, keep the year-by-year numbers in a details section for experts, and say which of your answers could change the result. | [0003-W3](briefs/0003-W3-plain-results.md) · `a7f0939` |
 
 ### Calculation engine
 
