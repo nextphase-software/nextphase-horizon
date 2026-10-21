@@ -28,7 +28,7 @@ const root = new URL("../../../", import.meta.url);
 function native(...args: string[]) {
   const result = spawnSync(
     "cargo",
-    ["run", "-p", "horizon-cli", "--", ...args],
+    ["run", "--release", "-p", "horizon-cli", "--", ...args],
     { cwd: root, encoding: "utf8", maxBuffer: 16 * 1024 * 1024 },
   );
   expect([0, 3], `${args.join(" ")}: ${result.stderr}`).toContain(

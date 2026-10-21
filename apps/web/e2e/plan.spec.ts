@@ -49,7 +49,7 @@ const samples = [
 function native(command: string, fixture: string) {
   const result = spawnSync(
     "cargo",
-    ["run", "-p", "horizon-cli", "--", command, fixture],
+    ["run", "--release", "-p", "horizon-cli", "--", command, fixture],
     { cwd: root, encoding: "utf8" },
   );
   expect(
