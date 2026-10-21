@@ -17,5 +17,7 @@ Figures are output of `horizon-engine-0.4.0` (`horizon intake`) for synthetic an
 | 9 Results: one more answer needed | [09-results-one-more-answer.png](09-results-one-more-answer.png) |
 | 10 Results: a range | [10-results-range.png](10-results-range.png) |
 | 11 Results: Horizon can't plan for this yet | [11-results-cant-plan.png](11-results-cant-plan.png) |
+| 12 What if: the panel as it opens | [12-what-if-start.png](12-what-if-start.png) |
+| 13 What if: spending changed to $80,000 | [13-what-if-changed.png](13-what-if-changed.png), [13-what-if-changed-phone-light.png](13-what-if-changed-phone-light.png), [13-what-if-changed-desktop-dark.png](13-what-if-changed-desktop-dark.png) |
 
-A screen's brief is the requirement; these references show the intended design. Where they differ, the brief wins and the difference is reported. Not shown, and not part of brief 0002-W6: the what-if panel on the results, and "Show all questions on one page".
+A screen's brief is the requirement; these references show the intended design. Where they differ, the brief wins and the difference is reported. Screens 1–11 are implemented by brief 0002-W6 and screens 12–13 by brief 0002-W7 (the what-if panel). Not shown: "Show all questions on one page".
