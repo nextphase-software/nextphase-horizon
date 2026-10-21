@@ -68,7 +68,7 @@ test("release.json is sorted canonical JSON with one newline and no timestamp", 
 
 test("_headers bytes match decision 0022 exactly", () => {
   assert.equal(headersBytes, "/*\n"
-    + "  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self'; worker-src 'self'; connect-src 'self'; frame-ancestors 'none'\n"
+    + "  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com; style-src 'self'; font-src 'self'; img-src 'self'; worker-src 'self'; connect-src 'self'; frame-ancestors 'none'\n"
     + "  X-Content-Type-Options: nosniff\n"
     + "  Referrer-Policy: no-referrer\n"
     + "  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()\n");

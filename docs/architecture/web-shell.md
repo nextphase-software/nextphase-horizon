@@ -58,11 +58,11 @@ accent outline with 2px offset. Charts have compact drawings and table alternati
 The HTML meta CSP is exactly:
 
 ```text
-default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self'; worker-src 'self'; connect-src 'self'
+default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com; style-src 'self'; font-src 'self'; img-src 'self'; worker-src 'self'; connect-src 'self'
 ```
 
 All resources, including fonts and the worker/WASM assets, are served locally.
-There is no analytics, cookie write or external request in the app. The only stored item is the own-answers intake described below.
+The app itself adds no analytics, cookie write or external request; on the hosted site, the host may insert Cloudflare Web Analytics (decision 0011, amendment of 2026-10-21), which the policy allows. Any script in the page can read what the page stores, including the answers kept on the device. The only stored item is the own-answers intake described below.
 The engine remains a pure local calculation module. No hosted authorization
 surface is introduced. Existing household financial data is never used.
 
@@ -268,13 +268,16 @@ commit stages identical bytes.
 `_headers` applies these exact response headers to `/*`:
 
 ```text
-Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self'; worker-src 'self'; connect-src 'self'; frame-ancestors 'none'
+Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com; style-src 'self'; font-src 'self'; img-src 'self'; worker-src 'self'; connect-src 'self'; frame-ancestors 'none'
 X-Content-Type-Options: nosniff
 Referrer-Policy: no-referrer
 Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
 ```
 
-The HTTP CSP extends the unchanged app meta CSP with `frame-ancestors 'none'`.
+The HTTP CSP extends the app meta CSP with `frame-ancestors 'none'`.
+Both allow `https://static.cloudflareinsights.com` in `script-src` for the
+host-inserted Cloudflare Web Analytics beacon; its same-origin `/cdn-cgi/rum`
+reports are already allowed by `connect-src 'self'`.
 `check` stages, runs `wrangler deploy --dry-run`, and starts local-only
 `wrangler dev` on `127.0.0.1`. It verifies 200 and all four headers on the root,
 release, engine module, font, and an unknown page navigation requested with

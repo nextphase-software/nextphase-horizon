@@ -73,7 +73,7 @@ test("shell: welcome, all five examples, navigation, theme, worker bytes and pri
     page.locator('meta[http-equiv="Content-Security-Policy"]'),
   ).toHaveAttribute(
     "content",
-    "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self'; worker-src 'self'; connect-src 'self'",
+    "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com; style-src 'self'; font-src 'self'; img-src 'self'; worker-src 'self'; connect-src 'self'",
   );
   const original = await page.evaluate(
     () => getComputedStyle(document.documentElement).colorScheme,
