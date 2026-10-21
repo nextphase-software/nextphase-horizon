@@ -918,6 +918,6 @@
  },
  "derived": "2026-10-21",
  "format": "horizon-0003-W3-plain-sentences",
- "source": "horizon run, spend, levers and compare (horizon-engine-0.4.0) on the example households and the household inputs of the 0002-W4, 0002-W5 and 0002-W7 reference results; rules of brief 0003-W3 v1 (with the stage-1 sweep fixes)",
+ "source": "horizon run, spend, levers and compare (horizon-engine-0.4.0) on the example households and the household inputs of the 0002-W4, 0002-W5 and 0002-W7 reference results; rules of brief 0003-W3",
  "version": 1
 }
