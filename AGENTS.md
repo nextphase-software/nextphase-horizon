@@ -49,6 +49,31 @@ Expected versions are `v24.22.0` and `wasm-bindgen-test-runner 0.2.129`.
 The runner version must equal `wasm-bindgen` in Cargo.lock. Node also builds and tests the self-contained web adapter in `apps/web/`;
 there is no new top-level tool configuration.
 
+**Validation tiers.** Run only the tier that matches what the brief changes;
+the brief's Validation section names it. Each tier lists everything that runs.
+
+- **Docs only:** the public boundary check and a link check.
+- **Screen** (only `apps/web/` and `docs/`): `cargo test -p horizon-wasm`, the
+  release WebAssembly build, the web shell commands below, and the end-to-end
+  suite in 4 projects: `chromium-1280-light`, `chromium-375-dark`,
+  `webkit-1280-dark` and `webkit-375-light`.
+- **Toolchain or infra** (package files, Node or pnpm versions, `infra/`): the
+  web shell commands, the end-to-end suite in `chromium-1280-light` and
+  `webkit-375-light`, the WebAssembly parity test, `cargo test --workspace
+  --release`, and the deploy tooling check once.
+- **Engine** (`packages/`, `Cargo.toml`, `Cargo.lock`, `deny.toml`,
+  `rust-toolchain.toml`): `cargo test --workspace --release`, `cargo clippy`,
+  `cargo fmt --check`, `cargo deny check licenses`, both WebAssembly commands,
+  the release levers timing and `intake_v2_timing`; then the web unit tests,
+  typecheck and build, and the end-to-end suite in `chromium-1280-light` and
+  `webkit-375-light`.
+
+`cargo test --workspace --release` covers the filtered `cargo test -p …`
+commands, the debug `cargo test --workspace` run and the per-fixture CLI
+expansions listed below: the CLI suite already compares every command's output
+byte for byte with the application operations. Those are not run separately.
+The full list below stays the reference for what each tier draws from.
+
 Run the full cumulative 0001-W1–W4, 0003-W1 and 0002-W4–W5 validation sequence in order from the workspace root:
 
 ```sh
