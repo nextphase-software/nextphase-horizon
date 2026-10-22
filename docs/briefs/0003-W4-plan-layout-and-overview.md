@@ -1,4 +1,4 @@
-BRIEF VERSION: 0003-W4 v1 (2026-10-21)
+BRIEF VERSION: 0003-W4 v1.1 (2026-10-21)
 
 # 0003-W4 — Plan layout: navigation, headline figures, Overview and a chart-first plan
 
@@ -17,7 +17,7 @@ Throughout:
 - **"Plan screens"** are Overview, Plan, Compare, Summary (the screen that shares and keeps a plan, today's Export screen) and Your answers.
 - **Money** uses the 0002-W6 conversion to whole dollars (half up). The base year is the valuation year.
 - **[The shell figures](0003-W4-shell-figures.json)** holds the expected text. A script made it from the release CLI's `run`, `spend`, `levers` and `intake` output by applying the rules of deliverables 3–6. Its cases are:
-  - the example households, and every lever copy of the four supported ones. A copy is made by applying the lever's JSON Pointer changes, as the engine's scenario operation does.
+  - the example households, and every lever copy of the four supported ones. A copy is made by applying the lever's JSON Pointer changes, as the engine's scenario operation does. A copy's `assumptions_link` is `null`: a copy has no link under "What Horizon assumes" (deliverable 4).
   - every 0002-W4, 0002-W5 and 0002-W7 reference case that shows a plan;
   - four engine fixtures opened as plan files: `B-early-retiree`, `C-partial-base-year-no-taxable`, `D-still-working-rmd-surplus` and `E-senior-2028-loss-carry`;
   - households built inside existing web tests: the first example retiring in 2100, the stubbed cap and exact-spending replies, and the answers saved by `e2e/intake.spec.ts`.
