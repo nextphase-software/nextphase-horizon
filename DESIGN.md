@@ -73,6 +73,7 @@ Light and dark are designed separately; dark is not light inverted. Text pairs m
 - **Widths:** layouts work from 320px wide. Single column below 560px; two columns from 900px. Readable text stays under about 70 characters per line.
 - **Overflow:** the page never scrolls sideways. Wide tables and charts scroll inside their own container.
 - **Themes:** the theme follows `prefers-color-scheme` unless the person chooses one; an explicit choice wins.
+- **Navigation:** plan screens share labelled navigation (Overview, Plan, Compare, Summary, Your answers): a side list from 900px wide and a bar fixed to the bottom below that, the current item marked visibly and with `aria-current`. Labels are always shown, never icons alone. A plan switcher names the plan on screen: "Your plan" or a copy.
 
 ### Financial content
 
@@ -85,13 +86,17 @@ Light and dark are designed separately; dark is not light inverted. Text pairs m
   - whole dollars in summaries;
   - plain screens show money only in today's dollars, stated once per screen with the base year;
   - the dollars of each year, and totals that add dollars from different years, appear only in "Details for experts", labeled "dollars of each year" (decision 0021).
+- **Headline figures:** plan screens keep three figures in today's dollars in view (when savings run short or how long they last, the most you could spend a year, and what is left when the plan ends), always for the plan the switcher names. There are none without a result.
 - **Charts:**
   - the baseline is a solid `color-series-baseline` line and a scenario a dashed `color-series-scenario` line, so the difference never relies on color;
   - every chart is labeled directly and offers the same data as a table.
+  - life events marked on a chart are labelled in words and repeated in its caption; a year chooser works by keyboard and shows only today's-dollar figures on a plain screen.
 - **Input completeness:** a plan from a person’s own figures has its own "Answers that could change this" section: ranges in the engine’s ranking, then answers marked "not sure". Never present it as a probability or score.
+- **Options, not advice:** next steps are options worked out by the engine, one change each, shown with their effect and a way to try them as a copy, and introduced as "options to explore, not advice". No screen says "should", "recommend" or "we suggest".
 
 ### Principles for screens
 
+- **Overview first:** a plan opens on its Overview, the answer and the figures behind it as cards, each leading to the screen with the detail.
 - **Simple by default, detail on demand:** each screen opens with one plain sentence generated from the result, and a picture where one helps. Everything else sits in clearly labeled sections that open on request and work with the keyboard.
 - **Factual headlines:** a headline states the result ("Savings run short at 93, two years before the plan ends"; "Savings last to 95"). It never judges the result or relies on an invented threshold.
 - **Chart view for data tables:** a table whose rows share one unit also offers a chart. The chart is shown first and the table is one click away; every chart keeps its table alternative. Tables that mix units have no chart.
