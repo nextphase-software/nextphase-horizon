@@ -544,3 +544,62 @@ The final focus regression was reproduced before correction (2 failed, 80 unsele
 | `cargo run -p horizon-cli -- intake target/0003-W4-intake/0002-W4/invalid-range-order-before-negative.json` | 1 | invalid |
 | `cargo run -p horizon-cli -- intake target/0003-W4-intake/0002-W4/invalid-retirement-not-after-valuation.json` | 1 | invalid |
 | `cargo run -p horizon-cli -- intake target/0003-W4-intake/0002-W4/left-out-pay.json` | 3 | partial |
+
+### Review round 1 fixes
+
+- Branch: `codex/0003-W4-plan-layout-and-overview`. New source/test tip validated: `2f341059ee96a8a2d80e256355a52da1abf565de`. This record follows that revision; the final branch tip is reported separately in the handoff.
+- F1: `e2e/plan-layout.spec.ts` still reaches the Plan switcher by keyboard and asserts focus. Only macOS WebKit uses `selectOption`; every other platform retains Home/End and Enter. All five switcher changes assert the selected value and retain their screen/banner outcomes.
+- F2: `e2e/compare.spec.ts` records the original input, run and headline before making copies. After returning to Your plan, the latest run request matching the original input must have the original reply, any new run request must use that input, and the Plan headline must equal the original headline. Reusing the saved baseline does not require a new engine request. The assertion no longer reads the first request of the session.
+- F3: only the shell-figure copy flow's comparison-render wait increases from 10 to 30 seconds, within its existing 60-second case limit. Other waits are unchanged.
+- F4: the Compare count has a visually hidden separating space. The layout browser test now requires the exact accessible name `Compare 2 plans`.
+- No dependencies were added. No other product behavior, engine, schema, fixture, reference, golden, dependency configuration or CSP changed. Changes are limited to the four finding locations and this record.
+
+All commands below ran from `apps/web/`. Validation ran on Linux using Node.js `v24.22.0`, corepack `0.36.0` and pnpm `12.9.1`. Node's version was recorded immediately before the build's WebAssembly command. The macOS-only native-select fallback cannot execute on Linux; the Linux Chromium and WebKit runs exercised the retained keyboard path. No browser project or requested validation command was excluded. The earlier cumulative Rust/deploy record remains above; this review round reran the web checks requested for these four fixes.
+
+Preparation: `corepack pnpm exec prettier --write e2e/compare.spec.ts e2e/plan-layout.spec.ts src/shell-figures.test.tsx src/PlanShell.tsx` exited 0 (4 files processed). The first typecheck exposed an unsupported `Array.findLast` lookup; the corrected source uses the existing reverse-and-find pattern without changing the pinned target. The first full browser attempt passed 104 tests and failed all 8 Compare tests because the new assertion incorrectly required a fresh run when returning to the cached baseline. That extra requirement was removed while retaining the requested input, reply and headline checks. The failed attempts and the fresh successful sequence are recorded below. A later `corepack pnpm exec prettier --write e2e/compare.spec.ts` also exited 0 (1 file processed).
+
+| Revision | Command | Exit | Seconds | Observed result |
+| --- | --- | --- | --- | --- |
+| `d18bdb7` | `node --version` | 0 | 0.003 | v24.22.0 |
+| `d18bdb7` | `corepack --version` | 0 | 0.028 | 0.36.0 |
+| `d18bdb7` | `corepack pnpm --version` | 0 | 0.038 | 12.9.1 |
+| `d18bdb7` | `corepack pnpm run typecheck` | 2 | 2.053 | 2 TypeScript diagnostics; corrected before the successful sequence |
+| `63ba7b7` | `node --version` | 0 | 0.003 | v24.22.0 |
+| `63ba7b7` | `corepack --version` | 0 | 0.028 | 0.36.0 |
+| `63ba7b7` | `corepack pnpm --version` | 0 | 0.034 | 12.9.1 |
+| `63ba7b7` | `corepack pnpm run typecheck` | 0 | 1.822 | passed |
+| `63ba7b7` | `corepack pnpm run lint` | 0 | 3.087 | passed |
+| `63ba7b7` | `corepack pnpm run format:check` | 0 | 0.815 | passed |
+| `63ba7b7` | `corepack pnpm test` | 0 | 41.967 | 20 files, 366 tests passed |
+| `63ba7b7` | `corepack pnpm test` | 0 | 43.611 | 20 files, 366 tests passed |
+| `63ba7b7` | `node --version` | 0 | 0.009 | v24.22.0 |
+| `63ba7b7` | `corepack pnpm run build` | 0 | 2.706 | passed |
+| `63ba7b7` | `corepack pnpm exec playwright install chromium webkit` | 0 | 0.378 | passed |
+| `63ba7b7` | `corepack pnpm run e2e` | 1 | 951.245 | 104 passed, 8 failed; incorrect fresh-run requirement corrected |
+| `2f34105` | `node --version` | 0 | 0.002 | v24.22.0 |
+| `2f34105` | `corepack --version` | 0 | 0.025 | 0.36.0 |
+| `2f34105` | `corepack pnpm --version` | 0 | 0.035 | 12.9.1 |
+| `2f34105` | `corepack pnpm run typecheck` | 0 | 2.428 | passed |
+| `2f34105` | `corepack pnpm run lint` | 0 | 2.966 | passed |
+| `2f34105` | `corepack pnpm run format:check` | 0 | 0.81 | passed |
+| `2f34105` | `corepack pnpm test` | 0 | 41.934 | 20 files, 366 tests passed |
+| `2f34105` | `corepack pnpm test` | 0 | 43.247 | 20 files, 366 tests passed |
+| `2f34105` | `node --version` | 0 | 0.012 | v24.22.0 |
+| `2f34105` | `corepack pnpm run build` | 0 | 2.738 | passed |
+| `2f34105` | `corepack pnpm exec playwright install chromium webkit` | 0 | 0.301 | passed |
+| `2f34105` | `corepack pnpm run e2e` | 0 | 1061.643 | 112 passed; 0 failed, 0 flaky, 0 skipped |
+
+Both final full web unit runs passed all 366 tests in 20 files; the two earlier full unit runs also passed 366 tests each. Playwright 1.63.0 ran all 112 tests across 8 projects. Actual browser-version annotations: chromium 153.0.8010.12; webkit 26.6.
+
+| Project | Passed |
+| --- | --- |
+| `chromium-1280-dark` | 14 |
+| `chromium-1280-light` | 14 |
+| `chromium-375-dark` | 14 |
+| `chromium-375-light` | 14 |
+| `webkit-1280-dark` | 14 |
+| `webkit-1280-light` | 14 |
+| `webkit-375-dark` | 14 |
+| `webkit-375-light` | 14 |
+
+The new HTML/JSON Playwright reports and 1824 original PNG screenshots (excluding attachment copies) are saved outside the repository. Every project contains the changed layout captures, including Overview, Plan with its chooser moved, a copy on Overview and Plan, Compare's empty state, Summary and each answer origin. The existing keyboard, axe, responsive, exact CSP and privacy assertions passed. `git diff --check` exited 0 before each fix commit. All three fix commits passed the public-boundary hooks. No required check was skipped.
