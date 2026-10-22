@@ -1,6 +1,6 @@
 # 0010 — Comparison, export and command-line conventions (JSON Pointer change list; line differences by year and path; self-hashing versioned export; four subcommands; WebAssembly parity by committed golden outputs under Node.js 24.22.0)
 
-- Status: Accepted
+- Status: Accepted (amendment accepted 2026-10-22)
 - Date: 2026-10-17
 - Related: [0007](0007-rust-core-typescript-shell.md) — the application operations and command line this defines, and its amendment placing WebAssembly parity under Node.js; [0003](0003-money-and-time-conventions.md) — dollar bases that are never mixed; [0009](0009-federal-tax-computation-conventions.md) — the run being compared and exported.
 
@@ -90,3 +90,9 @@ Verified on 2026-10-17:
 - `wasm-bindgen-test` is the only new crate, and it is test-only. Node.js and `wasm-bindgen-cli` are tools, not dependencies.
 - An export made by another model version does not import; migrating exports is a later feature.
 - **Security:** an export is not authenticated. The content hash detects edits, but anyone who changes an export can recompute it. Import must never be described as tamper-proof. Signed exports belong with hosted accounts.
+
+## Amendment — 2026-10-22: WebAssembly runner on Node.js 26
+
+Accepted 2026-10-22.
+
+The WebAssembly parity runner now runs under Node.js 26.11.1 instead of 24.22.0 ([decision 0011, amendment of 2026-10-22](0011-web-shell-stack.md)). Everything else in this record stands.

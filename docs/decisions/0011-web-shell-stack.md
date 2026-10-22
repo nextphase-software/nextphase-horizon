@@ -92,3 +92,24 @@ Item 5 stands, with one exception for the what-if panel of decision 0019 (item 9
 Accepted 2026-10-21.
 
 Item 11's "No analytics, cookies or third-party scripts" is removed. Analytics, cookies and third-party scripts may be added, each by a brief that names it, opens the Content Security Policy for exactly what it needs, and updates the tests that check outgoing requests and storage. Until such a brief, the policy is unchanged, so nothing is added. Any script that runs in the page can read what the page stores, including the answers kept on the device under [decision 0018](0018-answers-kept-on-the-device.md); a brief that adds one says so.
+
+## Amendment — 2026-10-22: Node.js 26 and plain pnpm
+
+Accepted 2026-10-22.
+
+Node.js 24 entered maintenance on 20 October 2026, so it now receives critical fixes only. Node.js 26 becomes the long-term-support line on 28 October 2026 ([Node.js release schedule](https://github.com/nodejs/Release/blob/main/schedule.json), retrieved 2026-10-22). Node.js 25 and later no longer include corepack, the tool the validation commands used to run pnpm.
+
+1. **Node.js 26.11.1** replaces 24.22.0:
+   - `engines.node` in `apps/web` and `infra/cloud/web`;
+   - the validation instructions;
+   - the WebAssembly parity runner.
+
+   It is the newest 26.x release at least 14 days old on 22 October 2026, following item 12's age rule.
+2. **pnpm 12.9.1 runs as `pnpm`,** installed once for the Node.js in use. `packageManager: pnpm@12.9.1` stays. pnpm 11 and later run the declared version when a different one is invoked (the `pmOnFail` setting, default `download`; [pnpm settings](https://pnpm.io/settings/cli), retrieved 2026-10-22), so the pin holds without corepack. Every `corepack pnpm …` command becomes `pnpm …`.
+3. **Checked before adoption,** on Node.js 26.11.1:
+   - the web shell sequence, the WebAssembly parity tests and the deploy tooling checks pass;
+   - the end-to-end projects that were run pass, and every end-to-end failure seen also happens on Node.js 24.22.0;
+   - both lockfiles are unchanged.
+
+   The full suite, in all eight projects, runs in the brief that makes the change.
+4. **A later toolchain change** moves to the first Node.js 26 long-term-support release once it is 14 days old.
