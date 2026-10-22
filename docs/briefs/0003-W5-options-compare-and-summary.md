@@ -1,4 +1,4 @@
-BRIEF VERSION: 0003-W5 v1 (2026-10-22)
+BRIEF VERSION: 0003-W5 v1.1 (2026-10-22)
 
 # 0003-W5 — Options, side-by-side compare and a printable summary
 
@@ -92,6 +92,7 @@ Throughout:
    - **Card after the tabs:** h2 "Your plans side by side · {n+1} plans", then a key naming each plan with its line style. Then one chart of `total_closing_today` by age, drawn as wide and compact versions like the other charts:
      - your plan: solid `color-series-baseline`;
      - copies: `color-series-scenario`, the same blue for every copy, told apart by dashed, dotted and dash-dot lines and the key, in the order made. No new colour tokens.
+     - **More than three copies:** the chart and its key show your plan and the three most recent copies, oldest of the three first (dashed, dotted, dash-dot). Under the key, a line reads "The chart shows your plan and the 3 most recent copies. Every copy is in the table and the tabs." The table, the tabs and the h1 and h2 counts include every copy.
    - **Figcaption:** "Total savings at the end of each year, in today's dollars. Solid: your plan; dashed, dotted and dash-dot: copies, in the order of the key."
    - **Table** (`ScrollTable`; caption "Your plans side by side", visually hidden):
      - columns "Measure", "Your plan", then each copy's name;
