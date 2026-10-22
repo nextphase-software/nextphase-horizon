@@ -280,9 +280,9 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       if (first) {
         await openPlan(item.sample);
         const actual = await probe();
-        const originalRequest = actual.requests.findLast(
-          (request) => request.op === "run",
-        )!;
+        const originalRequest = [...actual.requests]
+          .reverse()
+          .find((request) => request.op === "run")!;
         originalInput = originalRequest.args[0];
         originalRun = actual.replies[originalRequest.id];
         originalHeadline = (await page
