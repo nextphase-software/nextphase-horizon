@@ -1,6 +1,6 @@
 # 0023 — Plan app layout (labelled navigation with a plan switcher and three headline figures; Overview first; a chart-first plan with life events in words and a year chooser; next steps as options, not advice; delivered in three builds)
 
-- Status: Accepted
+- Status: Accepted (amendment accepted 2026-10-22)
 - Date: 2026-10-21
 - Related:
   - [0021](0021-plain-results.md) — today's dollars on plain screens and one experts layer. The year chooser and the first-year money card show only today's-dollar figures.
@@ -81,3 +81,16 @@ Verified on 2026-10-21 at `ae6c658`, over every example household, every one-cha
   - one-off events;
   - new savings while working;
   - couples.
+
+## Amendment — 2026-10-22: the printed summary and the spend-to-last copy
+
+Accepted 2026-10-22.
+
+1. **Printed summary.** In item 8, "a printable one-page summary" becomes "a printable summary".
+   - It fits on one page when it can, and continues on a second page only when there is more to show (several copies, ranges, answers marked not sure).
+   - The answer and the options always print on the first page.
+2. **The spend-to-last copy.** The engine returns the most a person could spend in retirement (`sustainable_spending`, whole dollars, today's dollars), but it has no lever for that change.
+   - The option "Spend {amount} a year in retirement" makes its copy with one change: `/household/spending/after_retirement/cents` set to `sustainable_spending × 100`.
+   - The engine then runs the copy like any other: scenario, compare and sustainable spending.
+   - Writing whole dollars as cents is an exact change of unit, not a calculation, so decision 0011 item 5 stands.
+   - In every reference case where the option is offered ([0003-W5-options.json](../briefs/0003-W5-options.json)), the copy lasts to the plan end, and its sustainable spending reports exactly enough.

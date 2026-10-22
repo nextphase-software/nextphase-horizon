@@ -1,0 +1,7132 @@
+{
+ "cases": {
+  "0002-W4/already-retired": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "spend_to_last": {
+     "name": "Spend $87,061 a year",
+     "subject": "Spending $87,061 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $37,061 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $87,061 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 8706100
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$2,005,843 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings last to 95, with $32,810 a year to spare.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $41,381 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $37,061 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $87,061 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 8706100
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$2,005,843 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/left-out-pay": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "spend_to_last": {
+     "name": "Spend $46,693 a year",
+     "subject": "Spending $46,693 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $20,307 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $46,693 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 4669300
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 76.",
+     "If returns were 6% a year instead of 5%: savings run short at 80."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $20,307 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $46,693 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 4669300
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/left-out-pay-and-spending-now": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $61,481 a year",
+     "subject": "Spending $61,481 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $5,519 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $61,481 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6148100
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 93 instead of 90.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 86.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $980 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $5,519 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $61,481 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6148100
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 93 instead of 90.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/left-out-pension": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/left-out-social-security": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $41,924 a year",
+     "subject": "Spending $41,924 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $25,076 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $41,924 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 4192400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 83 instead of 81.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 79.",
+     "If returns were 6% a year instead of 5%: savings run short at 84."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $25,076 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $41,924 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 4192400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 83 instead of 81.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/left-out-spending-now": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_earlier": {
+     "name": "Retire at 65",
+     "subject": "Retiring at 65"
+    },
+    "spend_to_last": {
+     "name": "Spend $80,447 a year",
+     "subject": "Spending $80,447 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $13,447 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $80,447 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 8044700
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings still last to 95, with $6,629 a year to spare.",
+      "mark": "",
+      "title": "Retire a year earlier, at 65",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2030-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2030-03-10"
+        }
+       ],
+       "id": "retire_earlier"
+      }
+     },
+     {
+      "effect": "$657,627 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings last to 95, with $5,250 a year to spare.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $22,437 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $13,447 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $80,447 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 8044700
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings still last to 95, with $6,629 a year to spare.",
+      "mark": "",
+      "title": "Retire a year earlier, at 65",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2030-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2030-03-10"
+        }
+       ],
+       "id": "retire_earlier"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/monthly-and-leap-birthday": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 64",
+     "subject": "Retiring at 64"
+    },
+    "spend_to_last": {
+     "name": "Spend $53,952 a year",
+     "subject": "Spending $53,952 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $6,048 a year less than the $60,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $53,952 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 5395200
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 91 instead of 87.",
+      "mark": "△",
+      "title": "Retire a year later, at 64",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2028-02-28"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2028-02-28"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 84.",
+     "If returns were 6% a year instead of 5%: savings run short at 93."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $6,048 a year less than the $60,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $53,952 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 5395200
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 91 instead of 87.",
+      "mark": "△",
+      "title": "Retire a year later, at 64",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2028-02-28"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2028-02-28"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/monthly-range-odd": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $63,935 a year",
+     "subject": "Spending $63,935 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures at the middle of your ranges. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $3,065 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $63,935 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6393500
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $429 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $3,632 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $3,065 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $63,935 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6393500
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $429 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/no-savings": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $28,232 a year",
+     "subject": "Spending $28,232 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $38,768 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $28,232 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 2823200
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 69 instead of 67.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 67.",
+     "If returns were 6% a year instead of 5%: savings run short at 67."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $38,768 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $28,232 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 2823200
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 69 instead of 67.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/pension-later-rises-not-sure": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/pension-later-rises-yes": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/range-one-savings": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures at the middle of your ranges. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/range-same-as-now": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures at the middle of your ranges. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $2,994 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$131,457 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 92.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $9,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $2,994 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$131,457 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/range-two": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures at the middle of your ranges. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/starting-values": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $54,378 a year",
+     "subject": "Spending $54,378 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $12,622 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $54,378 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 5437800
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 86 instead of 83.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 81.",
+     "If returns were 6% a year instead of 5%: savings run short at 86."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $12,622 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $54,378 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 5437800
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 86 instead of 83.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/unused-pay-when-retired": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "spend_to_last": {
+     "name": "Spend $87,061 a year",
+     "subject": "Spending $87,061 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $37,061 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $87,061 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 8706100
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$2,005,843 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings last to 95, with $32,810 a year to spare.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $41,381 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $37,061 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $87,061 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 8706100
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$2,005,843 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/unused-social-security-amount": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $41,924 a year",
+     "subject": "Spending $41,924 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $25,076 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $41,924 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 4192400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 83 instead of 81.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 79.",
+     "If returns were 6% a year instead of 5%: savings run short at 84."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $25,076 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $41,924 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 4192400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 83 instead of 81.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W4/working-complete": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v1-working-complete-unchanged": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-age-instead-of-date": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $66,003 a year",
+     "subject": "Spending $66,003 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $997 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $66,003 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6600300
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $2,605 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2033-01-01"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2033-01-01"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 89.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $6,213 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $997 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $66,003 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6600300
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $2,605 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2033-01-01"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2033-01-01"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-age-leap-valuation": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,862 a year",
+     "subject": "Spending $64,862 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,138 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,862 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6486200
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,637 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2034-02-28"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2034-02-28"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,749 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,138 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,862 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6486200
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,637 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2034-02-28"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2034-02-28"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-range-nothing-solved": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures at the middle of your ranges. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-solve-retirement": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-solve-retirement-unreachable": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-solve-retirement-with-range": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-solve-savings": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-solve-savings-none-needed": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-solve-savings-retired": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-solve-savings-unreachable": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-solve-savings-with-range": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-solve-spending": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-solve-spending-same-as-now-missing": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-solve-spending-shortfall-at-zero": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-what-if-savings-total": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_earlier": {
+     "name": "Retire at 65",
+     "subject": "Retiring at 65"
+    },
+    "spend_to_last": {
+     "name": "Spend $76,477 a year",
+     "subject": "Spending $76,477 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $9,477 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $76,477 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 7647700
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings still last to 95, with $5,671 a year to spare.",
+      "mark": "",
+      "title": "Retire a year earlier, at 65",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2030-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2030-03-10"
+        }
+       ],
+       "id": "retire_earlier"
+      }
+     },
+     {
+      "effect": "$488,307 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings last to 95, with $1,758 a year to spare.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $18,167 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $9,477 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $76,477 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 7647700
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings still last to 95, with $5,671 a year to spare.",
+      "mark": "",
+      "title": "Retire a year earlier, at 65",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2030-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2030-03-10"
+        }
+       ],
+       "id": "retire_earlier"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-what-if-savings-total-fills-savings": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $55,156 a year",
+     "subject": "Spending $55,156 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $11,844 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $55,156 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 5515600
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 88 instead of 84.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 82.",
+     "If returns were 6% a year instead of 5%: savings run short at 88."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $11,844 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $55,156 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 5515600
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 88 instead of 84.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-what-if-total-with-range": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $57,603 a year",
+     "subject": "Spending $57,603 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $9,397 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $57,603 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 5760300
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 90 instead of 87.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 83.",
+     "If returns were 6% a year instead of 5%: savings run short at 91."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $9,397 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $57,603 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 5760300
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 90 instead of 87.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W5/v2-working-complete": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W7/growth-6-prices-3": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "spend_to_last": {
+     "name": "Spend $67,723 a year",
+     "subject": "Spending $67,723 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $723 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $67,723 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6772300
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$36,715 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 5% a year instead of 6%: savings run short at 90.",
+     "If returns were 7% a year instead of 6%: savings last to 95, with $7,766 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $723 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $67,723 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6772300
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$36,715 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W7/ranged-spending-70000": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures at the middle of your ranges. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $5,006 a year less than the $70,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 94 instead of 91.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 86.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $1,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $5,006 a year less than the $70,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 94 instead of 91.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W7/retire-at-70": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_earlier": {
+     "name": "Retire at 69",
+     "subject": "Retiring at 69"
+    },
+    "spend_to_last": {
+     "name": "Spend $80,466 a year",
+     "subject": "Spending $80,466 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $13,466 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $80,466 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 8046600
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings still last to 95, with $9,238 a year to spare.",
+      "mark": "",
+      "title": "Retire a year earlier, at 69",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2034-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2034-03-10"
+        }
+       ],
+       "id": "retire_earlier"
+      }
+     },
+     {
+      "effect": "$552,049 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings last to 95, with $4,488 a year to spare.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $23,578 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $13,466 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $80,466 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 8046600
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings still last to 95, with $9,238 a year to spare.",
+      "mark": "",
+      "title": "Retire a year earlier, at 69",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2034-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2034-03-10"
+        }
+       ],
+       "id": "retire_earlier"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W7/savings-total-1000000": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_earlier": {
+     "name": "Retire at 65",
+     "subject": "Retiring at 65"
+    },
+    "spend_to_last": {
+     "name": "Spend $76,477 a year",
+     "subject": "Spending $76,477 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $9,477 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $76,477 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 7647700
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings still last to 95, with $5,671 a year to spare.",
+      "mark": "",
+      "title": "Retire a year earlier, at 65",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2030-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2030-03-10"
+        }
+       ],
+       "id": "retire_earlier"
+      }
+     },
+     {
+      "effect": "$488,307 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings last to 95, with $1,758 a year to spare.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $18,167 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $9,477 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $76,477 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 7647700
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings still last to 95, with $5,671 a year to spare.",
+      "mark": "",
+      "title": "Retire a year earlier, at 65",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2030-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2030-03-10"
+        }
+       ],
+       "id": "retire_earlier"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W7/social-security-70-33000": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $66,754 a year",
+     "subject": "Spending $66,754 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $246 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $66,754 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6675400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $3,478 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 89.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $6,009 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $246 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $66,754 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6675400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $3,478 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W7/spending-80000": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $15,006 a year less than the $80,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 87 instead of 84.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 82.",
+     "If returns were 6% a year instead of 5%: savings run short at 88."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $15,006 a year less than the $80,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 87 instead of 84.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W7/start": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "0002-W7/worked-out-savings-then-total-600000": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $60,489 a year",
+     "subject": "Spending $60,489 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $6,511 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $60,489 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6048900
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 93 instead of 89.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 85.",
+     "If returns were 6% a year instead of 5%: savings run short at 95."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $6,511 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $60,489 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6048900
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings run short later, at 93 instead of 89.",
+      "mark": "△",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ],
+     [
+      "Change an answer. Your answers stay on this device.",
+      "Change your answers"
+     ]
+    ]
+   }
+  },
+  "copy/A-drawdown/return_higher": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/A-drawdown/return_lower": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/A-drawdown/spend_higher": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/A-drawdown/spend_lower": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/A-drawdown/spend_to_last": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-underfunded/retire_earlier": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-underfunded/retire_later": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-underfunded/return_higher": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-underfunded/return_lower": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-underfunded/spend_higher": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-underfunded/spend_lower": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-working-61/retire_earlier": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-working-61/retire_later": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-working-61/return_higher": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-working-61/return_lower": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-working-61/spend_higher": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-working-61/spend_lower": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/answers-working-61/spend_to_last": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/synthetic-retired/return_higher": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/synthetic-retired/return_lower": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/synthetic-retired/spend_higher": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/synthetic-retired/spend_lower": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "copy/synthetic-retired/spend_to_last": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "example/A-drawdown": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "spend_to_last": {
+     "name": "Spend $43,690 a year",
+     "subject": "Spending $43,690 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 78. That's $16,310 a year less than the $60,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $43,690 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 4369000
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 76.",
+     "If returns were 6% a year instead of 5%: savings run short at 76."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 78. That's $16,310 a year less than the $60,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $43,690 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 4369000
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     }
+    ],
+    "none": null
+   },
+   "side_by_side": null,
+   "side_by_side_with_returns": {
+    "columns": [
+     "Your plan",
+     "Spend $43,690 a year",
+     "Returns at 4%"
+    ],
+    "h1": "Your plan and 2 copies, side by side",
+    "heading": "Your plans side by side · 3 plans",
+    "note": "Amounts are in today's dollars (2026 dollars). Each copy is one change to your plan.",
+    "rows": [
+     [
+      "Savings",
+      null,
+      "run short at 76",
+      "last to 78",
+      "run short at 76"
+     ],
+     [
+      "Most you could spend",
+      "a year",
+      "$43,690",
+      "$43,690",
+      "$43,178"
+     ],
+     [
+      "Against your planned spending",
+      "a year",
+      "$16,310 short",
+      "exactly enough",
+      "$16,822 short"
+     ],
+     [
+      "Left at 78",
+      null,
+      "less than $1",
+      "$496",
+      "less than $1"
+     ]
+    ]
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "example/answers-underfunded": {
+   "answer_link": "See your options",
+   "copy_names": {},
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [],
+    "none": "None of the changes Horizon can try fixes this on its own. Savings run short at 61, before you retire, so a later retirement or lower retirement spending can't reach it.",
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 61.",
+     "If returns were 6% a year instead of 5%: savings run short at 61."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [],
+    "none": "None of the changes Horizon can try fixes this on its own. Savings run short at 61, before you retire, so a later retirement or lower retirement spending can't reach it."
+   },
+   "side_by_side": null,
+   "side_by_side_with_returns": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "example/answers-working-61": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_later": {
+     "name": "Retire at 67",
+     "subject": "Retiring at 67"
+    },
+    "spend_to_last": {
+     "name": "Spend $64,994 a year",
+     "subject": "Spending $64,994 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Ways to make your savings last",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Ways to make your savings last",
+    "items": [
+     {
+      "effect": "Savings last to 95. That's $2,006 a year less than the $67,000 you plan.",
+      "mark": "✓",
+      "title": "Spend $64,994 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 6499400
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings last to 95, with $1,616 a year to spare.",
+      "mark": "✓",
+      "title": "Retire a year later, at 67",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2032-03-10"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2032-03-10"
+        }
+       ],
+       "id": "retire_later"
+      }
+     }
+    ],
+    "none": null
+   },
+   "side_by_side": {
+    "columns": [
+     "Your plan",
+     "Spend $64,994 a year",
+     "Retire at 67"
+    ],
+    "h1": "Your plan and 2 copies, side by side",
+    "heading": "Your plans side by side · 3 plans",
+    "note": "Amounts are in today's dollars (2026 dollars). Each copy is one change to your plan.",
+    "rows": [
+     [
+      "Savings",
+      null,
+      "run short at 93",
+      "last to 95",
+      "last to 95"
+     ],
+     [
+      "Most you could spend",
+      "a year",
+      "$64,994",
+      "$64,994",
+      "$68,616"
+     ],
+     [
+      "Against your planned spending",
+      "a year",
+      "$2,006 short",
+      "exactly enough",
+      "$1,616 to spare"
+     ],
+     [
+      "Left at 95",
+      null,
+      "less than $1",
+      "$982",
+      "$75,045"
+     ]
+    ]
+   },
+   "side_by_side_with_returns": {
+    "columns": [
+     "Your plan",
+     "Spend $64,994 a year",
+     "Retire at 67",
+     "Returns at 4%"
+    ],
+    "h1": "Your plan and 3 copies, side by side",
+    "heading": "Your plans side by side · 4 plans",
+    "note": "Amounts are in today's dollars (2026 dollars). Each copy is one change to your plan.",
+    "rows": [
+     [
+      "Savings",
+      null,
+      "run short at 93",
+      "last to 95",
+      "last to 95",
+      "run short at 88"
+     ],
+     [
+      "Most you could spend",
+      "a year",
+      "$64,994",
+      "$64,994",
+      "$68,616",
+      "$58,658"
+     ],
+     [
+      "Against your planned spending",
+      "a year",
+      "$2,006 short",
+      "exactly enough",
+      "$1,616 to spare",
+      "$8,342 short"
+     ],
+     [
+      "Left at 95",
+      null,
+      "less than $1",
+      "$982",
+      "$75,045",
+      "$0"
+     ]
+    ]
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "example/synthetic-retired": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "spend_to_last": {
+     "name": "Spend $87,061 a year",
+     "subject": "Spending $87,061 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $37,061 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $87,061 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 8706100
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$2,005,843 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings last to 95, with $32,810 a year to spare.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $41,381 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 95, but only just. That's $37,061 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $87,061 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 8706100
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$2,005,843 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "none": null
+   },
+   "side_by_side": null,
+   "side_by_side_with_returns": {
+    "columns": [
+     "Your plan",
+     "Spend $87,061 a year",
+     "Returns at 4%"
+    ],
+    "h1": "Your plan and 2 copies, side by side",
+    "heading": "Your plans side by side · 3 plans",
+    "note": "Amounts are in today's dollars (2026 dollars). Each copy is one change to your plan.",
+    "rows": [
+     [
+      "Savings",
+      null,
+      "last to 95",
+      "last to 95",
+      "last to 95"
+     ],
+     [
+      "Most you could spend",
+      "a year",
+      "$87,061",
+      "$87,061",
+      "$82,810"
+     ],
+     [
+      "Against your planned spending",
+      "a year",
+      "$37,061 to spare",
+      "exactly enough",
+      "$32,810 to spare"
+     ],
+     [
+      "Left at 95",
+      null,
+      "$2,005,843",
+      "$1,143",
+      "$1,533,425"
+     ]
+    ]
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "example/two-person": {
+   "shown": "unsupported"
+  },
+  "file/B-early-retiree": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "spend_to_last": {
+     "name": "Spend $104,243 a year",
+     "subject": "Spending $104,243 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 55, but only just. That's $34,243 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $104,243 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 10424300
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$187,061 would be left at 55, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings last to 55, with $31,745 a year to spare.",
+     "If returns were 6% a year instead of 5%: savings last to 55, with $36,770 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 55, but only just. That's $34,243 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $104,243 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 10424300
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$187,061 would be left at 55, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "file/C-partial-base-year-no-taxable": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_earlier": {
+     "name": "Retire at 63",
+     "subject": "Retiring at 63"
+    },
+    "spend_to_last": {
+     "name": "Spend $113,728 a year",
+     "subject": "Spending $113,728 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 65, but only just. That's $48,728 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $113,728 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 11372800
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings still last to 65, with $7,250 a year to spare.",
+      "mark": "",
+      "title": "Retire a year earlier, at 63",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2027-03-01"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2027-03-01"
+        }
+       ],
+       "id": "retire_earlier"
+      }
+     },
+     {
+      "effect": "$106,185 would be left at 65, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 3% a year instead of 4%: savings last to 65, with $46,926 a year to spare.",
+     "If returns were 5% a year instead of 4%: savings last to 65, with $50,552 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 65, but only just. That's $48,728 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $113,728 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 11372800
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings still last to 65, with $7,250 a year to spare.",
+      "mark": "",
+      "title": "Retire a year earlier, at 63",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2027-03-01"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2027-03-01"
+        }
+       ],
+       "id": "retire_earlier"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "file/D-still-working-rmd-surplus": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "retire_earlier": {
+     "name": "Retire at 74",
+     "subject": "Retiring at 74"
+    },
+    "spend_to_last": {
+     "name": "Spend $185,347 a year",
+     "subject": "Spending $185,347 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 76, but only just. That's $125,347 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $185,347 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 18534700
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings still last to 76, with $60,942 a year to spare.",
+      "mark": "",
+      "title": "Retire a year earlier, at 74",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2026-07-01"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2026-07-01"
+        }
+       ],
+       "id": "retire_earlier"
+      }
+     },
+     {
+      "effect": "$243,998 would be left at 76, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings last to 76, with $123,028 a year to spare.",
+     "If returns were 6% a year instead of 5%: savings last to 76, with $127,682 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 76, but only just. That's $125,347 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $185,347 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 18534700
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "Savings still last to 76, with $60,942 a year to spare.",
+      "mark": "",
+      "title": "Retire a year earlier, at 74",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/persons/0/retirement_date",
+         "value": "2026-07-01"
+        },
+        {
+         "path": "/household/income/wages/0/end_date",
+         "value": "2026-07-01"
+        }
+       ],
+       "id": "retire_earlier"
+      }
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "file/E-senior-2028-loss-carry": {
+   "answer_link": "See your options",
+   "copy_names": {
+    "spend_to_last": {
+     "name": "Spend $147,335 a year",
+     "subject": "Spending $147,335 a year in retirement"
+    }
+   },
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "Savings would still last to 72, but only just. That's $77,335 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $147,335 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 14733500
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$506,483 would be left at 72, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 3% a year instead of 4%: savings last to 72, with $75,165 a year to spare.",
+     "If returns were 5% a year instead of 4%: savings last to 72, with $79,520 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "Savings would still last to 72, but only just. That's $77,335 a year more than you plan.",
+      "mark": "",
+      "title": "Spend up to $147,335 a year in retirement",
+      "try": {
+       "changes": [
+        {
+         "path": "/household/spending/after_retirement/cents",
+         "value": 14733500
+        }
+       ],
+       "id": "spend_to_last"
+      }
+     },
+     {
+      "effect": "$506,483 would be left at 72, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "test/plain-results-cap": {
+   "answer_link": "See your options",
+   "copy_names": {},
+   "options": {
+    "heading": "Your savings last. Ways to use the room",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "You could spend at least $10,000,000 a year and savings would still last to 95.",
+      "mark": "",
+      "title": "Spend more in retirement",
+      "try": null
+     },
+     {
+      "effect": "$1 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your savings last. Ways to use the room",
+    "items": [
+     {
+      "effect": "You could spend at least $10,000,000 a year and savings would still last to 95.",
+      "mark": "",
+      "title": "Spend more in retirement",
+      "try": null
+     },
+     {
+      "effect": "$1 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "test/plain-results-exact": {
+   "answer_link": "See your options",
+   "copy_names": {},
+   "options": {
+    "heading": "Your plan spends exactly what your savings can carry",
+    "intro": "Each is one change, worked out by Horizon from your figures. They are options to explore, not advice.",
+    "items": [
+     {
+      "effect": "$1 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "returns": [
+     "If returns were 4% a year instead of 5%: savings run short at 88.",
+     "If returns were 6% a year instead of 5%: savings last to 95, with $4,743 a year to spare."
+    ],
+    "returns_heading": "What you can't choose: investment returns"
+   },
+   "overview_options": {
+    "footer": [
+     "They are options to explore, not advice.",
+     "See all options"
+    ],
+    "heading": "Your plan spends exactly what your savings can carry",
+    "items": [
+     {
+      "effect": "$1 would be left at 95, in today's dollars.",
+      "mark": "",
+      "title": "Keep your plan as it is",
+      "try": null
+     }
+    ],
+    "none": null
+   },
+   "what_next": {
+    "overview": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Try an option. Each opens as a copy; your plan stays as it is.",
+      "See the options"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try an option first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  },
+  "test/plain-results-outside": {
+   "answer_link": null,
+   "copy_names": {},
+   "options": null,
+   "overview_options": null,
+   "what_next": {
+    "overview": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "See each year. The chart marks what happens when; choose a year to see its numbers.",
+      "Open the plan"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ],
+    "plan": [
+     [
+      "Try a change. It opens as a copy; your plan stays as it is.",
+      "Try a change"
+     ],
+     [
+      "Compare your plans side by side.",
+      "Try a change first."
+     ],
+     [
+      "Keep a summary. Print it, save it as a PDF or keep a file Horizon can reopen.",
+      "Get the summary"
+     ]
+    ]
+   }
+  }
+ },
+ "derived": "2026-10-22",
+ "format": "horizon-0003-W5-options",
+ "source": "horizon run, spend, levers and intake (horizon-engine-0.4.0) on the example households, their lever copies and spend-to-last copies, four lettered fixtures opened as files, the household inputs of the 0002-W4, 0002-W5 and 0002-W7 reference results and households built inside existing web tests; rules of brief 0003-W5",
+ "version": 1
+}
