@@ -33,9 +33,9 @@ late replies after navigation or newer answers.
 
 ## Page and tokens
 
-Welcome offers own figures and five invented example households. Examples open
-on the plan screen, with Plan, Compare and Export navigation. Own figures
-use Your answers, Plan, Compare and Export. Coverage appears only after a result:
+Welcome offers own figures and five invented example households. Plans open
+on Overview and share Overview, Plan, Compare, Summary and Your answers
+navigation, plus a plan switcher. Coverage appears only after a result:
 "✓ Covers your situation", "△ Leaves out N things" or "! Horizon can't plan for
 this yet". Invented figures say "Example household — invented figures". Error
 results show their reason without successful figures.
@@ -200,17 +200,19 @@ use the existing decimal-text conversions. No dependencies or CSP changes.
 
 ## Plain results — 0003-W3 v1.2
 
-Plan, Compare and Export use today’s dollars, with the valuation year stated.
-The plan opens with its factual headline and one follow-on from sustainable
-spending, then what moves it most. Worked-out answers retain the intake head
+Overview, Plan, Compare and Summary use today’s dollars, with the valuation year
+stated. Overview shows the factual headline and an answer card with one follow-on
+from sustainable spending, then what moves it most. Plan puts the savings chart
+before that answer card. Worked-out answers retain the intake head
 and have no spending follow-on. Ranged plans introduce the central follow-on
 with “At the middle of your ranges”. The plain shortfall explanation names
 only the first shortfall year and its returned `shortfall_today` value; an
 unreachable worked-out answer keeps that explanation inside the experts layer.
 
-Each screen has one closed, keyboard-operable “Details for experts” section.
-The plan keeps its yearly chart/table, shortfall arithmetic and assumptions
-there, labelling figures in “dollars of each year”. Compare keeps totals added
+Plan, Compare and Summary each have one closed, keyboard-operable “Details for
+experts” section. The plan keeps its yearly ledger chart/table, shortfall
+arithmetic and assumptions there, labelling figures in “dollars of each year”.
+Compare keeps totals added
 across years and every differing line there; each line’s returned monetary
 value supplies its own dollar-basis label. Four headline measures remain on
 the plain comparison. Export keeps file details and the opening checks there.

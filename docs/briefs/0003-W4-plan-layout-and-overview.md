@@ -230,3 +230,317 @@ Record `node --version`, `corepack pnpm --version`, the Playwright browser versi
 ## Implementation record
 
 Appended by the implementer before handoff: branch, the source/test revision the validation ran against, each validation command with its exit status and counts, tool and browser versions, new dependencies (none expected), and every exclusion with its reason. The record is committed after that revision and does not name its own commit; the final branch tip is reported in the handoff message.
+
+### 0003-W4 v1.1 — implementation and validation (2026-10-22)
+
+- Branch: `codex/0003-W4-plan-layout-and-overview`.
+- Final source/test revision: `ebb80bd4f1865add02f832b5d8f845c786a88448` (`fix(web): preserve overview focus after opening a chart`). Initial native/release/WebAssembly/timing/license checks ran at `b4c1c6d8cc76ac872cd23587e6ec0068d5d47adc`; remaining CLI, web and deploy checks ran at `ebb80bd4f1865add02f832b5d8f845c786a88448`. The intervening fix changes only web source/tests. `git diff --exit-code b4c1c6d -- Cargo.toml Cargo.lock rust-toolchain.toml packages` exited 0: all Rust source, tests and build inputs are identical. The table identifies each revision. The record is committed after validation and does not name its own commit.
+- Implemented the five-section layout, switcher, copy views, headline figures, Overview, chart events and chooser, and valuation-year money card. The own-figures head and what-if controls remain shared; settled what-ifs stay consistent across plan screens, and stale/loading/failed results do not supply headline figures.
+- New dependencies: none. Existing package versions, licenses, engine code, schemas, references, goldens and CSP are unchanged from `d5855d4`.
+- Documentation: the architecture describes the new layout and updates the earlier navigation description. `DESIGN.md` already contains decision 0023's navigation, figures, chart events, options and Overview rules; `docs/decisions/README.md` already lists 0023, so those files need no change.
+- New tests: `src/shell-figures.test.tsx` renders all 78 shell cases, every chooser year, all 20 copies through the app copy flow, the four file inputs and the existing intake-review household. It also checks settled/pending what-ifs, copy provenance, reset/keep and screen transitions. `e2e/plan-layout.spec.ts` proves the new navigation, switcher, Overview landings, chooser, copy views and all three answer origins with axe and keyboard use. Existing test changes are the brief's named navigation/landing/label updates, including `e2e/intake.spec.ts`; `src/Plan.test.tsx` additionally verifies transport recovery when changing between Plan and Overview. No other existing test file changed.
+
+#### Cumulative validation
+
+Commands ran freshly in the required order, against the revisions identified above. Node.js is `v24.22.0`, corepack `0.36.0`, pnpm `12.9.1`, Rust `1.99.1` with the pinned components and target, cargo-deny `0.20.2`, and wasm-bindgen-test-runner `0.2.129` (matching Cargo.lock). Each WebAssembly command had a fresh `node --version`; the deploy checks also print it before each nested WebAssembly build. WebAssembly tests used `CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner`.
+
+CLI placeholder expansions are detailed below. Every other cumulative command is listed in order here. Test counts sum the executed harness results; filtered-out tests are not counted as passes.
+
+| Revision | Directory | Command | Exit | Seconds | Observed result |
+| --- | --- | --- | --- | --- | --- |
+| `b4c1c6d` | `.` | `rustup show active-toolchain` | 0 | 0.05 | passed |
+| `b4c1c6d` | `.` | `wasm-bindgen-test-runner --version` | 0 | 0.02 | passed |
+| `b4c1c6d` | `.` | `cargo deny --version` | 0 | 0.072 | passed |
+| `b4c1c6d` | `.` | `cargo test -p horizon-app intake` | 0 | 97.393 | 28 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-app --test reference_values_intake` | 0 | 39.812 | 5 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-app answers` | 0 | 7.415 | 10 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-app --test reference_values_answers` | 0 | 6.225 | 6 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-app compare` | 0 | 0.603 | 3 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-app immutability` | 0 | 0.312 | 1 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-app export` | 0 | 5.44 | 2 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-app --test reference_values_w4` | 0 | 0.585 | 1 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-engine tax` | 0 | 6.022 | 2 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-app --test reference_values_w3` | 0 | 0.417 | 4 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-app --test reference_values_w2` | 0 | 0.262 | 11 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-app --test reference_values` | 0 | 0.119 | 7 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-engine ledger` | 0 | 0.074 | 2 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-engine money` | 0 | 0.069 | 2 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-app validation` | 0 | 0.441 | 5 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test -p horizon-parity` | 0 | 122.661 | 18 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo test --workspace` | 0 | 509.395 | 112 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo clippy --workspace --all-targets -- -D warnings` | 0 | 25.035 | passed |
+| `b4c1c6d` | `.` | `cargo fmt --all --check` | 0 | 0.198 | passed |
+| `b4c1c6d` | `.` | `cargo test --workspace --release` | 0 | 176.833 | 112 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo build --workspace --release` | 0 | 14.125 | passed |
+| `b4c1c6d` | `.` | `node --version` | 0 | 0.072 | v24.22.0 |
+| `b4c1c6d` | `.` | `cargo build -p horizon-engine -p horizon-app --target wasm32-unknown-unknown` | 0 | 17.662 | passed |
+| `b4c1c6d` | `.` | `node --version` | 0 | 0.022 | v24.22.0 |
+| `b4c1c6d` | `.` | `cargo test -p horizon-parity --target wasm32-unknown-unknown` | 0 | 313.87 | 18 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `node --version` | 0 | 0.017 | v24.22.0 |
+| `b4c1c6d` | `.` | `cargo test --release -p horizon-parity --target wasm32-unknown-unknown intake_v2_timing -- --nocapture` | 0 | 28.608 | 1 passed, 0 failed, 0 ignored |
+| `b4c1c6d` | `.` | `cargo deny check licenses` | 0 | 0.659 | licenses ok |
+| `b4c1c6d` | `.` | `cargo run --release -p horizon-cli -- levers answers-working-61` | 3 | 0.904 | partial; under 2 seconds |
+| `ebb80bd` | `.` | `cargo run --release -p horizon-cli -- levers answers-working-61` | 3 | 0.508 | partial; under 2 seconds |
+| `ebb80bd` | `.` | `node --version` | 0 | 0.006 | v24.22.0 |
+| `ebb80bd` | `.` | `cargo test -p horizon-parity --target wasm32-unknown-unknown answers_levers_reference_and_golden` | 0 | 9.573 | 1 passed, 0 failed, 0 ignored |
+| `ebb80bd` | `.` | `cargo test -p horizon-wasm` | 0 | 8.22 | 5 passed, 0 failed, 0 ignored |
+| `ebb80bd` | `.` | `node --version` | 0 | 0.009 | v24.22.0 |
+| `ebb80bd` | `.` | `cargo build -p horizon-wasm --target wasm32-unknown-unknown --release` | 0 | 0.091 | passed |
+| `ebb80bd` | `apps/web` | `node --version` | 0 | 0.005 | v24.22.0 |
+| `ebb80bd` | `apps/web` | `corepack --version` | 0 | 0.047 | 0.36.0 |
+| `ebb80bd` | `apps/web` | `corepack pnpm --version` | 0 | 0.057 | 12.9.1 |
+| `ebb80bd` | `apps/web` | `corepack pnpm install --frozen-lockfile` | 0 | 7.383 | passed |
+| `ebb80bd` | `apps/web` | `node --version` | 0 | 0.005 | v24.22.0 |
+| `ebb80bd` | `apps/web` | `corepack pnpm run build:engine` | 0 | 0.252 | passed |
+| `ebb80bd` | `apps/web` | `corepack pnpm run types` | 0 | 0.357 | passed |
+| `ebb80bd` | `apps/web` | `corepack pnpm run typecheck` | 0 | 2.594 | passed |
+| `ebb80bd` | `apps/web` | `corepack pnpm run lint` | 0 | 3.548 | passed |
+| `ebb80bd` | `apps/web` | `corepack pnpm run format:check` | 0 | 0.973 | passed |
+| `ebb80bd` | `apps/web` | `corepack pnpm test` | 0 | 47.922 | 20 files, 366 tests passed |
+| `ebb80bd` | `apps/web` | `node --version` | 0 | 0.007 | v24.22.0 |
+| `ebb80bd` | `apps/web` | `corepack pnpm run build` | 0 | 3.133 | passed |
+| `ebb80bd` | `apps/web` | `corepack pnpm exec playwright install chromium webkit` | 0 | 0.541 | passed |
+| `ebb80bd` | `apps/web` | `corepack pnpm run e2e` | 0 | 1856.586 | 112 passed in 8 projects; 0 failed, 0 flaky, 0 skipped |
+| `ebb80bd` | `apps/web` | `corepack pnpm run licenses` | 0 | 0.47 | Shipped code: license policy passed (4 package versions).; All packages: license policy passed (358 package versions). |
+| `ebb80bd` | `infra/cloud/web` | `node --version` | 0 | 0.005 | v24.22.0 |
+| `ebb80bd` | `infra/cloud/web` | `corepack pnpm --version` | 0 | 0.047 | 12.9.1 |
+| `ebb80bd` | `infra/cloud/web` | `corepack pnpm install --frozen-lockfile` | 0 | 10.222 | passed |
+| `ebb80bd` | `infra/cloud/web` | `corepack pnpm run licenses` | 0 | 0.189 | Deploy tooling license policy passed (35 package versions). |
+| `ebb80bd` | `infra/cloud/web` | `corepack pnpm test` | 0 | 0.656 | ℹ tests 12; ℹ pass 12; ℹ fail 0 |
+| `ebb80bd` | `infra/cloud/web` | `corepack pnpm run check` | 0 | 7.489 | 5 responses, all four exact headers, release commit, SPA fallback and application/wasm passed |
+| `ebb80bd` | `infra/cloud/web` | `corepack pnpm run check` | 0 | 4.545 | 5 responses, all four exact headers, release commit, SPA fallback and application/wasm passed |
+| `ebb80bd` | `.` | `git diff --check` | 0 | 0.017 | passed |
+
+Release `intake_v2_timing` means (ten runs per case):
+
+```text
+v2-working-complete: mean 99.023 ms (10 runs)
+v2-solve-spending: mean 209.487 ms (10 runs)
+v2-solve-savings: mean 68.242 ms (10 runs)
+v2-solve-retirement: mean 114.836 ms (10 runs)
+v2-solve-savings-with-range: mean 415.152 ms (10 runs)
+```
+
+The isolated WebAssembly levers harness reported: test result: ok. 1 passed; 0 failed; 0 ignored; 14 filtered out; finished in 5.38s.
+
+#### Expanded CLI checks
+
+All 425 placeholder-expanded CLI invocations had the expected status/exit, canonical JSON and exactly one trailing newline. The separately timed release levers command is listed above. The native CLI integration suites compare command bytes against application operations; all 54 separately extracted intake outputs also matched their committed reference result objects. Exits are 0 complete, 3 partial, 1 invalid, 2 unsupported and 4 incomplete; `dev-run` keeps exit 0 for partial. Export status comes from the embedded run; import returns the restored run.
+
+Each intake row ran `cargo run -p horizon-cli -- intake target/0003-W4-intake/<milestone>/<case>.json`:
+
+| Milestone/case | Exit | Status |
+| --- | --- | --- |
+| `0002-W4/already-retired` | 0 | complete |
+| `0002-W4/invalid-negative-before-retirement` | 1 | invalid |
+| `0002-W4/invalid-range-order` | 1 | invalid |
+| `0002-W4/invalid-range-order-before-negative` | 1 | invalid |
+| `0002-W4/invalid-retirement-not-after-valuation` | 1 | invalid |
+| `0002-W4/left-out-pay` | 3 | partial |
+| `0002-W4/left-out-pay-and-spending-now` | 3 | partial |
+| `0002-W4/left-out-pension` | 3 | partial |
+| `0002-W4/left-out-social-security` | 3 | partial |
+| `0002-W4/left-out-spending-now` | 3 | partial |
+| `0002-W4/monthly-and-leap-birthday` | 3 | partial |
+| `0002-W4/monthly-range-odd` | 3 | partial |
+| `0002-W4/needed-all-four` | 4 | incomplete |
+| `0002-W4/needed-birth-date` | 4 | incomplete |
+| `0002-W4/needed-retirement` | 4 | incomplete |
+| `0002-W4/needed-same-as-now-without-now` | 4 | incomplete |
+| `0002-W4/needed-savings` | 4 | incomplete |
+| `0002-W4/needed-spending-in-retirement` | 4 | incomplete |
+| `0002-W4/no-savings` | 3 | partial |
+| `0002-W4/partner` | 2 | unsupported |
+| `0002-W4/pension-later-rises-not-sure` | 3 | partial |
+| `0002-W4/pension-later-rises-yes` | 3 | partial |
+| `0002-W4/range-one-savings` | 3 | partial |
+| `0002-W4/range-same-as-now` | 3 | partial |
+| `0002-W4/range-two` | 3 | partial |
+| `0002-W4/starting-values` | 3 | partial |
+| `0002-W4/unused-pay-when-retired` | 0 | complete |
+| `0002-W4/unused-social-security-amount` | 3 | partial |
+| `0002-W4/working-complete` | 3 | partial |
+| `0002-W5/v1-working-complete-unchanged` | 3 | partial |
+| `0002-W5/v2-age-instead-of-date` | 3 | partial |
+| `0002-W5/v2-age-leap-valuation` | 3 | partial |
+| `0002-W5/v2-age-too-young` | 1 | invalid |
+| `0002-W5/v2-needed-birth` | 4 | incomplete |
+| `0002-W5/v2-needed-retirement-without-pay` | 4 | incomplete |
+| `0002-W5/v2-needed-three` | 4 | incomplete |
+| `0002-W5/v2-needed-two` | 4 | incomplete |
+| `0002-W5/v2-partner` | 2 | unsupported |
+| `0002-W5/v2-range-nothing-solved` | 3 | partial |
+| `0002-W5/v2-solve-retirement` | 3 | partial |
+| `0002-W5/v2-solve-retirement-unreachable` | 3 | partial |
+| `0002-W5/v2-solve-retirement-with-range` | 3 | partial |
+| `0002-W5/v2-solve-savings` | 3 | partial |
+| `0002-W5/v2-solve-savings-none-needed` | 3 | partial |
+| `0002-W5/v2-solve-savings-retired` | 0 | complete |
+| `0002-W5/v2-solve-savings-unreachable` | 3 | partial |
+| `0002-W5/v2-solve-savings-with-range` | 3 | partial |
+| `0002-W5/v2-solve-spending` | 3 | partial |
+| `0002-W5/v2-solve-spending-same-as-now-missing` | 3 | partial |
+| `0002-W5/v2-solve-spending-shortfall-at-zero` | 3 | partial |
+| `0002-W5/v2-what-if-savings-total` | 3 | partial |
+| `0002-W5/v2-what-if-savings-total-fills-savings` | 3 | partial |
+| `0002-W5/v2-what-if-total-with-range` | 3 | partial |
+| `0002-W5/v2-working-complete` | 3 | partial |
+
+Each fixture row expands `cargo run -p horizon-cli -- <operation> <name>` for spend, levers, run, export and dev-run; `impact <name> packages/app/test-data/empty-rough.json`; and `compare A-drawdown <name>`. The commands ran by operation in the required order, over every fixture. Cells are observed exits for each invocation.
+
+| Fixture | spend | levers | impact | run | compare | export | dev-run |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `A-drawdown` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `A-drawdown-pass-limit-1` | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `A-drawdown-proportional_taxable_tax_deferred` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `A-drawdown-roth_before_tax_deferred` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `A-drawdown-tax_deferred_first` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `B-early-retiree` | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `C-partial-base-year-no-taxable` | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `D-still-working-rmd-surplus` | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `E-senior-2028-loss-carry` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `answers-cap` | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `answers-underfunded` | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `answers-working-61` | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `answers-working-61-retire-later` | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `invalid-account-type` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-cost-basis` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-date` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-end-before-start` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-missing-assumption` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-missing-cash-return` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-missing-field` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-missing-investment-return` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-missing-tax-indexing` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-negative-balance` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-negative-tax-indexing` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-output-range` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-owner` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-plan-end-age` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-rate` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `invalid-tax-pass-limit` | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| `retirement-date-baseline` | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `retirement-date-scenario` | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `return-assumption-baseline` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `return-assumption-scenario` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `spending-amount-baseline` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `spending-amount-scenario` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `synthetic-leap` | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `synthetic-retired` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `synthetic-working` | 3 | 3 | 3 | 3 | 3 | 3 | 0 |
+| `two-person` | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
+| `unchanged-copy-baseline` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `unchanged-copy-scenario` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `unsupported-healthcare` | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
+| `unsupported-negative-cash-return` | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
+| `unsupported-negative-investment-return` | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
+| `unsupported-state-tax` | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
+| `unsupported-tax-year` | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
+| `withdrawal-order-baseline` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `withdrawal-order-scenario` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+Explicit rough input, reference comparison pairs and imports:
+
+| Command | Exit | Status |
+| --- | --- | --- |
+| `cargo run -p horizon-cli -- impact answers-working-61 packages/app/test-data/answers-working-61-rough.json` | 3 | partial |
+| `cargo run -p horizon-cli -- compare retirement-date-baseline retirement-date-scenario` | 3 | partial |
+| `cargo run -p horizon-cli -- compare spending-amount-baseline spending-amount-scenario` | 0 | complete |
+| `cargo run -p horizon-cli -- compare return-assumption-baseline return-assumption-scenario` | 0 | complete |
+| `cargo run -p horizon-cli -- compare withdrawal-order-baseline withdrawal-order-scenario` | 0 | complete |
+| `cargo run -p horizon-cli -- compare unchanged-copy-baseline unchanged-copy-scenario` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/A-drawdown-pass-limit-1.export.json` | 3 | partial |
+| `cargo run -p horizon-cli -- import packages/parity/golden/A-drawdown-proportional_taxable_tax_deferred.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/A-drawdown-roth_before_tax_deferred.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/A-drawdown-tax_deferred_first.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/A-drawdown.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/B-early-retiree.export.json` | 3 | partial |
+| `cargo run -p horizon-cli -- import packages/parity/golden/C-partial-base-year-no-taxable.export.json` | 3 | partial |
+| `cargo run -p horizon-cli -- import packages/parity/golden/D-still-working-rmd-surplus.export.json` | 3 | partial |
+| `cargo run -p horizon-cli -- import packages/parity/golden/E-senior-2028-loss-carry.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/answers-cap.export.json` | 3 | partial |
+| `cargo run -p horizon-cli -- import packages/parity/golden/answers-underfunded.export.json` | 3 | partial |
+| `cargo run -p horizon-cli -- import packages/parity/golden/answers-working-61-retire-later.export.json` | 3 | partial |
+| `cargo run -p horizon-cli -- import packages/parity/golden/answers-working-61.export.json` | 3 | partial |
+| `cargo run -p horizon-cli -- import packages/parity/golden/retirement-date-baseline.export.json` | 3 | partial |
+| `cargo run -p horizon-cli -- import packages/parity/golden/retirement-date-scenario.export.json` | 3 | partial |
+| `cargo run -p horizon-cli -- import packages/parity/golden/return-assumption-baseline.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/return-assumption-scenario.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/spending-amount-baseline.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/spending-amount-scenario.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/synthetic-leap.export.json` | 3 | partial |
+| `cargo run -p horizon-cli -- import packages/parity/golden/synthetic-retired.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/synthetic-working.export.json` | 3 | partial |
+| `cargo run -p horizon-cli -- import packages/parity/golden/unchanged-copy-baseline.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/unchanged-copy-scenario.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/withdrawal-order-baseline.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/parity/golden/withdrawal-order-scenario.export.json` | 0 | complete |
+| `cargo run -p horizon-cli -- import packages/app/test-data/tampered-export.json` | 1 | invalid |
+| `cargo run -p horizon-cli -- import packages/app/test-data/unknown-format-export.json` | 2 | unsupported |
+| `cargo run -p horizon-cli -- import packages/app/test-data/model-0.3.0.export.json` | 2 | unsupported |
+
+#### Browser and design evidence
+
+Playwright 1.63.0 ran 112 passing tests in 8 projects, with 0 failed, 0 flaky and 0 skipped. Actual browser-version annotations: chromium 153.0.8010.12; webkit 26.6.
+
+| Project | Passed |
+| --- | --- |
+| `chromium-1280-dark` | 14 |
+| `chromium-1280-light` | 14 |
+| `chromium-375-dark` | 14 |
+| `chromium-375-light` | 14 |
+| `webkit-1280-dark` | 14 |
+| `webkit-1280-light` | 14 |
+| `webkit-375-dark` | 14 |
+| `webkit-375-light` | 14 |
+
+The suite saved 1824 original PNG screenshots (excluding attachment copies), plus the HTML and JSON Playwright reports, outside the repository. Every project includes Overview, Plan with the chooser moved, a copy on Overview and Plan, Compare's empty state, Summary, and the example, opened-file and own-figures answer screens. Both browser families ran at 375×812 and 1280×800 in light and dark; the phone projects also checked 320px. The suite found no axe violations or horizontal overflow, retained exact CSP and origin/privacy checks, and operated navigation, the switcher and every example's chooser years by keyboard.
+
+Screens were checked against references 22–24 and 26. The brief governs its listed differences: Plan retains What would help and the existing actions with Summary; the later options and Your plans cards are absent; the event-empty sentence is Nothing marked on the chart this year; Overview uses the specified five cards and next actions, with Try a change under assumptions only on the original example/file plan. Native controls retain their browser rendering, and keyboard captures retain visible focus. No additional design exclusion was taken.
+
+#### Deploy repeatability
+
+Both deploy checks exited 0 on the clean validated commit, used local-only dry runs, and verified five HTTP responses apiece, all four exact headers, release commit, SPA navigation fallback and `application/wasm`. The first staging tree was preserved outside the repository before the second check. Complete file-list comparison and every byte comparison exited 0: 12 files, 1743147 bytes identical. No login or real deploy ran.
+
+#### Scope and supplementary checks
+
+Exclusions are exactly the brief: later option controls and multi-copy comparison, the redesigned printable one-page summary, Your plans cards and later next-action wording; answers beside a live chart and assumptions on every question; engine changes, additional event kinds and couples. Summary content/eyebrow, comparison export, What would help and the expert details remain as specified. No cumulative validation command or browser project was excluded. Independent review remains a maintainer handoff step; the implementer did not act as reviewer.
+
+Exploratory checks preceded the source revision. They exposed and corrected the mock assumption-array conversion, invalid description-list children, updated navigation/copy-request expectations, asynchronous test waits, and a Chromium capture/blur scroll interaction. Captures now leave committed number fields with Tab before axe/full-page screenshots. Unit typechecks and formatting were rerun after corrections. The last complete preliminary unit run passed 364 tests in 20 files; the added transport-recovery test then passed with all 15 Plan tests. The final focused browser run passed all 8 selected tests across Chromium phone/light and WebKit desktop/dark; an earlier overlapping browser launch was rejected because the local test port was occupied, and one superseded exploratory run was interrupted after its known failures. These exploratory results do not substitute for the fresh cumulative commands above.
+
+Supplementary command outcomes before the source revision (not cumulative proof):
+
+| Command | Exits / observed outcomes |
+| --- | --- |
+| `corepack pnpm run typecheck` | Initial test-typing errors exited 2; corrected runs exited 0. |
+| `corepack pnpm run lint` | An initial misplaced lint suppression exited 1; corrected runs exited 0. |
+| `corepack pnpm run format:check` / `corepack pnpm exec prettier --check .` | Unformatted edits exited 1; formatting corrections and subsequent checks exited 0. |
+| `node --version`; `corepack pnpm run build` | Node v24.22.0 before each preliminary WebAssembly build; production builds exited 0. |
+| `corepack pnpm exec playwright install chromium webkit` | Exit 0. |
+| `corepack pnpm exec vitest run src/shell-figures.test.tsx` | First: exit 1, 70 passed / 8 failed. Next: exit 1, 78 passed / 1 failed. The asynchronous session test was corrected afterward. |
+| `corepack pnpm exec vitest run src/shell-figures.test.tsx -t 'keeps the displayed what-if'` | An initial missing enabled-button wait failed; the next run passed 1 test with 78 unselected. A later loaded-environment wait failed and was corrected to a bounded 10-second asynchronous wait. |
+| `corepack pnpm test` / `corepack pnpm exec vitest run` | Complete preliminary runs exited 0 with 363 tests, then 364 tests; all 20 files passed. |
+| `corepack pnpm exec vitest run src/Plan.test.tsx` | Exit 0, all 15 tests passed after adding transport recovery. |
+
+All selected browser commands below used `--project=chromium-375-light --project=webkit-1280-dark`.
+
+| Command | Exit | Observed outcomes |
+| --- | --- | --- |
+| `corepack pnpm exec playwright test e2e/plan-layout.spec.ts` | 1 | 0 passed, 2 failed |
+| `corepack pnpm exec playwright test e2e/plan-layout.spec.ts` | 1 | 0 passed, 2 failed |
+| `corepack pnpm exec playwright test` | 1 | 22 passed, 6 failed |
+| `corepack pnpm exec playwright test e2e/compare.spec.ts e2e/export.spec.ts e2e/shell.spec.ts e2e/what-if.spec.ts` | 1 | 9 passed, 3 failed |
+| `corepack pnpm exec playwright test e2e/compare.spec.ts e2e/what-if.spec.ts` | 130 | 5 passed, 2 failed; interrupted after known failures |
+| `corepack pnpm exec playwright test e2e/plan-layout.spec.ts e2e/what-if.spec.ts` | 1 | 0 passed, 0 failed; local port already occupied; no tests ran |
+| `corepack pnpm exec playwright test e2e/plan-layout.spec.ts e2e/what-if.spec.ts` | 0 | 8 passed, 0 failed |
+
+The final focus regression was reproduced before correction (2 failed, 80 unselected); after confining chart focus to Plan and waiting for asynchronous Overview/copy details, both regression tests passed (2 passed, 80 unselected). The browser layout test also covers chart focus on own figures and reopening an Overview after chart navigation. A validation-log scanning stall caused one harness interruption: the completed first release benchmark measured 0.904 seconds, and six intake prefix checks had passed. The release benchmark and every required intake/fixture expansion were rerun freshly at the final source revision; the final release benchmark was 0.508 seconds. Both benchmark commands and all six prefix commands are recorded here; no interrupted invocation is counted as a pass.
+
+| Supplementary prefix command (b4c1c6d) | Exit | Status |
+| --- | --- | --- |
+| `cargo run -p horizon-cli -- intake target/0003-W4-intake/0002-W4/already-retired.json` | 0 | complete |
+| `cargo run -p horizon-cli -- intake target/0003-W4-intake/0002-W4/invalid-negative-before-retirement.json` | 1 | invalid |
+| `cargo run -p horizon-cli -- intake target/0003-W4-intake/0002-W4/invalid-range-order.json` | 1 | invalid |
+| `cargo run -p horizon-cli -- intake target/0003-W4-intake/0002-W4/invalid-range-order-before-negative.json` | 1 | invalid |
+| `cargo run -p horizon-cli -- intake target/0003-W4-intake/0002-W4/invalid-retirement-not-after-valuation.json` | 1 | invalid |
+| `cargo run -p horizon-cli -- intake target/0003-W4-intake/0002-W4/left-out-pay.json` | 3 | partial |
