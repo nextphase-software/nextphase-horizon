@@ -135,6 +135,16 @@ test("options, plan collections, all-copy comparison and Letter summaries", asyn
     await activate(
       page.locator(".export-screen > .plan-detail:not(.experts) > summary"),
     );
+    if (name === "own-ranges-three-copies")
+      await expect(
+        page.locator(".export-screen .summary-plans:visible thead th"),
+      ).toHaveText([
+        "Measure",
+        "Your plan",
+        "Spend $64,994 a year",
+        "Retire at 67",
+        "Returns at 4%",
+      ]);
     await capture(`${name}-summary-screen`);
     await page.emulateMedia({ media: "print" });
     await page.setViewportSize({ width: 720, height: 960 });
@@ -388,9 +398,15 @@ test("options, plan collections, all-copy comparison and Letter summaries", asyn
         page.getByRole("button", { name: "Back to plan", exact: true }),
       );
       await expect(page.locator(".plan-options")).toBeVisible();
+      // Blurring an unchanged what-if number clears copies; resume at options.
+      await page.locator("#plan-options-heading").focus();
+      await focusedOptions();
     }
   }
   await lowerReturns();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Your plan and 3 copies, side by side",
+  );
   await capture("own-ranges-side-by-side");
   await summaryPDF("own-ranges-three-copies", false);
   await section("Plan");
