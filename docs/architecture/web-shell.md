@@ -236,63 +236,11 @@ No export format, engine, schema, reference, golden, dependency or CSP changes.
 
 ## Hosting
 
-[Decision 0022](../decisions/0022-hosted-prototype.md) selects Cloudflare Workers
-static assets, with no Worker script or bindings, a custom-domain route for
-`horizon.nextphase.software`, and a `workers.dev` fallback. The first real deploy,
-login and DNS setup belong to the maintainer after merge. The app is unchanged.
-
-The independent package in `infra/cloud/web/` pins Wrangler 4.148.0
-(MIT OR Apache-2.0), Node.js 26.11.1 and pnpm 12.9.1. Its workspace declines
-the `esbuild` and `workerd` install scripts; published platform binaries are used.
-Its license check reuses the app's full-closure policy and adds only the exact
-tooling exceptions of decision 0022: `@img/sharp-libvips-<platform>@1.3.3`
-(LGPL-3.0-or-later) and `@speed-highlight/core@1.2.24` (CC0-1.0).
-
-From `infra/cloud/web/`:
-
-```sh
-node --version
-pnpm install --frozen-lockfile
-pnpm run licenses
-pnpm test
-pnpm run stage
-pnpm run check
-```
-
-`stage` refuses a dirty working tree, warns when the commit is not a known
-ancestor of `origin/main`, and runs the existing engine and app build commands.
-It freshly copies `apps/web/dist/` into ignored `staging/` and adds only
-`_headers` and `release.json`. The release is canonical JSON with sorted keys
-`commit` (full 40-character source commit) and `engine` (the engine's
-`MODEL_VERSION`), one trailing newline, and no timestamp. Rebuilding the same
-commit stages identical bytes.
-
-`_headers` applies these exact response headers to `/*`:
-
-```text
-Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com; style-src 'self'; font-src 'self'; img-src 'self'; worker-src 'self'; connect-src 'self'; frame-ancestors 'none'
-X-Content-Type-Options: nosniff
-Referrer-Policy: no-referrer
-Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
-```
-
-The HTTP CSP extends the app meta CSP with `frame-ancestors 'none'`.
-Both allow `https://static.cloudflareinsights.com` in `script-src` for the
-host-inserted Cloudflare Web Analytics beacon; its same-origin `/cdn-cgi/rum`
-reports are already allowed by `connect-src 'self'`.
-`check` stages, runs `wrangler deploy --dry-run`, and starts local-only
-`wrangler dev` on `127.0.0.1`. It verifies 200 and all four headers on the root,
-release, engine module, font, and an unknown page navigation requested with
-`Sec-Fetch-Mode: navigate`. The unknown page must equal `index.html`, the
-release must name HEAD, and the engine content type must be `application/wasm`.
-The local server is stopped after checking; a Cloudflare account is unnecessary.
-
-The maintainer runs `pnpm exec wrangler login` with their own account
-holding the `nextphase.software` zone, then `pnpm run deploy`.
-`deploy` stages and invokes Wrangler with the committed configuration, then
-prints the commit and both addresses. No token, account ID or secret belongs in
-either repository. See the [tooling guide](../../infra/cloud/web/README.md) for
-commands and the public Cloudflare references (retrieved 2026-10-21).
+`pnpm run build` in `apps/web/` produces a folder of static files (`apps/web/dist/`)
+that any static host can serve. Serve it with the page's Content Security Policy,
+`X-Content-Type-Options: nosniff` and `Referrer-Policy: no-referrer`, and send
+unknown page navigations to `index.html`. Where and how to deploy is up to whoever
+runs it; no hosting configuration is part of this repository.
 
 ## Plan app layout — 0003-W4
 

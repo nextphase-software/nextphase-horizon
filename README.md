@@ -15,7 +15,7 @@ Everything needed to build, run, verify and modify the software:
 | Path | Holds |
 | --- | --- |
 | `apps/`, `packages/` | Application and calculation-engine source |
-| `infra/`, `scripts/` | Cloudflare Workers static-asset deploy tooling in `infra/cloud/web/`; infrastructure templates, migrations and build scripts |
+| `infra/`, `scripts/` | infrastructure templates, migrations and build scripts |
 | `docs/briefs/` | One implementation brief per unit of work, with its acceptance criteria and implementation record |
 | `docs/decisions/` | Technical decision records |
 | `docs/architecture/` | The current system overview and contributor-facing contracts |
@@ -72,8 +72,8 @@ the brief's Validation section names it. Each tier lists everything that runs.
   `webkit-1280-dark` and `webkit-375-light`.
 - **Toolchain or infra** (package files, Node or pnpm versions, `infra/`): the
   web shell commands, the end-to-end suite in `chromium-1280-light` and
-  `webkit-375-light`, the WebAssembly parity test, `cargo test --workspace
-  --release`, and the deploy tooling check once.
+  `webkit-375-light`, the WebAssembly parity test, and `cargo test --workspace
+  --release`.
 - **Engine** (`packages/`, `Cargo.toml`, `Cargo.lock`, `deny.toml`,
   `rust-toolchain.toml`): `cargo test --workspace --release`, `cargo clippy`,
   `cargo fmt --check`, `cargo deny check licenses`, both WebAssembly commands,
@@ -203,8 +203,7 @@ and checks 8 browser/size/theme projects, with every sample in every project.
 **Screen-only briefs.** When a brief changes nothing outside `apps/web/` and
 `docs/` (no file under `packages/` or `infra/`, and no `Cargo.toml`,
 `Cargo.lock`, `deny.toml` or `rust-toolchain.toml`), its Validation section may
-exclude the cumulative Rust sequence above, its CLI command expansions and the
-deploy tooling checks. `cargo test -p horizon-wasm`, the release WebAssembly
+exclude the cumulative Rust sequence above, and its CLI command expansions. `cargo test -p horizon-wasm`, the release WebAssembly
 build and every web shell command in this section still run, including the
 end-to-end browser suite. The implementation record shows
 `git diff --name-only <base>..HEAD` to prove the scope; any file outside it
@@ -221,28 +220,3 @@ and open http://127.0.0.1:5173. It watches static builds; reload after a rebuild
 This preserves the exact CSP without inline development HMR scripts/styles.
 Restart after engine/schema changes. Architecture, protocol, tokens, security
 and test details are in [web-shell.md](docs/architecture/web-shell.md).
-
-## Deploy tooling — 0002-W8
-
-After the Rust and web shell sequences, run from `infra/cloud/web/` on a clean
-checkout (Node.js 26.11.1, pnpm 12.9.1):
-
-```sh
-node --version
-pnpm --version
-pnpm install --frozen-lockfile
-pnpm run licenses
-pnpm test
-pnpm run check
-pnpm run check
-```
-
-Preserve the first `staging/` outside the repository before the second check,
-then compare the complete file lists and every file byte for byte. Record both
-checks, comparison counts and exits. Each check stages, records Node's version
-before every WebAssembly build, runs a dry-run deploy, and verifies five local
-responses, all four exact headers, the release commit, SPA navigation fallback
-and `application/wasm`. No Cloudflare login or real deploy is part of validation.
-The tooling's `pnpm-workspace.yaml` declines the `esbuild` and `workerd` install
-scripts; another requested install script requires escalation. Keep the app's
-package, lockfile and license checks unchanged.
