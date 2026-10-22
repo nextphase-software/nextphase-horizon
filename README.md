@@ -162,6 +162,16 @@ and checks 8 browser/size/theme projects, with every sample in every project.
 
 **Engine-only briefs.** When a brief changes nothing under `apps/web/`, its Validation section may exclude the end-to-end browser suite: `corepack pnpm exec playwright install …` and `corepack pnpm run e2e`. Every other command in this section still runs, including the web unit tests, typecheck, lint, build and license checks.
 
+**Screen-only briefs.** When a brief changes nothing outside `apps/web/` and
+`docs/` (no file under `packages/` or `infra/`, and no `Cargo.toml`,
+`Cargo.lock`, `deny.toml` or `rust-toolchain.toml`), its Validation section may
+exclude the cumulative Rust sequence above, its CLI command expansions and the
+deploy tooling checks. `cargo test -p horizon-wasm`, the release WebAssembly
+build and every web shell command in this section still run, including the
+end-to-end browser suite. The implementation record shows
+`git diff --name-only <base>..HEAD` to prove the scope; any file outside it
+brings the excluded commands back.
+
 The license command checks the production and full dependency closures separately.
 Production keeps the strict allow-list and named font exception. Only exact
 build/test package-version-license exceptions in decision 0011's 2026-10-18
