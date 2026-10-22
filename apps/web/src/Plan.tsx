@@ -37,13 +37,22 @@ import {
   yearAtDate,
 } from "./plan-display";
 import { FlowDrawing, SavingsDrawing } from "./PlanCharts";
-import type { Baseline } from "./plan-copies";
+import type { Baseline, CopyChange, PlanCopy } from "./plan-copies";
+import { planOptions } from "./plan-options";
+import { Options, focusOptions as focusOptionsHeading } from "./Options";
+import { YourPlans } from "./YourPlans";
+import { NextSteps } from "./NextSteps";
 import { Overview, type OverviewActions } from "./Overview";
 import { SavingsChart } from "./SavingsChart";
 import { CopyBanner, ThisYear } from "./PlanShell";
 import { headlineFigures, shellNote } from "./shell-display";
 type LayoutProps = {
   overview?: OverviewActions;
+  navigation?: OverviewActions;
+  copies?: PlanCopy[];
+  original?: Baseline;
+  tryOption?: (change: CopyChange, baseline: Baseline) => void;
+  focusOptions?: boolean;
   copy?: { name: string; back: () => void; compare: () => void };
   focusChart?: boolean;
   whatIf?: boolean;
@@ -137,7 +146,7 @@ function LeverViews({ levers, run }: { levers: Levers; run: Run }) {
   return (
     <>
       <Views
-        name="What would help"
+        name="Every change Horizon tried"
         chart={
           <div className="lever-chart">
             <p className="help">
@@ -177,9 +186,9 @@ function LeverViews({ levers, run }: { levers: Levers; run: Run }) {
           </div>
         }
         table={
-          <ScrollTable label="What would help">
+          <ScrollTable label="Every change Horizon tried">
             <table>
-              <caption>What would help</caption>
+              <caption>Every change Horizon tried</caption>
               <thead>
                 <tr>
                   <th>Change</th>
@@ -329,6 +338,11 @@ export function Plan({
   copy,
   focusChart,
   whatIf,
+  navigation,
+  copies = [],
+  original,
+  tryOption,
+  focusOptions,
 }: LayoutProps & {
   sample: { label: string };
   draft: Draft;
@@ -354,6 +368,11 @@ export function Plan({
       copy={copy}
       focusChart={focusChart}
       whatIf={whatIf}
+      navigation={navigation}
+      copies={copies}
+      original={original}
+      tryOption={tryOption}
+      focusOptions={focusOptions}
     />
   );
 }
@@ -370,6 +389,11 @@ function PlanResult({
   copy,
   focusChart,
   whatIf,
+  navigation,
+  copies = [],
+  original,
+  tryOption,
+  focusOptions,
 }: LayoutProps & {
   sample: { label: string };
   draft: Draft;
@@ -381,7 +405,6 @@ function PlanResult({
   answerResult?: AnswersPlanV2;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
-  const leversRef = useRef<HTMLDetailsElement>(null);
   const input = serializeDraft(draft);
   const { results, transport } = usePlanResults(input, cache);
   const isOverview = !!overview;
@@ -390,8 +413,8 @@ function PlanResult({
   );
   const failed = !!error || !!transport;
   useEffect(() => {
-    if (!intake && !focusChart) heading.current?.focus();
-  }, [intake, isOverview, focusChart, failed]);
+    if (!intake && !focusChart && !focusOptions) heading.current?.focus();
+  }, [intake, isOverview, focusChart, focusOptions, failed]);
   if (error || transport)
     return (
       <div className="plan-screen">
@@ -428,6 +451,26 @@ function PlanResult({
   const inflation = run?.assumptions_used.find(
     (rate) => rate.identifier === "inflation",
   );
+  const baseline =
+    run && spending && levers ? { run, spending, levers } : undefined;
+  const options = baseline
+    ? planOptions(baseline, retirementDate, answerResult, !!copy)
+    : null;
+  const actions = {
+    plan: () => {},
+    compare: () => copy?.compare(),
+    summary: () => exportPlan?.(),
+    changeAnswers: back,
+    copies: copies.length,
+    ...overview,
+    ...navigation,
+    options: isOverview
+      ? (overview?.options ?? (() => {}))
+      : focusOptionsHeading,
+    tryChange: () => {
+      if (baseline) tryChange?.(baseline);
+    },
+  };
   return (
     <div className="plan-screen">
       {!intake && (
@@ -501,8 +544,11 @@ function PlanResult({
             answer={answerResult}
             intake={intake}
             copy={!!copy}
+            options={options}
+            copies={copies}
+            tryOption={(change) => tryOption?.(change, baseline!)}
             actions={{
-              ...overview,
+              ...actions,
               tryChange: () => tryChange?.({ run, spending, levers }),
             }}
           />
@@ -530,18 +576,17 @@ function PlanResult({
               movesMost(levers) && (
                 <p className="moves-most">
                   {movesMost(levers)}{" "}
-                  <a
-                    href="#plan-levers"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      if (leversRef.current) {
-                        leversRef.current.open = true;
-                        leversRef.current.querySelector("summary")?.focus();
-                      }
-                    }}
-                  >
-                    See what would help
-                  </a>
+                  {options && (
+                    <a
+                      href="#plan-options-heading"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        focusOptionsHeading();
+                      }}
+                    >
+                      See your options
+                    </a>
+                  )}
                 </p>
               )
             ) : (
@@ -553,19 +598,15 @@ function PlanResult({
               </p>
             )}
           </div>
-          <div id="plan-levers">
-            <Detail
-              title="What would help"
-              hint={`One change at a time · ${levers ? `${levers.ranking.length} changes, ranked` : "Calculating…"}`}
-              detailRef={leversRef}
-            >
-              {levers && run ? (
-                <LeverViews levers={levers} run={run} />
-              ) : (
-                <Calculating />
-              )}
-            </Detail>
-          </div>
+          {options && (
+            <Options
+              options={options}
+              copies={copies}
+              tryOption={(change) => tryOption?.(change, baseline!)}
+              openCopy={actions.openCopy}
+              focus={focusOptions}
+            />
+          )}
           {run && whyShort(run, retirementDate, answerResult) && (
             <section className="card why-short">
               <h2>Why savings run short</h2>
@@ -573,14 +614,36 @@ function PlanResult({
             </section>
           )}
           {run && <ThisYear run={run} />}
+          {baseline && copies.length > 0 && (
+            <YourPlans
+              baseline={original ?? baseline}
+              copies={copies}
+              select={actions.openCopy}
+              looking={!copy}
+            />
+          )}
           <Detail
             title="Details for experts"
-            hint="Year by year, the arithmetic and the assumptions · dollars of each year"
+            hint="Year by year, every change Horizon tried, the arithmetic and the assumptions · dollars of each year"
           >
             <section className="expert-section">
               <h2>Year by year</h2>
               {run ? (
                 <Ledger run={run} retirementDate={retirementDate} />
+              ) : (
+                <Calculating />
+              )}
+            </section>
+            <section className="expert-section" id="plan-levers">
+              <h2>Every change Horizon tried</h2>
+              <p className="help">
+                One change at a time ·{" "}
+                {levers
+                  ? `${levers.ranking.length} changes, ranked`
+                  : "Calculating…"}
+              </p>
+              {levers && run ? (
+                <LeverViews levers={levers} run={run} />
               ) : (
                 <Calculating />
               )}
@@ -700,6 +763,15 @@ function PlanResult({
               </p>
             )}
           </Detail>
+          {baseline && (
+            <NextSteps
+              actions={actions}
+              copies={actions.copies}
+              hasOptions={!!options && !options.none}
+              own={intake}
+              copy={!!copy}
+            />
+          )}
           {copy ? (
             <div className="actions">
               <button onClick={copy.back}>Back to your plan</button>

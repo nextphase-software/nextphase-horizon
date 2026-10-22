@@ -338,3 +338,58 @@ Part years name their dates. Sums and ratios position drawings only; no derived
 financial total is displayed. Headline figures, event text, every chooser year,
 assumptions and first-year text are tested against the committed shell figures.
 No engine, schemas, reference values, dependencies or CSP are changed.
+
+## Options, plan collections and summary — 0003-W5 v1.1
+
+Plan replaces its plain lever list with options from the displayed plan's
+sustainable spending and ranked retirement levers. Worked-out answers,
+retirements beyond the plan and copies have no options section. A shortfall
+even with no retirement spending has its own explanation. Other sections
+offer spending that lasts to the end, retirement changes that improve the
+outcome, or keeping the plan as entered. Investment returns appear separately
+as something the person cannot choose. The introduction calls these options
+to explore, not advice; ranges name their middle values.
+
+An option uses the existing scenario, compare and sustainable-spending worker
+flow. Retirement options keep the lever's changes. The `spend_to_last` change
+sets `/household/spending/after_retirement/cents` to the returned whole-dollar
+sustainable spending multiplied by 100, the exact unit conversion accepted in
+decision 0023. Its labels are “Spend {amount} a year” and “Spending {amount} a
+year in retirement”. Scenario bytes are retained unchanged. Existing changes
+open their copy instead. Copies of own-figure what-ifs use that what-if's input.
+No spending effect is derived in the interface: the one-copy comparison uses
+a dash where this new change has no engine-supplied lever effect.
+
+The answer's “See your options” focuses the section heading and scrolls it
+clear of the headline strip. Overview presents the first two items, without
+the introduction or returns, and “See all options” opens Plan at that heading.
+The original ranked lever chart and table now sit after Year by year inside
+Details for experts, as “Every change Horizon tried”.
+
+“Your plans” shows the original plan and copies in creation order, with
+decorative savings lines and factual headlines. It always appears on the
+original plan's Overview and appears on Plan once copies exist. Pending and
+failed copies retain explicit calculation labels. Compare controls select the
+named copy. Plan and Overview end with “What to do next”: try an option or a
+change, open the yearly chart on Overview, compare all plans, keep a summary,
+and change answers for own figures. Copies omit the change actions.
+
+With at least two copies, Compare keeps its tabs and adds a chart, key and
+four-measure table before the selected copy's existing comparison. The
+original line is solid; copy lines share the scenario token and use dashed,
+dotted and dash-dot patterns. With more than three copies, only the three most
+recent copies appear in the chart and key, oldest first, with the specified
+explanation. The table, tabs and heading counts always include every copy.
+The table's Open controls select a tab. Savings outcomes, spending and amounts
+reuse the existing comparison formatters; no differences are computed.
+
+The summary preview and printed document share the answer beside a wide
+savings drawing, the full options without controls, the first-year money
+sentence, and a table of ready copies. Failed copies keep their messages.
+Coverage, exclusions and saved not-sure answers follow, ending with the
+estimates and advice statement. US Letter print styles keep the answer and
+options on page one, avoid splitting options and the comparison table, and
+continue onto a second page when needed. Printing uses the existing light
+palette; file export and import are unchanged. Reference-driven unit tests and
+the eight browser projects cover text, controls, focus, copy behavior, tables,
+print order, accessibility, overflow and local-only requests.

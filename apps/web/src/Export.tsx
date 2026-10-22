@@ -19,7 +19,11 @@ import {
 } from "./plain-results";
 import { headText, leftOutText } from "./intake-head";
 import { planHeadline } from "./plan-display";
-import { compareHeadline } from "./compare-display";
+import { Options } from "./Options";
+import { planOptions } from "./plan-options";
+import { SavingsDrawing } from "./PlanCharts";
+import { PlansTable } from "./SideBySide";
+import { firstYearMoney } from "./shell-display";
 import { statusWord } from "./format";
 import { serializeDraft, type Draft } from "./setup";
 import type { Copies } from "./plan-copies";
@@ -261,7 +265,18 @@ function ExportResult({
     run &&
     spending &&
     levers &&
-    items.every((item) => item.comparison || item.error || item.transport);
+    items.every(
+      (item) =>
+        (item.comparison && item.spending) || item.error || item.transport,
+    );
+  const options =
+    run && spending && levers
+      ? planOptions({ run, spending, levers }, retirementDate, answerResult)
+      : null;
+  const readyCopies = items.filter(
+    (item) =>
+      item.comparison && item.spending && !item.error && !item.transport,
+  );
   const summary = (printed = false) => {
     const Title = printed ? "p" : "h2";
     return (
@@ -285,44 +300,59 @@ function ExportResult({
           )}{" "}
           · amounts in today's dollars
         </p>
-        <h2>Answers</h2>
-        {run && spending ? (
-          <>
-            {exportLines(
-              run,
-              spending,
-              retirementDate,
-              answerResult,
-              headAnswers,
-            ).map((line, i) => (
-              <p key={i}>{line}</p>
-            ))}
-          </>
-        ) : (
-          <Calculating />
+        <div className="summary-answer">
+          {run && (
+            <figure className="summary-savings">
+              <SavingsDrawing run={run} retirementDate={retirementDate} />
+              <figcaption>Savings by age, in today's dollars.</figcaption>
+            </figure>
+          )}
+          <h2>Answers</h2>
+          {run && spending ? (
+            <>
+              {exportLines(
+                run,
+                spending,
+                retirementDate,
+                answerResult,
+                headAnswers,
+              ).map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
+            </>
+          ) : (
+            <Calculating />
+          )}
+          {levers ? (
+            movesMost(levers) && <p>{movesMost(levers)}</p>
+          ) : (
+            <Calculating />
+          )}
+        </div>
+        {options && <Options options={options} printed />}
+        {run && (
+          <section>
+            <h2>Your money this year</h2>
+            <p>{firstYearMoney(run).sentence}</p>
+          </section>
         )}
-        {levers ? (
-          movesMost(levers) && <p>{movesMost(levers)}</p>
-        ) : (
-          <Calculating />
+        {run && spending && levers && readyCopies.length > 0 && (
+          <section className="summary-plans">
+            <h2>Plans you tried</h2>
+            <PlansTable
+              baseline={{ run, spending, levers }}
+              copies={readyCopies}
+            />
+          </section>
         )}
-        {items.map((copy) => (
-          <div key={copy.lever.id}>
-            {copy.error || copy.transport ? (
+        {items
+          .filter((copy) => copy.error || copy.transport)
+          .map((copy) => (
+            <div key={copy.lever.id}>
+              <p>Copy: {copy.name}</p>
               <ErrorMessage error={copy.error ?? copy.transport!} />
-            ) : copy.comparison ? (
-              <p>
-                {compareHeadline(
-                  copy.subject,
-                  copy.comparison.baseline,
-                  copy.comparison.scenario,
-                )}
-              </p>
-            ) : (
-              <Calculating />
-            )}
-          </div>
-        ))}
+            </div>
+          ))}
         {run && (
           <p>
             <span className={`status ${answerResult?.status ?? run.status}`}>
@@ -364,7 +394,10 @@ function ExportResult({
         ) : (
           <p>None were marked as not sure.</p>
         )}
-        <p className="help">The summary fits one printed page.</p>
+        <p className="help summary-closing">
+          Made with Horizon, open-source retirement planning. These are
+          estimates from the figures shown, not predictions or advice.
+        </p>
       </article>
     );
   };
@@ -414,8 +447,9 @@ function ExportResult({
         <section className="card">
           <h2>Share a summary</h2>
           <p>
-            A one-page summary of the answers, what's left out and any answers
-            you weren't sure of.
+            A summary of the answer, the options, this year's money, the plans
+            you tried and what's left out. It prints on one page, or two when
+            there is more to show.
           </p>
           <button
             className="primary"
@@ -447,7 +481,7 @@ function ExportResult({
       <OpenFile opened={opened} />
       <Detail
         title="What's in the summary"
-        hint="Answers, what's left out, answers you weren't sure of"
+        hint="The answer, the options, this year's money, plans you tried, what's left out and answers you weren't sure of"
       >
         {summary()}
       </Detail>

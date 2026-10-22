@@ -495,15 +495,16 @@ test("intake: result cases, saved validation, resumption and example isolation",
         .click();
     if (reference.cases[name].result.household_input)
       await expect(
-        page.getByRole("button", { name: "Try a change", exact: true }),
+        page.getByRole("button", { name: "Try a change", exact: true }).last(),
       ).toBeEnabled();
     await capture(page, info, `head-${name}`);
     if (name === "v2-working-complete") {
       await expect(
-        page.getByRole("button", { name: "Try a change", exact: true }),
+        page.getByRole("button", { name: "Try a change", exact: true }).last(),
       ).toBeEnabled();
       await page
         .getByRole("button", { name: "Try a change", exact: true })
+        .last()
         .click();
       await page
         .getByRole("radio", { name: "Retire a year later, at 67", exact: true })

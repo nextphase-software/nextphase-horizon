@@ -87,7 +87,7 @@ async function capture(page: Page, info: TestInfo, name: string) {
   if (await page.locator('input[type="number"]:focus').count())
     await page.keyboard.press("Tab");
   await expect(
-    page.getByRole("button", { name: "Try a change", exact: true }),
+    page.getByRole("button", { name: "Try a change", exact: true }).last(),
   ).toBeEnabled();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   expect(

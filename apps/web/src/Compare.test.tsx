@@ -274,7 +274,10 @@ it("keeps valid copies reachable when another copy fails", () => {
   }
   const view = render(<Harness />);
   expect(screen.getByText(error.message)).toBeTruthy();
-  expect(view.container.querySelector("svg, table")).toBeNull();
+  expect(
+    view.container.querySelector(".savings-card, .headline-differences"),
+  ).toBeNull();
+  expect(view.container.querySelector(".side-by-side")).toBeTruthy();
   fireEvent.click(
     within(screen.getByRole("group", { name: "Plans" })).getByRole("button", {
       name: "Retire at 67",

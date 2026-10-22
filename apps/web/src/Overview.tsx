@@ -1,4 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
+import type { Options as OptionsData } from "./plan-options";
+import { Options } from "./Options";
+import { YourPlans } from "./YourPlans";
+import { NextSteps } from "./NextSteps";
+import type { CopyChange, PlanCopy } from "./plan-copies";
 import type { Baseline } from "./plan-copies";
 import type { Figure } from "./shell-display";
 import type { AnswersPlanV2 } from "./generated/types/answers-plan.v2";
@@ -16,6 +21,8 @@ export type OverviewActions = {
   changeAnswers: () => void;
   tryChange: () => void;
   copies: number;
+  options?: () => void;
+  openCopy?: (id: string) => void;
 };
 export function Overview({
   baseline,
@@ -27,7 +34,13 @@ export function Overview({
   intake,
   copy,
   actions,
+  options,
+  copies = [],
+  tryOption,
 }: {
+  options?: OptionsData | null;
+  copies?: PlanCopy[];
+  tryOption?: (change: CopyChange) => void;
   baseline: Baseline;
   figures: Figure[] | null;
   note: string;
@@ -75,6 +88,16 @@ export function Overview({
             Open the chart
           </button>
         </section>
+        {options && (
+          <Options
+            options={options}
+            copies={copies}
+            tryOption={tryOption}
+            openCopy={actions.openCopy}
+            overview
+            seeAll={actions.options}
+          />
+        )}
         <ThisYear run={run} />
         {!intake && (
           <section className="card overview-left-out">
@@ -122,51 +145,21 @@ export function Overview({
           )}
         </section>
       </div>
-      <section className="card next-steps">
-        <h2>What to do next</h2>
-        <ol>
-          <li>
-            See each year. The chart marks what happens when; choose a year to
-            see its numbers.{" "}
-            <button className="link-button" onClick={() => actions.plan()}>
-              Open the plan
-            </button>
-          </li>
-          {!copy && (
-            <li>
-              Try a change. It opens as a copy; your plan stays as it is.{" "}
-              <button className="link-button" onClick={actions.tryChange}>
-                Try a change
-              </button>
-            </li>
-          )}
-          <li>
-            Compare your plans side by side.{" "}
-            {actions.copies > 0 ? (
-              <button className="link-button" onClick={actions.compare}>
-                Compare {actions.copies + 1} plans
-              </button>
-            ) : (
-              <span className="help">Try a change first.</span>
-            )}
-          </li>
-          <li>
-            Keep a summary. Print it, save it as a PDF or keep a file Horizon
-            can reopen.{" "}
-            <button className="link-button" onClick={actions.summary}>
-              Get the summary
-            </button>
-          </li>
-          {intake && (
-            <li>
-              Change an answer. Your answers stay on this device.{" "}
-              <button className="link-button" onClick={actions.changeAnswers}>
-                Change your answers
-              </button>
-            </li>
-          )}
-        </ol>
-      </section>
+      {!copy && (
+        <YourPlans
+          baseline={baseline}
+          copies={copies}
+          select={actions.openCopy}
+        />
+      )}
+      <NextSteps
+        actions={{ ...actions, options: actions.options ?? (() => {}) }}
+        copies={actions.copies}
+        hasOptions={!!options && !options.none}
+        overview
+        own={intake}
+        copy={copy}
+      />
     </>
   );
 }

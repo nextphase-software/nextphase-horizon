@@ -150,7 +150,7 @@ test("plan layout: Overview landing, navigation, copy switcher, every year and a
     if (sample.name !== samples[0].name) continue;
     await section("Plan");
     await activate(
-      page.getByRole("button", { name: "Try a change", exact: true }),
+      page.getByRole("button", { name: "Try a change", exact: true }).last(),
     );
     await page
       .getByRole("radio", { name: "Retire a year later, at 67", exact: true })
@@ -293,7 +293,7 @@ test("plan layout: Overview landing, navigation, copy switcher, every year and a
     await page.setViewportSize({ width: 320, height: 812 });
     await section("Plan");
     await expect(
-      page.getByRole("button", { name: "Try a change", exact: true }),
+      page.getByRole("button", { name: "Try a change", exact: true }).last(),
     ).toBeEnabled();
     await capture("plan-320");
     await section("Overview");

@@ -172,17 +172,17 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
       page.getByRole("heading", { name: sample.headline, exact: true }),
     ).toBeFocused();
     await expect(
-      page.getByRole("link", { name: "See what would help" }),
+      page.getByRole("link", { name: "See your options" }),
     ).toBeVisible();
     const expectedPlain =
       plainSentences.cases[
         `example/${sample.name}` as "example/answers-working-61"
       ];
-    await expect(page.locator(".follow-on")).toHaveText(
+    await expect(page.locator(".plan-answer .follow-on")).toHaveText(
       expectedPlain.follow_on,
     );
     await expect(page.locator(".moves-most")).toHaveText(
-      `${expectedPlain.moves_most} See what would help`,
+      `${expectedPlain.moves_most} See your options`,
     );
     await expect(
       page.getByText(
@@ -212,13 +212,12 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
     );
     const details = page.locator(".plan-detail");
     await expect(details.locator(".detail-title")).toHaveText([
-      "What would help",
       "Details for experts",
     ]);
     for (const detail of await details.all())
       await expect(detail).not.toHaveAttribute("open");
     await expect(
-      page.getByRole("button", { name: "Try a change" }),
+      page.getByRole("button", { name: "Try a change", exact: true }).last(),
     ).toBeEnabled();
     await expect(
       page
@@ -236,7 +235,7 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
       await expect(page.locator(".plan-screen > .eyebrow")).toHaveText(
         `${sample.label.toUpperCase()} · RETIRED`,
       );
-      await expect(page.locator("#plan-levers summary .help")).toHaveText(
+      await expect(page.locator("#plan-levers > .help").first()).toHaveText(
         "One change at a time · 4 changes, ranked",
       );
     }
@@ -247,11 +246,12 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
         page.getByText(plainLeftOut(omission), { exact: true }),
       ).toBeVisible();
     await evidence(`plan-${sample.name}-omissions`);
-    await activate(page.getByRole("link", { name: "See what would help" }));
-    await expect(page.locator("#plan-levers summary")).toBeFocused();
+    await activate(page.getByRole("link", { name: "See your options" }));
+    await expect(page.locator("#plan-options-heading")).toBeFocused();
+    await activate(page.locator(".experts > summary"));
     await expect(
       page
-        .getByRole("group", { name: "What would help view" })
+        .getByRole("group", { name: "Every change Horizon tried view" })
         .getByRole("button", { name: "Chart" }),
     ).toHaveAttribute("aria-pressed", "true");
     for (const detail of await details.all())
@@ -306,7 +306,7 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
         page.locator(".lever-row").filter({ hasText: /Retire a year/ }),
       ).toHaveCount(0);
     }
-    await expect(page.locator("#plan-levers .help li")).toHaveCount(0);
+    await expect(page.locator("#plan-levers > .help li")).toHaveCount(0);
     if (sample.name === "answers-underfunded")
       await expect(
         page
@@ -324,7 +324,7 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
       );
     await evidence(`plan-${sample.name}-all-charts`);
     await activate(page.locator(".savings-table summary"));
-    for (const name of ["What would help", "Year by year"])
+    for (const name of ["Every change Horizon tried", "Year by year"])
       await activate(
         page
           .getByRole("group", { name: `${name} view` })

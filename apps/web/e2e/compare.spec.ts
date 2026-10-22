@@ -260,7 +260,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         .getByRole("button", { name: "Plan", exact: true }),
     );
     await expect(
-      page.getByRole("button", { name: "Try a change", exact: true }),
+      page.getByRole("button", { name: "Try a change", exact: true }).last(),
     ).toBeEnabled();
     await expect(page.getByText("Calculating…", { exact: true })).toHaveCount(
       0,
@@ -297,7 +297,9 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         );
         created.length = 0;
         await activate(
-          page.getByRole("button", { name: "Try a change", exact: true }),
+          page
+            .getByRole("button", { name: "Try a change", exact: true })
+            .last(),
         );
       } else
         await activate(
@@ -358,7 +360,14 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
           .locator(".compare-screen")
           .getByText("Calculating…", { exact: true }),
       ).toHaveCount(0);
-      if (item.headline) await expect(heading).toHaveText(item.headline);
+      if (created.length > 1)
+        await expect(heading).toHaveText(
+          `Your plan and ${created.length} copies, side by side`,
+        );
+      const selectedHeadline =
+        created.length > 1 ? page.locator(".compare-screen > h2") : heading;
+      if (item.headline)
+        await expect(selectedHeadline).toHaveText(item.headline);
       const actual = await probe();
       const calls = actual.requests.slice(before);
       expect(calls.map((call) => call.op)).toEqual([
@@ -484,7 +493,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       ).toBeEnabled();
       if (item.sample === 0 && item.id === "retire_earlier") {
         const geometry = await page
-          .locator(".compare-screen svg:visible")
+          .locator(".compare-screen .savings-card svg:visible")
           .first()
           .evaluate((svg) => {
             const drawing = svg as SVGSVGElement;
@@ -669,17 +678,19 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
           "+ New copy (no more changes to try)",
         );
         await expect(tabs.getByRole("button").last()).toBeDisabled();
-        const newestHeadline = await heading.textContent();
+        const newestHeadline = await selectedHeadline.textContent();
         await activate(
           tabs.getByRole("button", { name: "Retire at 67", exact: true }),
         );
-        await expect(page.locator(".compare-screen h1")).toHaveText(
+        await expect(page.locator(".compare-screen > h2")).toHaveText(
           cases[0].headline!,
         );
         const beforeReturning = (await probe()).requests.length;
         await activate(tabs.getByRole("button").first());
         await expect(
-          page.getByRole("button", { name: "Try a change" }),
+          page
+            .getByRole("button", { name: "Try a change", exact: true })
+            .last(),
         ).toBeEnabled();
         const after = await probe();
         const returnedRuns = after.requests
@@ -700,11 +711,15 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         await activate(
           planning.getByRole("button", { name: /^Compare(?:\s*\d+ plans)?$/ }),
         );
-        await expect(page.locator(".compare-screen h1")).toHaveText(
+        await expect(page.locator(".compare-screen > h2")).toHaveText(
           newestHeadline!,
         );
         await activate(page.getByRole("button", { name: "Back to plan" }));
-        await activate(page.getByRole("button", { name: "Try a change" }));
+        await activate(
+          page
+            .getByRole("button", { name: "Try a change", exact: true })
+            .last(),
+        );
         await expect(panel.getByRole("radio", { checked: false })).toHaveCount(
           6,
         );
@@ -713,7 +728,9 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         ).toBeDisabled();
         await activate(panel.getByRole("button", { name: "Cancel" }));
         await expect(
-          page.getByRole("button", { name: "Try a change" }),
+          page
+            .getByRole("button", { name: "Try a change", exact: true })
+            .last(),
         ).toBeFocused();
       }
     }
@@ -736,8 +753,11 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       page.getByText("Synthetic comparison failure", { exact: true }),
     ).toBeVisible();
     await expect(
-      page.locator(".compare-screen svg, .compare-screen table"),
+      page.locator(
+        ".compare-screen > .savings-card, .compare-screen > .headline-differences",
+      ),
     ).toHaveCount(0);
+    await expect(page.locator(".side-by-side")).toBeVisible();
     const errorTabs = page.getByRole("group", { name: "Plans", exact: true });
     await expect(errorTabs.getByRole("button")).toHaveText([
       "Your plan · retire at 66",
@@ -780,7 +800,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     );
     await activate(page.getByRole("button", { name: "Back to plan" }));
     await expect(
-      page.getByRole("button", { name: "Try a change" }),
+      page.getByRole("button", { name: "Try a change", exact: true }).last(),
     ).toBeEnabled();
     await activate(
       planning.getByRole("button", { name: /^Compare(?:\s*\d+ plans)?$/ }),
@@ -791,7 +811,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     await activate(
       errorTabs.getByRole("button", { name: "Retire at 67", exact: true }),
     );
-    await expect(page.locator(".compare-screen h1")).toHaveText(
+    await expect(page.locator(".compare-screen > h2")).toHaveText(
       "Retiring at 67: savings still run short at 61.",
     );
     await expect(
@@ -832,7 +852,9 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       0,
     );
     await evidence("plan-retirement-outside-projection");
-    await activate(page.getByRole("button", { name: "Try a change" }));
+    await activate(
+      page.getByRole("button", { name: "Try a change", exact: true }).last(),
+    );
     const horizonPanel = page.getByRole("region", {
       name: "Try one change in a copy",
     });

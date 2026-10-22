@@ -15,7 +15,7 @@ export type Baseline = {
   levers: Levers;
 };
 export type PlanCopy = {
-  lever: Lever;
+  lever: CopyChange;
   name: string;
   subject: string;
   input?: string;
@@ -25,8 +25,19 @@ export type PlanCopy = {
   transport?: string;
 };
 export type Copies = { input: string; baseline: Baseline; items: PlanCopy[] };
+export type CopyChange = Pick<Lever, "id" | "changes"> & { effect?: number };
 
-export function copyLabels(lever: Lever, run: Run) {
+export const sameChange = (a: CopyChange, b: CopyChange) =>
+  a.changes.length === b.changes.length &&
+  a.changes.every((change) =>
+    b.changes.some(
+      (other) =>
+        other.path === change.path &&
+        JSON.stringify(other.value) === JSON.stringify(change.value),
+    ),
+  );
+
+export function copyLabels(lever: CopyChange, run: Run) {
   const value = lever.changes[0].value;
   switch (lever.id) {
     case "retire_earlier":
@@ -35,7 +46,8 @@ export function copyLabels(lever: Lever, run: Run) {
       return { name: `Retire at ${age}`, subject: `Retiring at ${age}` };
     }
     case "spend_lower":
-    case "spend_higher": {
+    case "spend_higher":
+    case "spend_to_last": {
       const amount = centsDollars(Number(value));
       return {
         name: `Spend ${amount} a year`,

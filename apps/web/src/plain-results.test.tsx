@@ -188,7 +188,7 @@ it.each(
     );
     expect(
       text(plan.container.querySelector(".moves-most"))?.replace(
-        / See what would help$/,
+        / See your options$/,
         "",
       ) || null,
     ).toBe(expected.moves_most);

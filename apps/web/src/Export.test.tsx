@@ -315,3 +315,30 @@ it("states that a supported summary has no omissions", () => {
     "Nothing is left out.",
   );
 });
+
+it("prints the options and first-year sentence in the specified summary order without controls", async () => {
+  stub();
+  const view = show();
+  await screen.findByRole("link", { name: "Download plan file" });
+  const summary = view.container.querySelector(".print-summary .plan-summary")!;
+  expect(
+    [...summary.querySelectorAll("h2")].map((node) => node.textContent),
+  ).toEqual([
+    "Answers",
+    "Ways to make your savings last",
+    "Your money this year",
+    "What this result doesn't count",
+    "Answers you weren't sure of",
+  ]);
+  expect(summary.querySelector(".summary-savings .chart-wide")).toBeTruthy();
+  expect(summary.querySelectorAll("button, .plans-table")).toHaveLength(0);
+  expect(summary.querySelector(".options-intro")!.textContent).toContain(
+    "options to explore, not advice",
+  );
+  expect(summary.querySelector(".summary-closing")!.textContent).toBe(
+    "Made with Horizon, open-source retirement planning. These are estimates from the figures shown, not predictions or advice.",
+  );
+  expect(summary.textContent).not.toContain(
+    "The summary fits one printed page.",
+  );
+});

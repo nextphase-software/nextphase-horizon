@@ -13,6 +13,8 @@ import { CopyPanel } from "./CopyPanel";
 import {
   calculateCopy,
   copyLabels,
+  sameChange,
+  type CopyChange,
   type Baseline,
   type Copies,
 } from "./plan-copies";
@@ -21,7 +23,6 @@ import { HeadlineFigures, PlanNavigation, type Section } from "./PlanShell";
 import { headlineFigures, shellNote } from "./shell-display";
 import type { Run } from "./generated/types/run-output.v2";
 import type { SustainableSpending } from "./generated/types/sustainable-spending.v1";
-import type { Lever } from "./generated/types/levers.v1";
 import type { AnswersV2 } from "./generated/types/answers.v2";
 import type { AnswersPlanV2 } from "./generated/types/answers-plan.v2";
 import { Intake } from "./Intake";
@@ -125,6 +126,7 @@ export function App() {
   const [currentCopy, setCurrentCopy] = useState("");
   const [planSession, setPlanSession] = useState(false);
   const [focusChart, setFocusChart] = useState(false);
+  const [focusOptions, setFocusOptions] = useState(false);
   const [whatIfSession, setWhatIfSession] = useState<WhatIfSession>();
   const [ownDisplay, setOwnDisplay] = useState<DisplayState>("ready");
   const [panel, setPanel] = useState<Baseline | null>(null);
@@ -316,15 +318,25 @@ export function App() {
     trigger.current = document.activeElement as HTMLElement;
     setPanel(baseline);
   }
-  function makeCopy(lever: Lever) {
-    if (
-      !draft ||
-      !panel ||
-      copies?.items.some((copy) => copy.lever.id === lever.id)
-    )
+  function selectCopy(id: string) {
+    setCurrentCopy(id);
+    setView("compare");
+  }
+  function makeCopy(lever: CopyChange, optionBaseline?: Baseline) {
+    const existing = copies?.items.find((copy) =>
+      optionBaseline
+        ? sameChange(copy.lever, lever)
+        : copy.lever.id === lever.id,
+    );
+    if (existing) {
+      setPanel(null);
+      selectCopy(existing.lever.id);
       return;
+    }
+    const available = optionBaseline ?? panel;
+    if (!draft || !available) return;
     const input = serializeDraft(draft),
-      baseline = copies?.baseline ?? panel,
+      baseline = copies?.baseline ?? available,
       copy = { lever, ...copyLabels(lever, baseline.run) };
     setCopies((previous) => ({
       input,
@@ -358,6 +370,7 @@ export function App() {
   }
   function plan(chart = false) {
     setFocusChart(chart);
+    setFocusOptions(false);
     setView("plan");
   }
   function summary() {
@@ -399,17 +412,21 @@ export function App() {
   const copyProps = activeCopy
     ? { name: activeCopy.name, back: () => setCurrentCopy(""), compare }
     : undefined;
-  const overview =
-    view === "overview"
-      ? {
-          plan,
-          compare,
-          summary,
-          changeAnswers: () => change(),
-          tryChange: () => {},
-          copies: copies?.items.length ?? 0,
-        }
-      : undefined;
+  const navigation = {
+    plan,
+    compare,
+    summary,
+    options: () => {
+      setFocusChart(false);
+      setFocusOptions(true);
+      setView("plan");
+    },
+    changeAnswers: () => change(),
+    tryChange: () => {},
+    openCopy: selectCopy,
+    copies: copies?.items.length ?? 0,
+  };
+  const overview = view === "overview" ? navigation : undefined;
   const shownInput = activeCopy
     ? (activeCopy.input ?? "")
     : draft
@@ -536,6 +553,11 @@ export function App() {
                     cache={planCache}
                     copy={copyProps}
                     overview={overview}
+                    navigation={navigation}
+                    copies={copies?.items}
+                    original={copies?.baseline}
+                    tryOption={makeCopy}
+                    focusOptions={view === "plan" && focusOptions}
                     focusChart={view === "plan" && focusChart}
                   />
                 ) : activeCopy.error || activeCopy.transport ? (
@@ -597,6 +619,11 @@ export function App() {
                         tryChange={showPanel}
                         exportPlan={summary}
                         overview={overview}
+                        navigation={navigation}
+                        copies={copies?.items}
+                        original={copies?.baseline}
+                        tryOption={makeCopy}
+                        focusOptions={view === "plan" && focusOptions}
                         focusChart={view === "plan" && focusChart}
                         cache={planCache}
                         intake
@@ -618,6 +645,11 @@ export function App() {
                   tryChange={showPanel}
                   exportPlan={summary}
                   overview={overview}
+                  navigation={navigation}
+                  copies={copies?.items}
+                  original={copies?.baseline}
+                  tryOption={makeCopy}
+                  focusOptions={view === "plan" && focusOptions}
                   focusChart={view === "plan" && focusChart}
                   cache={planCache}
                   intake={own}

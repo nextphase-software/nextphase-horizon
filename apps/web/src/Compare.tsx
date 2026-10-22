@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import type { Copies, PlanCopy } from "./plan-copies";
 import type { Comparison } from "./generated/types/comparison.v2";
 import { Calculating, Detail, ScrollTable } from "./Plan";
+import { SideBySide } from "./SideBySide";
 import { CompareDrawing } from "./CompareChart";
 import { centsDollars, endAge, savingsRows, yearAtDate } from "./plan-display";
 import { plainLeftOut, estimatesNote, amountsNote } from "./plain-results";
@@ -113,9 +114,18 @@ export function Compare({
     return (
       <div className="plan-screen compare-screen">
         <h1 ref={heading} tabIndex={-1}>
-          Compare
+          {copies.items.length > 1
+            ? `Your plan and ${copies.items.length} copies, side by side`
+            : "Compare"}
         </h1>
         {tabs}
+        {copies.items.length > 1 && (
+          <SideBySide
+            baseline={copies.baseline}
+            copies={copies.items}
+            select={select}
+          />
+        )}
         <section className="card" role="alert">
           <h2 className="status unsupported">
             <span aria-hidden="true">!</span>{" "}
@@ -184,7 +194,10 @@ export function Compare({
             after: spending && plannedSpending(spending.headroom),
             change:
               spending && amountChange(baseSpend.headroom, spending.headroom),
-            difference: signedDollars(copy.lever.effect),
+            difference:
+              copy.lever.effect == null
+                ? "—"
+                : signedDollars(copy.lever.effect),
           },
           {
             label: `Left at ${endAge(comparison.scenario)}`,
@@ -240,15 +253,35 @@ export function Compare({
         Compare · {sample.label} · your plan stays as it is
       </p>
       <h1 ref={heading} tabIndex={-1} aria-live="polite">
-        {comparison
-          ? compareHeadline(
-              copy.subject,
-              comparison.baseline,
-              comparison.scenario,
-            )
-          : "Compare"}
+        {copies.items.length > 1
+          ? `Your plan and ${copies.items.length} copies, side by side`
+          : comparison
+            ? compareHeadline(
+                copy.subject,
+                comparison.baseline,
+                comparison.scenario,
+              )
+            : "Compare"}
       </h1>
       {tabs}
+      {copies.items.length > 1 && (
+        <>
+          <SideBySide
+            baseline={copies.baseline}
+            copies={copies.items}
+            select={select}
+          />
+          {comparison && (
+            <h2>
+              {compareHeadline(
+                copy.subject,
+                comparison.baseline,
+                comparison.scenario,
+              )}
+            </h2>
+          )}
+        </>
+      )}
       {comparison ? (
         <div className="card plan-status compare-status">
           <div className="compare-status-chips">

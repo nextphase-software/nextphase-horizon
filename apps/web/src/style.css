@@ -1655,3 +1655,255 @@ header:has(.brand-button) > button:last-child {
     display: block;
   }
 }
+
+/* Options, plan collections, side-by-side comparison and summary, 0003-W5. */
+.plan-options {
+  border-inline-start: 3px solid var(--color-accent);
+}
+.plan-options h2 {
+  margin-top: 0;
+  scroll-margin-top: 150px;
+}
+.options-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-3) 0;
+}
+.options-list > li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  background: var(--color-sunken);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin: var(--space-3) 0;
+}
+.options-list h3 {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-lg);
+}
+.options-list p {
+  margin: 0;
+}
+.options-list button {
+  flex-shrink: 0;
+}
+.options-returns h3 {
+  font-size: var(--text-base);
+  margin: var(--space-4) 0 var(--space-1);
+}
+.options-returns ul {
+  margin: 0;
+  padding-inline-start: var(--space-5);
+}
+.option-supported {
+  color: var(--color-supported-text);
+}
+.option-partial {
+  color: var(--color-partial-text);
+}
+.options-none {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-heading);
+}
+.your-plans {
+  margin-top: var(--space-4);
+}
+.your-plans h2 {
+  margin-top: 0;
+}
+.plans-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: var(--space-3);
+}
+.plans-list > li {
+  min-width: 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+.plans-list h3 {
+  font-size: var(--text-base);
+  margin: 0;
+}
+.plan-screen svg.small-savings {
+  max-width: 260px;
+  height: 64px;
+}
+.plans-list p {
+  font-size: var(--text-sm);
+}
+.plans-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  list-style: none;
+  padding: 0;
+  font-size: var(--text-sm);
+}
+.plans-key li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.plan-screen .plans-key svg {
+  width: 32px;
+}
+.multi-copy-line {
+  fill: none;
+  stroke: var(--color-series-scenario);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+.plans-table {
+  min-width: 650px;
+}
+.plans-table th:first-child {
+  min-width: 190px;
+}
+.summary-answer {
+  display: flow-root;
+}
+.plan-summary > section {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.plan-summary .plans-table {
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+.plan-summary .plans-table th,
+.plan-summary .plans-table td {
+  padding: var(--space-2);
+  text-align: left;
+  vertical-align: top;
+}
+.plan-summary .plans-table .amount {
+  text-align: right;
+}
+.summary-savings {
+  float: right;
+  width: 44%;
+  margin: 0 0 var(--space-2) var(--space-4);
+}
+.summary-savings svg {
+  display: block;
+  width: 100%;
+}
+.summary-savings svg text {
+  fill: var(--color-muted);
+  font: var(--text-xs) var(--font-body);
+}
+.summary-savings .baseline-line {
+  fill: none;
+  stroke: var(--color-series-baseline);
+  stroke-width: 3;
+}
+.summary-savings figcaption {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+.options-summary,
+.options-summary li,
+.summary-plans,
+.summary-answer {
+  break-inside: avoid;
+}
+@media (max-width: 559px) {
+  .options-list > li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .summary-savings {
+    width: 100%;
+    float: none;
+    margin: 0;
+  }
+}
+@media print {
+  :root {
+    color-scheme: light;
+  }
+  .plan-summary {
+    color: var(--color-ink);
+    font-size: var(--text-xs);
+    line-height: var(--leading-sm);
+  }
+  .plan-summary .summary-title {
+    font-size: var(--text-lg);
+  }
+  .plan-summary h2 {
+    font-size: var(--text-sm);
+    margin: var(--space-2) 0 var(--space-1);
+  }
+  .plan-summary p {
+    margin: var(--space-1) 0;
+  }
+  .summary-savings {
+    width: 44%;
+    float: right;
+    margin: 0 0 var(--space-2) var(--space-4);
+  }
+  .summary-savings figcaption {
+    font-size: var(--text-xs);
+  }
+  .plan-summary .options-list > li {
+    display: block;
+    padding: 0;
+    margin: var(--space-2) 0;
+    border: 0;
+    background: transparent;
+  }
+  .plan-summary .options-list h3,
+  .plan-summary .options-returns h3 {
+    font-size: var(--text-xs);
+    margin: var(--space-1) 0;
+  }
+  .plan-summary .options-list {
+    margin: var(--space-2) 0;
+  }
+  .plan-summary .options-returns ul {
+    margin: var(--space-1) 0;
+  }
+  .plan-summary .help,
+  .plan-summary small {
+    font-size: var(--text-xs);
+  }
+  .plan-summary .status {
+    font-size: var(--text-xs);
+    padding: 0 var(--space-2);
+  }
+  .plan-summary .table-scroll {
+    overflow: visible;
+    border: 0;
+  }
+  .plan-summary .plans-table {
+    min-width: 0;
+    width: 100%;
+    table-layout: fixed;
+    font-size: var(--text-xs);
+  }
+  .plan-summary .plans-table th,
+  .plan-summary .plans-table td {
+    padding: var(--space-1);
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .plan-summary .plans-table th:first-child {
+    width: 24%;
+  }
+  .plan-summary .summary-not-sure li {
+    margin-bottom: var(--space-1);
+  }
+  .plan-summary h2 {
+    break-after: avoid;
+  }
+}

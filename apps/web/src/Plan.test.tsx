@@ -94,13 +94,9 @@ it("loads each section independently and sends the exact edited input to all thr
     pending.sustainable_spending(read(samples[0].name, "spend")),
   );
   expect(screen.getByText(/spend \$64,994 a year/)).toBeTruthy();
-  expect(
-    screen.queryByRole("link", { name: "See what would help" }),
-  ).toBeNull();
+  expect(screen.queryByRole("link", { name: "See your options" })).toBeNull();
   await act(async () => pending.levers(read(samples[0].name, "levers")));
-  expect(
-    screen.getByRole("link", { name: "See what would help" }),
-  ).toBeTruthy();
+  expect(screen.getByRole("link", { name: "See your options" })).toBeTruthy();
 });
 it.each(["run", "sustainable_spending", "levers"])(
   "removes all figures on an error from %s, including late success replies",
@@ -164,16 +160,21 @@ it("reports transport failure and suppresses figures", async () => {
   ).toBeTruthy();
   expect(view.container.querySelector("svg, table")).toBeNull();
 });
-it("opens and focuses Levers, switches to its table and preserves engine ranking and savings outcomes", async () => {
+it("focuses the options, then opens expert levers and preserves engine ranking and savings outcomes", async () => {
   stub();
   const view = show();
   fireEvent.click(
-    await screen.findByRole("link", { name: "See what would help" }),
+    await screen.findByRole("link", { name: "See your options" }),
   );
-  const detail = view.container.querySelector("#plan-levers details")!;
-  expect(detail.hasAttribute("open")).toBe(true);
-  expect(document.activeElement).toBe(detail.querySelector("summary"));
-  const group = within(detail as HTMLElement);
+  expect(document.activeElement).toBe(
+    view.container.querySelector("#plan-options-heading"),
+  );
+  const experts = view.container.querySelector(".experts")!;
+  fireEvent.click(experts.querySelector("summary")!);
+  const detail = within(experts as HTMLElement).getByRole("heading", {
+    name: "Every change Horizon tried",
+  }).parentElement!;
+  const group = within(detail);
   expect(
     group.getByRole("button", { name: "Chart" }).getAttribute("aria-pressed"),
   ).toBe("true");
@@ -217,7 +218,7 @@ it.each([
       : json;
   });
   show();
-  await screen.findByText(
+  await screen.findAllByText(
     (_, node) => node?.tagName === "P" && !!node.textContent?.includes(text),
   );
 });
@@ -246,17 +247,18 @@ it("renders a zero-effect lever as No change with no amount or bar in either vie
   });
   const view = show();
   fireEvent.click(
-    await screen.findByRole("link", { name: "See what would help" }),
+    await screen.findByRole("link", { name: "See your options" }),
   );
-  const chartRow = view.container.querySelector(".lever-row")!;
+  const experts = view.container.querySelector(".experts")!;
+  fireEvent.click(experts.querySelector("summary")!);
+  const levers = within(experts as HTMLElement).getByRole("heading", {
+    name: "Every change Horizon tried",
+  }).parentElement!;
+  const chartRow = levers.querySelector(".lever-row")!;
   expect(chartRow.querySelector("strong")!.textContent).toBe("No change");
   expect(chartRow.querySelector(".lever-bar")).toBeNull();
-  fireEvent.click(
-    within(
-      view.container.querySelector("#plan-levers") as HTMLElement,
-    ).getByRole("button", { name: "Table" }),
-  );
-  const cells = view.container.querySelector("#plan-levers tbody tr")!.children;
+  fireEvent.click(within(levers).getByRole("button", { name: "Table" }));
+  const cells = levers.querySelector("tbody tr")!.children;
   expect(cells[2].textContent).toBe("No change");
   expect(cells[3].textContent).toBe("No change");
 });

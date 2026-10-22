@@ -113,7 +113,7 @@ test("shell: welcome, all five examples, navigation, theme, worker bytes and pri
       ).toBeVisible();
     else
       await expect(
-        page.getByRole("button", { name: "Try a change" }),
+        page.getByRole("button", { name: "Try a change", exact: true }).last(),
       ).toBeEnabled();
     const bytes = await page.evaluate(
       ({ json }) =>
