@@ -299,6 +299,26 @@ test("plan layout: Overview landing, navigation, copy switcher, every year and a
     await section("Overview");
     await capture("overview-320");
   }
+  await section("Overview");
+  await activate(
+    page.getByRole("button", { name: "Open the chart", exact: true }),
+  );
+  await expect(
+    page.getByRole("heading", { name: "Savings by age", exact: true }),
+  ).toBeFocused();
+  await capture("own-plan-chart-focused");
+  await activate(
+    page.getByRole("button", { name: "Horizon welcome", exact: true }),
+  );
+  await activate(
+    page.getByRole("button", { name: "Try an example household", exact: true }),
+  );
+  await activate(
+    page.getByRole("button", { name: "Open example plan", exact: true }),
+  );
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+  await expect(page.locator(".overview-assumptions")).toBeVisible();
+  await capture("overview-reopened-after-chart");
   expect(outside).toEqual([]);
   expect(errors).toEqual([]);
 });

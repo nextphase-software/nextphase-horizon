@@ -65,3 +65,36 @@ it("ignores an obsolete answers reply after returning to review", async () => {
   ).toBeTruthy();
   expect(screen.queryByText("We need your age first.")).toBeNull();
 });
+
+it("focuses a newly opened Overview after the chart was opened on an earlier plan", async () => {
+  const goldens = import.meta.glob<string>(
+    "../../../packages/parity/golden/answers-working-61.{run,levers}.json",
+    { query: "?raw", import: "default", eager: true },
+  );
+  vi.mocked(engine.call).mockImplementation(async (...[op]) =>
+    op === "run" || op === "levers"
+      ? goldens[`../../../packages/parity/golden/answers-working-61.${op}.json`]
+      : raw,
+  );
+  const view = render(<App />);
+  fireEvent.click(
+    screen.getByRole("button", { name: "Try an example household" }),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Open example plan" }));
+  fireEvent.click(
+    await screen.findByRole("button", { name: "Open the chart" }),
+  );
+  await vi.waitFor(() =>
+    expect(document.activeElement).toBe(
+      view.container.querySelector("#savings-title"),
+    ),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Your answers" }));
+  fireEvent.click(
+    screen.getByRole("button", { name: "Choose another example" }),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Open example plan" }));
+  await vi.waitFor(() =>
+    expect(document.activeElement).toBe(view.container.querySelector("h1")),
+  );
+});

@@ -536,7 +536,7 @@ export function App() {
                     cache={planCache}
                     copy={copyProps}
                     overview={overview}
-                    focusChart={focusChart}
+                    focusChart={view === "plan" && focusChart}
                   />
                 ) : activeCopy.error || activeCopy.transport ? (
                   <section role="alert">
@@ -597,7 +597,7 @@ export function App() {
                         tryChange={showPanel}
                         exportPlan={summary}
                         overview={overview}
-                        focusChart={focusChart}
+                        focusChart={view === "plan" && focusChart}
                         cache={planCache}
                         intake
                         whatIf={active}
@@ -618,7 +618,7 @@ export function App() {
                   tryChange={showPanel}
                   exportPlan={summary}
                   overview={overview}
-                  focusChart={focusChart}
+                  focusChart={view === "plan" && focusChart}
                   cache={planCache}
                   intake={own}
                 />

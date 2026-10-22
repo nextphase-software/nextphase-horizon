@@ -454,7 +454,12 @@ it("keeps the displayed what-if and headline figures in step through Overview, P
   expect(document.activeElement).toBe(view.container.querySelector("h1"));
   expect(view.container.querySelector(".what-if-panel")).toBeNull();
   const nav = within(page.getByRole("navigation", { name: "Plan sections" }));
-  fireEvent.click(nav.getByRole("button", { name: "Plan" }));
+  fireEvent.click(page.getByRole("button", { name: "Open the chart" }));
+  await waitFor(() =>
+    expect(document.activeElement).toBe(
+      view.container.querySelector("#savings-title"),
+    ),
+  );
   await waitFor(() =>
     expect(view.container.querySelector(".headline-strip")).toBeTruthy(),
   );
@@ -503,9 +508,11 @@ it("keeps the displayed what-if and headline figures in step through Overview, P
   assertStrip();
   fireEvent.click(nav.getByRole("button", { name: "Overview" }));
   expect(view.container.querySelector(".what-if-panel")).toBeNull();
-  expect(
-    text(view.container.querySelector(".headline-tiles .headline-note")),
-  ).toBe(expected.note);
+  await waitFor(() =>
+    expect(
+      text(view.container.querySelector(".headline-tiles .headline-note")),
+    ).toBe(expected.note),
+  );
   fireEvent.click(nav.getByRole("button", { name: "Summary" }));
   await waitFor(assertStrip);
   fireEvent.click(nav.getByRole("button", { name: "Plan" }));
@@ -539,12 +546,14 @@ it("keeps the displayed what-if and headline figures in step through Overview, P
     expect(view.container.querySelector(".experts")).toBeTruthy(),
   );
   fireEvent.click(view.container.querySelector(".experts > summary")!);
-  expect(
-    texts(
-      view.container,
-      ".experts .expert-section:last-of-type tbody td:nth-child(3)",
-    ),
-  ).toEqual(Array(4).fill("Your figures"));
+  await waitFor(() =>
+    expect(
+      texts(
+        view.container,
+        ".experts .expert-section:last-of-type tbody td:nth-child(3)",
+      ),
+    ).toEqual(Array(4).fill("Your figures")),
+  );
   fireEvent.click(nav.getByRole("button", { name: "Overview" }));
   fireEvent.click(page.getByRole("button", { name: "Back to your plan" }));
   await waitFor(() =>
