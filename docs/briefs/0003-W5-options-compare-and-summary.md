@@ -537,3 +537,31 @@ Both clean-checkout deploy checks exited 0. The first staging tree was preserved
 Exploratory validation during implementation is recorded separately from the cumulative passes. Initial typechecking identified missing generated artifacts, an import name and an ES2022 test-method mismatch; these were fixed. Early unit runs exposed old link/expert expectations and the new multi-plan failure card; subsequent runs passed 451 tests, then 116 focused tests after the summary regression addition. The options/reference-focused run passed 155 tests. The first phone browser run had 9 passed/6 failed (old selectors and inherited summary card spacing); the next had 14 passed/1 failed (a remaining expert-help selector). A two-browser focused run had 3 passed/1 failed because the test reloaded Welcome while WebKit was still initializing its worker; the fixture loader now reuses the already loaded page. The final preliminary options/PDF run passed both Chromium and WebKit. The cumulative commands above are fresh results for the revisions identified above and supersede all preliminary runs. One exploratory Prettier invocation also named a nonexistent app docs directory and exited 2; formatting the actual changed files succeeded, and the cumulative format check passed.
 
 Exclusions are exactly the brief: engine changes; an engine spend-to-last lever; combined options; new savings while working; yearly income, withdrawals and tax in today’s dollars; and 0003-W6 answers/live-chart work. The one-change panel and its choices, copy banner, headline strip/tiles, chart-first Plan/year chooser, Summary opening/file export and one-copy comparison behavior remain as specified. No required validation command, browser project or requested evidence category was excluded. A different reviewer must evaluate the change; the implementer did not perform independent review.
+
+### Review round 1 fixes
+
+Branch: `codex/0003-W5-options-compare-and-summary`. New validated test-fix tip: `7eeaef7a60f5aaa6f05de0cbabb5df9a17a4a44f`. All final validation below ran against that source/test revision; this record is committed afterward, with the final branch tip reported separately in the handoff.
+
+F1: the own-figures browser flow now places focus at the options heading after returning from the first copy. This avoids blurring an unchanged what-if number, which clears copies under the existing behavior. The test includes a short comment explaining that behavior. Every existing keyboard assertion remains. Before printing, it asserts the Compare heading is "Your plan and 3 copies, side by side" and the visible "Plans you tried" table has exactly Measure, Your plan, Spend $64,994 a year, Retire at 67 and Returns at 4% columns. Application code is unchanged.
+
+Final web commands ran from `apps/web/`, with the evidence environment variable directed outside the checkout. The two evidence-inspection commands ran from the workspace root; their scripts also live outside the checkout.
+
+| Command | Exit | Observed result |
+| --- | --- | --- |
+| `corepack pnpm run typecheck` | 0 | TypeScript check passed. |
+| `corepack pnpm run lint` | 0 | ESLint passed. |
+| `corepack pnpm run format:check` | 0 | All matched files passed Prettier. |
+| `corepack pnpm test` | 0 | 452 tests passed in 21 files; harness duration 47.95 seconds. |
+| `node --version` | 0 | `v24.22.0`, recorded immediately before the following build's WebAssembly command. |
+| `corepack pnpm run build` | 0 | WebAssembly release build, schema generation, TypeScript and Vite passed; 59 modules transformed. |
+| `corepack pnpm run e2e --workers=1` | 0 | 120 passed, 0 failed, 0 skipped, 0 flaky; 49.6 minutes. All 8 projects ran 15 tests each. |
+| `node "$HORIZON_EVIDENCE_DIR/inspect-pdfs.mjs"` | 0 | All 8 own-figures PDFs checked: 2 Letter pages each, Your plan plus exactly 3 named copy columns, complete plans table on one page. |
+| `python3 "$HORIZON_EVIDENCE_DIR/summarize-results.py"` | 0 | Report audit confirmed 120 passes across 8 projects, 1992 primary PNGs, 20 primary PDFs and the HTML report. |
+
+The eight passing projects were `chromium-375-light`, `chromium-375-dark`, `chromium-1280-light`, `chromium-1280-dark`, `webkit-375-light`, `webkit-375-dark`, `webkit-1280-light` and `webkit-1280-dark`. Actual browser-version annotations recorded Chromium `153.0.8010.12` and WebKit `26.6`. WebKit's four own-figures PDFs use the unchanged WebKit print-media DOM capture and Chromium PDF renderer; its renderer annotation records Chromium `153.0.8010.12`.
+
+PDF inspection decoded the actual PDF text using the committed `e2e/pdf.ts` helper. Each plans table contains the consecutive headers Measure, Your plan, Spend $64,994 a year, Retire at 67 and Returns at 4%, immediately followed by the Savings row. All four measure rows stay with those headers. The options remain on page 1. Fresh screenshots, PDFs, report, command logs and inspection results are retained outside the checkout; the own-figures evidence now includes all three copies.
+
+Preliminary commands and failures are retained separately. `corepack pnpm exec prettier --check e2e/options.spec.ts` exited 0 for the changed file. Before the visible-table selector correction, the six pre-browser commands listed above also each exited 0 (452 unit tests in 21 files; 59 build modules; Node `v24.22.0` before WebAssembly). `corepack pnpm exec playwright test e2e/options.spec.ts --project=chromium-375-light --project=webkit-375-light` exited 1: 0 passed, 2 failed, because the new table selector included both the visible summary and its hidden print duplicate. Scoping it to the visible table fixed that assertion. The initial default `corepack pnpm run e2e` attempt encountered the existing five-second own-figures readiness timeout while the page still showed "Calculating…". That attempt was stopped and exited 130: 14 passed, 1 failed, 3 interrupted, 102 did not run. The complete single-worker run above then passed every case without changing application code, assertions or timeouts.
+
+No dependencies were added. Validation scope follows the test-only review request: the cumulative Rust, CLI, license and deploy sequences were not repeated; their earlier implementation results remain recorded above. No requested web command, browser project or PDF inspection was excluded. No push occurred.
