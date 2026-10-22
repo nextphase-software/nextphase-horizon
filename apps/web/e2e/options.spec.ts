@@ -310,7 +310,49 @@ test("options, plan collections, all-copy comparison and Letter summaries", asyn
       await capture("plan-with-three-copies");
       await section("Overview");
       await capture("overview-with-three-copies");
+      await activate(
+        page
+          .locator(".next-steps")
+          .getByRole("button", { name: "Compare 4 plans", exact: true }),
+      );
+      await readyCopy();
+      await activate(
+        page.getByRole("button", { name: "Back to plan", exact: true }),
+      );
+      await activate(
+        page
+          .locator(".next-steps")
+          .getByRole("button", { name: "Compare 4 plans", exact: true }),
+      );
+      await readyCopy();
+      await section("Overview");
+      await activate(
+        page
+          .getByRole("button", { name: "Back to your plan", exact: true })
+          .first(),
+      );
+      await activate(
+        page
+          .locator(".next-steps")
+          .getByRole("button", { name: "See the options", exact: true }),
+      );
+      await focusedOptions();
+      await activate(
+        page
+          .locator(".next-steps")
+          .getByRole("button", { name: "Get the summary", exact: true }),
+      );
+      await expect(page.locator(".export-screen")).toBeVisible();
       await summaryPDF("example-three-copies", true);
+    }
+    if (id === "answers-underfunded") {
+      await activate(
+        page
+          .locator(".next-steps")
+          .getByRole("button", { name: "Try a change", exact: true }),
+      );
+      await expect(page.locator(".copy-panel")).toBeVisible();
+      await activate(page.getByRole("button", { name: "Cancel", exact: true }));
     }
   }
   await own("v2-solve-retirement");
@@ -319,6 +361,13 @@ test("options, plan collections, all-copy comparison and Letter summaries", asyn
   await section("Plan");
   await expect(page.locator(".plan-options")).toHaveCount(0);
   await capture("worked-out-plan");
+  await activate(
+    page
+      .locator(".next-steps")
+      .getByRole("button", { name: "Try a change", exact: true }),
+  );
+  await expect(page.locator(".copy-panel")).toBeVisible();
+  await activate(page.getByRole("button", { name: "Cancel", exact: true }));
   await own("v2-range-nothing-solved", true);
   await capture("own-ranges-overview");
   await activate(
@@ -344,7 +393,15 @@ test("options, plan collections, all-copy comparison and Letter summaries", asyn
   await lowerReturns();
   await capture("own-ranges-side-by-side");
   await summaryPDF("own-ranges-three-copies", false);
-  await section("Your answers");
+  await section("Plan");
+  await activate(
+    page
+      .locator(".next-steps")
+      .getByRole("button", { name: "Change your answers", exact: true }),
+  );
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Here's what you told us",
+  );
   await capture("own-ranges-your-answers");
   expect(outside).toEqual([]);
   expect(errors).toEqual([]);
