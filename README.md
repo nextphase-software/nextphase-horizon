@@ -34,19 +34,33 @@ cargo install cargo-deny --version 0.20.2 --locked
 cargo install wasm-bindgen-cli --version 0.2.129 --locked
 ```
 
-Install Node.js **24.22.0** (for example, `nvm install 24.22.0`). If it is
+Install Node.js **26.11.1** (for example, `nvm install 26.11.1`). If it is
 already installed with nvm, select its executable directory before running the
 WebAssembly command:
 
 ```sh
-export PATH="$HOME/.nvm/versions/node/v24.22.0/bin:$PATH"
+export PATH="$HOME/.nvm/versions/node/v26.11.1/bin:$PATH"
 node --version
 wasm-bindgen-test-runner --version
 ```
 
-Expected versions are `v24.22.0` and `wasm-bindgen-test-runner 0.2.129`.
+Expected versions are `v26.11.1` and `wasm-bindgen-test-runner 0.2.129`.
 The runner version must equal `wasm-bindgen` in Cargo.lock. Node also builds and tests the self-contained web adapter in `apps/web/`;
 there is no new top-level tool configuration.
+
+Install pnpm 12.9.1 for that Node.js:
+
+```sh
+npm install -g pnpm@12.9.1
+```
+
+Alternatively, use [pnpm’s installer](https://pnpm.io/installation) (retrieved 2026-10-22):
+
+```sh
+curl -fsSL https://get.pnpm.io/install.sh | env PNPM_VERSION=12.9.1 sh -
+```
+
+pnpm runs the version in `packageManager` when another is invoked (`pmOnFail`, default `download`; [pnpm settings](https://pnpm.io/settings/cli), retrieved 2026-10-22).
 
 **Validation tiers.** Run only the tier that matches what the brief changes;
 the brief's Validation section names it. Each tier lists everything that runs.
@@ -146,9 +160,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). All demon
 
 ## Web shell validation — 0002-W1 v2
 
-Use Node.js 24.22.0 and corepack 0.36.0 (bundled with this Node installation).
-Invoke pnpm through corepack; `apps/web/package.json` selects pnpm 12.9.1.
-No global pnpm install or top-level JavaScript configuration is needed. First
+Use Node.js 26.11.1 and pnpm 12.9.1.
+`apps/web/package.json` selects pnpm 12.9.1.
+No top-level JavaScript configuration is needed. First
 run the entire Rust sequence above unchanged, expanding every placeholder over
 the fixtures/reference cases in both linked guides. Then, from the workspace root:
 
@@ -161,31 +175,30 @@ cargo build -p horizon-wasm --target wasm32-unknown-unknown --release
 Continue from `apps/web/`, in this order (including on a fresh clone):
 
 ```sh
-export PATH="$HOME/.nvm/versions/node/v24.22.0/bin:$PATH"
+export PATH="$HOME/.nvm/versions/node/v26.11.1/bin:$PATH"
 node --version
-corepack --version
-corepack pnpm --version
-corepack pnpm install --frozen-lockfile
-corepack pnpm run build:engine
-corepack pnpm run types
-corepack pnpm run typecheck
-corepack pnpm run lint
-corepack pnpm run format:check
-corepack pnpm test
-corepack pnpm run build
-corepack pnpm exec playwright install chromium webkit
-corepack pnpm run e2e
-corepack pnpm run licenses
+pnpm --version
+pnpm install --frozen-lockfile
+pnpm run build:engine
+pnpm run types
+pnpm run typecheck
+pnpm run lint
+pnpm run format:check
+pnpm test
+pnpm run build
+pnpm exec playwright install chromium webkit
+pnpm run e2e
+pnpm run licenses
 ```
 
-Expected versions: Node v24.22.0, corepack 0.36.0, pnpm 12.9.1. Playwright
+Expected versions: Node v26.11.1, pnpm 12.9.1. Playwright
 1.63.0 installs its matched Chromium and WebKit binaries. Record actual
 browser versions from the e2e browser-version annotations; installing binaries
 alone does not prove they ran. Browser launches require an environment that
 permits their OS processes. The e2e suite serves the production build locally
 and checks 8 browser/size/theme projects, with every sample in every project.
 
-**Engine-only briefs.** When a brief changes nothing under `apps/web/`, its Validation section may exclude the end-to-end browser suite: `corepack pnpm exec playwright install …` and `corepack pnpm run e2e`. Every other command in this section still runs, including the web unit tests, typecheck, lint, build and license checks.
+**Engine-only briefs.** When a brief changes nothing under `apps/web/`, its Validation section may exclude the end-to-end browser suite: `pnpm exec playwright install …` and `pnpm run e2e`. Every other command in this section still runs, including the web unit tests, typecheck, lint, build and license checks.
 
 **Screen-only briefs.** When a brief changes nothing outside `apps/web/` and
 `docs/` (no file under `packages/` or `infra/`, and no `Cargo.toml`,
@@ -203,8 +216,33 @@ build/test package-version-license exceptions in decision 0011's 2026-10-18
 amendment apply to the full closure. Any other license fails with its package,
 version and license. See [the inventory](docs/model/dependencies.md#web-shell--0002-w1-v2).
 
-For local use after installation, run `corepack pnpm run dev` from `apps/web/`
+For local use after installation, run `pnpm run dev` from `apps/web/`
 and open http://127.0.0.1:5173. It watches static builds; reload after a rebuild.
 This preserves the exact CSP without inline development HMR scripts/styles.
 Restart after engine/schema changes. Architecture, protocol, tokens, security
 and test details are in [web-shell.md](docs/architecture/web-shell.md).
+
+## Deploy tooling — 0002-W8
+
+After the Rust and web shell sequences, run from `infra/cloud/web/` on a clean
+checkout (Node.js 26.11.1, pnpm 12.9.1):
+
+```sh
+node --version
+pnpm --version
+pnpm install --frozen-lockfile
+pnpm run licenses
+pnpm test
+pnpm run check
+pnpm run check
+```
+
+Preserve the first `staging/` outside the repository before the second check,
+then compare the complete file lists and every file byte for byte. Record both
+checks, comparison counts and exits. Each check stages, records Node's version
+before every WebAssembly build, runs a dry-run deploy, and verifies five local
+responses, all four exact headers, the release commit, SPA navigation fallback
+and `application/wasm`. No Cloudflare login or real deploy is part of validation.
+The tooling's `pnpm-workspace.yaml` declines the `esbuild` and `workerd` install
+scripts; another requested install script requires escalation. Keep the app's
+package, lockfile and license checks unchanged.

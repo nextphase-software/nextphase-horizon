@@ -242,7 +242,7 @@ static assets, with no Worker script or bindings, a custom-domain route for
 login and DNS setup belong to the maintainer after merge. The app is unchanged.
 
 The independent package in `infra/cloud/web/` pins Wrangler 4.148.0
-(MIT OR Apache-2.0), Node.js 24.22.0 and pnpm 12.9.1. Its workspace declines
+(MIT OR Apache-2.0), Node.js 26.11.1 and pnpm 12.9.1. Its workspace declines
 the `esbuild` and `workerd` install scripts; published platform binaries are used.
 Its license check reuses the app's full-closure policy and adds only the exact
 tooling exceptions of decision 0022: `@img/sharp-libvips-<platform>@1.3.3`
@@ -252,11 +252,11 @@ From `infra/cloud/web/`:
 
 ```sh
 node --version
-corepack pnpm install --frozen-lockfile
-corepack pnpm run licenses
-corepack pnpm test
-corepack pnpm run stage
-corepack pnpm run check
+pnpm install --frozen-lockfile
+pnpm run licenses
+pnpm test
+pnpm run stage
+pnpm run check
 ```
 
 `stage` refuses a dirty working tree, warns when the commit is not a known
@@ -287,8 +287,8 @@ release, engine module, font, and an unknown page navigation requested with
 release must name HEAD, and the engine content type must be `application/wasm`.
 The local server is stopped after checking; a Cloudflare account is unnecessary.
 
-The maintainer runs `corepack pnpm exec wrangler login` with their own account
-holding the `nextphase.software` zone, then `corepack pnpm run deploy`.
+The maintainer runs `pnpm exec wrangler login` with their own account
+holding the `nextphase.software` zone, then `pnpm run deploy`.
 `deploy` stages and invokes Wrangler with the committed configuration, then
 prints the commit and both addresses. No token, account ID or secret belongs in
 either repository. See the [tooling guide](../../infra/cloud/web/README.md) for

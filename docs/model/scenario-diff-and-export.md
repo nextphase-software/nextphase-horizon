@@ -145,7 +145,7 @@ cargo fmt --all
 The parity crate also compiles all W1 unit test bodies with an embedded fixture,
 and the W2/W3 unit-reference test bodies against the unchanged committed vectors.
 W1's original reference source is unchanged. These same proof bodies execute on
-native and WebAssembly using target-specific test attributes. Node.js 24.22.0
+native and WebAssembly using target-specific test attributes. Node.js 26.11.1
 runs the module with wasm-bindgen-test-runner 0.2.129, matching locked
 wasm-bindgen 0.2.129. See [the testing guide](https://wasm-bindgen.github.io/wasm-bindgen/wasm-bindgen-test/index.html),
 retrieved 2026-10-17. All cumulative commands and tool setup are in

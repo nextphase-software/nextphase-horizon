@@ -3,7 +3,7 @@ import { execFileSync } from "node:child_process";
 import { failures } from "./license-policy.mjs";
 const list = (args = []) =>
   JSON.parse(
-    execFileSync("corepack", ["pnpm", "licenses", "list", "--json", ...args], {
+    execFileSync("pnpm", ["licenses", "list", "--json", ...args], {
       encoding: "utf8",
     }),
   );

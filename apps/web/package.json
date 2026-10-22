@@ -6,7 +6,7 @@
   "license": "AGPL-3.0-only",
   "packageManager": "pnpm@12.9.1",
   "engines": {
-    "node": "24.22.0"
+    "node": "26.11.1"
   },
   "scripts": {
     "build:engine": "node scripts/build-engine.mjs",

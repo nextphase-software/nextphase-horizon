@@ -554,3 +554,11 @@ exception applies to shipped code. The three type packages are pinned by v2:
 | `yocto-queue` | 0.1.0 | MIT |
 | `zod` | 4.6.7 | MIT |
 | `zod-validation-error` | 4.0.2 | MIT |
+
+## Toolchain — 0002-W11
+
+Node.js 26.11.1 (MIT, with bundled-component notices) and pnpm 12.9.1 (MIT)
+are development tools. pnpm runs directly; corepack leaves the toolchain.
+Both package manifests pin Node.js 26.11.1 and retain `packageManager: pnpm@12.9.1`.
+Both lockfiles and all dependency versions are unchanged. Earlier entries above
+remain the record of their milestones. See [decision 0011’s amendment](../decisions/0011-web-shell-stack.md#amendment--2026-10-22-nodejs-26-and-plain-pnpm).

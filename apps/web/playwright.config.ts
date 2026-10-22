@@ -30,8 +30,7 @@ export default defineConfig({
   workers: 3,
   use: { baseURL: "http://127.0.0.1:4173", trace: "off" },
   webServer: {
-    command:
-      "corepack pnpm exec vite preview --host 127.0.0.1 --port 4173 --strictPort",
+    command: "pnpm exec vite preview --host 127.0.0.1 --port 4173 --strictPort",
     url: "http://127.0.0.1:4173",
     reuseExistingServer: false,
   },

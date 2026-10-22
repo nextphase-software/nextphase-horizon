@@ -6,16 +6,16 @@ It has its own lockfile and license check; none of its dependencies ships in the
 site. Nothing under `apps/web/` is changed by this tooling.
 
 Use the repository's pinned Rust toolchain, wasm-bindgen CLI 0.2.129, Node.js
-24.22.0, corepack 0.36.0 and pnpm 12.9.1. From this directory:
+26.11.1 and pnpm 12.9.1. From this directory:
 
 ```sh
 node --version
-corepack pnpm --version
-corepack pnpm install --frozen-lockfile
-corepack pnpm run licenses
-corepack pnpm test
-corepack pnpm run stage
-corepack pnpm run check
+pnpm --version
+pnpm install --frozen-lockfile
+pnpm run licenses
+pnpm test
+pnpm run stage
+pnpm run check
 ```
 
 The workspace configuration declines the `esbuild` and `workerd` install
@@ -42,8 +42,8 @@ To deploy, the maintainer needs their own Cloudflare login and the
 `nextphase.software` zone on that account:
 
 ```sh
-corepack pnpm exec wrangler login
-corepack pnpm run deploy
+pnpm exec wrangler login
+pnpm run deploy
 ```
 
 `deploy` stages, then runs Wrangler with the committed `wrangler.jsonc`. After

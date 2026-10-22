@@ -30,14 +30,14 @@ function request(port, path, navigation = false) {
 
 const commit = stage();
 process.env.WRANGLER_SEND_METRICS = "false";
-run("corepack", ["pnpm", "exec", "wrangler", "deploy", "--dry-run", "--config", "wrangler.jsonc"]);
+run("pnpm", ["exec", "wrangler", "deploy", "--dry-run", "--config", "wrangler.jsonc"]);
 const socket = createServer();
 socket.listen(0, "127.0.0.1");
 await once(socket, "listening");
 const port = socket.address().port;
 await new Promise((resolve, reject) => socket.close((error) => error ? reject(error) : resolve()));
-const child = spawn("corepack", [
-  "pnpm", "exec", "wrangler", "dev", "--config", "wrangler.jsonc",
+const child = spawn("pnpm", [
+  "exec", "wrangler", "dev", "--config", "wrangler.jsonc",
   "--local", "--ip", "127.0.0.1", "--port", String(port), "--inspector-port", "0",
 ], {
   cwd: tooling, stdio: ["ignore", "inherit", "inherit"],

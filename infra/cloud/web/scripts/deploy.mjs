@@ -3,7 +3,7 @@ import { spawn } from "node:child_process";
 import { stage, tooling } from "./staging.mjs";
 
 const commit = stage();
-const child = spawn("corepack", ["pnpm", "exec", "wrangler", "deploy", "--config", "wrangler.jsonc"], {
+const child = spawn("pnpm", ["exec", "wrangler", "deploy", "--config", "wrangler.jsonc"], {
   cwd: tooling,
   stdio: ["inherit", "pipe", "inherit"],
 });

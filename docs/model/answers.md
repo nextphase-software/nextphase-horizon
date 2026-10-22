@@ -151,7 +151,7 @@ cargo fmt --all
 The same reference-proof functions validate native output and WebAssembly,
 including full canonical answer bytes and earlier numeric proofs. Compile-time
 includes supply all fixtures and goldens to WebAssembly. Use the pinned Node.js
-24.22.0 path and matching wasm-bindgen runner 0.2.129 from [README](../../README.md#setup).
+26.11.1 path and matching wasm-bindgen runner 0.2.129 from [README](../../README.md#setup).
 The cumulative sequence records `node --version`, the release levers wall time
 (must be under two seconds), and the isolated WebAssembly levers test duration.
 
@@ -246,7 +246,7 @@ separate JSON file and run `intake` on every file. Exits are 0 complete,
 reading, operation dispatch, canonical JSON/newline output and exit mapping.
 The `horizon-wasm::plan_from_answers` binding returns identical canonical bytes.
 Native, CLI and Node WebAssembly tests compare every reference result, including
-complete generated inputs. Record Node v24.22.0 for each WebAssembly command.
+complete generated inputs. Record Node v26.11.1 for each WebAssembly command.
 No screen or web worker protocol changes are part of this operation.
 
 
@@ -323,7 +323,7 @@ one unchanged v1 case, join the 29 W4 cases in native, CLI and WebAssembly
 checks. Run intake on each extracted answers document. The cumulative commands
 in README and AGENTS include schema drift and output validation, all reference
 bytes, the savings dollar boundary and injected-run bounds checks. Under Node
-24.22.0, the release `intake_v2_timing` WebAssembly test measures ten typed
+26.11.1, the release `intake_v2_timing` WebAssembly test measures ten typed
 `plan_from_answers` calls per case for working-complete, solved spending,
 solved savings, solved retirement and savings with a range. It prints each
 mean in milliseconds using the test harness's clock; no host facility enters

@@ -62,10 +62,10 @@ export function stage() {
   const app = join(root, "apps/web");
   run("node", ["--version"]);
   run("cargo", ["build", "-p", "horizon-wasm", "--target", "wasm32-unknown-unknown", "--release"], root);
-  run("corepack", ["pnpm", "install", "--frozen-lockfile"], app);
+  run("pnpm", ["install", "--frozen-lockfile"], app);
   for (const command of ["build:engine", "build"]) {
     run("node", ["--version"]);
-    run("corepack", ["pnpm", "run", command], app);
+    run("pnpm", ["run", command], app);
   }
   if (checkout(root, () => {}) !== commit) throw new Error("Checkout changed while building.");
   const release = releaseBytes(commit, readFileSync(join(root, "packages/engine/src/projection.rs"), "utf8"));
