@@ -21,6 +21,7 @@ This page lists what works today and what is being built now. It is not a promis
 | Try what-ifs on your plan | Move sliders for retirement age, spending, savings, Social Security, pension, investment growth and price rises to see your plan again, then reset or keep the change as your answers. | [0002-W7](briefs/0002-W7-what-if-panel.md) · `fd66f49` |
 | Plain results | The plan, comparison and export speak in today's dollars and plain words, open with one clear answer, keep the year-by-year numbers in a details section for experts, and say which of your answers could change the result. | [0003-W3](briefs/0003-W3-plain-results.md) · `a7f0939` |
 | Plan layout and Overview | Every plan opens on an Overview of cards, with a menu to move between Overview, Plan, Compare, Summary and your answers, three headline figures that stay on screen, and a savings chart that marks life events and lets you look at any year. | [0003-W4](briefs/0003-W4-plan-layout-and-overview.md) · `ef988b2` |
+| Options, compare and summary | The plan ends with ways to make your savings last, each one change worked out by the engine that you can try as a copy; your plan and its copies compare side by side; and the summary prints on one page, with a second only when needed. | [0003-W5](briefs/0003-W5-options-compare-and-summary.md) · `2ccd274` |
 
 ### Calculation engine
 
