@@ -42,6 +42,7 @@ export function PlanNavigation({
                 {label}
                 {label === "Compare" && count > 1 && (
                   <span className="plan-count">
+                    <span className="sr-only"> </span>
                     {count}
                     <span className="sr-only"> plans</span>
                   </span>

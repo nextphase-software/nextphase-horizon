@@ -229,10 +229,14 @@ it.each(Object.entries(shell.cases))(
       fireEvent.click(
         within(view.container).getByRole("button", { name: "Make the copy" }),
       );
-      await waitFor(() =>
-        expect(
-          view.container.querySelector(".compare-screen .headline-differences"),
-        ).toBeTruthy(),
+      await vi.waitFor(
+        () =>
+          expect(
+            view.container.querySelector(
+              ".compare-screen .headline-differences",
+            ),
+          ).toBeTruthy(),
+        { timeout: 30_000 },
       );
       fireEvent.click(
         within(

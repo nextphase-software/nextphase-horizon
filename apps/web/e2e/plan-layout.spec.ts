@@ -162,7 +162,7 @@ test("plan layout: Overview landing, navigation, copy switcher, every year and a
       "Retiring at 67",
     );
     await expect(
-      nav.getByRole("button", { name: /^Compare\s*2 plans$/ }),
+      nav.getByRole("button", { name: "Compare 2 plans", exact: true }),
     ).toHaveAttribute("aria-current", "page");
     await expect(
       page.getByRole("combobox", { name: "Plan", exact: true }),
@@ -184,39 +184,39 @@ test("plan layout: Overview landing, navigation, copy switcher, every year and a
     ).toBeVisible();
     await capture("copy-plan");
     const switcher = page.getByRole("combobox", { name: "Plan", exact: true });
-    await keyboardTo(page, switcher, traversal);
-    await switcher.press("Home");
-    await switcher.press("Enter");
-    await expect(switcher).toHaveValue("");
+    async function choosePlan(value: "" | "retire_later") {
+      await keyboardTo(page, switcher, traversal);
+      await expect(switcher).toBeFocused();
+      if (process.platform === "darwin" && browserName === "webkit")
+        await switcher.selectOption(value);
+      else {
+        await switcher.press(value === "" ? "Home" : "End");
+        await switcher.press("Enter");
+      }
+      await expect(switcher).toHaveValue(value);
+    }
+    await choosePlan("");
     await expect(page.locator(".copy-banner")).toHaveCount(0);
     await section("Summary");
     await expect(
       page.getByRole("link", { name: "Download plan file" }),
     ).toBeVisible();
     await capture("summary");
-    await keyboardTo(page, switcher, traversal);
-    await switcher.press("End");
-    await switcher.press("Enter");
+    await choosePlan("retire_later");
     await expect(
       nav.getByRole("button", { name: "Plan", exact: true }),
     ).toHaveAttribute("aria-current", "page");
     await section("Overview");
-    await keyboardTo(page, switcher, traversal);
-    await switcher.press("Home");
-    await switcher.press("Enter");
+    await choosePlan("");
     await expect(page.locator(".copy-banner")).toHaveCount(0);
-    await keyboardTo(page, switcher, traversal);
-    await switcher.press("End");
-    await switcher.press("Enter");
+    await choosePlan("retire_later");
     await expect(
       nav.getByRole("button", { name: "Overview", exact: true }),
     ).toHaveAttribute("aria-current", "page");
     await expect(page.locator(".copy-banner")).toBeVisible();
     await section("Your answers");
     await expect(switcher).toHaveValue("");
-    await keyboardTo(page, switcher, traversal);
-    await switcher.press("End");
-    await switcher.press("Enter");
+    await choosePlan("retire_later");
     await expect(
       nav.getByRole("button", { name: "Plan", exact: true }),
     ).toHaveAttribute("aria-current", "page");

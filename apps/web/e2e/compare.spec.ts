@@ -269,6 +269,8 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
   const temp = mkdtempSync(join(tmpdir(), "horizon-compare-"));
   let previousSample = -1;
   let originalRun = "";
+  let originalInput = "";
+  let originalHeadline = "";
   let offered: Levers;
   const created: string[] = [];
   try {
@@ -278,12 +280,14 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       if (first) {
         await openPlan(item.sample);
         const actual = await probe();
-        originalRun =
-          actual.replies[
-            [...actual.requests]
-              .reverse()
-              .find((request) => request.op === "run")!.id
-          ];
+        const originalRequest = actual.requests.findLast(
+          (request) => request.op === "run",
+        )!;
+        originalInput = originalRequest.args[0];
+        originalRun = actual.replies[originalRequest.id];
+        originalHeadline = (await page
+          .locator(".plan-screen h1")
+          .textContent())!;
         offered = JSON.parse(
           actual.replies[
             [...actual.requests]
@@ -672,16 +676,22 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         await expect(page.locator(".compare-screen h1")).toHaveText(
           cases[0].headline!,
         );
+        const beforeReturning = (await probe()).requests.length;
         await activate(tabs.getByRole("button").first());
         await expect(
           page.getByRole("button", { name: "Try a change" }),
         ).toBeEnabled();
         const after = await probe();
-        expect(
-          after.replies[
-            after.requests.find((request) => request.op === "run")!.id
-          ],
-        ).toBe(originalRun);
+        const returnedRuns = after.requests
+          .slice(beforeReturning)
+          .filter((request) => request.op === "run");
+        expect(returnedRuns.length).toBeGreaterThan(0);
+        for (const request of returnedRuns)
+          expect(request.args[0]).toBe(originalInput);
+        expect(after.replies[returnedRuns.at(-1)!.id]).toBe(originalRun);
+        await expect(page.locator(".plan-screen h1")).toHaveText(
+          originalHeadline,
+        );
         await activate(
           planning.getByRole("button", { name: /^Compare(?:\s*\d+ plans)?$/ }),
         );
