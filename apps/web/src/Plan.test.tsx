@@ -301,3 +301,35 @@ it("keeps only the eight most recently used households, touching cached results 
   expect(engine.call).toHaveBeenCalledTimes(39);
   expect(cache.has("household-5")).toBe(false);
 });
+
+it("retries failed transport on a page change so the body and shared cached figures recover together", async () => {
+  const cache: PlanCache = new Map();
+  vi.mocked(engine.call).mockRejectedValue(new Error("Worker unavailable"));
+  const view = render(
+    <Plan sample={samples[0]} draft={draft()} back={back} cache={cache} />,
+  );
+  await screen.findByText("Worker unavailable");
+  stub();
+  view.rerender(
+    <Plan
+      sample={samples[0]}
+      draft={draft()}
+      back={back}
+      cache={cache}
+      overview={{
+        plan: () => {},
+        compare: () => {},
+        summary: () => {},
+        changeAnswers: () => {},
+        tryChange: () => {},
+        copies: 0,
+      }}
+    />,
+  );
+  await vi.waitFor(
+    () => expect(view.container.querySelector(".headline-tiles")).toBeTruthy(),
+    { timeout: 10_000 },
+  );
+  expect(screen.queryByRole("alert")).toBeNull();
+  expect(engine.call).toHaveBeenCalledTimes(6);
+});

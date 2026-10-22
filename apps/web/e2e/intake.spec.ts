@@ -401,6 +401,11 @@ for (const style of ["one_question", "conversation", "guided_page"] as const) {
       "You could spend",
     );
     await capture(page, info, `${style}-results`);
+    await activate(
+      page
+        .getByRole("navigation", { name: "Plan sections" })
+        .getByRole("button", { name: "Plan", exact: true }),
+    );
     const sends = await page.evaluate(
       () => (window as unknown as { answers: string[] }).answers,
     );
@@ -483,6 +488,11 @@ test("intake: result cases, saved validation, resumption and example isolation",
     await expect(page.getByTestId("intake-headline")).toHaveText(
       sentences[name][0].slice(3),
     );
+    if (reference.cases[name].result.household_input)
+      await page
+        .getByRole("navigation", { name: "Plan sections" })
+        .getByRole("button", { name: "Plan", exact: true })
+        .click();
     if (reference.cases[name].result.household_input)
       await expect(
         page.getByRole("button", { name: "Try a change", exact: true }),

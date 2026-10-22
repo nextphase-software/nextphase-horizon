@@ -155,6 +155,12 @@ function Control({
   );
 }
 
+export type WhatIfSession = {
+  changes: Changes;
+  result: AnswersPlanV2;
+  answers: AnswersV2;
+};
+export type DisplayState = "ready" | "calculating" | "failed";
 export function WhatIfPlan({
   result,
   answers,
@@ -162,7 +168,13 @@ export function WhatIfPlan({
   keep,
   onInput,
   children,
+  hidePanel = false,
+  session,
+  onState,
 }: {
+  session?: WhatIfSession;
+  onState?: (state: DisplayState) => void;
+  hidePanel?: boolean;
   result: AnswersPlanV2;
   answers: AnswersV2;
   change: (place: Place) => void;
@@ -171,20 +183,25 @@ export function WhatIfPlan({
     input: Fixture | null,
     result: AnswersPlanV2,
     answers: AnswersV2,
+    changes: Changes,
   ) => void;
-  children: (input: Fixture, result: AnswersPlanV2) => ReactNode;
+  children: (
+    input: Fixture,
+    result: AnswersPlanV2,
+    whatIf: boolean,
+  ) => ReactNode;
 }) {
   const sliders = sliderStarts(answers, result);
-  const [changes, setChanges] = useState<Changes>({});
-  const changesRef = useRef<Changes>({});
-  const [shown, setShown] = useState(result);
-  const [document, setDocument] = useState(answers);
+  const [changes, setChanges] = useState<Changes>(session?.changes ?? {});
+  const changesRef = useRef<Changes>(session?.changes ?? {});
+  const [shown, setShown] = useState(session?.result ?? result);
+  const [document, setDocument] = useState(session?.answers ?? answers);
   const [working, setWorking] = useState(false);
   const [settled, setSettled] = useState(true);
   const [failure, setFailure] = useState<string | null>(null);
   const [reset, setReset] = useState(0);
   const request = useRef(0);
-  const lastSent = useRef(JSON.stringify(answers));
+  const lastSent = useRef(JSON.stringify(session?.answers ?? answers));
   const lastSentId = useRef(-1);
   useEffect(
     () => () => {
@@ -193,6 +210,14 @@ export function WhatIfPlan({
     [],
   );
   const active = Object.keys(changes).length > 0;
+  useEffect(() => {
+    onState?.(failure ? "failed" : working ? "calculating" : "ready");
+  }, [failure, working, onState]);
+  useEffect(() => {
+    globalThis.document
+      .querySelector<HTMLElement>('[data-testid="intake-headline"]')
+      ?.focus();
+  }, [hidePanel]);
   function edit(slider: Slider, value: string) {
     const next = { ...changesRef.current };
     if (Number(value) === Number(slider.entry)) delete next[slider.id];
@@ -200,9 +225,9 @@ export function WhatIfPlan({
     if (JSON.stringify(next) !== JSON.stringify(changesRef.current)) {
       request.current++;
       setSettled(false);
+      changesRef.current = next;
+      setChanges(next);
     }
-    changesRef.current = next;
-    setChanges(next);
     return next;
   }
   function restore() {
@@ -216,7 +241,7 @@ export function WhatIfPlan({
     setFailure(null);
     lastSent.current = JSON.stringify(answers);
     setReset((value) => value + 1);
-    onInput(result.household_input ?? null, result, answers);
+    onInput(result.household_input ?? null, result, answers, {});
   }
   function commit(slider: Slider, value: string) {
     if (sliderError(slider, value)) return;
@@ -248,7 +273,7 @@ export function WhatIfPlan({
         setDocument(changed);
         setWorking(false);
         setSettled(true);
-        onInput(value.household_input ?? null, value, changed);
+        onInput(value.household_input ?? null, value, changed, next);
       })
       .catch((error: Error) => {
         if (id !== request.current) return;
@@ -287,7 +312,8 @@ export function WhatIfPlan({
           )}
         />
       )}
-      {!!sliders.length &&
+      {!hidePanel &&
+        !!sliders.length &&
         (working || failure || !!sliderStarts(document, shown).length) && (
           <section
             className="card what-if-panel"
@@ -332,7 +358,7 @@ export function WhatIfPlan({
       {!working &&
         !failure &&
         shown.household_input &&
-        children(shown.household_input, shown)}
+        children(shown.household_input, shown, active)}
     </>
   );
 }

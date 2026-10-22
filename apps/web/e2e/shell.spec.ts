@@ -98,6 +98,15 @@ test("shell: welcome, all five examples, navigation, theme, worker bytes and pri
   for (const sample of samples) {
     await page.getByRole("radio", { name: sample.label, exact: true }).check();
     await page.getByRole("button", { name: "Open example plan" }).click();
+    await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+    await expect(page.getByText("Calculating…", { exact: true })).toHaveCount(
+      0,
+    );
+    await capture(`overview-${sample.name}`);
+    await page
+      .getByRole("navigation", { name: "Plan sections" })
+      .getByRole("button", { name: "Plan", exact: true })
+      .click();
     if (sample.name === "two-person")
       await expect(
         page.getByText("Only one person is supported."),
@@ -147,9 +156,9 @@ test("shell: welcome, all five examples, navigation, theme, worker bytes and pri
     await capture(`example-${sample.name}`);
     await expect(
       page
-        .getByRole("navigation", { name: "Planning steps" })
+        .getByRole("navigation", { name: "Plan sections" })
         .getByRole("button"),
-    ).toHaveText(["Plan", "Compare", "Export"]);
+    ).toHaveText(["Overview", "Plan", "Compare", "Summary", "Your answers"]);
     await page.getByRole("button", { name: "Horizon welcome" }).click();
     await page
       .getByRole("button", { name: "Try an example household", exact: true })

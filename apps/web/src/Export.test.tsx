@@ -276,7 +276,7 @@ it("opens the exact imported input, clears copies/rough marks and permits setup 
   await screen.findByRole("heading", {
     name: "Savings run short at 93, two years before the plan ends.",
   });
-  expect(screen.getByText("OPENED PLAN FILE · RETIRE AT 66")).toBeTruthy();
+  expect(screen.getByText("OVERVIEW · OPENED PLAN FILE")).toBeTruthy();
   const expected = JSON.parse(read(samples[0].name, "export")).input;
   for (const [op, input] of vi
     .mocked(engine.call)
@@ -285,9 +285,10 @@ it("opens the exact imported input, clears copies/rough marks and permits setup 
     expect(JSON.parse(input)).toEqual(expected);
   }
   fireEvent.click(
-    within(document.querySelector(".plan-screen")!).getByRole("button", {
-      name: "Export",
-    }),
+    within(screen.getByRole("navigation", { name: "Plan sections" })).getByRole(
+      "button",
+      { name: "Summary" },
+    ),
   );
   await screen.findByRole("link", { name: "Download plan file" });
   expect(document.querySelector(".plan-summary")!.textContent).toContain(

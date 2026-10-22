@@ -54,7 +54,11 @@ it("ignores an obsolete answers reply after returning to review", async () => {
   );
   fireEvent.click(screen.getByRole("button", { name: "See my plan" }));
   expect(screen.getByText("Working out your plan…")).toBeTruthy();
-  fireEvent.click(screen.getByRole("button", { name: "Back to my answers" }));
+  fireEvent.click(
+    screen
+      .getByRole("navigation", { name: "Plan sections" })
+      .querySelectorAll("button")[4],
+  );
   resolve('{"status":"incomplete","needed":["birth_date"]}');
   expect(
     screen.getByRole("heading", { name: "Here's what you told us" }),

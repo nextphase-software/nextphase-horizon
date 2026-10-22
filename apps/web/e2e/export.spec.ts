@@ -135,7 +135,7 @@ test("export: keyboard download/import, exact references, not-sure answers, copi
       return { requests: p.requests, replies: p.replies };
     });
   }
-  const planning = page.getByRole("navigation", { name: "Planning steps" });
+  const planning = page.getByRole("navigation", { name: "Plan sections" });
   async function setup(index = 0) {
     await page.goto("/");
     await expect(
@@ -162,6 +162,12 @@ test("export: keyboard download/import, exact references, not-sure answers, copi
     await activate(
       page.getByRole("button", { name: "Open example plan", exact: true }),
     );
+    await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+    await activate(
+      page
+        .getByRole("navigation", { name: "Plan sections" })
+        .getByRole("button", { name: "Plan", exact: true }),
+    );
     await expect(
       page.getByRole("button", { name: "Try a change" }),
     ).toBeEnabled();
@@ -170,7 +176,7 @@ test("export: keyboard download/import, exact references, not-sure answers, copi
     await activate(
       page
         .locator(".plan-screen")
-        .getByRole("button", { name: "Export", exact: true }),
+        .getByRole("button", { name: "Summary", exact: true }),
     );
     await expect(
       page.getByRole("link", { name: "Download plan file" }),
@@ -249,7 +255,7 @@ test("export: keyboard download/import, exact references, not-sure answers, copi
         ["run", "levers", "sustainable_spending"].includes(r.op),
       ).length,
     );
-    await expect(page.locator(".eyebrow")).toHaveText(
+    await expect(page.locator(".export-screen > .eyebrow")).toHaveText(
       `EXPORT · ${label.toUpperCase()} · FIGURES AS OF 1 JANUARY 2026`,
     );
     await expect(page.locator("h1")).toHaveText("Take your plan with you");
@@ -343,6 +349,8 @@ test("export: keyboard download/import, exact references, not-sure answers, copi
     writeFileSync(horizonPath, JSON.stringify(horizonInput));
     await exportFromPlan();
     await open(native("export", horizonPath));
+    await expect(page.locator(".overview-assumptions")).toBeVisible();
+    await activate(planning.getByRole("button", { name: "Plan", exact: true }));
     const answers = [
       index === 0
         ? "Savings last to 65."
@@ -567,12 +575,14 @@ test("export: keyboard download/import, exact references, not-sure answers, copi
   await expect(summary.locator(".summary-rough li")).toHaveCount(0);
   await capture("export-rejected-non-json-with-household");
   await open(original);
+  await expect(page.locator(".overview-assumptions")).toBeVisible();
+  await activate(planning.getByRole("button", { name: "Plan", exact: true }));
   await expect(
     page.getByRole("heading", {
       name: "Savings run short at 93, two years before the plan ends.",
     }),
   ).toBeVisible();
-  await expect(page.locator(".eyebrow")).toHaveText(
+  await expect(page.locator(".plan-screen > .eyebrow")).toHaveText(
     "OPENED PLAN FILE · RETIRE AT 66",
   );
   const imported = await probe();

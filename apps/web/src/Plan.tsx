@@ -32,13 +32,22 @@ import {
   ledgerNotes,
   leverLabel,
   planHeadline,
-  savingsRows,
   signedEffect,
   withdrawalWords,
   yearAtDate,
 } from "./plan-display";
 import { FlowDrawing, SavingsDrawing } from "./PlanCharts";
 import type { Baseline } from "./plan-copies";
+import { Overview, type OverviewActions } from "./Overview";
+import { SavingsChart } from "./SavingsChart";
+import { CopyBanner, ThisYear } from "./PlanShell";
+import { headlineFigures, shellNote } from "./shell-display";
+type LayoutProps = {
+  overview?: OverviewActions;
+  copy?: { name: string; back: () => void; compare: () => void };
+  focusChart?: boolean;
+  whatIf?: boolean;
+};
 
 export function Calculating() {
   return <p role="status">Calculating…</p>;
@@ -120,52 +129,6 @@ export function ScrollTable({
   );
 }
 /* eslint-enable jsx-a11y/no-noninteractive-tabindex */
-function Savings({
-  run,
-  retirementDate,
-}: {
-  run: Run;
-  retirementDate: string;
-}) {
-  return (
-    <section className="card savings-card" aria-labelledby="savings-title">
-      <h2 id="savings-title">Savings by age</h2>
-      <figure>
-        <SavingsDrawing run={run} retirementDate={retirementDate} />
-        <SavingsDrawing run={run} retirementDate={retirementDate} compact />
-        <figcaption>
-          Total savings at the end of each year. Solid line: savings by age.
-        </figcaption>
-      </figure>
-      <details className="savings-table">
-        <summary>Show as a table</summary>
-        <ScrollTable label="Savings by age">
-          <table>
-            <caption>Savings by age</caption>
-            <thead>
-              <tr>
-                <th>Age</th>
-                <th>Year</th>
-                <th>Savings</th>
-              </tr>
-            </thead>
-            <tbody>
-              {savingsRows(run, retirementDate).map((row) => (
-                <tr key={row.year}>
-                  <td>{row.age_on_december_31}</td>
-                  <td>{row.year}</td>
-                  <td className="amount">
-                    {centsDollars(row.ledger.total_closing_today!.cents)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </ScrollTable>
-      </details>
-    </section>
-  );
-}
 function LeverViews({ levers, run }: { levers: Levers; run: Run }) {
   const ranked = levers.ranking.map((id) =>
     levers.levers.find((lever) => lever.id === id)!,
@@ -362,7 +325,11 @@ export function Plan({
   cache,
   intake = false,
   answerResult,
-}: {
+  overview,
+  copy,
+  focusChart,
+  whatIf,
+}: LayoutProps & {
   sample: { label: string };
   draft: Draft;
   back: () => void;
@@ -374,7 +341,7 @@ export function Plan({
 }) {
   return (
     <PlanResult
-      key={serializeDraft(draft)}
+      key={`${overview ? "overview" : "plan"}:${serializeDraft(draft)}`}
       sample={sample}
       draft={draft}
       back={back}
@@ -383,6 +350,10 @@ export function Plan({
       cache={cache}
       intake={intake}
       answerResult={answerResult}
+      overview={overview}
+      copy={copy}
+      focusChart={focusChart}
+      whatIf={whatIf}
     />
   );
 }
@@ -395,7 +366,11 @@ function PlanResult({
   cache,
   intake = false,
   answerResult,
-}: {
+  overview,
+  copy,
+  focusChart,
+  whatIf,
+}: LayoutProps & {
   sample: { label: string };
   draft: Draft;
   back: () => void;
@@ -409,19 +384,21 @@ function PlanResult({
   const leversRef = useRef<HTMLDetailsElement>(null);
   const input = serializeDraft(draft);
   const { results, transport } = usePlanResults(input, cache);
-  useEffect(() => {
-    if (!intake) heading.current?.focus();
-  }, [intake]);
+  const isOverview = !!overview;
   const error = Object.values(results).find(
     (result): result is Failure => "code" in result,
   );
+  const failed = !!error || !!transport;
+  useEffect(() => {
+    if (!intake && !focusChart) heading.current?.focus();
+  }, [intake, isOverview, focusChart, failed]);
   if (error || transport)
     return (
       <div className="plan-screen">
         <h1 ref={heading} tabIndex={-1}>
           Plan
         </h1>
-        {!intake && (
+        {!intake && sample.label !== "Your figures" && (
           <p className="sample">
             {sample.label === "Opened plan file"
               ? "Opened plan file"
@@ -441,7 +418,8 @@ function PlanResult({
   const run = results.run as Run | undefined;
   const spending = results.spending as SustainableSpending | undefined;
   const levers = results.levers as Levers | undefined;
-  const household = JSON.parse(input).household;
+  const fixture = JSON.parse(input);
+  const household = fixture.household;
   const retirementDate: string = household.persons[0].retirement_date;
   const isRetired = retirementDate <= household.valuation_date;
   const retirement = run && yearAtDate(run, retirementDate);
@@ -455,23 +433,31 @@ function PlanResult({
       {!intake && (
         <>
           <p className="eyebrow">
-            {sample.label.toUpperCase()}
-            {isRetired
-              ? " · RETIRED"
-              : retirement
-                ? ` · RETIRE AT ${retirement.age_on_december_31}`
-                : ""}
+            {overview ? "OVERVIEW · " : ""}
+            {copy
+              ? `${sample.label.toUpperCase()} · COPY: ${copy.name.toUpperCase()}`
+              : sample.label.toUpperCase()}
+            {!overview &&
+              !copy &&
+              (isRetired
+                ? " · RETIRED"
+                : retirement
+                  ? ` · RETIRE AT ${retirement.age_on_december_31}`
+                  : "")}
           </p>
           <h1 ref={heading} tabIndex={-1}>
             {run ? planHeadline(run) : "Plan"}
           </h1>
-          <p className="sample">
-            <span aria-hidden="true">◇</span>{" "}
-            {sample.label === "Opened plan file"
-              ? "Opened plan file"
-              : "Example household — invented figures"}
-          </p>
-          {run ? (
+          {sample.label !== "Your figures" && (
+            <p className="sample">
+              <span aria-hidden="true">◇</span>{" "}
+              {sample.label === "Opened plan file"
+                ? "Opened plan file"
+                : "Example household — invented figures"}
+            </p>
+          )}
+          {copy && <CopyBanner {...copy} />}
+          {run && !overview ? (
             <div className="card plan-status" aria-live="polite">
               <div>
                 <span className={`status ${run.status}`}>
@@ -492,212 +478,255 @@ function PlanResult({
               </details>
               <p className="help">{estimatesNote}</p>
             </div>
-          ) : (
+          ) : !run ? (
             <Calculating />
-          )}
+          ) : null}
         </>
       )}
-      <div className="card plan-answer">
-        {run && spending ? (
-          followOn(run, spending, retirementDate, answerResult) && (
-            <p className="follow-on">
-              {followOn(run, spending, retirementDate, answerResult)}
-            </p>
-          )
+      {overview ? (
+        run && spending && levers ? (
+          <Overview
+            baseline={{ run, spending, levers }}
+            figures={headlineFigures(
+              run,
+              spending,
+              retirementDate,
+              answerResult,
+            )}
+            name={
+              copy ? `Copy: ${copy.name}` : whatIf ? "What if" : "Your plan"
+            }
+            note={shellNote(run, !!answerResult?.bounds)}
+            retirement={retirementDate}
+            answer={answerResult}
+            intake={intake}
+            copy={!!copy}
+            actions={{
+              ...overview,
+              tryChange: () => tryChange?.({ run, spending, levers }),
+            }}
+          />
         ) : (
           <Calculating />
-        )}
-        {levers ? (
-          movesMost(levers) && (
-            <p className="moves-most">
-              {movesMost(levers)}{" "}
-              <a
-                href="#plan-levers"
-                onClick={(event) => {
-                  event.preventDefault();
-                  if (leversRef.current) {
-                    leversRef.current.open = true;
-                    leversRef.current.querySelector("summary")?.focus();
-                  }
-                }}
-              >
-                See what would help
-              </a>
-            </p>
-          )
-        ) : (
-          <Calculating />
-        )}
-        {run && (
-          <p className="help amounts-note">{amountsNote(run.valuation_date)}</p>
-        )}
-      </div>
-      {run ? (
-        <Savings run={run} retirementDate={retirementDate} />
+        )
       ) : (
-        <section className="card">
-          <h2>Savings by age</h2>
-          <Calculating />
-        </section>
-      )}
-      <div id="plan-levers">
-        <Detail
-          title="What would help"
-          hint={`One change at a time · ${levers ? `${levers.ranking.length} changes, ranked` : "Calculating…"}`}
-          detailRef={leversRef}
-        >
-          {levers && run ? (
-            <LeverViews levers={levers} run={run} />
-          ) : (
-            <Calculating />
-          )}
-        </Detail>
-      </div>
-      {run && whyShort(run, retirementDate, answerResult) && (
-        <section className="card why-short">
-          <h2>Why savings run short</h2>
-          <p>{whyShort(run, retirementDate, answerResult)}</p>
-        </section>
-      )}
-      <Detail
-        title="Details for experts"
-        hint="Year by year, the arithmetic and the assumptions · dollars of each year"
-      >
-        <section className="expert-section">
-          <h2>Year by year</h2>
+        <>
           {run ? (
-            <Ledger run={run} retirementDate={retirementDate} />
+            <SavingsChart run={run} input={fixture} focus={focusChart} />
           ) : (
             <Calculating />
           )}
-        </section>
-        {run && short && (
-          <section className="expert-section">
-            <h2>Why savings run short: the arithmetic</h2>
-            {spending ? (
-              <p>
-                {short.year < Number(retirementDate.slice(0, 4)) ? (
-                  <>
-                    In {short.year}, before retiring, spending is{" "}
-                    {centsDollars(short.ledger.spending.cents)} in {short.year}{" "}
-                    dollars.
-                  </>
-                ) : (
-                  <>
-                    After retiring, spending of{" "}
-                    {formatDollars(spending.entered)} a year in today's dollars
-                    rises with prices ({percentEntry(inflation!.value)}% a year)
-                    to {centsDollars(short.ledger.spending.cents)} in{" "}
-                    {short.year} dollars.
-                  </>
-                )}{" "}
-                That year income brings in{" "}
-                {centsDollars(short.ledger.income_total.cents)} and savings
-                supply {centsDollars(short.ledger.withdrawals_total.cents)},
-                leaving {centsDollars(short.ledger.shortfall.cents)} not
-                covered, all in {short.year} dollars.
-              </p>
+          <div className="card plan-answer">
+            {run && spending ? (
+              followOn(run, spending, retirementDate, answerResult) && (
+                <p className="follow-on">
+                  {followOn(run, spending, retirementDate, answerResult)}
+                </p>
+              )
             ) : (
               <Calculating />
             )}
-            {distributions && (
-              <p>
-                Required withdrawals from age {distributions.age_on_december_31}{" "}
-                don't add money; they move it out of the tax-deferred account
-                earlier, and it is taxed.
+            {levers ? (
+              movesMost(levers) && (
+                <p className="moves-most">
+                  {movesMost(levers)}{" "}
+                  <a
+                    href="#plan-levers"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      if (leversRef.current) {
+                        leversRef.current.open = true;
+                        leversRef.current.querySelector("summary")?.focus();
+                      }
+                    }}
+                  >
+                    See what would help
+                  </a>
+                </p>
+              )
+            ) : (
+              <Calculating />
+            )}
+            {run && (
+              <p className="help amounts-note">
+                {amountsNote(run.valuation_date)}
               </p>
             )}
-          </section>
-        )}
-        <section className="expert-section">
-          <h2>Assumptions</h2>
-          {run ? (
-            <>
-              <ScrollTable label="Assumptions">
-                <table>
-                  <caption>Assumptions</caption>
-                  <thead>
-                    <tr>
-                      <th>Assumption</th>
-                      <th>
-                        Value <small>percent a year</small>
-                      </th>
-                      <th>Source</th>
-                      <th>From</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {run.assumptions_used.map((rate) => (
-                      <tr
-                        key={rate.identifier}
-                        className={
-                          draft.rough.includes(
-                            `/assumptions/${rate.identifier}/value`,
-                          )
-                            ? "rough"
-                            : undefined
-                        }
-                      >
-                        <th scope="row">{assumptionNames[rate.identifier]}</th>
-                        <td className="amount">
-                          {percentEntry(rate.value)}%
-                          {draft.rough.includes(
-                            `/assumptions/${rate.identifier}/value`,
-                          ) && (
-                            <small className="rough-label">≈ Rough value</small>
-                          )}
-                        </td>
-                        <td>
-                          {rate.value ===
-                          draft.input.assumptions[rate.identifier].value
-                            ? intake
-                              ? "Your figures"
-                              : sample.label === "Opened plan file"
-                                ? "Opened plan file"
-                                : "Example household"
-                            : "Changed by you"}
-                        </td>
-                        <td>{rate.effective_year}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </ScrollTable>
-              <p className="help">
-                Estimates, not facts: change any of them in a copy to see how
-                the plan moves.
-              </p>
-            </>
-          ) : (
-            <Calculating />
+          </div>
+          <div id="plan-levers">
+            <Detail
+              title="What would help"
+              hint={`One change at a time · ${levers ? `${levers.ranking.length} changes, ranked` : "Calculating…"}`}
+              detailRef={leversRef}
+            >
+              {levers && run ? (
+                <LeverViews levers={levers} run={run} />
+              ) : (
+                <Calculating />
+              )}
+            </Detail>
+          </div>
+          {run && whyShort(run, retirementDate, answerResult) && (
+            <section className="card why-short">
+              <h2>Why savings run short</h2>
+              <p>{whyShort(run, retirementDate, answerResult)}</p>
+            </section>
           )}
-        </section>
-        {run && (
-          <p className="help">
-            Federal tax rules for {run.metadata.rule_set_year} for one person,
-            with tax brackets rising each year after · Withdrawals come from{" "}
-            {withdrawalWords[run.withdrawal_order_used]}.
-          </p>
-        )}
-      </Detail>
-      <div className="actions">
-        <div>
-          <button
-            className="primary"
-            disabled={!run || !spending || !levers}
-            onClick={() => {
-              if (run && spending && levers)
-                tryChange?.({ run, spending, levers });
-            }}
+          {run && <ThisYear run={run} />}
+          <Detail
+            title="Details for experts"
+            hint="Year by year, the arithmetic and the assumptions · dollars of each year"
           >
-            Try a change
-          </button>
-        </div>
-        <div>
-          <button onClick={exportPlan}>Export</button>
-        </div>
-        {!intake && <button onClick={back}>Back to household</button>}
-      </div>
+            <section className="expert-section">
+              <h2>Year by year</h2>
+              {run ? (
+                <Ledger run={run} retirementDate={retirementDate} />
+              ) : (
+                <Calculating />
+              )}
+            </section>
+            {run && short && (
+              <section className="expert-section">
+                <h2>Why savings run short: the arithmetic</h2>
+                {spending ? (
+                  <p>
+                    {short.year < Number(retirementDate.slice(0, 4)) ? (
+                      <>
+                        In {short.year}, before retiring, spending is{" "}
+                        {centsDollars(short.ledger.spending.cents)} in{" "}
+                        {short.year} dollars.
+                      </>
+                    ) : (
+                      <>
+                        After retiring, spending of{" "}
+                        {formatDollars(spending.entered)} a year in today's
+                        dollars rises with prices (
+                        {percentEntry(inflation!.value)}% a year) to{" "}
+                        {centsDollars(short.ledger.spending.cents)} in{" "}
+                        {short.year} dollars.
+                      </>
+                    )}{" "}
+                    That year income brings in{" "}
+                    {centsDollars(short.ledger.income_total.cents)} and savings
+                    supply {centsDollars(short.ledger.withdrawals_total.cents)},
+                    leaving {centsDollars(short.ledger.shortfall.cents)} not
+                    covered, all in {short.year} dollars.
+                  </p>
+                ) : (
+                  <Calculating />
+                )}
+                {distributions && (
+                  <p>
+                    Required withdrawals from age{" "}
+                    {distributions.age_on_december_31} don't add money; they
+                    move it out of the tax-deferred account earlier, and it is
+                    taxed.
+                  </p>
+                )}
+              </section>
+            )}
+            <section className="expert-section">
+              <h2>Assumptions</h2>
+              {run ? (
+                <>
+                  <ScrollTable label="Assumptions">
+                    <table>
+                      <caption>Assumptions</caption>
+                      <thead>
+                        <tr>
+                          <th>Assumption</th>
+                          <th>
+                            Value <small>percent a year</small>
+                          </th>
+                          <th>Source</th>
+                          <th>From</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {run.assumptions_used.map((rate) => (
+                          <tr
+                            key={rate.identifier}
+                            className={
+                              draft.rough.includes(
+                                `/assumptions/${rate.identifier}/value`,
+                              )
+                                ? "rough"
+                                : undefined
+                            }
+                          >
+                            <th scope="row">
+                              {assumptionNames[rate.identifier]}
+                            </th>
+                            <td className="amount">
+                              {percentEntry(rate.value)}%
+                              {draft.rough.includes(
+                                `/assumptions/${rate.identifier}/value`,
+                              ) && (
+                                <small className="rough-label">
+                                  ≈ Rough value
+                                </small>
+                              )}
+                            </td>
+                            <td>
+                              {rate.value ===
+                              draft.input.assumptions[rate.identifier].value
+                                ? intake || sample.label === "Your figures"
+                                  ? "Your figures"
+                                  : sample.label === "Opened plan file"
+                                    ? "Opened plan file"
+                                    : "Example household"
+                                : "Changed by you"}
+                            </td>
+                            <td>{rate.effective_year}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </ScrollTable>
+                  <p className="help">
+                    Estimates, not facts: change any of them in a copy to see
+                    how the plan moves.
+                  </p>
+                </>
+              ) : (
+                <Calculating />
+              )}
+            </section>
+            {run && (
+              <p className="help">
+                Federal tax rules for {run.metadata.rule_set_year} for one
+                person, with tax brackets rising each year after · Withdrawals
+                come from {withdrawalWords[run.withdrawal_order_used]}.
+              </p>
+            )}
+          </Detail>
+          {copy ? (
+            <div className="actions">
+              <button onClick={copy.back}>Back to your plan</button>
+              <button onClick={copy.compare}>Compare with your plan</button>
+            </div>
+          ) : (
+            <div className="actions">
+              <div>
+                <button
+                  className="primary"
+                  disabled={!run || !spending || !levers}
+                  onClick={() => {
+                    if (run && spending && levers)
+                      tryChange?.({ run, spending, levers });
+                  }}
+                >
+                  Try a change
+                </button>
+              </div>
+              <div>
+                <button onClick={exportPlan}>Summary</button>
+              </div>
+              {!intake && <button onClick={back}>Back to household</button>}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

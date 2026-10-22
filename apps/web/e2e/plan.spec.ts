@@ -162,6 +162,12 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
     await activate(
       page.getByRole("button", { name: "Open example plan", exact: true }),
     );
+    await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+    await activate(
+      page
+        .getByRole("navigation", { name: "Plan sections" })
+        .getByRole("button", { name: "Plan", exact: true }),
+    );
     await expect(
       page.getByRole("heading", { name: sample.headline, exact: true }),
     ).toBeFocused();
@@ -217,17 +223,17 @@ test("plan: rendered references, actual worker/native parity, keyboard, all view
     await expect(
       page
         .locator(".plan-screen")
-        .getByRole("button", { name: "Export", exact: true }),
+        .getByRole("button", { name: "Summary", exact: true }),
     ).toBeEnabled();
     if (sample.name === "answers-working-61") {
-      await expect(page.locator(".eyebrow")).toHaveText(
+      await expect(page.locator(".plan-screen > .eyebrow")).toHaveText(
         "SINGLE, 61, STILL WORKING, PLANS TO RETIRE AT 66 · RETIRE AT 66",
       );
     }
     const retired =
       sample.name === "synthetic-retired" || sample.name === "A-drawdown";
     if (retired) {
-      await expect(page.locator(".eyebrow")).toHaveText(
+      await expect(page.locator(".plan-screen > .eyebrow")).toHaveText(
         `${sample.label.toUpperCase()} · RETIRED`,
       );
       await expect(page.locator("#plan-levers summary .help")).toHaveText(

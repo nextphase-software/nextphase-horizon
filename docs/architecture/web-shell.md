@@ -291,3 +291,48 @@ holding the `nextphase.software` zone, then `corepack pnpm run deploy`.
 prints the commit and both addresses. No token, account ID or secret belongs in
 either repository. See the [tooling guide](../../infra/cloud/web/README.md) for
 commands and the public Cloudflare references (retrieved 2026-10-21).
+
+## Plan app layout — 0003-W4
+
+Opening an example, a plan file, own figures or a saved session at results
+lands on Overview and focuses its headline. Plan screens share five labelled
+buttons in `nav[aria-label="Plan sections"]`: Overview, Plan, Compare, Summary
+and Your answers. The current button has `aria-current="page"`. From 900px
+this is a side list; below that it stays at the bottom, with page padding to
+keep content reachable. Compare counts your plan and its copies. Without a
+copy it explains comparison and opens the one-change panel. Your answers
+opens the own-figures review or explains why examples and files have no answers.
+Questions begun at welcome and the file opener without a plan have no plan
+navigation. Questions reached from a plan retain it for the session.
+
+The header's labelled Plan select lists Your plan and copies in creation order.
+Overview and Plan can display a copy's own run, spending and levers, under a
+copy banner. Copies omit the own-figures head, ranges and change controls.
+Compare tabs and the switcher select the same copy; selecting Your plan there
+opens Plan. Summary and Your answers name Your plan; selecting a copy opens
+its Plan. Changing answers or keeping a what-if clears the copies.
+
+Three figures use engine results: first shortfall age or plan-end age,
+sustainable spending (including its flags), and the last total closing balance
+in today's dollars. Overview presents explanatory tiles. Plan, Compare and
+Summary have a sticky strip naming the displayed plan, or What if. It retains
+its name and base-year note for assistive technology below 560px. No figures
+appear without a successful result or for an unreachable worked-out answer.
+
+Overview adds the answer, compact savings drawing, first-year money, coverage
+and assumptions cards, then the specified next actions. The own-figures head
+is shared with Plan, with the what-if panel shown only on Plan. Plan puts the
+savings chart first. Its area drawing uses today's-dollar year-end balances,
+with separate label lanes for retirement, later Social Security and pension,
+first shortfall and plan end. The caption repeats all labels and years. A
+native keyboard-operable year range starts at the first year; its polite panel
+shows returned savings and shortfall in today's dollars and that year's events.
+The existing savings table remains available. Other yearly amounts stay in
+Details for experts.
+
+Your money this year uses only the valuation year's ledger: a sentence, two
+scaled horizontal drawings and accessible lists of the returned amounts.
+Part years name their dates. Sums and ratios position drawings only; no derived
+financial total is displayed. Headline figures, event text, every chooser year,
+assumptions and first-year text are tested against the committed shell figures.
+No engine, schemas, reference values, dependencies or CSP are changed.

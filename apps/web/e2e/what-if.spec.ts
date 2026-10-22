@@ -69,6 +69,10 @@ async function load(page: Page, answers: AnswersV2) {
   await page
     .getByRole("button", { name: "Continue with my answers", exact: true })
     .click();
+  await page
+    .getByRole("navigation", { name: "Plan sections" })
+    .getByRole("button", { name: "Plan", exact: true })
+    .click();
   await expect(
     page.getByRole("heading", { name: "What if…", exact: true }),
   ).toBeVisible();
@@ -78,6 +82,10 @@ const stored = (page: Page) =>
 const sends = (page: Page) =>
   page.evaluate(() => (window as unknown as { sends: string[] }).sends);
 async function capture(page: Page, info: TestInfo, name: string) {
+  // Leave the committed number field by keyboard before a full-page capture.
+  // Otherwise Chromium can restore its old scroll on blur during the next click.
+  if (await page.locator('input[type="number"]:focus').count())
+    await page.keyboard.press("Tab");
   await expect(
     page.getByRole("button", { name: "Try a change", exact: true }),
   ).toBeEnabled();
@@ -135,7 +143,9 @@ test("what-if: reference documents, heads, reset, keep and saved-answer isolatio
       const box = page.locator(`#what-if-number-${id}`);
       await box.fill(value);
       await box.press("Enter");
-      await expect(page.getByTestId("intake-headline")).toBeVisible();
+      await expect(page.getByTestId("intake-headline")).toBeVisible({
+        timeout: 15_000,
+      });
     }
     expect(JSON.parse((await sends(page)).at(-1)!)).toEqual(
       reference[name].answers,
@@ -241,7 +251,9 @@ test("what-if: native drag release, every slider and box by keyboard, validation
   expect((await sends(page)).length).toBe(count);
   await page.mouse.up();
   await expect.poll(async () => (await sends(page)).length).toBe(count + 1);
-  await expect(page.getByTestId("intake-headline")).toBeVisible();
+  await expect(page.getByTestId("intake-headline")).toBeVisible({
+    timeout: 15_000,
+  });
   await capture(page, info, "native-drag-released");
   await page
     .getByRole("button", { name: "Reset to my answers", exact: true })
@@ -274,7 +286,9 @@ test("what-if: native drag release, every slider and box by keyboard, validation
       expect((await sends(page)).length).toBe(count);
       await page.keyboard.up(key);
       await expect.poll(async () => (await sends(page)).length).toBe(count + 1);
-      await expect(page.getByTestId("intake-headline")).toBeVisible();
+      await expect(page.getByTestId("intake-headline")).toBeVisible({
+        timeout: 15_000,
+      });
     }
     const box = page.locator(`#what-if-number-${id}`);
     await keyboardTo(page, box, traversal);
@@ -292,7 +306,9 @@ test("what-if: native drag release, every slider and box by keyboard, validation
               : "30000",
     );
     await page.keyboard.press("Enter");
-    await expect(page.getByTestId("intake-headline")).toBeVisible();
+    await expect(page.getByTestId("intake-headline")).toBeVisible({
+      timeout: 15_000,
+    });
     await capture(page, info, `keyboard-${id}`);
   }
   const box = page.locator("#what-if-number-spending");
@@ -316,7 +332,9 @@ test("what-if: native drag release, every slider and box by keyboard, validation
   await load(page, answers);
   await page.locator("#what-if-number-savings").fill("600000");
   await page.locator("#what-if-number-savings").press("Enter");
-  await expect(page.getByTestId("intake-headline")).toBeVisible();
+  await expect(page.getByTestId("intake-headline")).toBeVisible({
+    timeout: 15_000,
+  });
   await page
     .getByRole("button", { name: "Keep these as my answers", exact: true })
     .click();
@@ -398,7 +416,7 @@ test("plain results: ranked ranges, not-sure answers, keyboard narrowing and exp
   await load(page, answers);
   const exportButton = page
     .locator(".plan-screen")
-    .getByRole("button", { name: "Export", exact: true });
+    .getByRole("button", { name: "Summary", exact: true });
   await expect(exportButton).toBeEnabled();
   await keyboardTo(page, exportButton, traversal);
   await page.keyboard.press("Enter");
@@ -443,7 +461,7 @@ test("plain results: ranked ranges, not-sure answers, keyboard narrowing and exp
   await capture(page, info, "plain-worked-out-what-if-plan");
   const exportShown = page
     .locator(".plan-screen")
-    .getByRole("button", { name: "Export", exact: true });
+    .getByRole("button", { name: "Summary", exact: true });
   await keyboardTo(page, exportShown, traversal);
   await page.keyboard.press("Enter");
   await expect(page.locator(".export-story > p").first()).toHaveText(

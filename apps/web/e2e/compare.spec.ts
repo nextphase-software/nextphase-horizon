@@ -225,7 +225,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     await page.screenshot({ path, fullPage: true });
     await testInfo.attach(name, { path, contentType: "image/png" });
   }
-  const planning = page.getByRole("navigation", { name: "Planning steps" });
+  const planning = page.getByRole("navigation", { name: "Plan sections" });
   async function openPlan(index: number) {
     await page.goto("/");
     await expect(
@@ -252,6 +252,12 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     ).toBeChecked();
     await activate(
       page.getByRole("button", { name: "Open example plan", exact: true }),
+    );
+    await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+    await activate(
+      page
+        .getByRole("navigation", { name: "Plan sections" })
+        .getByRole("button", { name: "Plan", exact: true }),
     );
     await expect(
       page.getByRole("button", { name: "Try a change", exact: true }),
@@ -355,6 +361,9 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         "scenario",
         "compare",
         "sustainable_spending",
+        "run",
+        "sustainable_spending",
+        "levers",
       ]);
       const copyJson = actual.replies[calls[0].id];
       const file = join(temp, "copy.json");
@@ -383,7 +392,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
             : "✓ Covers your situation",
         ),
       );
-      await expect(page.locator(".eyebrow")).toHaveText(
+      await expect(page.locator(".plan-screen > .eyebrow")).toHaveText(
         `Compare · ${sample.label} · your plan stays as it is`,
       );
       const tabs = page.getByRole("group", { name: "Plans", exact: true });
@@ -656,6 +665,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
           "+ New copy (no more changes to try)",
         );
         await expect(tabs.getByRole("button").last()).toBeDisabled();
+        const newestHeadline = await heading.textContent();
         await activate(
           tabs.getByRole("button", { name: "Retire at 67", exact: true }),
         );
@@ -669,16 +679,14 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         const after = await probe();
         expect(
           after.replies[
-            [...after.requests]
-              .reverse()
-              .find((request) => request.op === "run")!.id
+            after.requests.find((request) => request.op === "run")!.id
           ],
         ).toBe(originalRun);
         await activate(
-          planning.getByRole("button", { name: "Compare", exact: true }),
+          planning.getByRole("button", { name: /^Compare(?:\s*\d+ plans)?$/ }),
         );
         await expect(page.locator(".compare-screen h1")).toHaveText(
-          cases[0].headline!,
+          newestHeadline!,
         );
         await activate(page.getByRole("button", { name: "Back to plan" }));
         await activate(page.getByRole("button", { name: "Try a change" }));
@@ -724,7 +732,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     ]);
     await evidence("compare-error");
     await activate(
-      planning.getByRole("button", { name: "Export", exact: true }),
+      planning.getByRole("button", { name: "Summary", exact: true }),
     );
     await expect(
       page.getByRole("button", { name: "Print or save as PDF" }),
@@ -753,14 +761,14 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     await evidence("export-print-failed-copy");
     await page.emulateMedia({ media: "screen" });
     await activate(
-      planning.getByRole("button", { name: "Compare", exact: true }),
+      planning.getByRole("button", { name: /^Compare(?:\s*\d+ plans)?$/ }),
     );
     await activate(page.getByRole("button", { name: "Back to plan" }));
     await expect(
       page.getByRole("button", { name: "Try a change" }),
     ).toBeEnabled();
     await activate(
-      planning.getByRole("button", { name: "Compare", exact: true }),
+      planning.getByRole("button", { name: /^Compare(?:\s*\d+ plans)?$/ }),
     );
     await expect(
       page.getByText("Synthetic comparison failure", { exact: true }),
@@ -790,7 +798,7 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
     writeFileSync(horizonPath, JSON.stringify(horizonInput));
     const horizonExport = native("export", horizonPath);
     await activate(
-      planning.getByRole("button", { name: "Export", exact: true }),
+      planning.getByRole("button", { name: "Summary", exact: true }),
     );
     const chooser = page.waitForEvent("filechooser");
     await activate(
@@ -803,6 +811,8 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       mimeType: "application/json",
       buffer: Buffer.from(horizonExport),
     });
+    await expect(page.locator(".overview-assumptions")).toBeVisible();
+    await activate(planning.getByRole("button", { name: "Plan", exact: true }));
     await expect(page.getByText("Calculating…", { exact: true })).toHaveCount(
       0,
     );
@@ -844,6 +854,9 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
       "scenario",
       "compare",
       "sustainable_spending",
+      "run",
+      "sustainable_spending",
+      "levers",
     ]);
     const baselineFile = join(temp, "short-horizon-baseline.json");
     const copyFile = join(temp, "short-horizon-copy.json");
