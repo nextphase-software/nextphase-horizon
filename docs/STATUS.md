@@ -34,10 +34,10 @@ This page lists what works today and what is being built now. It is not a promis
 | Incomplete answers and ranges | Builds a plan from answers that are a figure, a range or not known yet, says what is still needed or left out, and shows how far a range can move the result. | [0002-W4](briefs/0002-W4-answers-to-plan.md) · `ccf0e4c` |
 | Worked-out answers and what-if | When savings, spending in retirement or a retirement age is not known yet, works out the one that is missing, accepts an age instead of a date of birth, and recalculates the plan for any changed answer. | [0002-W5](briefs/0002-W5-reverse-answers.md) · `f3d9f44` |
 
-Generated 2026-10-20 from the merged history of this repository.
+Generated 2026-10-22 from the merged history of this repository.
 
 ## Being built now
 
 Nothing in progress has been published. New work appears here once its brief is public.
 
-Generated 2026-10-20 from the merged history of this repository.
+Generated 2026-10-22 from the merged history of this repository.
