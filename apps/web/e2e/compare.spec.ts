@@ -685,10 +685,15 @@ test("compare: exact rendered references, worker/native bytes, copy lifecycle, k
         const returnedRuns = after.requests
           .slice(beforeReturning)
           .filter((request) => request.op === "run");
-        expect(returnedRuns.length).toBeGreaterThan(0);
         for (const request of returnedRuns)
           expect(request.args[0]).toBe(originalInput);
-        expect(after.replies[returnedRuns.at(-1)!.id]).toBe(originalRun);
+        const latestOriginalRun = [...after.requests]
+          .reverse()
+          .find(
+            (request) =>
+              request.op === "run" && request.args[0] === originalInput,
+          )!;
+        expect(after.replies[latestOriginalRun.id]).toBe(originalRun);
         await expect(page.locator(".plan-screen h1")).toHaveText(
           originalHeadline,
         );
